@@ -8,14 +8,16 @@ SOURCES = builtins.c debugPrint.c errorStuff.c expr.c initialize.c\
 instantiate.c link.c main.c map.c poke.c read.c relocate.c slinkyTables.c\
 write.c slinkyExpressions.h slinkyGlobals.h slinkyTypes.h y.tab.h
 
+CFLAGS=-m32 # slinky is not 64 bit clean
+
 .c.o:
-	cc -c -g $*.c
+	cc $(CFLAGS) -c -g $*.c
 
 .c.run:
-	cc -o $* $*.c
+	cc $(CFLAGS) -o $* $*.c
 
 slinky: $(OBJECTS)
-	cc -g -o slinky $(OBJECTS)
+	cc $(CFLAGS) -g -o slinky $(OBJECTS)
 
 update: .mark
 	kessel "(cd /u0/chip/macross/slinky; make slinky >&errorfyle)" &

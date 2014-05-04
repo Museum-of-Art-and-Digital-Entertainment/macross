@@ -19,6 +19,7 @@ static bool		 insideConstraintBlock = FALSE;
 bool			 nullStatementFlag = FALSE;
 
 #define nullAssemble(thing)	if (thing==NULL) return;
+#define nullAssembleNULL(thing)	if (thing==NULL) return NULL;
 #define sideEffectBomb()	if (beneathFunction) {\
 			error(SIDE_EFFECT_ERROR, currentFunctionName);\
 			break; }
@@ -43,7 +44,7 @@ assembleBlockInsideIf(block, ongoingFixupList)
 {
 	simpleFixupListType	*assembleStatement();
 
-	nullAssemble(block);
+	nullAssembleNULL(block);
 	return(assembleStatement(block, TRUE, ongoingFixupList));
 }
 
@@ -581,7 +582,7 @@ assembleIfStatement(ifStatement, terminalIf, ongoingFixupList)
 		return(NULL);
 	}
 
-	nullAssemble(ifStatement);
+	nullAssembleNULL(ifStatement);
 	fixupLocation2 = ongoingFixupList;
 	if (ifStatement->ifCondition != ALWAYS_COND && ifStatement->
 			ifCondition != NEVER_COND) {
@@ -608,7 +609,7 @@ assembleIfStatement(ifStatement, terminalIf, ongoingFixupList)
 			ifStatement->ifCondition != ALWAYS_COND) {
 		expand((tabIndent(), moreText("} else ")));
 		fixupLocation2 = assembleIfStatement(ifStatement->
-			continuation, terminalIf, fixupLocation2);
+			continuation.continuationBodyUnion, terminalIf, fixupLocation2);
 	} else {
 		expand((tabIndent(), moreText("}"), endLine()));
 	}
@@ -647,7 +648,7 @@ assembleIfStatementOldStyle(ifStatement)
 		fixupBranch(fixupLocation1, currentLocationCounter);
 	if (ifStatement->continuation.continuationBodyUnion != NULL) {
 		expand((tabIndent(), moreText("} else ")));
-		assembleIfStatementOldStyle(ifStatement->continuation);
+		assembleIfStatementOldStyle(ifStatement->continuation.continuationBodyUnion);
 	} else {
 		expand((tabIndent(), moreText("}"), endLine()));
 	}
@@ -692,14 +693,14 @@ assembleInstructionStatement(instructionStatement, cumulativeLineNumber)
 				cumulativeLineNumber);
 		expand((startLine(), expandLabel(), tabIndent()));
 		assembleMachineInstruction(instructionStatement->
-			theInstruction, instructionStatement->theOperands);
+			theInstruction.opcodeUnion, instructionStatement->theOperands);
 		break;
 
 	case MACRO_INSTRUCTION:
 		if (amListing() && !amExpanding())
 			saveIndexForListing(INSTRUCTION_STATEMENT,
 				cumulativeLineNumber);
-		assembleMacro(instructionStatement->theInstruction,
+		assembleMacro(instructionStatement->theInstruction.macroUnion,
 					instructionStatement->theOperands);
 		break;
 
@@ -1256,128 +1257,128 @@ assembleStatementBody(kind, body, cumulativeLineNumber, worryAboutIf,
 
 	case ALIGN_STATEMENT:
 		sideEffectBomb();
-		assembleAlignStatement(body);
+		assembleAlignStatement(body.alignUnion);
 		if (amListing())
 			saveIndexForListing(ALIGN_STATEMENT,
 				cumulativeLineNumber);
 		break;
 
 	case ASSERT_STATEMENT:
-		assembleAssertStatement(body);
+		assembleAssertStatement(body.assertUnion);
 		break;
 
 	case BLOCK_STATEMENT:
 		sideEffectBomb();
-		assembleBlockStatement(body);
+		assembleBlockStatement(body.blockUnion);
 		break;
 
 	case BYTE_STATEMENT:
 		sideEffectBomb();
-		assembleByteStatement(body);
+		assembleByteStatement(body.byteUnion);
 		break;
 
 	case CONSTRAIN_STATEMENT:
 		sideEffectBomb();
-		assembleConstrainStatement(body);
+		assembleConstrainStatement(body.constrainUnion);
 		break;
 
 	case DBYTE_STATEMENT:
 		sideEffectBomb();
-		assembleDbyteStatement(body);
+		assembleDbyteStatement(body.dbyteUnion);
 		break;
 
 	case DEFINE_STATEMENT:
 		sideEffectBomb();
-		assembleDefineStatement(body);
+		assembleDefineStatement(body.defineUnion);
 		break;
 
 	case DO_UNTIL_STATEMENT:
 		sideEffectBomb();
-		assembleDoUntilStatement(body);
+		assembleDoUntilStatement(body.doUntilUnion);
 		break;
 
 	case DO_WHILE_STATEMENT:
 		sideEffectBomb();
-		assembleDoWhileStatement(body);
+		assembleDoWhileStatement(body.doWhileUnion);
 		break;
 
 	case EXTERN_STATEMENT:
 		sideEffectBomb();
-		assembleExternStatement(body);
+		assembleExternStatement(body.externUnion);
 		break;
 
 	case FRETURN_STATEMENT:
-		assembleFreturnStatement(body);
+		assembleFreturnStatement(body.freturnUnion);
 /*		result = FALSE;*/
 		break;
 
 	case FUNCTION_STATEMENT:
-		assembleFunctionStatement(body);
+		assembleFunctionStatement(body.functionUnion);
 		break;
 
 	case GROUP_STATEMENT:
-		assembleGroupStatement(body);
+		assembleGroupStatement(body.groupUnion);
 		break;
 
 	case IF_STATEMENT:
 		sideEffectBomb();
 		if (worryAboutIf) {
-			*ifFixupList = assembleIfStatement(body, worryAboutIf,
+			*ifFixupList = assembleIfStatement(body.ifUnion, worryAboutIf,
 				*ifFixupList);
 		} else {
-			assembleIfStatement(body, worryAboutIf, NULL);
+			assembleIfStatement(body.ifUnion, worryAboutIf, NULL);
 		}
 		break;
 
 	case INCLUDE_STATEMENT:
 		sideEffectBomb();
-		assembleIncludeStatement(body);
+		assembleIncludeStatement(body.includeUnion);
 		break;
 
 	case INSTRUCTION_STATEMENT:
 		sideEffectBomb();
-		assembleInstructionStatement(body, cumulativeLineNumber);
+		assembleInstructionStatement(body.instructionUnion, cumulativeLineNumber);
 		break;
 
 	case LONG_STATEMENT:
 		sideEffectBomb();
-		assembleLongStatement(body);
+		assembleLongStatement(body.longUnion);
 		break;
 
 	case MACRO_STATEMENT:
-		assembleMacroStatement(body);
+		assembleMacroStatement(body.macroUnion);
 		break;
 
 	case MDEFINE_STATEMENT:
-		assembleMdefineStatement(body);
+		assembleMdefineStatement(body.defineUnion);
 		break;
 
 	case MDO_UNTIL_STATEMENT:
-		assembleMdoUntilStatement(body);
+		assembleMdoUntilStatement(body.mdoUntilUnion);
 		break;
 
 	case MDO_WHILE_STATEMENT:
-		assembleMdoWhileStatement(body);
+		assembleMdoWhileStatement(body.mdoWhileUnion);
 		break;
 
 	case MFOR_STATEMENT:
-		assembleMforStatement(body);
+		assembleMforStatement(body.mforUnion);
 		break;
 
 	case MIF_STATEMENT:
-		assembleMifStatement(body, cumulativeLineNumber);
+		assembleMifStatement(body.mifUnion, cumulativeLineNumber);
 		break;
 
 	case MSWITCH_STATEMENT:
-		assembleMswitchStatement(body);
+		assembleMswitchStatement(body.mswitchUnion);
 		break;
 
 	case MVARIABLE_STATEMENT:
-		assembleMvariableStatement(body);
+		assembleMvariableStatement(body.mvariableUnion);
 		break;
 
 	case MWHILE_STATEMENT:
-		assembleMwhileStatement(body);
+		assembleMwhileStatement(body.mwhileUnion);
 		break;
 
 	case NULL_STATEMENT:
@@ -1388,61 +1389,61 @@ assembleStatementBody(kind, body, cumulativeLineNumber, worryAboutIf,
 
 	case ORG_STATEMENT:
 		sideEffectBomb();
-		assembleOrgStatement(body);
+		assembleOrgStatement(body.orgUnion);
 		if (amListing())
 			saveIndexForListing(ORG_STATEMENT,
 				cumulativeLineNumber);
 		break;
 
 	case PERFORM_STATEMENT:
-		assemblePerformStatement(body);
+		assemblePerformStatement(body.performUnion);
 		break;
 
 	case REL_STATEMENT:
 		sideEffectBomb();
-		assembleRelStatement(body);
+		assembleRelStatement(body.relUnion);
 		if (amListing())
 			saveIndexForListing(REL_STATEMENT,
 				cumulativeLineNumber);
 		break;
 
 	case START_STATEMENT:
-		assembleStartStatement(body);
+		assembleStartStatement(body.startUnion);
 		break;
 
 	case STRING_STATEMENT:
 		sideEffectBomb();
-		assembleStringStatement(body);
+		assembleStringStatement(body.stringUnion);
 		break;
 
 	case STRUCT_STATEMENT:
 		sideEffectBomb();
-		assembleStructStatement(body);
+		assembleStructStatement(body.structUnion);
 		break;
 
 	case TARGET_STATEMENT:
 		sideEffectBomb();
-		assembleTargetStatement(body);
+		assembleTargetStatement(body.targetUnion);
 		break;
 
 	case UNDEFINE_STATEMENT:
 		sideEffectBomb();
-		assembleUndefineStatement(body);
+		assembleUndefineStatement(body.undefineUnion);
 		break;
 
 	case VARIABLE_STATEMENT:
 		sideEffectBomb();
-		assembleVariableStatement(body);
+		assembleVariableStatement(body.variableUnion);
 		break;
 
 	case WHILE_STATEMENT:
 		sideEffectBomb();
-		assembleWhileStatement(body);
+		assembleWhileStatement(body.whileUnion);
 		break;
 
 	case WORD_STATEMENT:
 		sideEffectBomb();
-		assembleWordStatement(body);
+		assembleWordStatement(body.wordUnion);
 		break;
 
 	default:

@@ -394,15 +394,15 @@ printExpression(expression)
 	switch (expression->kindOfTerm) {
 
 	case ARRAY_EXPR:
-		printArrayTerm(expression->expressionTerm);
+		printArrayTerm(expression->expressionTerm.arrayUnion);
 		break;
 
 	case ASSIGN_EXPR:
-		printAssignmentTerm(expression->expressionTerm);
+		printAssignmentTerm(expression->expressionTerm.binopUnion);
 		break;
 
 	case BINOP_EXPR:
-		printBinopTerm(expression->expressionTerm);
+		printBinopTerm(expression->expressionTerm.binopUnion);
 		break;
 
 	case CONDITION_CODE_EXPR:
@@ -410,7 +410,7 @@ printExpression(expression)
 		break;
 
 	case FUNCTION_CALL_EXPR:
-		printFunctionCall(expression->expressionTerm);
+		printFunctionCall(expression->expressionTerm.functionCallUnion);
 		break;
 
 	case HERE_EXPR:
@@ -418,19 +418,19 @@ printExpression(expression)
 		break;
 
 	case IDENTIFIER_EXPR:
-		printIdentifier(expression->expressionTerm);
+		printIdentifier(expression->expressionTerm.symbolTableUnion);
 		break;
 
 	case NUMBER_EXPR:
-		printNumber(expression->expressionTerm);
+		printNumber(expression->expressionTerm.numberUnion);
 		break;
 
 	case POSTOP_EXPR:
-		printPostopTerm(expression->expressionTerm);
+		printPostopTerm(expression->expressionTerm.postOpUnion);
 		break;
 
 	case PREOP_EXPR:
-		printPreopTerm(expression->expressionTerm);
+		printPreopTerm(expression->expressionTerm.preOpUnion);
 		break;
 
 	case STRING_EXPR:
@@ -438,15 +438,15 @@ printExpression(expression)
 		break;
 
 	case SUBEXPRESSION_EXPR:
-		printExpression(expression->expressionTerm);
+		printExpression(expression->expressionTerm.expressionUnion);
 		break;
 
 	case UNOP_EXPR:
-		printUnopTerm(expression->expressionTerm);
+		printUnopTerm(expression->expressionTerm.unopUnion);
 		break;
 
 	case VALUE_EXPR:
-		printValue(expression->expressionTerm);
+		printValue(expression->expressionTerm.valueUnion);
 		break;
 
 	default:
@@ -659,7 +659,7 @@ printIfStatement(ifStatement)
 	printBlock(ifStatement->consequence);
 	tab(); printf("(else:\n");
 	tablevel++;
-	printIfStatement(ifStatement->continuation);
+	printIfStatement(ifStatement->continuation.blockUnion);
 	tablevel--;
 	tab(); printf(")\n");
 }
@@ -679,11 +679,11 @@ printInstructionStatement(instructionStatement)
 	nullPrint(instructionStatement);
 	switch(instructionStatement->kindOfInstruction) {
 	case OPCODE_INSTRUCTION:
-		printOpcode(instructionStatement->theInstruction);
+		printOpcode(instructionStatement->theInstruction.opcodeUnion);
 		break;
 
 	case MACRO_INSTRUCTION:
-		printMacro(instructionStatement->theInstruction);
+		printMacro(instructionStatement->theInstruction.macroUnion);
 		break;
 
 	default:
@@ -759,7 +759,7 @@ printMifStatement(mifStatement)
 	printBlock(mifStatement->mifConsequence);
 	tab(); printf("(melse:\n");
 	tablevel++;
-	printMifStatement(mifStatement->mifContinuation);
+	printMifStatement(mifStatement->mifContinuation.mifContinuationBodyUnion);
 	tablevel--;
 	tab(); printf(")\n");
 }
@@ -906,107 +906,107 @@ printStatementBody(kind, body)
 	switch (kind) {
 
 	case ALIGN_STATEMENT:
-		printAlignStatement(body);
+		printAlignStatement(body.alignUnion);
 		break;
 
 	case ASSERT_STATEMENT:
-		printAssertStatement(body);
+		printAssertStatement(body.assertUnion);
 		break;
 
 	case BLOCK_STATEMENT:
-		printBlockStatement(body);
+		printBlockStatement(body.blockUnion);
 		break;
 
 	case BYTE_STATEMENT:
-		printByteStatement(body);
+		printByteStatement(body.byteUnion);
 		break;
 
 	case CONSTRAIN_STATEMENT:
-		printConstrainStatement(body);
+		printConstrainStatement(body.constrainUnion);
 		break;
 
 	case DBYTE_STATEMENT:
-		printDbyteStatement(body);
+		printDbyteStatement(body.dbyteUnion);
 		break;
 
 	case DEFINE_STATEMENT:
-		printDefineStatement(body);
+		printDefineStatement(body.defineUnion);
 		break;
 
 	case DO_UNTIL_STATEMENT:
-		printDoUntilStatement(body);
+		printDoUntilStatement(body.doUntilUnion);
 		break;
 
 	case DO_WHILE_STATEMENT:
-		printDoWhileStatement(body);
+		printDoWhileStatement(body.doWhileUnion);
 		break;
 
 	case EXTERN_STATEMENT:
-		printExternStatement(body);
+		printExternStatement(body.externUnion);
 		break;
 
 	case FRETURN_STATEMENT:
-		printFreturnStatement(body);
+		printFreturnStatement(body.freturnUnion);
 		break;
 
 	case FUNCTION_STATEMENT:
-		printFunctionStatement(body);
+		printFunctionStatement(body.functionUnion);
 		break;
 
 	case GROUP_STATEMENT:
-		printBlock(body);
+		printBlock(body.groupUnion);
 		break;
 
 	case IF_STATEMENT:
-		printIfStatement(body);
+		printIfStatement(body.ifUnion);
 		break;
 
 	case INCLUDE_STATEMENT:
-		printIncludeStatement(body);
+		printIncludeStatement(body.includeUnion);
 		break;
 
 	case INSTRUCTION_STATEMENT:
-		printInstructionStatement(body);
+		printInstructionStatement(body.instructionUnion);
 		break;
 
 	case LONG_STATEMENT:
-		printLongStatement(body);
+		printLongStatement(body.longUnion);
 		break;
 
 	case MACRO_STATEMENT:
-		printMacroStatement(body);
+		printMacroStatement(body.macroUnion);
 		break;
 
 	case MDEFINE_STATEMENT:
-		printMdefineStatement(body);
+		printMdefineStatement(body.defineUnion);
 		break;
 
 	case MDO_UNTIL_STATEMENT:
-		printMdoUntilStatement(body);
+		printMdoUntilStatement(body.mdoUntilUnion);
 		break;
 
 	case MDO_WHILE_STATEMENT:
-		printMdoWhileStatement(body);
+		printMdoWhileStatement(body.mdoWhileUnion);
 		break;
 
 	case MFOR_STATEMENT:
-		printMforStatement(body);
+		printMforStatement(body.mforUnion);
 		break;
 
 	case MIF_STATEMENT:
-		printMifStatement(body);
+		printMifStatement(body.mifUnion);
 		break;
 
 	case MSWITCH_STATEMENT:
-		printMswitchStatement(body);
+		printMswitchStatement(body.mswitchUnion);
 		break;
 
 	case MVARIABLE_STATEMENT:
-		printMvariableStatement(body);
+		printMvariableStatement(body.mvariableUnion);
 		break;
 
 	case MWHILE_STATEMENT:
-		printMwhileStatement(body);
+		printMwhileStatement(body.mwhileUnion);
 		break;
 
 	case NULL_STATEMENT:
@@ -1014,47 +1014,47 @@ printStatementBody(kind, body)
 		break;
 
 	case ORG_STATEMENT:
-		printOrgStatement(body);
+		printOrgStatement(body.orgUnion);
 		break;
 
 	case PERFORM_STATEMENT:
-		printPerformStatement(body);
+		printPerformStatement(body.performUnion);
 		break;
 
 	case REL_STATEMENT:
-		printRelStatement(body);
+		printRelStatement(body.relUnion);
 		break;
 
 	case START_STATEMENT:
-		printStartStatement(body);
+		printStartStatement(body.startUnion);
 		break;
 
 	case STRING_STATEMENT:
-		printStringStatement(body);
+		printStringStatement(body.stringUnion);
 		break;
 
 	case STRUCT_STATEMENT:
-		printStructStatement(body);
+		printStructStatement(body.structUnion);
 		break;
 
 	case TARGET_STATEMENT:
-		printTargetStatement(body);
+		printTargetStatement(body.targetUnion);
 		break;
 
 	case UNDEFINE_STATEMENT:
-		printUndefineStatement(body);
+		printUndefineStatement(body.undefineUnion);
 		break;
 
 	case VARIABLE_STATEMENT:
-		printVariableStatement(body);
+		printVariableStatement(body.variableUnion);
 		break;
 
 	case WHILE_STATEMENT:
-		printWhileStatement(body);
+		printWhileStatement(body.whileUnion);
 		break;
 
 	case WORD_STATEMENT:
-		printWordStatement(body);
+		printWordStatement(body.wordUnion);
 		break;
 
 	default:

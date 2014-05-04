@@ -84,6 +84,9 @@ botch(s)
 #define	ASSERT(p)
 #endif
 
+static void morecore(int);
+static int findbucket(union overhead *, int);
+
 char *
 malloc(nbytes)
 	register unsigned nbytes;
@@ -135,7 +138,7 @@ malloc(nbytes)
 /*
  * Allocate more memory to the indicated bucket.
  */
-static
+static void
 morecore(bucket)
 	register bucket;
 {
@@ -184,6 +187,7 @@ morecore(bucket)
   	}
 }
 
+void
 free(cp)
 	char *cp;
 {   

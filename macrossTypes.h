@@ -25,7 +25,7 @@
 #define CONDITION_DEFS	"conditionDefs_6502.h"
 #define TARGET_CPU_STRING	"6502"
 
-#else if TARGET_CPU == CPU_68000
+#elif TARGET_CPU == CPU_68000
 #define OPERAND_DEFS	"operandDefs_68000.h"
 #define OPERAND_BODY	"operandBody_68000.h"
 #define CONDITION_DEFS	"conditionDefs_68000.h"
@@ -417,6 +417,9 @@ typedef union expressionTermBodyUnion {
 		stringTermType		*stringUnion;
 		arrayTermType		*arrayUnion;
 		valueType		*valueUnion;
+		symbolTableEntryType	*symbolTableUnion;
+		conditionType		 conditionTypeUnion;
+		void			*expressionUnion; // this should be expressionTermType, but there's a cycle
 			       } expressionTermBodyType;
 
 typedef struct expressionTermStruct {
@@ -763,6 +766,7 @@ typedef union {
 		assertStatementBodyType		*assertUnion;
 		mswitchStatementBodyType	*mswitchUnion;
 		longStatementBodyType		*longUnion;
+		expressionType			*expressionUnion;
 			       } statementBodyType;
 
 typedef enum {
@@ -848,7 +852,7 @@ typedef struct {
 #if TARGET_CPU == CPU_6502
 #define CODE_BUFFERS_IN_ADDRESS_SPACE	64
 
-#else if TARGET_CPU == CPU_68000
+#elif TARGET_CPU == CPU_68000
 #define CODE_BUFFERS_IN_ADDRESS_SPACE	256
 
 #endif

@@ -11,7 +11,7 @@
 
 static char	 lineBuffer1[LINE_BUFFER_SIZE];
 static char	 lineBuffer2[LINE_BUFFER_SIZE];
-static int	 cumulativeLineNumber = 0;
+int		 cumulativeLineNumber = 0;
 static char	 macroLineBuffer[LINE_BUFFER_SIZE];
 static char	 nextMacroLineBuffer[LINE_BUFFER_SIZE];
 static int	 macroAddress;
@@ -351,7 +351,7 @@ printListingLine(numberOfBytes, byteAddress, text, kind)
 	else
 #if TARGET_CPU == CPU_6502
 		fprintf(listFileOutput, "%04x ", byteAddress);
-#else if TARGET_CPU == CPU_68000
+#elif TARGET_CPU == CPU_68000
 		fprintf(listFileOutput, "%06x ", byteAddress);
 #endif
 
@@ -364,7 +364,7 @@ printListingLine(numberOfBytes, byteAddress, text, kind)
 			fprintf(listFileOutput, "   ");
 	} else {
 		fprintf(listFileOutput, "            ");
-#else if TARGET_CPU == CPU_68000
+#elif TARGET_CPU == CPU_68000
 		for (i=0; i<numberOfBytes; i++) {
 			fprintf(listFileOutput, "%02x",
 				getByte(byteAddress++));

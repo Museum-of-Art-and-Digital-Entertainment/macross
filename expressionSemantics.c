@@ -1063,25 +1063,25 @@ evaluateExpressionInternally(expression, isTopLevel, kindOfFixup,isStandalone)
 	switch (expression->kindOfTerm) {
 
 	case ARRAY_EXPR:
-		return(evaluateArrayTerm(expression->expressionTerm));
+		return(evaluateArrayTerm(expression->expressionTerm.arrayUnion));
 		break;
 
 	case ASSIGN_EXPR:
-		return(evaluateAssignmentTerm(expression->expressionTerm,
+		return(evaluateAssignmentTerm(expression->expressionTerm.binopUnion,
 			kindOfFixup));
 		break;
 
 	case BINOP_EXPR:
-		return(evaluateBinopTerm(expression->expressionTerm,
+		return(evaluateBinopTerm(expression->expressionTerm.binopUnion,
 			isTopLevel, kindOfFixup));
 		break;
 
 	case CONDITION_CODE_EXPR:
-		return(evaluateCondition(expression->expressionTerm));
+		return(evaluateCondition(expression->expressionTerm.conditionTypeUnion));
 		break;
 
 	case FUNCTION_CALL_EXPR:
-		return(evaluateFunctionCall(expression->expressionTerm,
+		return(evaluateFunctionCall(expression->expressionTerm.functionCallUnion,
 			kindOfFixup, isStandalone));
 		break;
 
@@ -1090,37 +1090,37 @@ evaluateExpressionInternally(expression, isTopLevel, kindOfFixup,isStandalone)
 		break;
 
 	case IDENTIFIER_EXPR:
-		result = evaluateIdentifier(expression->expressionTerm,
+		result = evaluateIdentifier(expression->expressionTerm.symbolTableUnion,
 			isTopLevel, kindOfFixup);
 		return(result);
 		break;
 
 	case NUMBER_EXPR:
-		return(evaluateNumber(expression->expressionTerm));
+		return(evaluateNumber(expression->expressionTerm.numberUnion));
 		break;
 
 	case POSTOP_EXPR:
-		return(evaluatePostopTerm(expression->expressionTerm));
+		return(evaluatePostopTerm(expression->expressionTerm.postOpUnion));
 		break;
 
 	case PREOP_EXPR:
-		return(evaluatePreopTerm(expression->expressionTerm));
+		return(evaluatePreopTerm(expression->expressionTerm.preOpUnion));
 		break;
 
 	case SUBEXPRESSION_EXPR:
 		expand(moreExpression("("));
 		result = evaluateExpressionInternally(expression->
-			expressionTerm, isTopLevel, kindOfFixup, FALSE);
+			expressionTerm.expressionUnion, isTopLevel, kindOfFixup, FALSE);
 		expand(moreExpression(")"));
 		return(result);
 		break;
 
 	case STRING_EXPR:
-		return(evaluateString(expression->expressionTerm));
+		return(evaluateString(expression->expressionTerm.stringUnion));
 		break;
 
 	case UNOP_EXPR:
-		return(evaluateUnopTerm(expression->expressionTerm,
+		return(evaluateUnopTerm(expression->expressionTerm.unopUnion,
 			kindOfFixup));
 		break;
 

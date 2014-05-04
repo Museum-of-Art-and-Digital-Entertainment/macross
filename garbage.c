@@ -110,35 +110,35 @@ freeExpression(expression)
 		break;
 
 	case ARRAY_EXPR:
-		freeArrayTerm(expression->expressionTerm);
+		freeArrayTerm(expression->expressionTerm.arrayUnion);
 		break;
 
 	case ASSIGN_EXPR:
-		freeAssignmentTerm(expression->expressionTerm);
+		freeAssignmentTerm(expression->expressionTerm.binopUnion);
 		break;
 
 	case BINOP_EXPR:
-		freeBinopTerm(expression->expressionTerm);
+		freeBinopTerm(expression->expressionTerm.binopUnion);
 		break;
 
 	case FUNCTION_CALL_EXPR:
-		freeFunctionCall(expression->expressionTerm);
+		freeFunctionCall(expression->expressionTerm.functionCallUnion);
 		break;
 
 	case POSTOP_EXPR:
-		freePostopTerm(expression->expressionTerm);
+		freePostopTerm(expression->expressionTerm.postOpUnion);
 		break;
 
 	case PREOP_EXPR:
-		freePreopTerm(expression->expressionTerm);
+		freePreopTerm(expression->expressionTerm.preOpUnion);
 		break;
 
 	case SUBEXPRESSION_EXPR:
-		freeExpression(expression->expressionTerm);
+		freeExpression(expression->expressionTerm.expressionUnion);
 		break;
 
 	case UNOP_EXPR:
-		freeUnopTerm(expression->expressionTerm);
+		freeUnopTerm(expression->expressionTerm.unopUnion);
 		break;
 
 	default:
@@ -362,7 +362,7 @@ freeIfStatement(ifStatement)
 	if (ifStatement->consequence != NULL)
 		freeBlock(ifStatement->consequence);
 	if (ifStatement->continuation.continuationBodyUnion != NULL) {
-		freeIfStatement(ifStatement->continuation);
+		freeIfStatement((void *)ifStatement->continuation.blockUnion);
 	}
 	free(ifStatement);
 }
@@ -422,7 +422,7 @@ freeMacroStatement(macroStatement)
 
   void
 freeMdefineStatement(mdefineStatement)
-  defineStatementBodyType	*mdefineStatement;
+  defineStatementBodyType	*mdefineStatement; // MIST: shouldn't this be "mdefineStatementBodyType"?
 {
 	valueType		*freeDefineExpression();
 
@@ -616,107 +616,107 @@ freeStatementBody(kind, body)
 	switch (kind) {
 
 	case ALIGN_STATEMENT:
-		freeAlignStatement(body);
+		freeAlignStatement(body.alignUnion);
 		break;
 
 	case ASSERT_STATEMENT:
-		freeAssertStatement(body);
+		freeAssertStatement(body.assertUnion);
 		break;
 
 	case BLOCK_STATEMENT:
-		freeBlockStatement(body);
+		freeBlockStatement(body.blockUnion);
 		break;
 
 	case BYTE_STATEMENT:
-		freeByteStatement(body);
+		freeByteStatement(body.byteUnion);
 		break;
 
 	case CONSTRAIN_STATEMENT:
-		freeConstrainStatement(body);
+		freeConstrainStatement(body.constrainUnion);
 		break;
 
 	case DBYTE_STATEMENT:
-		freeDbyteStatement(body);
+		freeDbyteStatement(body.dbyteUnion);
 		break;
 
 	case DEFINE_STATEMENT:
-		freeDefineStatement(body);
+		freeDefineStatement(body.defineUnion);
 		break;
 
 	case DO_UNTIL_STATEMENT:
-		freeDoUntilStatement(body);
+		freeDoUntilStatement(body.doUntilUnion);
 		break;
 
 	case DO_WHILE_STATEMENT:
-		freeDoWhileStatement(body);
+		freeDoWhileStatement(body.doWhileUnion);
 		break;
 
 	case EXTERN_STATEMENT:
-		freeExternStatement(body);
+		freeExternStatement(body.externUnion);
 		break;
 
 	case FRETURN_STATEMENT:
-		freeFreturnStatement(body);
+		freeFreturnStatement(body.freturnUnion);
 		break;
 
 	case FUNCTION_STATEMENT:
-		freeFunctionStatement(body);
+		freeFunctionStatement(body.functionUnion);
 		break;
 
 	case GROUP_STATEMENT:
-		freeBlock(body);
+		freeBlock(body.groupUnion);
 		break;
 
 	case IF_STATEMENT:
-		freeIfStatement(body);
+		freeIfStatement(body.ifUnion);
 		break;
 
 	case INCLUDE_STATEMENT:
-		freeIncludeStatement(body);
+		freeIncludeStatement(body.includeUnion);
 		break;
 
 	case INSTRUCTION_STATEMENT:
-		freeInstructionStatement(body);
+		freeInstructionStatement(body.instructionUnion);
 		break;
 
 	case LONG_STATEMENT:
-		freeLongStatement(body);
+		freeLongStatement(body.longUnion);
 		break;
 
 	case MACRO_STATEMENT:
-		freeMacroStatement(body);
+		freeMacroStatement(body.macroUnion);
 		break;
 
 	case MDEFINE_STATEMENT:
-		freeMdefineStatement(body);
+		freeMdefineStatement(body.defineUnion);
 		break;
 
 	case MDO_UNTIL_STATEMENT:
-		freeMdoUntilStatement(body);
+		freeMdoUntilStatement(body.mdoUntilUnion);
 		break;
 
 	case MDO_WHILE_STATEMENT:
-		freeMdoWhileStatement(body);
+		freeMdoWhileStatement(body.mdoWhileUnion);
 		break;
 
 	case MIF_STATEMENT:
-		freeMifStatement(body);
+		freeMifStatement(body.mifUnion);
 		break;
 
 	case MSWITCH_STATEMENT:
-		freeMswitchStatement(body);
+		freeMswitchStatement(body.mswitchUnion);
 		break;
 
 	case MFOR_STATEMENT:
-		freeMforStatement(body);
+		freeMforStatement(body.mforUnion);
 		break;
 
 	case MVARIABLE_STATEMENT:
-		freeMvariableStatement(body);
+		freeMvariableStatement(body.mvariableUnion);
 		break;
 
 	case MWHILE_STATEMENT:
-		freeMwhileStatement(body);
+		freeMwhileStatement(body.mwhileUnion);
 		break;
 
 	case NULL_STATEMENT:
@@ -724,47 +724,47 @@ freeStatementBody(kind, body)
 		break;
 
 	case ORG_STATEMENT:
-		freeOrgStatement(body);
+		freeOrgStatement(body.orgUnion);
 		break;
 
 	case PERFORM_STATEMENT:
-		freePerformStatement(body);
+		freePerformStatement(body.performUnion);
 		break;
 
 	case REL_STATEMENT:
-		freeRelStatement(body);
+		freeRelStatement(body.relUnion);
 		break;
 
 	case START_STATEMENT:
-		freeStartStatement(body);
+		freeStartStatement(body.startUnion);
 		break;
 
 	case STRING_STATEMENT:
-		freeStringStatement(body);
+		freeStringStatement(body.stringUnion);
 		break;
 
 	case STRUCT_STATEMENT:
-		freeStructStatement(body);
+		freeStructStatement(body.structUnion);
 		break;
 
 	case TARGET_STATEMENT:
-		freeTargetStatement(body);
+		freeTargetStatement(body.targetUnion);
 		break;
 
 	case UNDEFINE_STATEMENT:
-		freeUndefineStatement(body);
+		freeUndefineStatement(body.undefineUnion);
 		break;
 
 	case VARIABLE_STATEMENT:
-		freeVariableStatement(body);
+		freeVariableStatement(body.variableUnion);
 		break;
 
 	case WHILE_STATEMENT:
-		freeWhileStatement(body);
+		freeWhileStatement(body.whileUnion);
 		break;
 
 	case WORD_STATEMENT:
-		freeWordStatement(body);
+		freeWordStatement(body.wordUnion);
 		break;
 
 	default:

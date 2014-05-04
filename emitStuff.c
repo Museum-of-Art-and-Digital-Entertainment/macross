@@ -175,7 +175,7 @@ emitWord(wordValue)
 						convert.bytePart[loByte]);
 		putByte(currentLocationCounter.value++,
 						convert.bytePart[hiByte]);
-#else if TARGET_CPU == CPU_68000
+#elif TARGET_CPU == CPU_68000
 		putByte(currentLocationCounter.value++,
 						convert.bytePart[hiByte]);
 		putByte(currentLocationCounter.value++,
@@ -185,7 +185,7 @@ emitWord(wordValue)
 #if TARGET_CPU == CPU_6502
 		mapByte(currentFieldOffset++, convert.bytePart[loByte]);
 		mapByte(currentFieldOffset++, convert.bytePart[hiByte]);
-#else if TARGET_CPU == CPU_68000
+#elif TARGET_CPU == CPU_68000
 		mapByte(currentFieldOffset++, convert.bytePart[hiByte]);
 		mapByte(currentFieldOffset++, convert.bytePart[loByte]);
 #endif
@@ -236,7 +236,7 @@ emitLong(longValue)
 						convert.bytePart[thirdByte]);
 		putByte(currentLocationCounter.value++,
 						convert.bytePart[hiByte]);
-#else if TARGET_CPU == CPU_68000
+#elif TARGET_CPU == CPU_68000
 		putByte(currentLocationCounter.value++,
 						convert.bytePart[hiByte]);
 		putByte(currentLocationCounter.value++,
@@ -252,7 +252,7 @@ emitLong(longValue)
 		mapByte(currentFieldOffset++, convert.bytePart[secondByte]);
 		mapByte(currentFieldOffset++, convert.bytePart[thirdByte]);
 		mapByte(currentFieldOffset++, convert.bytePart[hiByte]);
-#else if TARGET_CPU == CPU_68000
+#elif TARGET_CPU == CPU_68000
 		mapByte(currentFieldOffset++, convert.bytePart[hiByte]);
 		mapByte(currentFieldOffset++, convert.bytePart[thirdByte]);
 		mapByte(currentFieldOffset++, convert.bytePart[secondByte]);

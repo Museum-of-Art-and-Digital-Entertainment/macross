@@ -44,9 +44,8 @@ encodeBigword(bigword)
 }
 
   bool
-encodeAssignmentTerm(assignmentTerm, kindOfFixup)
+encodeAssignmentTerm(assignmentTerm)
   binopTermType	*assignmentTerm;
-  fixupKindType	 kindOfFixup;
 {
 	nullEncode(assignmentTerm);
 	if ((assignmentKindType)assignmentTerm->binop != ASSIGN_ASSIGN) {
@@ -62,10 +61,8 @@ encodeAssignmentTerm(assignmentTerm, kindOfFixup)
 }
 
   bool
-encodeBinopTerm(binopTerm, isTopLevel, kindOfFixup)
+encodeBinopTerm(binopTerm)
   binopTermType	*binopTerm;
-  bool		 isTopLevel;
-  fixupKindType	 kindOfFixup;
 {
 	bool	encodeExpression();
 
@@ -384,19 +381,19 @@ encodeExpression(expression)
 		break;
 
 	case ASSIGN_EXPR:
-		return(encodeAssignmentTerm(expression->expressionTerm));
+		return(encodeAssignmentTerm(expression->expressionTerm.binopUnion));
 		break;
 
 	case BINOP_EXPR:
-		return(encodeBinopTerm(expression->expressionTerm));
+		return(encodeBinopTerm(expression->expressionTerm.binopUnion));
 		break;
 
 	case CONDITION_CODE_EXPR:
-		return(encodeCondition(expression->expressionTerm));
+		return(encodeCondition(expression->expressionTerm.conditionTypeUnion));
 		break;
 
 	case FUNCTION_CALL_EXPR:
-		return(encodeFunctionCall(expression->expressionTerm));
+		return(encodeFunctionCall(expression->expressionTerm.functionCallUnion));
 		break;
 
 	case HERE_EXPR:
@@ -404,35 +401,35 @@ encodeExpression(expression)
 		break;
 
 	case IDENTIFIER_EXPR:
-		return(encodeIdentifier(expression->expressionTerm));
+		return(encodeIdentifier(expression->expressionTerm.identifierUnion));
 		break;
 
 	case NUMBER_EXPR:
-		return(encodeNumber(expression->expressionTerm));
+		return(encodeNumber(expression->expressionTerm.numberUnion));
 		break;
 
 	case POSTOP_EXPR:
-		return(encodePostopTerm(expression->expressionTerm));
+		return(encodePostopTerm(expression->expressionTerm.postOpUnion));
 		break;
 
 	case PREOP_EXPR:
-		return(encodePreopTerm(expression->expressionTerm));
+		return(encodePreopTerm(expression->expressionTerm.preOpUnion));
 		break;
 
 	case SUBEXPRESSION_EXPR:
-		encodeExpression(expression->expressionTerm);
+		encodeExpression(expression->expressionTerm.expressionUnion);
 		break;
 
 	case STRING_EXPR:
-		return(encodeString(expression->expressionTerm));
+		return(encodeString(expression->expressionTerm.stringUnion));
 		break;
 
 	case UNOP_EXPR:
-		return(encodeUnopTerm(expression->expressionTerm));
+		return(encodeUnopTerm(expression->expressionTerm.unopUnion));
 		break;
 
 	case VALUE_EXPR:
-		return(encodeValue(expression->expressionTerm));
+		return(encodeValue(expression->expressionTerm.valueUnion));
 		break;
 
 	default:
@@ -614,43 +611,43 @@ encodeStatement(statement)
 		return(FALSE);
 
 	case ASSERT_STATEMENT:
-		return(encodeAssertStatement(statement->statementBody));
+		return(encodeAssertStatement(statement->statementBody.assertUnion));
 
 	case FRETURN_STATEMENT:
-		return(encodeFreturnStatement(statement->statementBody));
+		return(encodeFreturnStatement(statement->statementBody.freturnUnion));
 
 	case GROUP_STATEMENT:
 		return(encodeBlock(statement->statementBody));
 
 	case MDEFINE_STATEMENT:
-		return(encodeMdefineStatement(statement->statementBody));
+		return(encodeMdefineStatement(statement->statementBody.defineUnion));
 
 	case MDO_UNTIL_STATEMENT:
-		return(encodeMdoUntilStatement(statement->statementBody));
+		return(encodeMdoUntilStatement(statement->statementBody.mdoUntilUnion));
 
 	case MDO_WHILE_STATEMENT:
-		return(encodeMdoWhileStatement(statement->statementBody));
+		return(encodeMdoWhileStatement(statement->statementBody.mdoWhileUnion));
 
 	case MFOR_STATEMENT:
-		return(encodeMforStatement(statement->statementBody));
+		return(encodeMforStatement(statement->statementBody.mforUnion));
 
 	case MIF_STATEMENT:
-		return(encodeMifStatement(statement->statementBody));
+		return(encodeMifStatement(statement->statementBody.mifUnion));
 
 	case MSWITCH_STATEMENT:
-		return(encodeMswitchStatement(statement->statementBody));
+		return(encodeMswitchStatement(statement->statementBody.mswitchUnion));
 
 	case MVARIABLE_STATEMENT:
-		return(encodeMvariableStatement(statement->statementBody));
+		return(encodeMvariableStatement(statement->statementBody.mvariableUnion));
 
 	case MWHILE_STATEMENT:
-		return(encodeMwhileStatement(statement->statementBody));
+		return(encodeMwhileStatement(statement->statementBody.mwhileUnion));
 
 	case NULL_STATEMENT:
 		return(TRUE);
 
 	case PERFORM_STATEMENT:
-		return(encodeExpression(statement->statementBody));
+		return(encodeExpression(statement->statementBody.expressionUnion));
 
 	default:
 		botch("encodeStatementBody doesn't know kind %d\n",

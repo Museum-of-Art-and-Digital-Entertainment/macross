@@ -13,7 +13,11 @@ main(argc, argv)
   int	argc;
   char *argv[];
 {
+#ifdef __APPLE__
+	char end = get_end();
+#else
 	extern char	 end;
+#endif
 	char		*sbrk();
 
 	fflush(stdout);

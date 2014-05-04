@@ -23,17 +23,19 @@ conditionDefs_$(PROC).h driver.c slinkyExpressions.h
 
 HEADERS = macrossTypes.h macrossGlobals.h
 
+CFLAGS=-m32 # macross is not 64 bit clean
+
 .c.o:
-	cc -c -g -DTARGET_CPU=CPU_$(PROC) $*.c
+	cc $(CFLAGS) -c -g -DTARGET_CPU=CPU_$(PROC) $*.c
 
 .c.run:
-	cc -o $* $*.c
+	cc $(CFLAGS) -o $* $*.c
 
 macross: $(OBJECTS)
-	cc -g -o macross $(OBJECTS)
+	cc $(CFLAGS) -g -o macross $(OBJECTS)
 
 driver: driver.c
-	cc -o driver driver.c
+	cc $(CFLAGS) -o driver driver.c
 
 update: .mark
 	kessel "(cd /u0/chip/macross; make macross >&errorfyle)" &
@@ -75,7 +77,7 @@ macrossTypes.h: macrossTypes.h operandDefs_$(PROC).h operandBody_$(PROC).h\
 conditionDefs_$(PROC).h
 
 actions.o: actions_$(PROC).c $(HEADERS)
-	cc -c -g -DTARGET_CPU=CPU_$(PROC) actions_$(PROC).c
+	cc $(CFLAGS) -c -g -DTARGET_CPU=CPU_$(PROC) actions_$(PROC).c
 	mv actions_$(PROC).o actions.o
 
 buildStuff1.o: buildStuff1.c $(HEADERS)
@@ -87,21 +89,21 @@ buildStuff3.o: buildStuff3.c $(HEADERS)
 builtInFunctions.o: builtInFunctions.c $(HEADERS)
 
 builtInFunsSD.o: builtInFunsSD_$(PROC).c $(HEADERS)
-	cc -c -g -DTARGET_CPU=CPU_$(PROC) builtInFunsSD_$(PROC).c
+	cc $(CFLAGS) -c -g -DTARGET_CPU=CPU_$(PROC) builtInFunsSD_$(PROC).c
 	mv builtInFunsSD_$(PROC).o builtInFunsSD.o
 
 debugPrint.o: debugPrint.c y.tab.h $(HEADERS)
 
 debugPrintSD.o: debugPrintSD_$(PROC).c y.tab.h $(HEADERS)
-	cc -c -g -DTARGET_CPU=CPU_$(PROC) debugPrintSD_$(PROC).c
+	cc $(CFLAGS) -c -g -DTARGET_CPU=CPU_$(PROC) debugPrintSD_$(PROC).c
 	mv debugPrintSD_$(PROC).o debugPrintSD.o
 
 emitBranch.o: emitBranch_$(PROC).c $(HEADERS)
-	cc -c -g -DTARGET_CPU=CPU_$(PROC) emitBranch_$(PROC).c
+	cc $(CFLAGS) -c -g -DTARGET_CPU=CPU_$(PROC) emitBranch_$(PROC).c
 	mv emitBranch_$(PROC).o emitBranch.o
 
 emitStuff.o: emitStuff.c $(HEADERS)
-	cc -c -g -DBYTESWAPPED -DTARGET_CPU=CPU_$(PROC) emitStuff.c
+	cc $(CFLAGS) -c -g -DBYTESWAPPED -DTARGET_CPU=CPU_$(PROC) emitStuff.c
 
 encode.o: encode.c $(HEADERS)
 
@@ -122,7 +124,7 @@ listing.o: listing.c $(HEADERS)
 lookups.o: lookups.c $(HEADERS)
 
 macrossTables.o: macrossTables_$(PROC).c y.tab.h macrossTypes.h
-	cc -c -g -DTARGET_CPU=CPU_$(PROC) macrossTables_$(PROC).c
+	cc $(CFLAGS) -c -g -DTARGET_CPU=CPU_$(PROC) macrossTables_$(PROC).c
 	mv macrossTables_$(PROC).o macrossTables.o
 
 malloc.o: malloc.c
@@ -132,7 +134,7 @@ main.o: main.c $(HEADERS)
 object.o: object.c $(HEADERS)
 
 operandStuffSD.o: operandStuffSD_$(PROC).c $(HEADERS)
-	cc -c -g -DTARGET_CPU=CPU_$(PROC) operandStuffSD_$(PROC).c
+	cc $(CFLAGS) -c -g -DTARGET_CPU=CPU_$(PROC) operandStuffSD_$(PROC).c
 	mv operandStuffSD_$(PROC).o operandStuffSD.o
 
 parserMisc.o: parserMisc.c y.tab.h $(HEADERS)
@@ -144,11 +146,11 @@ statementSemantics.o: statementSemantics.c $(HEADERS)
 structSemantics.o: structSemantics.c $(HEADERS)
 
 tokenStrings.o: tokenStrings_$(PROC).c $(HEADERS)
-	cc -c -g -DTARGET_CPU=CPU_$(PROC) tokenStrings_$(PROC).c
+	cc $(CFLAGS) -c -g -DTARGET_CPU=CPU_$(PROC) tokenStrings_$(PROC).c
 	mv tokenStrings_$(PROC).o tokenStrings.o
 
 y.tab.o: y.tab.c $(HEADERS)
-	cc -c -g -DYYDEBUG -DTARGET_CPU=CPU_$(PROC) y.tab.c
+	cc $(CFLAGS) -c -g -DYYDEBUG -DTARGET_CPU=CPU_$(PROC) y.tab.c
 
 y.tab.c y.tab.h: macross_$(PROC).y
 	yacc -d macross_$(PROC).y

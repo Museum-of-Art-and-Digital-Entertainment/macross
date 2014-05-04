@@ -45,7 +45,7 @@ buildAlignStatement(expression)
   expressionType *expression;
 {
 	return(newStatement(ALIGN_STATEMENT,
-	       (alignStatementBodyType *) expression));
+	       (statementBodyType) expression));
 }
 
   statementType *
@@ -59,7 +59,7 @@ buildAssertStatement(condition, message)
 
 	result->condition = condition;
 	result->message = message;
-	return(newStatement(ASSERT_STATEMENT, result));
+	return(newStatement(ASSERT_STATEMENT, (statementBodyType) result));
 }
 
   statementType *
@@ -67,7 +67,7 @@ buildBlockStatement(expressionList)
   expressionListType *expressionList;
 {
 	return(newStatement(BLOCK_STATEMENT,
-	       (blockStatementBodyType *) expressionList));
+	       (statementBodyType) expressionList));
 }
 
   statementType *
@@ -75,7 +75,7 @@ buildByteStatement(expressionList)
   expressionListType *expressionList;
 {
 	return(newStatement(BYTE_STATEMENT,
-	       (byteStatementBodyType *) expressionList));
+	       (statementBodyType) expressionList));
 }
 
   statementType *
@@ -89,7 +89,7 @@ buildConstrainStatement(expression, block)
 
 	result->constraint = expression;
 	result->constrainedBlock = block;
-	return(newStatement(CONSTRAIN_STATEMENT, result));
+	return(newStatement(CONSTRAIN_STATEMENT, (statementBodyType) result));
 }
 
   statementType *
@@ -97,7 +97,7 @@ buildDbyteStatement(expressionList)
   expressionListType *expressionList;
 {
 	return(newStatement(DBYTE_STATEMENT,
-	       (dbyteStatementBodyType *) expressionList));
+	       (statementBodyType) expressionList));
 }
 
   statementType *
@@ -110,7 +110,7 @@ buildDefineStatement(name, value)
 	result = typeAlloc(defineStatementBodyType);
 	result->theSymbol = lookupOrEnterSymbol(name, UNKNOWN_SYMBOL);
 	result->theValue = value;
-	return(newStatement(DEFINE_STATEMENT, result));
+	return(newStatement(DEFINE_STATEMENT, (statementBodyType) result));
 }
 
   statementType *
@@ -123,7 +123,7 @@ buildDoUntilStatement(body, condition)
 	result = typeAlloc(doUntilStatementBodyType);
 	result->doUntilCondition = condition;
 	result->doUntilLoop = body;
-	return(newStatement(DO_UNTIL_STATEMENT,result));
+	return(newStatement(DO_UNTIL_STATEMENT, (statementBodyType) result));
 }
 
   statementType *
@@ -136,7 +136,7 @@ buildDoWhileStatement(body, condition)
 	result = typeAlloc(doWhileStatementBodyType);
 	result->doWhileCondition = condition;
 	result->doWhileLoop = body;
-	return(newStatement(DO_WHILE_STATEMENT, result));
+	return(newStatement(DO_WHILE_STATEMENT, (statementBodyType) result));
 }
 
   statementType *
@@ -161,7 +161,7 @@ buildExternStatement(identifierList)
   identifierListType	*identifierList;
 {
 	return(newStatement(EXTERN_STATEMENT,
-	       (externStatementBodyType *) identifierList));
+	       (statementBodyType) identifierList));
 }
 
   statementType *
@@ -169,7 +169,7 @@ buildFreturnStatement(expression)
   expressionType	*expression;
 {
 	return(newStatement(FRETURN_STATEMENT,
-	       (freturnStatementBodyType *) expression));
+	       (statementBodyType) expression));
 }
 
   statementType *
@@ -191,7 +191,7 @@ buildFunctionStatement(name, arguments, body)
 	result->functionName = saveString(name);
 	result->theArguments = arguments;
 	result->theBlock = body;
-	return(newStatement(FUNCTION_STATEMENT, result));
+	return(newStatement(FUNCTION_STATEMENT, (statementBodyType) result));
 }
 
   statementType *
@@ -199,7 +199,7 @@ buildGroupStatement(block)
   blockType		*block;
 {
 	return(newStatement(GROUP_STATEMENT,
-		(groupStatementBodyType *) block));
+		(statementBodyType) block));
 }
 
   statementType *
@@ -230,7 +230,7 @@ buildIfStatement(head, continuation, continuationKind)
 	else
 		botch("bad continuation kind: %d\n", continuationKind);
 	qfree(head);
-	return(newStatement(IF_STATEMENT, result));
+	return(newStatement(IF_STATEMENT, (statementBodyType) result));
 }
 
   statementType *
@@ -238,7 +238,7 @@ buildIncludeStatement(filename)
   expressionType	*filename;
 {
 	return(newStatement(INCLUDE_STATEMENT,
-	       (includeStatementBodyType *) filename));
+	       (statementBodyType) filename));
 }
 
   statementType *
@@ -252,7 +252,7 @@ buildInstructionStatement(opcode, operands)
 	result->kindOfInstruction = OPCODE_INSTRUCTION;
 	result->theInstruction.opcodeUnion = opcode;
 	result->theOperands = operands;
-	return(newStatement(INSTRUCTION_STATEMENT, result));
+	return(newStatement(INSTRUCTION_STATEMENT, (statementBodyType) result));
 }
 
   statementType *
@@ -260,7 +260,7 @@ buildLongStatement(expressionList)
   expressionListType	*expressionList;
 {
 	return(newStatement(LONG_STATEMENT,
-	       (longStatementBodyType *) expressionList));
+	       (statementBodyType)  expressionList));
 }
 
   statementType *
@@ -275,7 +275,7 @@ buildMacroStatement(macro, arguments, body)
 	result->theMacro = macro;
 	result->theArguments = arguments;
 	result->theBlock = body;
-	return(newStatement(MACRO_STATEMENT, result));
+	return(newStatement(MACRO_STATEMENT, (statementBodyType) result));
 }
 
   statementType *
@@ -289,7 +289,7 @@ buildMacroInstructionStatement(macro, operands)
 	result->kindOfInstruction = MACRO_INSTRUCTION;
 	result->theInstruction.macroUnion = macro;
 	result->theOperands = operands;
-	return(newStatement(INSTRUCTION_STATEMENT, result));
+	return(newStatement(INSTRUCTION_STATEMENT, (statementBodyType) result));
 }
 
   statementType *
@@ -302,7 +302,7 @@ buildMdefineStatement(name, value)
 	result = typeAlloc(mdefineStatementBodyType);
 	result->theSymbol = lookupOrEnterSymbol(name, DEAD_SYMBOL);
 	result->theValue = value;
-	return(newStatement(MDEFINE_STATEMENT, result));
+	return(newStatement(MDEFINE_STATEMENT, (statementBodyType) result));
 }
 
   statementType *
@@ -315,7 +315,7 @@ buildMdoUntilStatement(body, condition)
 	result = typeAlloc(mdoUntilStatementBodyType);
 	result->mdoUntilCondition = condition;
 	result->mdoUntilLoop = body;
-	return(newStatement(MDO_UNTIL_STATEMENT,result));
+	return(newStatement(MDO_UNTIL_STATEMENT, (statementBodyType) result));
 }
 
   statementType *
@@ -328,7 +328,7 @@ buildMdoWhileStatement(body, condition)
 	result = typeAlloc(mdoWhileStatementBodyType);
 	result->mdoWhileCondition = condition;
 	result->mdoWhileLoop = body;
-	return(newStatement(MDO_WHILE_STATEMENT, result));
+	return(newStatement(MDO_WHILE_STATEMENT, (statementBodyType) result));
 }
 
   statementType *
@@ -361,7 +361,7 @@ buildMforStatement(forExpressions, body)
 	result->incrExpression = forExpressions->incrExpression;
 	result->forLoop = body;
 	qfree(forExpressions);
-	return(newStatement(MFOR_STATEMENT, result));
+	return(newStatement(MFOR_STATEMENT, (statementBodyType) result));
 }
 
   statementType *
@@ -392,7 +392,7 @@ buildMifStatement(head, continuation, continuationKind)
 	else
 		botch("bad mif continuation kind: %d\n", continuationKind);
 	qfree(head);
-	return(newStatement(MIF_STATEMENT, result));
+	return(newStatement(MIF_STATEMENT, (statementBodyType) result));
 }
 
   statementType *
@@ -405,7 +405,7 @@ buildMswitchStatement(switchExpression, cases)
 	result = typeAlloc(mswitchStatementBodyType);
 	result->switchExpression = switchExpression;
 	result->cases = cases;
-	return(newStatement(MSWITCH_STATEMENT, result));
+	return(newStatement(MSWITCH_STATEMENT, (statementBodyType) result));
 }
 
   statementType *
@@ -420,7 +420,7 @@ buildMvariableStatement(name, value, dimension)
 	result->theSymbol = lookupOrEnterSymbol(name, DEAD_SYMBOL);
 	result->theValue = value;
 	result->theDimension = dimension;
-	return(newStatement(MVARIABLE_STATEMENT, result));
+	return(newStatement(MVARIABLE_STATEMENT, (statementBodyType) result));
 }
 
   statementType *
@@ -433,13 +433,13 @@ buildMwhileStatement(condition, body)
 	result = typeAlloc(mwhileStatementBodyType);
 	result->mwhileCondition = condition;
 	result->mwhileLoop = body;
-	return(newStatement(MWHILE_STATEMENT, result));
+	return(newStatement(MWHILE_STATEMENT, (statementBodyType) result));
 }
 
   statementType *
 buildNullStatement()
 {
-	return(newStatement(NULL_STATEMENT, NULL));
+	return(newStatement(NULL_STATEMENT, (statementBodyType){ .ifUnion = NULL }));
 }
 
   statementType *
@@ -447,7 +447,7 @@ buildOrgStatement(expression)
   expressionType	*expression;
 {
 	return(newStatement(ORG_STATEMENT,
-	       (orgStatementBodyType *) expression));
+	       (statementBodyType) expression));
 }
 
   statementType *
@@ -455,13 +455,13 @@ buildPerformStatement(expression)
   expressionType	*expression;
 {
 	return(newStatement(PERFORM_STATEMENT,
-		(performStatementBodyType *) expression));
+		(statementBodyType) expression));
 }
 
   statementType *
 buildRelStatement()
 {
-	return(newStatement(REL_STATEMENT, NULL));
+	return(newStatement(REL_STATEMENT, (statementBodyType){ .ifUnion = NULL }));
 }
 
   statementType *
@@ -469,7 +469,7 @@ buildStartStatement(expression)
   expressionType	*expression;
 {
 	return(newStatement(START_STATEMENT,
-	       (startStatementBodyType *) expression));
+	       (statementBodyType) expression));
 }
 
   statementType *
@@ -477,7 +477,7 @@ buildStringStatement(expressionList)
   expressionListType	*expressionList;
 {
 	return(newStatement(STRING_STATEMENT,
-	       (stringStatementBodyType *) expressionList));
+	       (statementBodyType) expressionList));
 }
 
   statementType *
@@ -490,7 +490,7 @@ buildStructStatement(name, body)
 	result = typeAlloc(structStatementBodyType);
 	result->structBody = body;
 	result->structName = name;
-	return(newStatement(STRUCT_STATEMENT, result));
+	return(newStatement(STRUCT_STATEMENT, (statementBodyType) result));
 }
 
   statementType *
@@ -498,7 +498,7 @@ buildTargetStatement(expression)
   expressionType	*expression;
 {
 	return(newStatement(TARGET_STATEMENT,
-	       (targetStatementBodyType *) expression));
+	       (statementBodyType) expression));
 }
 
   statementType *
@@ -506,7 +506,7 @@ buildUndefineStatement(identifierList)
   identifierListType	*identifierList;
 {
 	return(newStatement(UNDEFINE_STATEMENT,
-	       (undefineStatementBodyType *) identifierList));
+	       (statementBodyType) identifierList));
 }
 
   statementType *
@@ -521,7 +521,7 @@ buildVariableStatement(name, value, dimension)
 	result->theSymbol = lookupOrEnterSymbol(name, VARIABLE_SYMBOL);
 	result->theValue = value;
 	result->theDimension = dimension;
-	return(newStatement(VARIABLE_STATEMENT, result));
+	return(newStatement(VARIABLE_STATEMENT, (statementBodyType) result));
 }
 
   statementType *
@@ -534,7 +534,7 @@ buildWhileStatement(condition, body)
 	result = typeAlloc(whileStatementBodyType);
 	result->whileCondition = condition;
 	result->whileLoop = body;
-	return(newStatement(WHILE_STATEMENT, result));
+	return(newStatement(WHILE_STATEMENT, (statementBodyType) result));
 }
 
   statementType *
@@ -542,6 +542,6 @@ buildWordStatement(expressionList)
   expressionListType	*expressionList;
 {
 	return(newStatement(WORD_STATEMENT,
-	       (wordStatementBodyType *) expressionList));
+	       (statementBodyType) expressionList));
 }
 
