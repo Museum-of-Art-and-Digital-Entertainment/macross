@@ -1,0 +1,8 @@
+/u0/chip/macross/slinky:
+	This directory contains the source to Slinky.  Here's what's here:
+
+DOC		- This file
+Makefile	- Makefile to compile it
+*.c, *.h	- source files
+opt/		- directory for optimized version, as mentioned in
+		  documentation above for /u0/chip/macross/opt

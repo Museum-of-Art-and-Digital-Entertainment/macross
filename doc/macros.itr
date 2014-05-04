@@ -1,0 +1,315 @@
+; 
+; potentially popular macros for the macross assembler
+; 
+; 11-Jan-85	cbm	converted for Macross from original a65
+; 
+
+mif (!isDefined(_macros_)) {
+	define _macros_ = 1
+;
+; push and pop X and Y registers
+;
+macro phx {
+	txa
+	pha
+}
+macro plx {
+	pla
+	tax
+}
+macro phy {
+	tya
+	pha
+}
+macro ply {
+	pla
+	tay
+}
+
+macro call arg {
+	jsr arg
+}
+
+macro return {
+	rts
+}
+
+macro callret arg {
+	jmp arg		; same as jsr arg; rts
+}
+
+macro save arg {
+	lda arg
+	pha
+}
+
+macro restore arg {
+	pla
+	sta arg
+}
+
+; ================================================================
+; some auxiliary functions for the macros that follow
+;
+
+; MAKE-FIRST-BYTE - access low byte for any addressing mode
+function makeFirstByte(operand) {
+	mif (isImmediateMode(operand)) {
+		freturn(/operand)
+	} melse {
+		freturn(operand)
+	}
+}
+
+; MAKE-SECOND-BYTE - access high byte for any addr mode except (post y zzz)
+function makeSecondByte(operand) {
+	mif (isImmediateMode(operand)) {
+		freturn(?operand)
+	} melse {
+		freturn(operand + 1)
+	}
+}
+
+; MAKE-NTH-BYTE - similarly access arbitrary byte
+function makeNthByte(operand, n) {
+	mif (isImmediateMode(operand)) {
+		freturn((operand >> (8 * (n - 1))) & 0xFF)
+	} melse {
+		freturn(operand + n - 1)
+	}
+}
+
+; ================================================================
+; MOVM, MOVEB, MOVB, MOVEW, MOVW, CLEARB, and CLEARW
+; Note that the args on MOVEx are src,dst as opposed to
+; MOVx, which uses dst,src.
+; 
+
+; MOVM - move multiple 
+macro	movm	n, dst, src {
+	mvariable i
+	mfor (i=1, i<=n, i++) {
+		lda	makeNthByte(src, i)
+		sta	makeNthByte(dst, i)
+	}
+}
+
+; MOVEB - move byte from src to dst
+macro	moveb	src, dst {
+	lda 	src
+	sta	dst
+}
+
+; MOVB - for those who like their destination before their source
+macro	movb  dst, src {
+	lda	src
+	sta	dst
+}
+
+; MOVEW - move word from src to dst
+;	works for all addressing moves EXCEPT (post y zzz)
+macro	movew	src, dst {
+	lda	makeFirstByte(src) 
+	sta	makeFirstByte(dst)
+	lda	makeSecondByte(src)
+	sta	makeSecondByte(dst)
+}
+
+; MOVW - and another with destination before source
+;	works for all addressing moves EXCEPT (post y zzz)
+macro	movw  dst, src {
+	lda	makeFirstByte(src)
+	sta	makeFirstByte(dst)
+	lda	makeSecondByte(src)
+	sta	makeSecondByte(dst)
+}
+
+; CLEARB - zero byte dst
+macro	clearb	dst {
+	lda	#0
+	sta	dst
+}
+
+; CLEARW - zero word dst
+;	works for all addressing modes EXCEPT (post y dst)
+macro	clearw	dst {
+	lda	#0
+	sta	makeFirstByte(dst)
+	sta	makeSecondByte(dst)
+}
+
+; ================================================================
+; the general macros
+; 
+
+; MOVWB - move byte SRC to word DST
+; 	works for all addressing modes EXCEPT (post y zzz)
+macro	movwb	dst, src {
+	lda	src
+	sta	makeFirstByte(dst)
+	lda	#0
+	sta	makeSecondByte(dst)
+}
+
+; ADDM - add multiple 
+macro	addm	n, dst, src, src1 {
+	mvariable i
+	clc
+	mfor (i=1, i<=n, i++) {
+		lda	makeNthByte(src, i)
+		adc	makeNthByte(src1, i)
+		sta	makeNthByte(dst, i)
+	}
+}
+
+; ADDB - byte dst = byte src0 + byte src1
+macro	addb	dst, src0, src1 {
+	clc
+	lda	src0
+	adc	src1
+	sta	dst
+}
+
+; ADDW - word dst = word src0 + word src1
+;	works for all addressing modes EXCEPT (post y zzz)
+macro	addw	dst, src0, src1 {
+	clc
+	lda	makeFirstByte(src0)
+	adc	makeFirstByte(src1)
+	sta	makeFirstByte(dst)
+	lda	makeSecondByte(src0)
+	adc	makeSecondByte(src1)
+	sta	makeSecondByte(dst)
+}
+
+; ADDWWB - word dst = word src0 + byte src1
+;	works for all addressing modes EXCEPT (post y zzz)
+macro	addwwb	dst, src0, src1 {
+	clc
+	lda	makeFirstByte(src0)
+	adc	src1
+	sta	makeFirstByte(dst)
+	lda	makeSecondByte(src0)
+	adc	#0
+	sta	makeSecondByte(dst)
+}
+
+; SUBB - byte dst = byte src0 - byte src1
+macro	subb	dst, src0, src1 {
+	sec
+	lda	src0
+	sbc	src1
+	sta	dst
+}
+
+; SUBW - word dst = word src0 - word src1
+;	works for all addressing modes EXCEPT (post y zzz)
+macro	subw	dst, src0, src1 {
+	sec
+	lda	makeFirstByte(src0)
+	sbc	makeFirstByte(src1)
+	sta	makeFirstByte(dst)
+	lda	makeSecondByte(src0)
+	sbc	makeSecondByte(src1)
+	sta	makeSecondByte(dst)
+}
+
+; SUBWWB - word dst = word src0 - byte src1
+;	works for all addressing modes EXCEPT (post y zzz)
+macro	subwwb	dst, src0, src1 {
+	sec
+	lda	makeFirstByte(src0)
+	sbc	src1
+	sta	makeFirstByte(dst)
+	lda	makeSecondByte(src0)
+	sbc	#0
+	sta	makeSecondByte(dst)
+}
+
+; ================================================================
+; cmpm, cmpb, cmpw
+; 	compare two quantities (arbitrary length, byte, and word)
+; 	set the condition flags following s0-s1
+; 
+macro	cmpm	n, s0, s1 {
+	mvariable i
+	mfor (i=1, i<=n, i++) {
+		lda	makeNthByte(s0, i)
+		sbc	makeNthByte(s1, i)
+	}
+}
+
+macro	cmpb	s0, s1 {
+	sec
+	lda	s0
+	sbc	s1
+}
+
+macro	cmpw	s0, s1 {
+	sec
+	lda	makeFirstByte(s0)
+	sbc	makeFirstByte(s1)
+	lda	makeSecondByte(s0)
+	sbc	makeSecondByte(s1)
+}
+
+;
+; ASLM - multiply all by 2
+macro	aslm	n, s0 {
+	mvariable i
+	asl s0
+	mfor (i = 2, i <= n, i++) {
+		rol	makeNthByte(s0, i)
+	}
+}
+
+; ================================================================
+; asrm, asrb, asrw
+; 	Arithmetic Shift Right (with sign extend).
+; 
+macro	asrm	n, s0 {
+	mvariable i = n
+	lda	makeNthByte(s0, i)
+	cmp	#0x80
+	mwhile (i > 0) {
+		ror	makeNthByte(s0, i--)
+	}
+}
+
+macro	asrb	s0 {
+	lda	s0
+	cmp	#0x80
+	ror	s0
+}
+
+macro	asrw	s0 {
+	lda	makeSecondByte(s0)
+	cmp	#0x80
+	ror	makeSecondByte(s0)
+	ror	makeFirstByte(s0)
+}
+
+; ================================================================
+; repeat n {code. . .}
+; 	repeat n instances of code.  e.g.,
+;	repeat 6 {
+; 		lda	x[foo]
+; 		sta	x[bar]
+; 		inx
+;	}
+; 	will generate inline code to move 6 bytes
+; 
+macro	repeat	count, blockToRepeat {
+	mvariable i = count
+	mwhile (i-- > 0) {
+		blockToRepeat
+	}
+}
+
+macro	includef fname {
+	printf("Including %s\n", fname)
+	include	fname
+}
+
+
+}  ; *** end -- mif (!isDefined(_macros_)) ***

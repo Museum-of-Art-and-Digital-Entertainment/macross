@@ -1,0 +1,66 @@
+.TH SLINKY 1 "28 February 1986"
+.UC 4
+.SH NAME
+slinky \- slinky linker
+.SH SYNOPSIS
+.B slinky
+[ option ] ... file ...
+.SH DESCRIPTION
+.I Slinky
+is a multi-file relocating object linker designed to be used in conjunction
+with the
+.I Macross
+assembler.
+.I Slinky
+links the given
+.I Macross
+object files in the order specified on the command line together into one
+executable object file.
+.PP
+The following options are interpreted by
+.IR slinky .
+.TP
+.B \-d
+Print esoteric debug information (you don't want to use this).
+.TP
+.B \-e
+Print different esoteric debug information (you don't want to use this
+either).
+.TP
+.B \-v
+Print the \fIslinky\fP version number on the standard output before linking.
+.TP
+.BI \-l " hexaddress"
+By default, \fIslinky\fP starts putting relocatable modules at location 0x100.
+The \fB-l\fR option lets you tell it to put things anywhere.  This option can
+be used more than once in a single link command and can be interspersed with
+the names of the object files being linked.  Thus
+.br
+	\fBslinky foo.obj -l 0x3800 bar.obj baz.obj -l 0x5000 snood.obj\fP
+.br
+loads `foo.obj' starting at location 0x100, `bar.obj' and `baz.obj'
+consecutively starting at location 0x3800 and `snood.obj' starting at location
+0x5000.
+.TP
+.BI \-o " output"
+Name the final output file
+.IR output .
+If this option is not used the output will be placed in the file `s.out'.
+.TP
+.BI \-m " mapfile"
+Generate a load map listing, showing the values of all symbols after linking
+and put it in the file
+.IR mapfile .
+If
+.IR mapfile
+is ``\fB-\fR'', the load map will go to the standard output.
+.TP
+.B \-n
+If generating a load map, suppress the printing of the names of the files that
+reference each symbol.
+.SH "SEE ALSO"
+macross(1), the Macross manual
+.SH DIAGNOSTICS
+The diagnostics produced by Slinky are \fIintended\fR to be self-explanatory.
+.SH BUGS
+Who knows what bugs lurk there?  Nobody's used it yet!

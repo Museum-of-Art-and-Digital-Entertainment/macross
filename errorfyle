@@ -1,0 +1,39 @@
+make: Warning: Infinite loop: Target `macrossTypes.h' depends on itself
+cc -c -g -DYYDEBUG -DTARGET_CPU=CPU_6502 y.tab.c
+cc -c -g -DTARGET_CPU=CPU_6502 actions_6502.c
+mv actions_6502.o actions.o
+cc -c -g -DTARGET_CPU=CPU_6502 buildStuff1.c
+cc -c -g -DTARGET_CPU=CPU_6502 buildStuff2.c
+cc -c -g -DTARGET_CPU=CPU_6502 buildStuff3.c
+cc -c -g -DTARGET_CPU=CPU_6502 builtInFunctions.c
+cc -c -g -DTARGET_CPU=CPU_6502 builtInFunsSD_6502.c
+mv builtInFunsSD_6502.o builtInFunsSD.o
+cc -c -g -DTARGET_CPU=CPU_6502 debugPrint.c
+cc -c -g -DTARGET_CPU=CPU_6502 debugPrintSD_6502.c
+mv debugPrintSD_6502.o debugPrintSD.o
+cc -c -g -DTARGET_CPU=CPU_6502 emitBranch_6502.c
+mv emitBranch_6502.o emitBranch.o
+cc -c -g -DBYTESWAPPED -DTARGET_CPU=CPU_6502 emitStuff.c
+cc -c -g -DTARGET_CPU=CPU_6502 encode.c
+cc -c -g -DTARGET_CPU=CPU_6502 errorStuff.c
+cc -c -g -DTARGET_CPU=CPU_6502 expressionSemantics.c
+cc -c -g -DTARGET_CPU=CPU_6502 fixups.c
+cc -c -g -DTARGET_CPU=CPU_6502 garbage.c
+cc -c -g -DTARGET_CPU=CPU_6502 initialize.c
+cc -c -g -DTARGET_CPU=CPU_6502 lexer.c
+cc -c -g -DTARGET_CPU=CPU_6502 listing.c
+cc -c -g -DTARGET_CPU=CPU_6502 lookups.c
+cc -c -g -DTARGET_CPU=CPU_6502 macrossTables_6502.c
+mv macrossTables_6502.o macrossTables.o
+cc -c -g -DTARGET_CPU=CPU_6502 main.c
+cc -c -g -DTARGET_CPU=CPU_6502 malloc.c
+cc -c -g -DTARGET_CPU=CPU_6502 object.c
+cc -c -g -DTARGET_CPU=CPU_6502 operandStuffSD_6502.c
+mv operandStuffSD_6502.o operandStuffSD.o
+cc -c -g -DTARGET_CPU=CPU_6502 parserMisc.c
+cc -c -g -DTARGET_CPU=CPU_6502 semanticMisc.c
+cc -c -g -DTARGET_CPU=CPU_6502 statementSemantics.c
+cc -c -g -DTARGET_CPU=CPU_6502 structSemantics.c
+cc -c -g -DTARGET_CPU=CPU_6502 tokenStrings_6502.c
+mv tokenStrings_6502.o tokenStrings.o
+cc -g -o macross y.tab.o actions.o buildStuff1.o buildStuff2.o buildStuff3.o builtInFunctions.o builtInFunsSD.o debugPrint.o debugPrintSD.o emitBranch.o emitStuff.o encode.o errorStuff.o expressionSemantics.o fixups.o garbage.o initialize.o lexer.o listing.o lookups.o macrossTables.o main.o malloc.o object.o operandStuffSD.o parserMisc.o semanticMisc.o statementSemantics.o structSemantics.o tokenStrings.o

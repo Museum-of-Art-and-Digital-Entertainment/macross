@@ -1,0 +1,15 @@
+cc -c -g builtins.c
+cc -c -g debugPrint.c
+cc -c -g errorStuff.c
+cc -c -g expr.c
+cc -c -g initialize.c
+cc -c -g instantiate.c
+cc -c -g link.c
+cc -c -g main.c
+cc -c -g map.c
+cc -c -g poke.c
+cc -c -g read.c
+cc -c -g relocate.c
+cc -c -g slinkyTables.c
+cc -c -g write.c
+cc -g -o slinky builtins.o debugPrint.o errorStuff.o expr.o initialize.o instantiate.o link.o main.o map.o poke.o read.o relocate.o slinkyTables.o write.o

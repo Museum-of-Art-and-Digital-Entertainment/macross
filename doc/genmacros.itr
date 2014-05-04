@@ -1,0 +1,463 @@
+.TL
+\s+9genmacros.m\s-9
+.AU
+a macro library for use with the 6502 version of Macross
+.AI
+Lucasfilm Ltd. Games Division
+\\*(DY
+.ds LH genmacros.m
+.ds CH \\*(DY
+.ds RH Reference Manual
+.ds LF Lucasfilm Ltd. Proprietary Information
+.ds CF - % -
+.ds RF CONFIDENTIAL
+.PP
+These macros have been concocted by various people for the convenience and
+amusement of those programming the 6502 using \fIMacross\fR.  The will be
+found in the file \fB/u1/gg/lib/6502/genmacros.m\fR.  To use them, insert the
+following statement somewhere near the beginning of your \fIMacross\fR
+program:
+.nf
+
+	\fBinclude	 "/u1/gg/lib/6502/genmacros.m"\fR
+
+.fi
+Easy, no?  What follows is a summary of the macros, grouped roughly by
+category.
+.sp 1
+.SH
+\s+2Macros to save and restore registers\s-2
+.nf
+
+\fBphr\fR
+.fi
+.IP
+Push all registers (i.e., the accumulator and the X and Y index registers)
+onto the stack.
+.LP
+.nf
+
+\fBplr\fR
+.fi
+.IP
+Pull the registers (the accumulator and the X and Y index registers) off the
+stack.
+.LP
+.nf
+
+\fBphx\fR
+.fi
+.IP
+Push the X register onto the stack.
+.LP
+.nf
+
+\fBplx\fR
+.fi
+.IP
+Pull the X register off of the stack.
+.LP
+.nf
+
+\fBphy\fR
+.fi
+.IP
+Push the Y register onto the stack.
+.LP
+.nf
+
+\fBply\fR
+.fi
+.IP
+Pull the Y register off of the stack.
+.LP
+.nf
+
+\fBpushaddr	\fIaddress\fR
+.fi
+.IP
+Push \fIaddress\fR onto the stack to \fBrts\fR to.
+.sp 1
+.SH
+\s+2Macros to move data around with\s-2
+.PP
+These macros provide an address mode independent method of moving bytes from
+one place to another.  The source and destination arguments of these macros
+may, generally speaking, be in any address mode you desire (except, of course,
+that the destination can't be immediate mode!).
+.nf
+
+\fBmovm	\fIn\fB, \fIdest\fB, \fIsrc\fR
+.fi
+.IP
+Move multiple \(em move \fIn\fR bytes from \fIsrc\fR to \fIdest\fR.  The bytes
+are moved using the accumulator as an intermediary.
+.LP
+.nf
+
+\fBmovmx	\fIn\fB, \fIdest\fB, \fIsrc\fR
+.fi
+.IP
+Move multiple \(em move \fIn\fR bytes from \fIsrc\fR to \fIdest\fR.  The bytes
+are moved using the X register as an intermediary.
+.LP
+.nf
+
+\fBmovmy	\fIn\fB, \fIdest\fB, \fIsrc\fR
+.fi
+.IP
+Move multiple \(em move \fIn\fR bytes from \fIsrc\fR to \fIdest\fR.  The bytes
+are moved using the Y register as an intermediary.
+.LP
+.nf
+
+\fBmv2m	\fIn\fB, \fIdest1\fB, \fIdest2\fB, \fIsrc\fR
+.fi
+.IP
+Move multiple to two destinations \(em move \fIn\fR bytes from \fIsrc\fR to
+both \fIdest1\fR and \fIdest2\fR.  The bytes are moved using the acuumulator
+as an intermediary.
+.LP
+.nf
+
+\fBmoveb	\fIsrc\fB, \fIdest\fR
+.fi
+.IP
+Move byte \(em move one byte from \fIsrc\fR to \fIdest\fR via the accumulator.
+.LP
+.nf
+
+\fBmovew	\fIsrc\fB, \fIdest\fR
+.fi
+.IP
+Move word \(em move one word from \fIsrc\fR to \fIdest\fR via the accumulator.
+.LP
+.nf
+
+\fBmovexb	\fIsrc\fB, \fIdest\fR
+.fi
+.IP
+Move byte \(em move one byte from \fIsrc\fR to \fIdest\fR via the X register.
+.LP
+.nf
+
+\fBmovexw	\fIsrc\fB, \fIdest\fR
+.fi
+.IP
+Move word \(em move one word from \fIsrc\fR to \fIdest\fR via the X register.
+.LP
+.nf
+
+\fBmoveyb	\fIsrc\fB, \fIdest\fR
+.fi
+.IP
+Move byte \(em move one byte from \fIsrc\fR to \fIdest\fR via the Y register.
+.LP
+.nf
+
+\fBmoveyw	\fIsrc\fB, \fIdest\fR
+.fi
+.IP
+Move word \(em move one word from \fIsrc\fR to \fIdest\fR via the Y register.
+.LP
+.nf
+
+\fBmovb	\fIdest\fB, \fIsrc\fR
+.fi
+.IP
+Move byte \(em move one byte from \fIsrc\fR to \fIdest\fR via the accumulator.
+This is distinguished from \fBmoveb\fR in that it has the order of the
+operands reversed.  This confusing feature is provided for compatibility with
+\fBa65\fR.
+.LP
+.nf
+
+\fBmovw	\fIdest\fB, \fIsrc\fR
+.fi
+.IP
+Move word \(em move one word from \fIsrc\fR to \fIdest\fR via the accumulator.
+This is distinguished from \fBmovew\fR in that it has the order of the
+operands reversed.  This confusing feature is provided for compatibility with
+\fBa65\fR.
+.LP
+.nf
+
+\fBclrm		\fIn\fB, \fIdest\fR
+.fi
+.IP
+Clear multiple \(em clears (zeros) \fIn\fR bytes starting at \fIdest\fR.
+Leaves a zero in the accumulator.
+.LP
+.nf
+
+\fBclrb		\fIdest\fR
+\fBclearb	\fIdest\fR
+.fi
+.IP
+Clear byte \(em clears (zeros) one byte at \fIdest\fR.  Leaves a zero in the
+accumulator.
+.LP
+.nf
+
+\fBclrw		\fIdest\fR
+\fBclearw	\fIdest\fR
+.fi
+.IP
+Clear word \(em clears (zeros) one word at \fIdest\fR.  Leaves a zero in the
+accumulator.
+.sp 1
+.SH
+\s+2Arithmetic macros\s-2
+.nf
+
+\fBaddm	\fIn\fB, \fIdest\fB, \fIsrc1\fB, \fIsrc2\fR
+.fi
+.IP
+Add multiple \(em adds the \fIn\fR byte numbers found at \fIsrc1\fR and
+\fIsrc2\fR and puts the result at \fIdest\fR.  Clobbers the accumulator.
+.LP
+.nf
+
+\fBaddb		\fIdest\fB, \fIsrc1\fB, \fIsrc2\fR
+.fi
+.IP
+Add byte \(em adds the one byte numbers \fIsrc1\fR and \fIsrc2\fR and puts the
+one byte result in \fIdest\fR.  Clobbers the accumulator.
+.LP
+.nf
+
+\fBaddw	\fIdest\fB, \fIsrc1\fB, \fIsrc2\fR
+.fi
+.IP
+Add word \(em adds the two byte numbers \fIsrc1\fR and \fIsrc2\fR and puts the
+two byte result in \fIdest\fR.  Clobbers the accumulator.
+.LP
+.nf
+
+\fBsubm	\fIn\fB, \fIdest\fB, \fIsrc1\fB, \fIsrc2\fR
+.fi
+.IP
+Subtract multiple \(em subtracts the \fIn\fR byte number found at \fIsrc2\fR
+from the same sized number found at \fIsrc1\fR and puts the \fIn\fR byte
+result in \fIdest\fR.  Clobbers the accumulator.
+.LP
+.nf
+
+\fBsubb		\fIdest\fB, \fIsrc1\fB, \fIsrc2\fR
+.fi
+.IP
+Subtract byte \(em subtracts the one byte number \fIsrc2\fR from \fIsrc1\fR
+and puts the one byte result in \fIdest\fR.  Clobbers the accumulator.
+.LP
+.nf
+
+\fBsubw	\fIdest\fB, \fIsrc1\fB, \fIsrc2\fR
+.fi
+.IP
+Subtract word \(em subtracts the two byte numbers \fIsrc2\fR from \fIsrc1\fR
+and puts the two byte result in \fIdest\fR.  Clobbers the accumulator.
+.LP
+.nf
+
+\fBcmpm	\fIn\fB, \fIsrc1\fB, \fIsrc2\fR
+.fi
+.IP
+Compare multiple \(em compares the two \fIn\fR byte numbers found at
+\fIsrc1\fR and \fIsrc2\fR.  Clobbers the accumulator.
+.LP
+.nf
+
+\fBcmpb	\fIsrc1\fB, \fIsrc2\fR
+.fi
+.IP
+Compare byte \(em compares the one byte numbers \fIsrc1\fR and \fIsrc2\fR.
+Clobbers the accumulator.
+.LP
+.nf
+
+\fBcmpw	\fIsrc1\fB, \fIsrc2\fR
+.fi
+.IP
+Compare word \(em compares the two byte numbers \fIsrc1\fR and \fIsrc2\fR.
+Clobbers the accumulator.
+.LP
+.nf
+
+\fBnegm	\fIn\fB, \fIdest\fR
+.fi
+.IP
+Negate multiple \(em negates the \fIn\fR byte number at \fIdest\fR.  Clobbers
+the accumulator.
+.LP
+.nf
+
+\fBnegb		\fIdest\fR
+.fi
+.IP
+Negate byte \(em negates the one byte number at \fIdest\fR.  Clobbers the
+accumulator.
+.LP
+.nf
+
+\fBnegw	\fIdest\fR
+.fi
+.IP
+Negate word \(em negates the two byte number at \fIdest\fR.  Clobbers the
+accumulator.
+.LP
+.nf
+
+\fBasrm		\fIn\fB, \fIdest\fR
+.fi
+.IP
+Arithmetic shift right multiple \(em performs a rightward one-bit arithmetic
+shift of the \fIn\fR byte number at \fIdest\fR.  Clobbers the accumulator.
+.LP
+.nf
+
+\fBasrb		\fIdest\fR
+.fi
+.IP
+Arithmetic shift right byte \(em performs a rightward one-bit arithmetic
+shift of the byte at \fIdest\fR.  Clobbers the accumulator.
+.LP
+.nf
+
+\fBasrw		\fIdest\fR
+.fi
+.IP
+Arithmetic shift right word \(em performs a rightward one-bit arithmetic
+shift of the word at \fIdest\fR.  Clobbers the accumulator.
+.LP
+.nf
+
+\fBaslm		\fIn\fB, \fIdest\fR
+.fi
+.IP
+Arithmetic shift left multiple \(em performs a leftward one-bit arithmetic
+shift of the \fIn\fR byte number at \fIdest\fR.  Clobbers the accumulator.
+.LP
+.nf
+
+\fBaslb		\fIdest\fR
+.fi
+.IP
+Arithmetic shift left byte \(em performs a leftward one-bit arithmetic
+shift of the byte at \fIdest\fR.  Clobbers the accumulator.
+.LP
+.nf
+
+\fBaslw		\fIdest\fR
+.fi
+.IP
+Arithmetic shift left word \(em performs a leftward one-bit arithmetic
+shift of the word at \fIdest\fR.  Clobbers the accumulator.
+.LP
+.nf
+
+\fBlsrm		\fIn\fB, \fIdest\fR
+.fi
+.IP
+Logical shift right multiple \(em performs a rightward one-bit logical shift
+of the \fIn\fR byte number at \fIdest\fR.  Clobbers the accumulator.
+.LP
+.nf
+
+\fBlsrb		\fIdest\fR
+.fi
+.IP
+Logical shift right byte \(em performs a rightward one-bit logical shift of
+the byte at \fIdest\fR.  Clobbers the accumulator.
+.LP
+.nf
+
+\fBlsrw		\fIdest\fR
+.fi
+.IP
+Logical shift right word \(em performs a rightward one-bit logical shift of
+the word at \fIdest\fR.  Clobbers the accumulator.
+.SH
+.sp 1
+\s+2Flow-of-control macros\s-2
+.nf
+
+\fBrepeat	\fIn\fB { \fIcode\fB }\fR
+.fi
+.IP
+Replicates the block of \fIMacross\fR statements \fIcode\fR \fIn\fR times.
+.LP
+.nf
+
+\fBloop		\fIcounter\fB, \fIstart\fB, \fIend\fB { \fIcode\fB }\fR
+.fi
+.IP
+Generic ``do-loop'' \(em generates 6502 code for a loop that initializes
+\fIcounter\fR to \fIstart\fR, and then repeatedly executes \fIcode\fR,
+incrementing \fIcounter\fR until it reaches the value \fIend\fR.
+\fICounter\fR may be ``\fBx\fR'' to denote the X index register, ``\fBy\fR''
+to denote the Y index register, or a memory location.  \fIStart\fR and
+\fIend\fR may be referenced in any 6502 address mode.
+.SH
+.sp 1
+\s+2Miscellaneous macros\s-2
+.nf
+
+\fBmbyte	\fIn\fR
+.fi
+.IP
+Generates \fIn\fR zero data bytes.
+.bp
+.CD
+\s+5\fBAppendix \*- Summary of the macros\fR\s-5
+.DE
+.LP
+.nf
+	\fBaddb		\fIdest\fB, \fIsrc1\fB, \fIsrc2\fR
+	\fBaddm	\fIn\fB, \fIdest\fB, \fIsrc1\fB, \fIsrc2\fR
+	\fBaddw	\fIdest\fB, \fIsrc1\fB, \fIsrc2\fR
+	\fBaslb		\fIdest\fR
+	\fBaslm		\fIn\fB, \fIdest\fR
+	\fBaslw		\fIdest\fR
+	\fBasrb		\fIdest\fR
+	\fBasrm		\fIn\fB, \fIdest\fR
+	\fBasrw		\fIdest\fR
+	\fBclearb	\fIdest\fR
+	\fBclearw	\fIdest\fR
+	\fBclrb		\fIdest\fR
+	\fBclrm		\fIn\fB, \fIdest\fR
+	\fBclrw		\fIdest\fR
+	\fBcmpb	\fIsrc1\fB, \fIsrc2\fR
+	\fBcmpm	\fIn\fB, \fIsrc1\fB, \fIsrc2\fR
+	\fBcmpw	\fIsrc1\fB, \fIsrc2\fR
+	\fBloop		\fIcounter\fB, \fIstart\fB, \fIend\fB, \fIcode\fR
+	\fBlsrb		\fIdest\fR
+	\fBlsrm		\fIn\fB, \fIdest\fR
+	\fBlsrw		\fIdest\fR
+	\fBmbyte	\fIn\fR
+	\fBmovb	\fIdest\fB, \fIsrc\fR
+	\fBmoveb	\fIsrc\fB, \fIdest\fR
+	\fBmovew	\fIdest\fB, \fIsrc\fR
+	\fBmovexb	\fIsrc\fB, \fIdest\fR
+	\fBmovexw	\fIsrc\fB, \fIdest\fR
+	\fBmoveyb	\fIsrc\fB, \fIdest\fR
+	\fBmoveyw	\fIsrc\fB, \fIdest\fR
+	\fBmovm	\fIn\fB, \fIdest\fB, \fIsrc\fR
+	\fBmovmx	\fIn\fB, \fIdest\fB, \fIsrc\fR
+	\fBmovmy	\fIn\fB, \fIdest\fB, \fIsrc\fR
+	\fBmovw	\fIsrc\fB, \fIdest\fR
+	\fBmv2m	\fIn\fB, \fIdest1\fB, \fIdest2\fB, \fIsrc\fR
+	\fBnegb		\fIdest\fR
+	\fBnegm	\fIn\fB, \fIdest\fR
+	\fBnegw	\fIdest\fR
+	\fBphr\fR
+	\fBphx\fR
+	\fBphy\fR
+	\fBplr\fR
+	\fBplx\fR
+	\fBply\fR
+	\fBpushaddr	\fIaddress\fR
+	\fBrepeat	\fIn\fB, \fIcode\fR
+	\fBsubb		\fIdest\fB, \fIsrc1\fB, \fIsrc2\fR
+	\fBsubm	\fIn\fB, \fIdest\fB, \fIsrc1\fB, \fIsrc2\fR
+	\fBsubw	\fIdest\fB, \fIsrc1\fB, \fIsrc2\fR
+.fi

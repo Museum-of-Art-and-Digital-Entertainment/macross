@@ -1,0 +1,2262 @@
+.ds [ \s+1\z[\h'1p'\z[\h'-1p'\s-1\0
+.ds ] \s+1\z]\h'-1p'\z]\s-1\0
+.ds Z \s+1\z]\h'-1p'\z]\h'3p'\z*\s-1\0
+.TL
+\s+6Macross 68000\s-6
+\"Macross
+.AU
+an assembler for people who hate assembly language
+by
+Chip Morningstar
+.AI
+Lucasfilm Ltd. Games Division
+\\*(DY
+.ds LH Macross
+.ds CH \\*(DY
+.ds RH 68000 Version
+.ds LF Lucasfilm Ltd. Proprietary Information
+.ds CF - % -
+.ds RF CONFIDENTIAL
+.AB
+This document describes the 68000 version of \fIMacross\fR, a super-duper
+cross-assembler that has but to be used!
+.AE
+.SH
+\s+3Introduction\s-3
+\"Introduction
+.PP
+\fIMacross\fR is a generic cross assembler for a variety of different
+microprocessors.  This document describes the 68000 version of \fIMacross\fR.
+\fIMacross\fR differs from many macro assemblers in that it provides a number
+of ``higher level'' constructs not traditionally found in assembly language.
+These include block-structured flow-of-control statements (\fBif\fR,
+\fBwhile\fR, etc.) and the ability to define record-oriented data structures
+(\fBstruct\fR).  In addition, it contains a powerful macro capability that is
+based on syntactic structural manipulations rather than simple text
+substitution.  \fIMacross\fR is, in fact, a complete block-structured
+programming language in its own right which is interpreted at assembly time.
+.SH
+\s+3General Form of \fIMacross\fP Statements\s-3
+\"General Form of \fIMacross\fP Statements
+.PP
+Stylistically, much of \fIMacross\fR is patterned after \fBC\fR.  In
+particular, the form of many keywords and of block structured entities is
+derived from \fBC\fR.  Unlike \fBC\fR however, \fIMacross\fR follows the
+convention of more traditional assemblers that statements are delimited by
+line boundaries (i.e., one statement per line, with the end of a line ending a
+statement).
+.PP
+In general, spaces and tabs are treated as whitespace characters and are
+ignored.  Therefore, such characters may be used as the assembly language
+programmer desires to format his or her program according to personal taste.
+For the convenience of the programmer, \fIMacross\fR relaxes the syntax rule
+that newlines always end a statement: newlines may also be treated as
+whitespace characters (again, for purposes of formatting) in places where it
+would be syntactically unambiguous to do so (i.e., where a statement obviously
+cannot terminate, such as after a comma).  For example:
+.nf
+
+	\fBbyte	1, 2, 3, 4,
+		5, 6, 7, 8\fR
+
+.fi
+is allowed and is equivalent to
+.nf
+
+	\fBbyte	1, 2, 3, 4, 5, 6, 7, 8
+
+.fi
+.PP
+Comments begin with a semicolon (``\fB;\fR'') and continue to the end of the
+line, as is common in many assemblers.  In addition, \fIMacross\fR supports
+\fBC\fR style comments bracketed by ``\fB/*\fR'' and ``\fB*/\fR''.
+.PP
+As with most assemblers, \fIMacross\fR statements are allowed to begin with a
+label (or several labels, if you like).  A label is denoted by an identifier
+followed by a colon (``\fB:\fR'').  There is no requirement that the label
+start in column 1, or anything like that.  Labels, if present, merely must
+precede anything else in a statement.
+.PP
+An identifier is just what you'd expect from all your years of programming
+experience: a string of letters and digits that must begin with a letter.  As
+is traditional in Unix*
+.FS *
+Unix is a footnote of Bell Laboratories.
+.FE
+land, the underscore character (``\fB_\fR'') is considered to be a letter
+(smacks of hubris that, but tradition is tradition).  Departing from Unix
+tradition, upper- and lower-case characters are not distinct from each other
+for purposes of distinguishing identifiers.  If you use mixed case for
+stylistic reasons, \fIMacross\fR will remember the case of the letters in an
+identifier when it was first defined, so that symbol table dumps and
+cross-reference listings will retain whatever case usage style you've adopted.
+There is, in principle, no restriction imposed upon the length of identifiers.
+.SH
+\s+3The Language\s-3
+.PP
+In what follows, things in \fBboldface\fR are keywords and characters that are
+used literally.  Things in \fIitalics\fR are other kinds of syntactic
+entities.  Double brackets (``\*['' and ``\*]'') enclose things that are
+optional, while brackets followed by an asterisk (``*'') enclose things that
+may be optionally repeated zero or more times.
+.NH 1
+The Instruction Statement
+.PP
+The most elementary \fIMacross\fR statement is the instruction statement,
+wherein the programmer specifies a machine instruction to be assembled.  The
+instruction statement is
+.nf
+
+\*[ \fIlabel\fR \*Z	\fIopcode\fR \*[ \fIoperand\fR \*[ \fB,\fR \fIoperand\fR \*Z \*]
+
+.fi
+just like every assembler ever made (except \fBa65\fR, of course).
+\fIOpcode\fR is an identifier which is either a machine instruction mnemonic
+(a list of which mnemonics are accepted by \fIMacross\fR is given in
+\fBAppendix B\fR at the end of this document) or a macro name.  For example:
+.nf
+
+	\fBandb			foobar, d3\fR
+	\fBsomeMacro	foo, bar, baz, bletch\fR
+
+.fi
+.PP
+The operands of an instruction may be any of the various types of operands
+allowed by the various address modes of the target processor.  In the case
+of the 68000, these are:
+.NH 2
+\fRRegister mode
+.PP
+Register operands take one of the forms
+.nf
+
+		\fBd\fIn\fR
+		\fBa\fIn\fR
+		\fBsp\fR
+
+.fi
+where \fIn\fR is a digit from \fB0\fR to \fB7\fR.  \fBd\fIn\fR of course
+represents a data register and \fBa\fIn\fR represents an address register.
+\fBsp\fR is equivalent to \fBa7\fR.
+.NH 2
+\fRRegister indirect mode
+.PP
+Register indirect mode operands take the form
+.nf
+
+		\fB\s-1[\s+1\fBa\fIn\fB\s-1]\s+1\fR
+
+.fi
+where \fBa\fIn\fR is some address register.
+.NH 2
+\fRPostincrement mode
+.PP
+Postincrement mode operands take the form
+.nf
+
+		\fB\s-1[\s+1\fBa\fIn\fB\s-1]\s+1+\fR
+
+.fi
+where \fBa\fIn\fR is some address register.
+.NH 2
+\fRPredecrement mode
+.PP
+Predecrement mode operands take the form
+.nf
+
+		\fB-\s-1[\s+1\fBa\fIn\fB\s-1]\s+1\fR
+
+.fi
+where \fBa\fIn\fR is some address register.
+.NH 2
+\fRNormal mode
+.PP
+Normal mode addresses take the form
+.nf
+
+		\fIexpression\fR
+
+.fi
+and are used in a couple of different ways.  First, normal mode addresses are
+used by instructions that require relative addresses (such as branch
+instructions; the offset is computed automatically by \fIMacross\fR).  Second,
+the normal mode form of addresses is a shorthand way of refering to locations
+for which \fIMacross\fR selects an appropriate address mode to use (PC
+relative if it can, otherwise absolute).
+.NH 2
+\fRAbsolute mode
+.PP
+Absolute addresses take one of these two forms
+.nf
+
+		\fIexpression\fB . w\fR
+		\fIexpression\fB . l\fR
+
+.fi
+with the \fBw\fR or \fBl\fR indicating whether to generate a short (16 bit) or
+a long (32 bit) address.
+.NH 2
+\fRImmediate mode
+.PP
+Immediate mode operands take the form
+.nf
+
+		\fB#\fR \fIexpression\fR
+
+.fi
+Generally speaking, in the 68000 immediate mode operands are restricted to
+sixteen bit quantities.  Depending upon the particular instruction involved,
+the size may be even more restricted.  \fIMacross\fR will give an error
+message if the operand value is larger than allowed.
+.NH 2
+\fRDisplacement mode
+.PP
+Displacement mode operands take the form
+.nf
+
+		\fIexpression\fR \fB\s-1[\s+1\fR \fBa\fIn\fR \fB\s-1]\s+1\fR
+
+.fi
+where \fIexpression\fR is an offset off of the address register \fBa\fIn\fR.
+These displacement values are limited to 16 bit quantities in the 68000.
+.PP
+An alternate form of displacment mode addressing which is supported by
+\fIMacross\fR allows the symbolic selection of a field of a \fBstruct\fR
+pointed to by an address register
+.nf
+
+		\fBa\fIn\fR \fB.\fR \fIidentifier\fR \*[ \fB.\fR \fIidentifier\fR \*Z
+
+.fi
+This is explained in greater detail in the sections on \fBstruct\fRs and
+expressions below.
+.NH 2
+\fRIndexed mode
+.PP
+Indexed mode addressing is specified by operands of the form
+.nf
+
+		\fIexpression\fR \fB\s-1[\s+1\fR \fBa\fIn\fR \fB,\fR \fIrn\fR \fB. w \s-1]\s+1\fR
+		\fIexpression\fR \fB\s-1[\s+1\fR \fBa\fIn\fR \fB,\fR \fIrn\fR \fB. l \s-1]\s+1\fR
+		\fIexpression\fR \fB\s-1[\s+1\fR \fBa\fIn\fR \fB,\fR \fIrn\fR \fB\s-1]\s+1\fR
+
+.fi
+where \fIexpression\fR is an offset off of address register \fBa\fIn\fR and
+another register \fIrn\fR which may be any data or address register.  The
+Offset is restricted to an 8-bit quantity.  The \fBw\fR or \fBl\fR indicates
+whether the offset value in \fIrn\fR is to be taken as a word (16 bit) value
+or as a long (32 bit) value (if omitted it defaults to long).
+.PP
+As with ordinary displacment addressing, there is a form of indexed addressing
+which uses \fBstruct\fR fields
+.nf
+
+		\fBa\fIn\fR \fB\s-1[\s+1\fR \fIrn\fR \fB. w \fB\s-1]\s+1\fR \fB.\fR \fIidentifier\fR \*[ \fB.\fR \fIidentifier\fR \*Z
+		\fBa\fIn\fR \fB\s-1[\s+1\fR \fIrn\fR \fB. l \fB\s-1]\s+1\fR \fB.\fR \fIidentifier\fR \*[ \fB.\fR \fIidentifier\fR \*Z
+		\fBa\fIn\fR \fB\s-1[\s+1\fR \fIrn\fR \fB\s-1]\s+1\fR \fB.\fR \fIidentifier\fR \*[ \fB.\fR \fIidentifier\fR \*Z
+
+.fi
+.NH 2
+\fRProgram counter displacement mode
+.PP
+Program counter displacement mode operands take the form
+.nf
+
+		\fIexpression\fR \fB\s-1[\s+1\fR \fBpc\fR \fB\s-1]\s+1\fR
+
+.fi
+where \fIexpression\fR is an offset off of the program counter.  These
+displacement values are limited to 16 bit quantities in the 68000.
+.NH 2
+\fRProgram counter indexed mode
+.PP
+Program counter indexed mode addressing is specified by operands of the form
+.nf
+
+		\fIexpression\fR \fB\s-1[\s+1\fR \fBpc\fR \fB,\fR \fIrn\fR \fB. w \s-1]\s+1\fR
+		\fIexpression\fR \fB\s-1[\s+1\fR \fBpc\fR \fB,\fR \fIrn\fR \fB. l \s-1]\s+1\fR
+		\fIexpression\fR \fB\s-1[\s+1\fR \fBpc\fR \fB,\fR \fIrn\fR \fB\s-1]\s+1\fR
+
+.fi
+where \fIexpression\fR is an offset off of the program counter and another
+register \fIrn\fR which may be any data or address register.  The Offset is
+restricted to an 8-bit quantity.  The \fBw\fR or \fBl\fR indicates whether the
+offset value in \fIrn\fR is to be taken as a word (16 bit) value or as a long
+(32 bit) value (if omitted it defaults to long).
+.NH 2
+\fRControl register mode
+.PP
+The various control register of the 68000 are sometimes used as operands
+.nf
+
+		\fBccr\fR
+		\fBsr\fR
+		\fBusp\fR
+		\fBsfc\fR
+		\fBdfc\fR
+		\fBvbr\fR
+
+.fi
+where \fBccr\fR represents the condition code register, \fBsr\fR represents
+the status register, \fBusp\fR represents the user stack pointer, \fBsfc\fR
+represents the source function code register, \fBdfc\fR represents the
+destination function code register, and \fBvbr\fR represents the vector base
+register.
+.NH 2
+\fRText operands
+.PP
+For the sake of macros, text strings may also be used as operands
+.nf
+
+		\fB"\fIany string you like\fB"\fR
+
+.fi
+The same conventions regarding escaped characters (using ``\fB\\\fR'') that
+are followed by \fBC\fR are followed by \fIMacross\fR.  These are documented
+in \fBAppendix F\fR.  Note that on many target machines the codes that these
+escape sequences stand for are meaningless.  They are provided primarily as a
+convenience for writing calls to \fBprintf()\fR.
+.NH 1
+The Flow of Control Statements
+.PP
+\fIMacross\fR provides a number of statements which allow program flow of
+control to be specified in a \fBC\fR-like block structured fashion.  This
+include a conditional execution statement (\fBif\fR) and three conditional
+loop statements (\fBwhile\fR, \fBdo-while\fR and \fBdo-until\fR).  These
+statements assemble into the appropriate conditional branches and jumps to
+realize the desired construct.
+.NH 2
+If\fR statement
+.PP
+The \fBif\fR statement has the following form
+.nf
+
+\*[ \fIlabel\fR \*Z	\fBif\fR \fB(\fR \fIcondition\fR \fB)\fR \fB{\fR
+			\*[ \fIstatement\fR \*Z
+		\fB}\fR \*[ \fBelseif\fR \fB(\fR \fIcondition\fR \fB)\fR \fB{\fR
+			\*[ \fIstatement\fR \*Z
+		\fB}\fR \*Z \*[ \fBelse\fR \fB{\fR
+			\*[ \fIstatement\fR \*Z
+		\fB}\fR \*]
+
+.fi
+\fIcondition\fR is either the name of one of the target processor's hardware
+condition codes such as can be tested for in a conditional branch instruction
+(e.g., \fBcarry\fR, \fBoverflow\fR, etc.\*- the complete list is in
+\fBAppendix C\fR) or one either of these negated using the ``logical not''
+operator (``\fB!\fR'').  The condition is used to determine the appropriate
+type of branch instruction to use.  For example,
+.nf
+
+		\fBif (overflow) {\fR
+			\fIstatements-1\fR
+		\fB} elseif (carry) {\fR
+			\fIstatements-2\fR
+		\fB} else {\fR
+			\fIstatements-3\fR
+		\fB}\fR
+
+.fi
+expands into this (the labels are made up for illustrative purposes only):
+.nf
+
+		\fBbvc	temp1
+		\fIstatements-1
+		\fBjmp	temp3	
+temp1:	bcc	temp2
+		\fIstatements-3
+		\fBjmp	temp3
+temp2:	\fIstatements-3
+\fBtemp3:	\fIwhatever follows\fR
+
+.fi
+The keyword \fBelseif\fR may be used as shown, or specified as two separate
+keywords, \fBelse if\fR, depending on the programmer's whim.
+.NH 2
+While\fR statement
+.PP
+The \fBwhile\fR statement has the following form
+.nf
+
+\*[ \fIlabel\fR \*Z	\fBwhile\fR \fB(\fR \fIcondition\fR \fB)\fR \fB{\fR
+			\*[ \fIstatement\fR \*Z
+		\fB}\fR
+
+.fi
+\fIcondition\fR is as described above for the \fBif\fR statement.  An example
+of the \fBwhile\fR statement would be
+.nf
+
+		\fBwhile (!carry) {\fR
+			\fIstatements\fR
+		\fB}\fR
+
+.fi
+which would turn into
+.nf
+
+\fBtemp2:	bcs	temp1
+		\fIstatements
+		\fBjmp	temp2
+temp1:	\fIwhatever follows\fR
+
+.fi
+.NH 2
+Do-while\fR statement
+.PP
+The \fBdo-while\fR statement is similar to the \fBwhile\fR statement except
+that the condition is tested at the bottom of the loop.  It has the form
+.nf
+
+\*[ \fIlabel\fR \*Z	\fBdo\fR \fB{\fR
+			\*[ \fIstatement\fR \*Z
+		\fB}\fR \fBwhile\fR \fB(\fR \fIcondition\fR \fB)\fR
+
+.fi
+For example
+.nf
+
+		\fBdo {\fR
+			\fIstatements\fR
+		\fB} while (equal)\fR
+
+.fi
+which is equivalent to
+.nf
+
+\fBtemp:	\fIstatements
+		\fBbeq temp\fR
+
+.fi
+.NH 2
+Do-until\fR statement
+.PP
+The \fBdo-until\fR statement is the same as the \fBdo-while\fR statement
+except that the sense of the condition is negated.  It has the form
+.nf
+
+\*[ \fIlabel\fR \*Z	\fBdo\fR \fB{\fR
+			\*[ \fIstatement\fR \*Z
+		\fB}\fR \fBuntil\fR \fB(\fR \fIcondition\fR \fB)\fR
+
+.fi
+For example
+.nf
+
+		\fBdo {\fR
+			\fIstatements\fR
+		\fB} until (equal)\fR
+
+.fi
+which is equivalent to
+.nf
+
+\fBtemp:	\fIstatements
+		\fBbne temp\fR
+
+.fi
+.NH 1
+The Data Statements
+.PP
+The data statements allow the allocation of memory space and the storage of
+constant data.  These statements are like the ones found in most assemblers.
+There are several different forms, each for a different type of data.
+.NH 2
+Block\fR statement
+.PP
+The \fBblock\fR statement allocates blocks of memory without initializing the
+bytes to any particular value (actually, the loader will in all likelihood
+initialize these to 0, but it is probably not really wise to rely on this).
+It has the form
+.nf
+
+\*[ \fIlabel\fR \*Z	\fBblock\fR \fIexpression\fR \*[ \fB,\fR \fIexpression\fR \*Z
+
+.fi
+The \fIexpression\fRs are the sizes of the blocks to reserve, expressed in
+bytes.
+.NH 2
+Align\fR statement
+.PP
+The \fBalign\fR statement aligns the current location counter to an integer
+multiple of some value (e.g., to align with a word boundary).  It has the form
+.nf
+
+\*[ \fIlabel\fR \*Z	\fBalign\fR \fIexpression\fR
+
+.fi
+The \fIexpression\fR is the multiple to which the current location counter is
+to be aligned.  For example,
+.nf
+
+		\fBalign		2\fR
+
+.fi
+would align the current location to a word boundary, while
+.nf
+
+		\fBalign		0x100\fR
+
+.fi
+would align to a page boundary.
+.NH 2
+Constrain\fR statement
+.PP
+The \fBconstrain\fR statement provides a means of constraining a portion of
+code or data to be located within a region of memory bounded by addresses of
+integer multiples of some value (e.g., within a page).  Its form is
+.nf
+
+		\fBconstrain\fR \fB(\fR \fIboundary\fR \fB)\fR \fB{\fR
+			\*[ \fIstatement\fR \*Z
+		\fB}\fR
+
+.fi
+\fIBoundary\fR may be any expression which evaluates to a number.  The
+\fIstatement\fRs are assembled normally.  If assembling in absolute mode, an
+error message is issued if the current location counter crosses an integer
+multiple of \fIboundary\fR.  If assembling in relocatable mode, information
+about the constraint will be output in the object file and the contents of the
+constrained block will be relocated as needed to satisfy the constraint (note
+that this means that it is unsafe to assume that the things in the assembly
+source immediately before the \fBconstrain\fR statement, the contents of the
+constrain block itself, and the things in the assembly source immediately
+after the \fBconstrain\fR statement will be located in contiguous locations in
+the eventual target machine address space).  For example,
+.nf
+
+		\fBconstrain (0x100) {\fR
+			\fIstatements\fR
+		\fB}\fR
+
+.fi
+constrains the given statements to all fit within a page.
+.NH 2
+Word\fR statement
+.PP
+The \fBword\fR statement allocates words, i.e., two byte chunks, of memory.
+It takes the form
+.nf
+
+\*[ \fIlabel\fR \*Z	\fBword\fR \fIexpression\fR \*[ \fB,\fR \fIexpression\fR \*Z
+
+.fi
+The \fIexpression\fRs must evaluate to quantities that can be contained in 16
+bits, of course.  For example,
+.nf
+
+		\fBword		0x1234, foobar\fR
+
+.fi
+would allocate two words, the first of which would be initialized to the
+hexadecimal value 0x1234 and the second to whatever the value of \fBfoobar\fR
+is.
+.NH 2
+Dbyte\fR statement
+.PP
+The \fBdbyte\fR statement is just like the \fBword\fR statement, except that
+the word is byte-swapped in memory.  Its form is
+.nf
+
+\*[ \fIlabel\fR \*Z	\fBdbyte\fR \fIexpression\fR \*[ \fB,\fR \fIexpression\fR \*Z
+.fi
+.NH 2
+Long\fR statement
+.PP
+The \fBlong\fR statement allocates longwords, i.e., four byte chunks, of
+memory.  It takes the form
+.nf
+
+\*[ \fIlabel\fR \*Z	\fBlong\fR \fIexpression\fR \*[ \fB,\fR \fIexpression\fR \*Z
+
+.fi
+The \fIexpression\fRs must evaluate to quantities that can be contained in 32
+bits, of course.  For example,
+.nf
+
+		\fBword		0x12345678, foobar\fR
+
+.fi
+would allocate two longwords, the first of which would be initialized to the
+hexadecimal value 0x12345678 and the second to whatever the value of
+\fBfoobar\fR is.
+.NH 2
+Byte\fR statement
+.PP
+The \fBbyte\fR statement is similar to the \fBword\fR and \fBdbyte\fR
+statements, except that it allocates single byte chunks.  Its form is
+.nf
+
+\*[ \fIlabel\fR \*Z	\fBbyte\fR \fIexpression\fR \*[ \fB,\fR \fIexpression\fR \*Z
+
+.fi
+An \fIexpression\fR, in this case, is either an ordinary expression (see
+\fBExpressions\fR, below) which must evaluate to an 8-bit quantity, indicating
+the value for a single byte to be reserved, or a string (see above, under the
+discussion of text operands), indicating that the characters in the string
+should be placed in memory at the current location.
+.NH 2
+String\fR statement
+.PP
+The \fBstring\fR statement is much like the \fBbyte\fR statement, except that
+the values indicated are followed in memory by a zero byte.  This enables the
+convenient declaration and allocation of NULL terminated character strings.
+This feature is of little use in the 68000 version of \fIMacross\fR but is
+provided for compatability with future versions targeted at more sophisticated
+processors.  The form of the \fBstring\fR statement is
+.nf
+
+\*[ \fIlabel\fR \*Z	\fBstring\fR \fIexpression\fR \*[ \fB,\fR \fIexpression\fR \*Z
+.fi
+.NH 2
+Struct\fR statement
+.PP
+The \fBstruct\fR statement enables the declaration and allocation of
+record-oriented data structures.  There are two forms of the \fBstruct\fR
+statement, the first of which declares a \fBstruct\fR record type, and the
+second of which causes space to be set aside in memory for a \fBstruct\fR that
+has already been declared.  The form of the first type of \fBstruct\fR
+statement is
+.nf
+
+\*[ \fIlabel\fR \*Z	\fBstruct\fR \fB{\fR
+			\*[ \fIdataStatement\fR \*Z
+		\fB}\fR \fIname\fR
+
+.fi
+\fIdataStatement\fRs are any of the data statements described in this section
+(section 3).  \fIName\fR becomes the name of the \fBstruct\fR.  Any labels
+inside the \fBstruct\fR become \fIfields\fR of the data structure which may be
+referred to later in expressions using the ``\fB.\fR'' operator, as in
+\fBC\fR.  A more complete description of the semantics of \fBstruct\fRs is
+given in the section below on expressions.
+.PP
+The first form of the \fBstruct\fR statement, called a ``\fBstruct\fR
+definition'', lays out the constituent parts of a data structure and gives
+those names to those parts. The second form of the \fBstruct\fR statement,
+called a ``\fBstruct\fR instantiation'',
+.nf
+
+\*[ \fIlabel\fR \*Z	\fBstruct\fR \fIname\fR
+
+.fi
+causes storage for the \fBstruct\fR named by \fIname\fR to be allocated.  A
+\fBstruct\fR definition \fImay not\fR contain another \fBstruct\fR definition,
+but it \fImay\fR contain a \fBstruct\fR instantiation.  For example,
+.nf
+
+		\fBstruct {
+			pointer:	block 2
+			class:	block 1
+		} fooThing\fR
+
+.fi
+would create a \fBstruct\fR called \fBfooThing\fR.  Then,
+.nf
+
+\fBfooLabel:	struct	fooThing\fR
+
+.fi
+would allocate one at the current location at the address labeled
+\fBfooLabel\fR.  This could then be used as follows:
+.nf
+
+		\fBandb		fooLabel.class, d0
+		jmp		fooLabel.pointer\fR
+
+.fi
+which would AND \fBd0\fR with the \fBclass\fR field of the \fBstruct\fR and
+then jump to wherever the \fBpointer\fR field pointed to.  If the \fBx\fR
+address register \fBa4\fR already contained the address of this \fBstruct\fR,
+then one could say
+.nf
+
+		\fBandb		a4.class, d0\fR
+
+.fi
+.NH 1
+The Symbol Definition Statements
+.PP
+The various symbol definition statements allow the declaration of symbolic
+variables and values and the definition of macros and functions.
+.NH 2
+Define\fR statement
+.PP
+The \fBdefine\fR statement enables the programmer to create symbolic names for
+values.  It has two forms.  The first
+.nf
+
+		\fBdefine\fR \fIsymbolname\fR
+
+.fi
+creates a new symbol, \fIsymbolname\fR (an identifier), and gives it the
+special value \fBunassigned\fR.  Any attempt to take the value of an
+unassigned symbol will cause an error message from the assembler.  The symbol
+will, however, cause the \fBisDefined()\fR built-in function (see
+\fBExpressions\fR, below) to return \fBTRUE\fR if passed as an argument.  It
+is also an error to \fBdefine\fR a symbol that has already been \fBdefine\fRd.
+.PP
+The second form of the \fBdefine\fR statement
+.nf
+
+		\fBdefine\fR \fIsymbolname\fR \fB=\fR \fIexpression\fR
+
+.fi
+creates the symbol and gives it the value obtained by evaluating
+\fIexpression\fR (see \fBExpressions\fR, below).  Actually, what \fBdefine\fR
+does is create a symbolic name for \fIexpression\fR and the save this
+expression away in a secret place.  This means that symbols in
+\fIexpression\fR may be forward references, e.g., labels that haven't been
+encountered yet.  It is also possible to forward reference to symbols that are
+defined by future \fBdefine\fR statements, for example:
+.nf
+
+		\fBdefine foo = bar + 2
+		define bar = 47\fR
+
+.fi
+effectively defines \fBfoo\fR to be \fB49\fR.  Beware, however, as there is no
+way for the assembler to detect mutually recursive references of this sort, so
+that
+.nf
+
+		\fBdefine foo = bar + 2
+		define bar = foo + 2\fR
+
+.fi
+will be happily swallowed without complaint, until you actually try to use
+\fBfoo\fR or \fBbar\fR in an instruction, whereupon \fIMacross\fR's expression
+evaluator will go into infinite recursion until it runs out of stack space and
+crashes the assembler (it looks to see what \fBfoo\fR is and sees that it's
+\fBbar + 2\fR, so it looks to see what \fBbar\fR and see that it's \fBfoo +
+2\fR, so it looks to see what \fBfoo\fR is...  To have the assembler detect
+and signal this error would, in the general case, add much complication and
+inefficiency (read: make your programs assemble a lot more slowly) for little
+return).
+.PP
+The scope of symbols defined in either of these two ways extends in time from
+the definition itself to the end of the assembly.
+.NH 2
+Variable\fR statement
+.PP
+The \fBvariable\fR statement enables the programmer to declare symbolic
+variables for future use.  Similar to the \fBdefine\fR statement, it has two
+forms.  The first
+.nf
+
+		\fBvariable\fR \fIsymbolname\fR
+
+.fi
+creates a variable named \fIsymbolname\fR and gives it the special value
+\fBunassigned\fR, just like the analogous \fBdefine\fR statement.
+.PP
+The second form of the \fBvariable\fR statement
+.nf
+
+		\fBvariable\fR \fIsymbolname\fR \fB=\fR \fIexpression\fR
+
+.fi
+creates the variable and gives it the value obtained by evaluating
+\fIexpression\fR.  The scope of variables defined in either of these two ways
+extends from the \fBvariable\fR statement itself to the end of the assembly
+(i.e., the variable is global).
+.PP
+The difference between the \fBdefine\fR statement and the \fBvariable\fR
+statement is that the \fBdefine\fR statement creates what is in essence a
+constant whereas the \fBvariable\fR statement creates a true variable.  The
+value of a variable may change (e.g., it may be assigned to) during the course
+of assembly.  In addition, the expression which establishes a symbol's value
+in a \fBdefine\fR statement may contain forward references (i.e., labels whose
+values are unknown because they haven't been encountered yet) whereas the
+expression assigning an initial value to a variable must be made up of terms
+all of whose values are known at the time the \fBvariable\fR statement is
+encountered in the assembly.
+.NH 2
+Macro\fR statement
+.PP
+The \fBmacro\fR statement is used to define macros (surprise!).  Its syntax is
+.nf
+
+		\fBmacro\fR \fImacroname\fR \*[ \fIargumentname\fR \*[ \fB,\fR \fIargumentname\fR \*Z \*] \fB{\fR
+			\*[ \fIstatement\fR \*Z
+		\fB}\fR
+
+.fi
+where \fImacroname\fR is just that and the \fIargumentname\fRs are identifiers
+corresponding to the formal parameters of the macro (in the classical
+fashion).  When the macro is called, the call arguments are bound to these
+symbols and then \fIMacross\fR assembles the \fIstatement\fRs which form the
+macro body.  The scope of these symbols is limited to the inside of the macro
+body and their values go away when the macro expansion is completed.  The
+\fIstatement\fRs may be any valid \fIMacross\fR statements except for
+\fBmacro\fR statements and \fBfunction\fR statements (i.e., macro and function
+definitions may not be nested).
+.PP
+Statement labels used inside macros can be made local to the macro by
+preceding the label identifier with a dollar sign (``\fB$\fR'').  For
+example,
+.nf
+
+		\fBmacro	fooMac	arg {
+				jmp		$foo
+				word	arg
+		$foo:		nop
+		}\fR
+
+.fi
+defines a macro named \fBfooMac\fR that emits a word of data that gets jumped
+over.  The label \fB$foo\fR is local to the macro: both the reference to it
+in the first line of the macro and its definition on the third will only be
+seen inside the macro.  Each time the macro is called, the \fBjmp\fR will
+refer to the location two instructions ahead, and any other macros that might
+contain \fB$foo\fR will not affect this nor will they be affected by this.
+.NH 2
+Function\fR statement
+.PP
+The \fBfunction\fR statement is used to define functions.  Its syntax is
+.nf
+
+		\fBfunction\fR \fIfuncname\fR \fB(\fR \*[ \fIargumentname\fR \*[ \fB,\fR \fIargumentname\fR \*Z \*] \fB)\fR \fB{\fR
+			\*[ \fIstatement\fR \*Z
+		\fB}\fR
+
+.fi
+where \fIfuncname\fR is the name of the function and the \fIargumentname\fRs
+are identifiers corresponding to the formal parameters of the function.  When
+the function is called, the call arguments are evaluated and then bound to
+these symbols and then \fIMacross\fR assembles the \fIstatement\fRs which form
+the function body.  The scope of these symbols is limited to the inside of the
+function body and their values go away when the function evaluation is
+completed.  As with macro definitions, the \fIstatement\fRs may be any valid
+\fIMacross\fR statements except for the \fBmacro\fR and \fBfunction\fR
+statements.  A function may return a value using the \fBfreturn\fR statement,
+which is described below.
+.NH 2
+Undefine\fR statement
+.PP
+The \fBundefine\fR statement allows symbol and macro definitions to be removed
+from \fIMacross\fR' symbol table.  It takes the form
+.nf
+
+		\fBundefine\fR \fIsymbolname\fR \*[ \fB,\fR \fIsymbolname\fR \*Z
+
+.fi
+The named symbols go away as if they never were \*- they are free to be
+defined again and the \fBisDefined()\fR built-in function will return
+\fBFALSE\fR if passed one of them as an argument.
+.NH 1
+Macro Body Statements
+.PP
+\fIMacross\fR provides several statements which are primarily intended to
+manage the flow of control (or, rather, the ``flow of assembly'') within a
+macro or function definition.  Some of these statements are analogs to the
+flow of control statements described above in section 2.  However, one should
+keep in mind that these statements are executed interpretively at assembly
+time, whereas the previously described statements result in machine code in
+the target-processor-executable output of the assembly process.
+.PP
+Although these statements are intended primarily for use within macros and
+functions, their use is not restricted and they may be used at any point in a
+program.  In particular, the \fBmif\fR statement (to be described shortly) is
+the means by which conditional assembly may be realized.
+.NH 2
+\fRBlocks
+.PP
+The construct
+.nf
+
+		\fB{\fR
+			\*[ \fIstatement\fR \*Z
+		\fB}\fR
+
+.fi
+is called a \fIblock\fR and is in fact a valid \fIMacross\fR statement type in
+its own right.  Blocks are used extensively in \fIMacross\fR to form the
+bodies of flow-of-control statements, flow-of-assembly statements and macros.
+.NH 2
+Mdefine\fR statement
+.PP
+The \fBmdefine\fR statement
+.nf
+
+		\fBmdefine\fR \fIsymbolname\fR
+or
+		\fBmdefine\fR \fIsymbolname\fR \fB=\fR \fIexpression\fR
+
+.fi
+operates like (and is syntactically congruent with) the \fBdefine\fR
+statement, except that the scope of the symbol definition is restricted to the
+body block of the macro or function in which the \fBmdefine\fR appears.  The
+symbol definition is invisible outside that block, though it \fIis\fR visible
+inside any blocks that may themselves be contained within the macro or
+function.
+.NH 2
+Mvariable\fR statement
+.PP
+The \fBmvariable\fR statement
+.nf
+
+		\fBmvariable\fR \fIsymbolname\fR
+or
+		\fBmvariable\fR \fIsymbolname\fR \fB=\fR \fIexpression\fR
+
+.fi
+bears exactly the same relationship to the \fBvariable\fR statement that the
+\fBmdefine\fR statement does to the \fBdefine\fR statement.  It declares a
+variable whose scope is limited to the function or macro in whose definition
+it appears.
+.NH 2
+Mif\fR statement
+.PP
+The \fBmif\fR statement conditionally assembles the statements contained in
+the block following it:
+.nf
+
+		\fBmif\fR \fB(\fR \fIcondition\fR \fB)\fR \fB{\fR
+			\*[ \fIstatement\fR \*Z
+		\fB}\fR \*[ \fBmelseif\fR \fB(\fR \fIcondition\fR \fB)\fR \fB{\fR
+			\*[ \fIstatement\fR \*Z
+		\fB}\fR \*Z \*[ \fBmelse\fR \fB{\fR
+			\*[ \fIstatement\fR \*Z
+		\fB}\fR \*]
+
+.fi
+unlike the \fBif\fR statement, the \fIcondition\fR may be any expression
+whatsoever.  \fIMacross\fR follows the \fBC\fR convention that the value 0
+represents \fBFALSE\fR and any other value represents \fBTRUE\fR (in fact, the
+symbols \fBTRUE\fR and \fBFALSE\fR are ``predefined'' by the assembler to
+have the values 1 and 0 respectively).  The meaning of the \fBmif\fR construct
+is the obvious one, but keep in mind that it is interpreted at assembly time
+and has no direct bearing on the execution of the resulting assembled program.
+.NH 2
+Mwhile\fR statement
+.PP
+The \fBmwhile\fR statement repetitively assembles a block of statements so
+long as a given condition remains true.  Its form is
+.nf
+
+		\fBmwhile\fR \fB(\fR \fIcondition\fR \fB)\fR \fB{\fR
+			\*[ \fIstatement\fR \*Z
+		\fB}\fR
+
+.fi
+As with \fBmif\fR, the \fIcondition\fR may be any valid \fIMacross\fR
+expression and the interpretation is what it seems.
+.NH 2
+Mdo-while\fR statement
+.PP
+The \fBmdo-while\fR statement provides an alternative to the \fBmwhile\fR
+statement by testing at the bottom of the loop instead of at the top.  Its
+form is
+.nf
+
+		\fBmdo\fR \fB{\fR
+			\*[ \fIstatement\fR \*Z
+		\fB}\fR \fBwhile\fR \fB(\fR \fIcondition\fR \fB)\fR
+.fi
+.NH 2
+Mdo-until\fR statement
+.PP
+The \fBmdo-until\fR statement is the same as the \fBmdo-while\fR statement
+except that the sense of the condition is negated.  It has the form
+.nf
+
+		\fBmdo\fR \fB{\fR
+			\*[ \fIstatement\fR \*Z
+		\fB}\fR \fBuntil\fR \fB(\fR \fIcondition\fR \fB)\fR
+.fi
+.NH 2
+Mfor\fR statement
+.PP
+The \fBmfor\fR statement provides a more general looping construct analogous
+to the \fBC\fR \fBfor\fR loop.  Its form is
+.nf
+
+		\fBmfor\fR \fB(\fR \fIexpression-1\fR \fB,\fR \fIexpression-2\fR \fB,\fR \fIexpression-3\fR \fB)\fR \fB{\fR
+			\*[ \fIstatement\fR \*Z
+		\fB}\fR
+
+.fi
+where \fIexpression-1\fR is an initialization expression, \fIexpression-2\fR
+is a test to see if looping should continue, and \fIexpression-3\fR is
+executed at the bottom of the loop to set up for the next time around, just as
+in \fBC\fR.  Note that, unlike \fBC\fR, the \fIexpression\fRs are separated by
+commas, not semicolons.  This is because semicolons are used to delimit line
+comments.
+.PP
+The \fBmfor\fR statement is equivalent to
+.nf
+
+		\fIexpression-1\fR
+		\fBmwhile (\fIexpression-2\fB ) {\fR
+			\fIstatements\fR
+			\fIexpression-3\fR
+		\fB}\fR
+.fi
+.NH 2
+Mswitch\fR statement
+.PP
+The \fBmswitch\fR statement provides a means of selecting one of a number of
+blocks of code for assembly depending upon the value of some expression.  Its
+form is:
+.nf
+
+		\fBmswitch ( \fIselectionExpression \fB) {\fR
+			\*[ \fBmcase ( \fIexpression\fR \*[ \fB,\fI expression\fR \*Z \fB) {\fR
+				\*[ \fIstatement\fR \*Z
+			\fB}\fR \*Z
+			\*[ \fBmdefault {\fR
+				\*[ \fIstatement\fR \*Z
+			\fB}\fR \*]
+		\fB}\fR
+
+.fi
+The way this works is as follows (it's actually easier to use than to
+explain): \fIselectionExpression\fR is evaluated.  Each of the
+\fIexpression\fRs associated with the various \fBmcase\fR clauses (if any) is
+then evaluated in turn and the resulting value compared to that of
+\fIselectionExpression\fR.  When and if one of these values ``matches'' the
+value of \fIselectionExpression\fR the block of \fIstatement\fRs associated
+with the corresponding \fBmcase\fR clause is immediately assembled and
+execution of the \fBmswitch\fR statement is complete.  If no such value
+matches and there is an \fBmdefault\fR clause, the block of \fIstatement\fRs
+associated with the \fBmdefault\fR clause is assembled.  If no value matches
+and there is no \fBmdefault\fR clause then nothing is assembled as a result of
+the \fBmswitch\fR.  When we say the values ``match'', we mean that either
+the expressions evaluate to the same number or to strings which are identical
+except for the case of alphabetic characters.  For example:
+.nf
+
+		\fBmswitch (foo) {
+			mcase ("hello", "fnord") {
+				\fIstatements-1\fB
+			}
+			mcase ("ZAP!") {
+				\fIstatements-2\fB
+			}
+			mdefault {
+				\fIstatements-3\fR
+			}
+		}\fR
+
+.fi
+would switch on the value of the symbol \fBfoo\fR.  If the value of \fBfoo\fR
+was \fB"hello"\fR, \fIstatements-1\fR would be assembled.  If the value of
+\fBfoo\fR was \fB"zap!"\fR, \fIstatements-2\fR would be assembled (since the
+string comparison is done independent of case).  If the value of \fBfoo\fR was
+\fB"cromfelter"\fR or \fB47\fR, then \fIstatements-3\fR would be assembled by
+default.
+.NH 2
+Freturn\fR statement
+.PP
+A \fIMacross\fR function may (and probably will) be called from an expression
+in the traditional manner of functions throughout the annals of computer
+science.  In such a situation, the programmer may wish to have a function
+return a value.  The \fBfreturn\fR statement enables this.  Its form is
+.nf
+
+		\fBfreturn\fR \*[ \fIexpression\fR \*]
+
+.fi
+where \fIexpression\fR is any permissible \fIMacross\fR expression as
+described below under \fBExpressions\fR.  If no \fIexpression\fR is given, the
+macro simply returns without having a value as its result.  Any attempt to use
+the (non-existent) value returned by a call to function which doesn't return a
+value will result in an error message from the assembler.  Function calls will
+automatically return without a value upon reaching the end of the block that
+forms the body of the function.
+.NH 1
+Miscellaneous Statements
+.PP
+Various useful statements don't fall into any of the above categories.
+.NH 2
+Include\fR statement
+.PP
+The \fBinclude\fR statement allows the text in other files to be included in
+the source program being assembled, in the time-honored fashion.  Its form is
+.nf
+
+		\fBinclude\fR \fIfilename\fR
+
+.fi
+where \fIfilename\fR is a string value giving the name of the file to be
+included.  \fBInclude\fRd files may themselves contain \fBinclude\fR
+statements to any number of levels of recursion (within reason).
+.NH 2
+Extern\fR statement
+.PP
+The \fBextern\fR statement allows you to declare symbols to be visible to the
+linker outside of the file in which they are found.  Its use:
+.nf
+
+		\fBextern\fR \fIsymbol\fR \*[ \fB,\fR \fIsymbol\fR \*Z
+.fi
+.NH 2
+Start\fR statement
+.PP
+The \fBstart\fR statement declares the starting address of a program.
+.nf
+
+		\fBstart\fR \fIexpression\fR
+
+.fi
+where the \fIexpression\fR indicates the start address.  There should be no
+more than one \fBstart\fR statement in a program.  If no start address is
+specified, the object file will be produced without a start address entry.
+.NH 2
+Assert\fR statement
+.PP
+The \fBassert\fR statement provides a means of testing assembly time
+conditions and generating programmer specified error messages if those
+conditions are not satisfied.  Its syntax is:
+.nf
+
+		\fBassert (\fIcondition\fB)\fR \*[ \fItextString\fR \*]
+
+.fi
+where \fIcondition\fR is an expression such as those used in the \fBmif\fR
+statement.  This condition is evaluated and if \fBFALSE\fR then the message
+\fItextString\fR, if given, is written to the standard output.  The message is
+written in the form of a conventional \fIMacross\fR error message, giving the
+file and line number on which the failed assertion occured.  If
+\fItextString\fR is omitted then a simple error message to the effect that the
+assert failed will be output.  For example,
+.nf
+
+		\fBassert (foo == 1) "Hey!  You blew it."\fR
+
+.fi
+would check to see that the value of the symbol \fBfoo\fR is \fB1\fR, and if
+it isn't would issue an error message containing the string \fB"Hey!  You blew
+it."\fR.
+.NH 2
+Org\fR statement
+.PP
+The \fBorg\fR statement adjusts the current location counter and tells the
+assembler to start locating instructions and data in absolute memory
+locations.
+.nf
+
+		\fBorg\fR \fIexpression\fR
+
+.fi
+The \fIexpression\fR indicates the new current location.  If this is an
+absolute address, \fIMacross\fR starts assembling at the specified
+absolute memory location.  If, on the other hand, it is relative to a
+relocatable address or to the current location counter, the current location
+counter is simply adjusting accordingly.
+.NH 2
+Rel\fR statement
+.PP
+The \fBrel\fR statement restores \fIMacross\fR to assembling code in a
+relocatable fashion, if it was not already doing so.  The relocatable location
+resumes from wherever it was left the last time an absolute \fBorg\fR stopped
+relocatable code assembly.  \fI((explain this better))\fR
+.NH 2
+Target\fR statement
+.PP
+The \fBtarget\fR statement
+.nf
+
+		\fBtarget\fR \fIexpression\fR
+
+.fi
+tells the assembler to assemble as if it had been \fBorg\fRed to a particular
+address without actually performing the \fBorg\fR.  The \fIexpression\fR
+indicates the location to start assembling from.  This must be an absolute
+address (and the \fBtarget\fR statement may only be used when assembling in
+absolute mode).
+.PP
+The result of the \fBtarget\fR statement is that assembly proceeds from the
+current location but labels will be defined as if it was proceeding from the
+location specified by \fIexpression\fR and references to the current location
+counter will be offset by the difference between the actual current location
+counter value and the value of \fIexpression\fR.  This effect will persist until the next \fBorg\fR or \fBtarget\fR statement.  For example
+.nf
+
+		\fBorg		0x1000
+		target	0x0800
+foo:		rts
+bar:		word	0x1234
+		word	here
+		org		someplaceElse\fR
+
+.fi
+would first set the current location counter to \fB0x1000\fR.  At location
+\fB0x1000\fR it would assemble an \fBrts\fR instruction while giving the label
+\fBfoo\fR the value \fB0x800\fR.  Then, at location \fB0x1002\fR it would
+deposit the word value \fB0x1234\fR while giving the label \fBbar\fR the
+value \fB0x802\fR.  At location \fB0x1004\fR it would deposit the word value
+\fB0x804\fR.  Finally, the second \fBorg\fR would set the current location
+counter to \fBsomeplaceElse\fR and the effects of the \fBtarget\fR statement
+would cease.
+.SH
+\s+3Expressions\s-3
+.PP
+The expression syntax of \fIMacross\fR was chosen to be as close to that of
+\fBC\fR as possible.  \fIMacross\fR recognizes the same set of operators as
+\fBC\fR with few exceptions, and the operators have the same precedence with
+respect to each other that everyone is used to.
+.PP
+Another important feature of expressions in \fIMacross\fR is that expressions
+by themselves on a line are valid statements.  Assignment expressions, uses of
+the post- and pre-increment and decrement operators (``\fB++\fR'' and
+``\fB--\fR''), and calls to functions used like procedures are the most
+useful applications of this.  For example
+.nf
+
+		\fBfoo = 5\fR
+		\fBbar++\fR
+		\fBprintf("Hello world\\n")\fR
+
+.fi
+are all valid statements.
+.NH 0
+\fRPrimitive expressions
+.PP
+The most primitive expressions are identifiers, numbers, characters, character
+strings, and function calls.
+.PP
+Identifiers have already been described, in the section \fBGeneral Form of
+\fIMacross\fB Statements\fR above.  The only thing to add here is that the
+special identifier \fBhere\fR denotes the value of the current location
+counter.
+.PP
+Numbers may be decimal, octal, hexadecimal, binary or quarters.  The form of
+the first three of these is as in \fBC\fR: decimal numbers are denoted by a
+sequence of decimal digits that does not begin with a ``\fB0\fR''; octal
+numbers by a sequence of octal digits that \fIdoes\fR begin with a
+``\fB0\fR''; and hexadecimal numbers by a sequence of hexadecimal digits
+(the decimal digits plus the letters ``\fBa\fR'' through ``\fBf\fR'', in
+either upper or lower case), preceded by ``\fB0x\fR'' or ``\fB0X\fR''.
+Binary numbers and quarters are represented analogously.  Binary numbers are
+represented by a sequence of ``\fB0\fR''s and ``\fB1\fR''s preceded by
+``\fB0b\fR'' or ``\fB0B\fR''.  Quarters are base-four numbers (for two-bit
+entities like Atari pixels) and are represented by the sequences of the digits
+\fB0\fR through \fB3\fR preceded by ``\fB0q\fR'' or ``\fB0Q\fR'' (the
+credit for this idea goes to Charlie Kellner).
+.PP
+Character constants are denoted the same as in \fBC\fR: by a single character
+enclosed in apostrophes (``\fB'\fR'').  The same conventions about
+characters escaped with a backslash (``\fB\\\fR'') also apply.  Strings may
+be of varying lengths and are enclosed in quotation marks (``\fB"\fR''),
+as discussed above in the explanation of instruction operands.
+.PP
+A function call, in \fIMacross\fR, is syntactically the same as in \fBC\fR:
+the name of the function being called followed by a comma-separated argument
+list in parenthesis.  The argument list, as in \fBC\fR, may be empty.  The
+arguments themselves may be arbitrary instruction operands (described above in
+section 1).  A number of built-in functions are provided by \fIMacross\fR to
+perform a variety of useful operations.  These are discussed in \fBAppendix
+D\fR.
+.NH 1
+\fROperators
+.PP
+Expressions may be constructed from the primitive elements described above and
+from other expressions using a variety of unary and binary operators.  The
+operator set is patterned after \fBC\fR's.  The only \fBC\fR operators not
+supported are:
+.IP
+[1] ``\fB?:\fR'' (arithmetic if) \*- not supported for reasons of syntactic
+confusion on both the part of the parser attempting to parse it and the
+programmer attempting to use it.
+.IP
+[2] ``\fB,\fR'' (comma) \*- used in \fIMacross\fR as an important separator
+and thus not available.
+.IP
+[3] unary ``\fB*\fR'' and ``\fB&\fR'', \fBsizeof\fR, casts and
+``\fB->\fR'' \*- not relevant here.
+.LP
+All of the assignment operators (``\fB+=\fR'', ``\fB-=\fR'', etc.)
+\fIare\fR supported by \fIMacross\fR.
+.LP
+\fIMacross\fR reinterprets the \fB.\fR operator in that ``\fIexpression\fB .
+\fIstructfieldname\fR'' is interpreted as adding the offset value implied by
+\fIstructfieldname\fR (i.e., the distance in bytes into a \fBstruct\fR to
+reach the named field) to the address that is the value of \fIexpression\fR.
+.LP
+\fIMacross\fR adds to the operator set the following:
+.IP
+[1] ``\fB?\fR'' \*- as a unary operator, takes the high order byte of the
+word value that is its argument.
+.IP
+[2] ``\fB/\fR'' \*- as a unary operator, takes the low order byte of the
+word value that is its argument.
+.IP
+[3] ``\fB^^\fR'' \*- a binary operator, denotes logical exclusive-OR.  This
+is simply an orthogonal extension for the sake of completeness.
+.LP
+Of course, parenthesis can be used at any point to override the normal
+precedence of the various operators.  A full list of all the operators that
+\fIMacross\fR understands is given in \fBAppendix E\fR.
+.NH 1
+\fRExpression evaluation
+.PP
+In order to make the most effective use of expressions in the \fIMacross\fR
+environment, it is helpful (and at times necessary) to understand how and when
+\fIMacross\fR evaluates them.
+.PP
+When \fIMacross\fR evaluates an expression, it may have one of three sorts of
+results.  These are \fIsuccess\fR, \fIundefined\fR, and \fIfailure\fR.  A
+\fIsuccess\fR result means that \fIMacross\fR encountered no problems
+evaluating the expression, and whatever value it evaluated to is just used as
+needed.  A \fIfailure\fR result indicates that there was a problem of some
+sort.  Usually this is a result of some user error.  In any case, an
+appropriate diagnostic message will be issued by the assembler and the
+statement in which the expression was found will not be assembled.
+.PP
+An \fIundefined\fR result is where the complications, if any, arise.  An
+expression will evaluate to an \fIundefined\fR result if one or more of the
+terms of the expression are undefined symbols.  Usually these are labels which
+simply haven't been encountered yet (i.e., they are forward references).  In
+certain contexts, such as the operand of a machine instruction, this is a
+legitimate thing to do, and in certain others, such as the condition of a
+\fBmif\fR statement, this is not allowed at all.  In the latter case, an
+\fIundefined\fR result is just like a \fIfailure\fR result.  In the former
+case, the assembler is forced to get fancy in order to make it all work right.
+.PP
+What \fIMacross\fR does is squirrel away a copy of the expression along with a
+pointer as to where in the object code the value of the expression is supposed
+to go.  At the end of assembly, the undefined label will presumably now be
+defined, and \fIMacross\fR evaluates the saved expression and pokes the result
+into the appropriate location.  (If, at this point, the undefined label is
+still undefined, an error message to that effect is issued).  Clearly, if an
+expression has side effects (such as changing the value of some global
+variable), this can result in some confusing behavior.  The \fIMacross\fR
+assembler is smart enough to not let you do anything that has overt side
+effects in an expression that is being saved away for future evaluation.  The
+things which are disallowed in such a case are assignments and uses of the
+post- and pre-increment and decrement operators (``\fB++\fR'' and
+``\fB--\fR'').  Functions, however, may have side effects and \fIMacross\fR
+does not try to prevent you from using function calls in expressions that get
+saved for later evaluation. It can, and will, detect some, but not all, side
+effects during the later evaluation and give a suitable error message.  This
+is because it is perfectly legitimate to use a function call to a function
+that doesn't have side effects in an expression containing forward references.
+.PP
+If you are now totally confused, the only thing you need remember is: \fBDon't
+ever use a call to a function that has side effects in an expression
+containing a forward reference.\fR
+.bp
+.CD
+ \s+5\fBAppendix A \*- Macross 68000 Grammar\fR\s-5
+\"\s+4\fBAppendix A \*- Macross 68000 Grammar\fR\s-4
+.DE
+.LP
+.nf
+\fR\fIprogram\fR:
+		\*[ \fIstatement\fR Newline \*Z Endfile
+
+\fIstatement\fR:
+\*[ \fIlabel\fR \*Z	\fIopcode\fR \*[ \fIoperand\fR \*[ \fB,\fR \fIoperand\fR \*Z \*]
+\*[ \fIlabel\fR \*Z	\fBif\fR \fB(\fR \fIcondition\fR \fB)\fR \fIblock\fR
+			\*[ \fBelseif\fR \fB(\fR \fIcondition\fR \fB)\fR \fIblock\fR \*Z
+			\*[ \fBelse\fR \fIblock\fR \*]
+\*[ \fIlabel\fR \*Z	\fBwhile\fR \fB(\fR \fIcondition\fR \fB)\fR \fIblock\fR
+\*[ \fIlabel\fR \*Z	\fBdo\fR \fIblock\fR \fBwhile\fR \fB(\fR \fIcondition\fR \fB)\fR
+\*[ \fIlabel\fR \*Z	\fBdo\fR \fIblock\fR \fBuntil\fR \fB(\fR \fIcondition\fR \fB)\fR
+		\fIdataStatement\fR
+		\fBdefine\fR \fIidentifier\fR \*[ \fB=\fR \fIexpression\fR \*]
+		\fBvariable\fR \fIidentifier\fR \*[ \fB=\fR \fIexpression\fR \*]
+		\fBmacro\fR \fIidentifier\fR \*[ \fIidentifier\fR \*[ \fB,\fR \fIidentifier\fR \*Z \*] \fIblock\fR
+		\fBfunction\fR \fIidentifier\fR \fB(\fR \*[ \fIidentifier\fR \*[ \fB,\fR \fIidentifier\fR \*Z \*]  \fB)\fR \fIblock\fR
+		\fBundefine\fR \fIidentifier\fR \*[ \fB,\fR \fIidentifier\fR \*Z
+\*[ \fIlabel\fR \*Z	\fIblock\fR
+		\fBmdefine\fR \fIidentifier\fR \*[ \fB=\fR \fIexpression\fR \*]
+		\fBmif\fR \fB(\fR \fIexpression\fR \fB)\fR \fIblock\fR
+			\*[ \fBmelseif\fR \fB(\fR \fIexpression\fR \fB)\fR \fIblock\fR \*Z
+			\*[ \fBmelse\fR \fIblock\fR \*]
+		\fBmwhile\fR \fB(\fR \fIexpression\fR \fB)\fR \fIblock\fR
+		\fBmdo\fR \fIblock\fR \fBwhile\fR \fB(\fR \fIexpression\fR \fB)\fR
+		\fBmdo\fR \fIblock\fR \fBuntil\fR \fB(\fR \fIexpression\fR \fB)\fR
+		\fBfreturn\fR \*[ \fIexpression\fR \*]
+		\fBmfor\fR \fB(\fR \fIexpression\fR \fB,\fR \fIexpression\fR \fB,\fR \fIexpression\fR \fB)\fR \fIblock\fR
+		\fBmswitch ( \fIselectionExpression \fB) {\fR
+			\*[ \fBmcase ( \fIexpression\fR \*[ \fB,\fI expression\fR \*Z \fB)\fI block\fR \*Z
+			\*[ \fBmdefault\fI block\fR \*]
+		\fB}\fR
+		\fBconstrain\fR \fB(\fR \fIexpression\fR \fB)\fR \fIblock\fR
+		\fBassert\fR \fB(\fR \fIexpression\fR \fB)\fR \*[ \fIexpression\fR \*]
+		\fBinclude\fR \fItextString\fR
+		\fBextern\fR \fIidentifier\fR \*[ \fB,\fR \fIidentifier\fR \*Z
+		\fBstart\fR \fIexpression\fR
+		\fBorg\fR \fIexpression\fR
+		\fBtarget\fR \fIexpression\fR
+		\fIexpression\fR
+
+\fIdataStatement\fR:
+\*[ \fIlabel\fR \*Z	\fBblock\fR \fIexpression\fR \*[ \fB,\fR \fIexpression\fR \*Z
+\*[ \fIlabel\fR \*Z	\fBalign\fR \fIexpression\fR
+\*[ \fIlabel\fR \*Z	\fBword\fR \fIexpression\fR \*[ \fB,\fR \fIexpression\fR \*Z
+\*[ \fIlabel\fR \*Z	\fBlong\fR \fIexpression\fR \*[ \fB,\fR \fIexpression\fR \*Z
+\*[ \fIlabel\fR \*Z	\fBdbyte\fR \fIexpression\fR \*[ \fB,\fR \fIexpression\fR \*Z
+\*[ \fIlabel\fR \*Z	\fBbyte\fR \fIexpression\fR \*[ \fB,\fR \fIexpression\fR \*Z
+\*[ \fIlabel\fR \*Z	\fBstring\fR \fIexpression\fR \*[ \fB,\fR \fIexpression\fR \*Z
+\*[ \fIlabel\fR \*Z	\fBstruct\fR \fB{\fR \*[ \fIdataStatement\fR \*Z \fB}\fR \fIidentifier\fR
+\*[ \fIlabel\fR \*Z	\fBstruct\fR \fIidentifier\fR
+
+\fIlabel\fR:		\fIidentifier\fR \fB:\fR
+
+\fIoperand\fR:
+		\fBd\fIn\fR
+		\fBa\fIn\fR
+		\fBsp\fR
+		\fB\s-1[\s+1\fR \fBa\fIn\fR \fB\s-1]\s+1\fR
+		\fB\s-1[\s+1\fR \fBa\fIn\fR \fB\s-1]\s+1+\fR
+		\fB-\s-1[\s+1\fR \fBa\fIn\fR \fB\s-1]\s+1\fR
+		\fIexpression\fR
+		\fIexpression\fB . w\fR
+		\fIexpression\fB . l\fR
+		\fB#\fR \fIexpression\fR
+		\fIexpression\fR \fB\s-1[\s+1\fR \fBa\fIn\fR \fB\s-1]\s+1\fR
+		\fBa\fIn\fR \fB.\fR \fIidentifier\fR \*[ \fB.\fR \fIidentifier\fR \*Z
+		\fIexpression\fR \fB\s-1[\s+1\fR \fBa\fIn\fR \fB,\fR \fIrn\fR \fB. w \s-1]\s+1\fR
+		\fIexpression\fR \fB\s-1[\s+1\fR \fBa\fIn\fR \fB,\fR \fIrn\fR \fB. l \s-1]\s+1\fR
+		\fIexpression\fR \fB\s-1[\s+1\fR \fBa\fIn\fR \fB,\fR \fIrn\fR \fB\s-1]\s+1\fR
+		\fBa\fIn\fR \fB\s-1[\s+1\fR \fIrn\fR \fB. w \fB\s-1]\s+1\fR \fB.\fR \fIidentifier\fR \*[ \fB.\fR \fIidentifier\fR \*Z
+		\fBa\fIn\fR \fB\s-1[\s+1\fR \fIrn\fR \fB. l \fB\s-1]\s+1\fR \fB.\fR \fIidentifier\fR \*[ \fB.\fR \fIidentifier\fR \*Z
+		\fBa\fIn\fR \fB\s-1[\s+1\fR \fIrn\fR \fB\s-1]\s+1\fR \fB.\fR \fIidentifier\fR \*[ \fB.\fR \fIidentifier\fR \*Z
+		\fIexpression\fR \fB\s-1[\s+1\fR \fBpc\fR \fB\s-1]\s+1\fR
+		\fIexpression\fR \fB\s-1[\s+1\fR \fBpc\fR \fB,\fR \fIrn\fR \fB. w \s-1]\s+1\fR
+		\fIexpression\fR \fB\s-1[\s+1\fR \fBpc\fR \fB,\fR \fIrn\fR \fB. l \s-1]\s+1\fR
+		\fIexpression\fR \fB\s-1[\s+1\fR \fBpc\fR \fB,\fR \fIrn\fR \fB\s-1]\s+1\fR
+		\fBccr\fR
+		\fBsr\fR
+		\fBusp\fR
+		\fBsfc\fR
+		\fBdfc\fR
+		\fBvbr\fR
+		\fItextString\fR
+
+\fIblock\fR:		\fB{\fR \*[ \fIstatement\fR Newline \*Z \fB}\fR
+
+\fItextString\fR:
+		\fB" \fIany string you like \fB"\fR
+
+\fIcondition\fR:
+		\fIconditionCode\fR
+		\fB!\fR \fIconditionCode\fR
+
+\fIexpression\fR:
+		\fIidentifier\fR
+		\fIidentifier\fR \fB(\fR \*[ \fIoperand\fR \*[ \fB,\fR \fIoperand\fR \*Z \*] \fB)\fR
+		\fInumber\fR
+		\fBhere\fR
+		\fItextString\fR
+		\fB(\fR \fIexpression\fR \fB)\fR
+		\fB-\fR \fIexpression\fR
+		\fB!\fR \fIexpression\fR
+		\fB~\fR \fIexpression\fR
+		\fB?\fR \fIexpression\fR
+		\fB/\fR \fIexpression\fR
+		\fIexpression\fR \fB*\fR \fIexpression\fR
+		\fIexpression\fR \fB/\fR \fIexpression\fR
+		\fIexpression\fR \fB%\fR \fIexpression\fR
+		\fIexpression\fR \fB-\fR \fIexpression\fR
+		\fIexpression\fR \fB+\fR \fIexpression\fR
+		\fIexpression\fR \fB<<\fR \fIexpression\fR
+		\fIexpression\fR \fB>>\fR \fIexpression\fR
+		\fIexpression\fR \fB<\fR \fIexpression\fR
+		\fIexpression\fR \fB>\fR \fIexpression\fR
+		\fIexpression\fR \fB<=\fR \fIexpression\fR
+		\fIexpression\fR \fB>=\fR \fIexpression\fR
+		\fIexpression\fR \fB==\fR \fIexpression\fR
+		\fIexpression\fR \fB!=\fR \fIexpression\fR
+		\fIexpression\fR \fB&\fR \fIexpression\fR
+		\fIexpression\fR \fB|\fR \fIexpression\fR
+		\fIexpression\fR \fB^\fR \fIexpression\fR
+		\fIexpression\fR \fB&&\fR \fIexpression\fR
+		\fIexpression\fR \fB||\fR \fIexpression\fR
+		\fIexpression\fR \fB^^\fR \fIexpression\fR
+		\fIexpression\fR \fB.\fR \fIidentifier\fR
+		\fIidentifier\fR \fB=\fR \fIexpression\fR
+		\fIidentifier\fR \fB+=\fR \fIexpression\fR
+		\fIidentifier\fR \fB-=\fR \fIexpression\fR
+		\fIidentifier\fR \fB*=\fR \fIexpression\fR
+		\fIidentifier\fR \fB/=\fR \fIexpression\fR
+		\fIidentifier\fR \fB%=\fR \fIexpression\fR
+		\fIidentifier\fR \fB&=\fR \fIexpression\fR
+		\fIidentifier\fR \fB|=\fR \fIexpression\fR
+		\fIidentifier\fR \fB^=\fR \fIexpression\fR
+		\fIidentifier\fR \fB<<=\fR \fIexpression\fR
+		\fIidentifier\fR \fB>>=\fR \fIexpression\fR
+		\fIidentifier\fR \fB++\fR
+		\fIidentifier\fR \fB--\fR
+		\fB++\fR \fIidentifier\fR
+		\fB--\fR \fIidentifier\fR
+
+\fIidentifier\fR:
+		\*[\fBa\fR-\fBzA\fR-\fBZ_\fR\*]\*[\fBa\fR-\fBzA\fR-\fBZ_0\fR-\fB9\fR\*Z
+
+\fInumber\fR:
+		\fIdecimalNumber\fR
+		\fIoctalNumber\fR
+		\fIbinaryNumber\fR
+		\fIhexadecimalNumber\fR
+		\fIquarter\fR
+
+\fIdecimalNumber\fR:
+		\*[\fB1\fR-\fB9\fR\*]\*[\fB0\fR-\fB9\fR\*Z
+
+\fIoctalNumber\fR:
+		\fB0\fR\*[\fB0\fR-\fB7\fR\*Z
+
+\fIbinaryNumber\fR:
+		\fB0b\fR\*[\fB01\fR\*]\*[\fB01\fR\*Z
+
+\fIhexadecimalNumber\fR:
+		\fB0x\fR\*[\fB0\fR-\fB9a\fR-\fBf\fR\*]\*[\fB0\fR-\fB9a\fR-\fBf\fR\*Z
+
+\fIquarter\fR:
+		\fB0q\fR\*[\fB0\fR-\fB3\fR\*]\*[\fB0\fR-\fB3\fR\*Z
+
+.fi
+.bp
+.CD
+\s+5\fBAppendix B \*- Recognized Opcode Mnemonics\fR\s-5
+\"\s+4\fBAppendix B \*- Recognized Opcode Mnemonics\fR\s-4
+.sp 1
+\s+3\fB(68000 version)\fR\s-3
+.DE
+.PP
+These are the 68000 opcode mnemonics recognized by \fIMacross\fR:
+.2C
+.nf
+\fBabcd
+addb
+addl
+addqb
+addql
+addqw
+addw
+addxb
+addxl
+addxw
+andb
+andl
+andw
+aslb
+asll
+aslw
+asrb
+asrl
+asrw
+bcc
+bchg
+bclr
+bcs
+beq
+bge
+bgt
+bhi
+ble
+bls
+blt
+bmi
+bne
+bpl
+bra
+bset
+bsr
+btst
+bvc
+bvs
+chk
+clrb
+clrl
+clrw
+cmpb
+cmpl
+cmpmb
+cmpml
+cmpmw
+cmpw
+dbcc
+dbcs
+dbeq
+dbf
+dbge
+dbgt
+dbhi
+dble
+dbls
+dblt
+dbmi
+dbne
+dbpl
+dbra
+dbt
+dbvc
+dbvs
+divs
+divu
+eorb
+eorl
+eorw
+exg
+extl
+extw
+illegal
+jmp
+jsr
+lea
+link
+lslb
+lsll
+lslw
+lsrb
+lsrl
+lsrw
+movb
+moveb
+movel
+moveml
+movemw
+movepl
+movepw
+moveq
+movesb
+movesl
+movesw
+movew
+movl
+movml
+movmw
+movpl
+movpw
+movq
+movsb
+movsl
+movsw
+movw
+muls
+mulu
+nbcd
+negb
+negl
+negw
+negxb
+negxl
+negxw
+nop
+notb
+notl
+notw
+orb
+orl
+orw
+pea
+reset
+rolb
+roll
+rolw
+rorb
+rorl
+rorw
+roxlb
+roxll
+roxlw
+roxrb
+roxrl
+roxrw
+rtd
+rte
+rtr
+rts
+sbcd
+scc
+scs
+seq
+sf
+sge
+sgt
+shi
+sle
+sls
+slt
+smi
+sne
+spl
+st
+stop
+subb
+subl
+subqb
+subql
+subqw
+subw
+subxb
+subxl
+subxw
+svc
+svs
+swap
+tas
+trap
+trapv
+tstb
+tstl
+tstw
+unlk
+.fi
+.1C
+.CD
+\s+5\fBAppendix C \*- Condition Codes\fR\s-5
+\"\s+4\fBAppendix C \*- Condition Codes\fR\s-4
+.sp 1
+\s+3\fB(68000 version)\fR\s-3
+.DE
+.PP
+The \fIMacross\fR \fBif\fR, \fBwhile\fR, \fBdo-while\fR and \fBdo-until\fR
+statements make use of symbols denoting the hardware condition codes of the
+target processor which may be used as the conditions upon which conditional
+branches are base.  In the 68000 version of \fIMacross\fR, these are the
+recognized condition code symbols:
+.LP
+.nf
+	\fBcarry\fR
+	\fBequal\fR
+	\fBgeq\fR
+	\fBgreater\fR
+	\fBgt\fR
+	\fBhigh\fR
+	\fBhigh_same\fR
+	\fBhs\fR
+	\fBless\fR
+	\fBleq\fR
+	\fBlow\fR
+	\fBlow_same\fR
+	\fBls\fR
+	\fBlt\fR
+	\fBminus\fR
+	\fBnegative\fR
+	\fBneq\fR
+	\fBoverflow\fR
+	\fBplus\fR
+	\fBpositive\fR
+	\fBzero\fR
+
+.fi
+.bp
+.CD
+\s+5\fBAppendix D \*- Built-In Functions\fR\s-5
+\"\s+4\fBAppendix D \*- Built-In Functions\fR\s-4
+.DE
+.PP
+Certain predefined built-in functions are supported by \fIMacross\fR for
+reasons of convenience or syntactic or semantic irregularity.  They are:
+.nf
+
+\fBaddressMode(\fIoperand\fB)\fR
+.fi
+.RS
+Returns a number whose value indicates which addressing mode \fIoperand\fR
+represents \fI((define these values))\fR.
+.RE
+.nf
+
+\fBapply(\fImacname\fR \*[ \fB, \fIarg\fR \*Z \fB)\fR
+.fi
+.RS
+Assembles the macro whose name is specified by the \fBstring\fR \fImacname\fR
+with the macro arguments (if any) given by the \fIarg\fRs.
+.RE
+.nf
+
+\fBgetAddressRegister(\fIoperand\fB)\fR
+.fi
+.RS
+Returns a number from 0 to 7 indicating which address register is used in
+\fIoperand\fR (assuming that the address mode of \fIoperand\fR is address
+register, register indirect, postincrement, predecrement, displacement or
+indexed).
+.RE
+.nf
+
+\fBgetDataRegister(\fIoperand\fB)\fR
+.fi
+.RS
+Returns a number from 0 to 7 indicating which data register is used in
+\fIoperand\fR (assuming that the address mode of \fIoperand\fR is data
+register).
+.RE
+.nf
+
+\fBgetIndexRegister(\fIoperand\fB)\fR
+.fi
+.RS
+Returns a number from 0 to 15 indicating which register is used as the index
+register in \fIoperand\fR (assuming that the address mode of operand is
+indexed or program counter indexed).  The values 0 through 7 indicate the
+address registers \fBa0\fR through \fBa7\fR and the values 8 through 15
+indicate the data registers \fBd0\fR through \fBd7\fR.
+.RE
+.nf
+
+\fBgetRegister(\fIoperand\fB)\fR
+.fi
+.RS
+Returns a number from 0 to 15 indicating which register is used in
+\fIoperand\fR.  The values 0 through 7 indicate the address registers \fBa0\fR
+through \fBa7\fR and the values 8 through 15 indicate the data registers
+\fBd0\fR through \fBd7\fR.
+.RE
+.nf
+
+\fBgetWL(\fIoperand\fB)\fR
+.fi
+.RS
+Returns a number 0 or 1 indicatng whether \fIoperand\fR is a word operand or a
+long operand (assuming that the address mode of \fIoperand\fR is absolute,
+indexed or program counter indexed).
+.RE
+.nf
+
+\fBisAbsoluteLongMode(\fIoperand\fB)\fR
+.fi
+.RS
+Returns \fBTRUE\fR if and only if the address mode of \fIoperand\fR is
+absolute long, otherwise \fBFALSE\fR.
+.RE
+.nf
+
+\fBisAbsoluteMode(\fIoperand\fB)\fR
+.fi
+.RS
+Returns \fBTRUE\fR if and only if the address mode of \fIoperand\fR is
+absolute (short or long), otherwise \fBFALSE\fR.
+.RE
+.nf
+
+\fBisAbsoluteShortMode(\fIoperand\fB)\fR
+.fi
+.RS
+Returns \fBTRUE\fR if and only if the address mode of \fIoperand\fR is
+absolute short, otherwise \fBFALSE\fR.
+.RE
+.nf
+
+\fBisAbsoluteValue(\fIoperand\fB)\fR
+.fi
+.RS
+Returns \fBTRUE\fR if and only if \fIoperand\fR is an absolute (i.e.,
+non-relocatable) value, otherwise \fBFALSE\fR.
+.RE
+.bp
+.nf
+\fBisARegister(\fIoperand\fB)\fR
+.fi
+.RS
+Returns \fBTRUE\fR if and only if \fIoperand\fR is an address register,
+otherwise \fBFALSE\fR.
+.RE
+.nf
+
+\fBisBlock(\fIoperand\fB)\fR
+.fi
+.RS
+Returns \fBTRUE\fR if and only if \fIoperand\fR is a block, otherwise
+\fBFALSE\fR.
+.RE
+.nf
+
+\fBisBuiltInFunction(\fIsymbol\fB)\fR
+.fi
+.RS
+Returns \fBTRUE\fR if and only if \fIsymbol\fR is a built-in function,
+otherwise \fBFALSE\fR.
+.RE
+.nf
+
+\fBisCCRegister(\fIoperand\fB)\fR
+.fi
+.RS
+Returns \fBTRUE\fR if and only if \fIoperand\fR is the condition code
+register, otherwise \fBFALSE\fR.
+.RE
+.nf
+
+\fBisConditionCode(\fIoperand\fB)\fR
+.fi
+.RS
+Returns \fBTRUE\fR if and only if \fIoperand\fR is a condition code,
+otherwise \fBFALSE\fR.
+.RE
+.nf
+
+\fBisControlRegister(\fIoperand\fB)\fR
+.fi
+.RS
+Returns \fBTRUE\fR if and only if \fIoperand\fR is a control register
+(\fBusp\fR, \fBdfc\fR, \fBsfc\fR, or \fBvbr\fR), otherwise \fBFALSE\fR.
+.RE
+.nf
+
+\fBisDefined(\fIsymbol\fB)\fR
+.fi
+.RS
+Returns \fBTRUE\fR if and only if \fIsymbol\fR has been defined, otherwise
+\fBFALSE\fR.
+.RE
+.nf
+
+\fBisDFCRegister(\fIoperand\fB)\fR
+.fi
+.RS
+Returns \fBTRUE\fR if and only if \fIoperand\fR is the destination function
+code register, otherwise \fBFALSE\fR.
+.RE
+.nf
+
+\fBisDRegister(\fIoperand\fB)\fR
+.fi
+.RS
+Returns \fBTRUE\fR if and only if \fIoperand\fR is a data register, otherwise
+\fBFALSE\fR.
+.RE
+.nf
+
+\fBisDisplacementMode(\fIoperand\fB)\fR
+.fi
+.RS
+Returns \fBTRUE\fR if and only if the address mode of \fIoperand\fR
+displacment, otherwise \fBFALSE\fR.
+.RE
+.nf
+
+\fBisExternal(\fIsymbol\fB)\fR
+.fi
+.RS
+Returns \fBTRUE\fR if and only if \fIsymbol\fR is external (i.e., visible
+outside the file in which it is defined), otherwise \fBFALSE\fR.
+.RE
+.nf
+
+\fBisField(\fIsymbol\fB)\fR
+.fi
+.RS
+Returns \fBTRUE\fR if and only if \fIsymbol\fR is a field of a struct,
+otherwise \fBFALSE\fR.
+.RE
+.nf
+
+\fBisFunction(\fIsymbol\fB)\fR
+.fi
+.RS
+Returns \fBTRUE\fR if and only if \fIsymbol\fR is a user defined function,
+otherwise \fBFALSE\fR.
+.RE
+.nf
+
+\fBisImmediateMode(\fIoperand\fB)\fR
+.fi
+.RS
+Returns \fBTRUE\fR if and only if the address mode of \fIoperand\fR is
+\fIimmediate\fR, otherwise \fBFALSE\fR.
+.RE
+.nf
+
+\fBisIndexedMode(\fIoperand\fB)\fR
+.fi
+.RS
+Returns \fBTRUE\fR if and only if the address mode of \fIoperand\fR is an
+indexed mode, otherwise \fBFALSE\fR.
+.RE
+.nf
+
+\fBisPostincrementMode(\fIoperand\fB)\fR
+.fi
+.RS
+Returns \fBTRUE\fR if and only if the address mode of \fIoperand\fR is
+postincrement, otherwise \fBFALSE\fR.
+.RE
+.nf
+
+\fBisPredecrementMode(\fIoperand\fB)\fR
+.fi
+.RS
+Returns \fBTRUE\fR if and only if the address mode of \fIoperand\fR is
+predecrement, otherwise \fBFALSE\fR.
+.RE
+.nf
+
+\fBisRelocatableValue(\fIoperand\fB)\fR
+.fi
+.RS
+Returns \fBTRUE\fR if and only if \fIoperand\fR is a relocatable value,
+otherwise \fBFALSE\fR.
+.RE
+.nf
+
+\fBisSFCRegister(\fIoperand\fB)\fR
+.fi
+.RS
+Returns \fBTRUE\fR if and only if \fIoperand\fR is the source function code
+register, otherwise \fBFALSE\fR.
+.RE
+.nf
+
+\fBisStatusRegister(\fIoperand\fB)\fR
+.fi
+.RS
+Returns \fBTRUE\fR if and only if \fIoperand\fR is the status register,
+otherwise \fBFALSE\fR.
+.RE
+.nf
+
+\fBisString(\fIoperand\fB)\fR
+.fi
+.RS
+Returns \fBTRUE\fR if and only if \fIoperand\fR is a string, otherwise
+\fBFALSE\fR.
+.RE
+.nf
+
+\fBisStruct(\fIsymbol\fB)\fR
+.fi
+.RS
+Returns \fBTRUE\fR if and only if \fIsymbol\fR is the name of a struct,
+otherwise \fBFALSE\fR.
+.RE
+.nf
+
+\fBisSymbol(\fIoperand\fB)\fR
+.fi
+.RS
+Returns \fBTRUE\fR if and only if \fIoperand\fR is a symbol (as opposed to an
+expression or a number, for example), otherwise \fBFALSE\fR.
+.RE
+.nf
+
+\fBisUSP(\fIoperand\fB)\fR
+.fi
+.RS
+Returns \fBTRUE\fR if and only if \fIoperand\fR is the user stack pointer,
+otherwise \fBFALSE\fR.
+.RE
+.nf
+
+\fBisVBRegister(\fIoperand\fB)\fR
+.fi
+.RS
+Returns \fBTRUE\fR if and only if \fIoperand\fR is the vector base register,
+otherwise \fBFALSE\fR.
+.RE
+.nf
+
+\fBlistingOff()\fR
+.fi
+.RS
+If assembly listing has been enabled using the \fB-l\fR command line flag,
+turn listing off temporarily.  Otherwise, no effect.
+.RE
+.nf
+
+\fBlistingOn()\fR
+.fi
+.RS
+If assembly listing was turned off using the \fBlistingOff()\fR function, turn
+it back on again.  If listings have been globally disabled by not specifying
+the \fB-l\fR command line flag, this function has no effect.  The
+\fBlistingOff()\fR and \fBlistingOn()\fR functions are intended to be used to
+together to control assembly listings of large programs.  They can be used to
+suppress listing of large and uninteresting sections such as header files full
+of definitions of global values.  These functions may nest: in effect
+\fBlistingOff()\fR increments a counter and \fBlistingOn()\fR decrements it.
+Only when the counter is zero (i.e., the number of \fBlistingOn()\fRs matches
+the number of \fBlistingOff()\fRs) does listing actually occur.
+.RE
+.nf
+
+\fBprintf(\fIformat\fR \*[ \fB, \fIarg\fR \*Z \fB)\fR
+.fi
+.RS
+A formatted print routine just like the Unix system subroutine of the same
+name.
+.RE
+.nf
+
+\fBstrcat(\fIstring1\fB, \fIstring2\fB)\fR
+.fi
+.RS
+Returns a string which is the concatenation of the two operands, which must
+themselves be strings.
+.RE
+.nf
+
+\fBstrcmp(\fIstring1\fB, \fIstring2\fB)\fR
+.fi
+.RS
+Returns a number which is less than, equal to, or greater than 0 depending
+upon whether \fIstring1\fR is lexically less than, equal to, or greater than
+\fIstring2\fR.  The ASCII character set is used.  The two operands, of course,
+must be strings.
+.RE
+.nf
+
+\fBstrcmplc(\fIstring1\fB, \fIstring2\fB)\fR
+.fi
+.RS
+Essentially the same as \fBstrcmp()\fR except that alphabetic characters are
+converted to lower case before being compared.  The result is a
+case-independent string comparison.  This is useful for comparing two
+identifier name strings to see if they represent the same symbols.
+.RE
+.nf
+
+\fBstrlen(\fIstring\fB)\fR
+.fi
+.RS
+Returns a number which is the length, in characters, of \fIstring\fR.
+.RE
+.nf
+
+\fBsubstr(\fIstring\fB, \fIstartPos\fR \*[\fB , \fIlength\fR \*] \fB)\fR
+.fi
+.RS
+Returns a substring of the string \fIstring\fR starting from the character at
+start position \fIstartPos\fR (counting the first character from 0) and
+continuing for \fIlength\fR characters.  If \fIstartPos\fR is negative, the
+start position is counted from right to left (with the rightmost character
+position being indicated by -1) instead of the more usual left to right.  If
+\fIlength\fR is negative, \fIstartPos\fR in essence denotes the end of the
+desired substring and \fIlength\fR characters up to that position are
+returned.  If \fIlength\fR is omitted, the substring from \fIstartPos\fR to
+the end of the string is returned, if \fIstartPos\fR is positive, or to the
+beginning of the string, if \fIstartPos\fR is negative.  If any of the indices
+cause the substring bounds to go off the end of \fIstring\fR an error results.
+For example,
+.nf
+	\fBsubstr("hello there", 6, 3)\fR	yields \fB"the"\fR
+	\fBsubstr("hello there", -8, 2)\fR	yields \fB"lo"\fR
+	\fBsubstr("hello there", 6, -3)\fR	yields \fB"o t"\fR
+	\fBsubstr("hello there", -8, -4)\fR	yields \fB"hell"\fR
+	\fBsubstr("hello there", 6)\fR		yields \fB"there"\fR
+	\fBsubstr("hello there", -7)\fR		yields \fB"hello"\fR
+.fi
+.RE
+.nf
+
+\fBsymbolLookup(\fIstring\fB)\fR
+.fi
+.RS
+A call to this function with a string operand is equivalent to a reference to
+the symbol that the string represents.  For example, 
+.nf
+	\fBand	symbolLookup("foo")\fR
+.fi
+is equivalent to
+.nf
+	\fBand	foo\fR
+.fi
+.RE
+.nf
+
+\fBsymbolName(\fIsymbol\fB)\fR
+.fi
+.RS
+Returns a string which is the name of the symbol \fIsymbol\fR.  For example,
+\fBsymbolName(foo)\fR would return \fB"foo"\fR.  This can be used in
+conjunction with the \fBsymbolLookup\fR function so that the following:
+.nf
+	\fBand	symbolLookup(strcat(symbolName(foo), "bar"))\fR
+.fi
+is equivalent to
+.nf
+	\fBand	foobar\fR
+.fi
+.RE
+.nf
+
+\fBsymbolUsage(\fIsymbol\fB)\fR
+.fi
+.RS
+Returns a number whose value indicates what sort of symbol \fIsymbol\fR is
+(i.e., label, function, struct field, etc.).  \fI((define these values))\fR
+.RE
+.nf
+
+\fBvalueType(\fIthing\fB)\fR
+.fi
+.RS
+Returns a number whose value indicates the type of \fIthing\fR (i.e., symbol,
+condition code, number, block, etc.).  \fI((define these values))\fR
+.RE
+
+.fi
+.bp
+.CD
+\s+5\fBAppendix E \*- Operator Set\fR\s-5
+\"\s+4\fBAppendix E \*- Operator Set\fR\s-4
+.DE
+.PP
+This appendix describes the (\fBC\fR derived) operators supported by
+\fIMacross\fR.
+.nf
+
+	\fB-\fR \fIexpression\fR				integer negation
+	\fB!\fR \fIexpression\fR				logical negation (0 goes to 1, all other values go to 0)
+	\fB~\fR \fIexpression\fR				bitwise negation (ones complement)
+	\fB?\fR \fIexpression\fR				high byte
+	\fB/\fR \fIexpression\fR				low byte
+	\fIexpression\fR \fB*\fR \fIexpression\fR		integer multiplication
+	\fIexpression\fR \fB/\fR \fIexpression\fR		integer division
+	\fIexpression\fR \fB%\fR \fIexpression\fR		integer modulus (remainder)
+	\fIexpression\fR \fB-\fR \fIexpression\fR		integer subtraction
+	\fIexpression\fR \fB+\fR \fIexpression\fR		integer addition
+	\fIexpression\fR \fB<<\fR \fIexpression\fR		left shift
+	\fIexpression\fR \fB>>\fR \fIexpression\fR		right shift
+	\fIexpression\fR \fB<\fR \fIexpression\fR		less than
+	\fIexpression\fR \fB>\fR \fIexpression\fR		greater than
+	\fIexpression\fR \fB<=\fR \fIexpression\fR		less than or equal to
+	\fIexpression\fR \fB>=\fR \fIexpression\fR		greater than or equal to
+	\fIexpression\fR \fB==\fR \fIexpression\fR		equal to
+	\fIexpression\fR \fB!=\fR \fIexpression\fR		not equal to
+	\fIexpression\fR \fB&\fR \fIexpression\fR		bitwise AND
+	\fIexpression\fR \fB|\fR \fIexpression\fR			bitwise OR
+	\fIexpression\fR \fB^\fR \fIexpression\fR		bitwise XOR
+	\fIexpression\fR \fB&&\fR \fIexpression\fR		logical AND
+	\fIexpression\fR \fB||\fR \fIexpression\fR		logical OR
+	\fIexpression\fR \fB^^\fR \fIexpression\fR		logical XOR
+	\fIexpression\fR \fB.\fR \fIidentifier\fR			struct field selection
+	\fIidentifier\fR \fB=\fR \fIexpression\fR		assignment
+	\fIidentifier\fR \fB+=\fR \fIexpression\fR		assignment with addition
+	\fIidentifier\fR \fB-=\fR \fIexpression\fR		assignment with subtraction
+	\fIidentifier\fR \fB*=\fR \fIexpression\fR		assignment with multiplication
+	\fIidentifier\fR \fB/=\fR \fIexpression\fR		assignment with division
+	\fIidentifier\fR \fB%=\fR \fIexpression\fR		assignment with modulus
+	\fIidentifier\fR \fB&=\fR \fIexpression\fR		assignment with AND
+	\fIidentifier\fR \fB|=\fR \fIexpression\fR		assignment with OR
+	\fIidentifier\fR \fB^=\fR \fIexpression\fR		assignment with XOR
+	\fIidentifier\fR \fB<<=\fR \fIexpression\fR		assignment with left shift
+	\fIidentifier\fR \fB>>=\fR \fIexpression\fR		assignment with right shift
+	\fIidentifier\fR \fB++\fR				post-increment
+	\fIidentifier\fR \fB--\fR				post-decrement
+	\fB++\fR \fIidentifier\fR				pre-increment
+	\fB--\fR \fIidentifier\fR				pre-decrement
+
+.fi
+.bp
+.CD
+\s+5\fB Appendix F \*- Character Escape Codes\fR\s-5
+\"\s+4\fB Appendix F \*- Character Escape Codes\fR\s-4
+.DE
+.PP
+Like \fBC\fR, \fIMacross\fR enables you to use the ``\fB\\\fR'' character as
+an escape to embed quotation marks, formatting characters (such as newline)
+and other non-printing characters in character strings and character
+constants.  The recognized codes are:
+.nf
+
+	\fB\\n\fR		newline
+	\fB\\t\fR		horizontal tab
+	\fB\\b\fR		backspace
+	\fB\\r\fR		carriage return
+	\fB\\f\fR		form feed
+	\fB\\e\fR		escape
+	\fB\\\\\fR		backslash
+	\fB\\'\fR		apostrophe
+	\fB\\"\fR		quote
+	\fB\\^\fIc\fR		CONTROL-\fIc\fR (where \fIc\fR is any character).
+	\fB\\\fIddd\fR		arbitrary byte (where \fIddd\fR is one, two or three octal digits).
+.fi

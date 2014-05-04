@@ -1,0 +1,45 @@
+Address Mode Groups
+-------------------
+ID	Mode set		Mnemonic
+--	--------		--------
+A	1			DATA_REGISTER
+
+B	2			ADDRESS_REGISTER
+
+C	4			POSTINCREMENT
+
+D	5			PREDECREMENT
+
+E	6			DISPLACEMENT
+
+F	10			IMMEDIATE
+
+G	13			NORMAL
+
+H	14			CONDITION_CODE_REGISTER
+
+I	15			STATUS_REGISTER
+
+J	16			(no operand at all!)
+
+K	17			USER_STACK_POINTER
+
+L	{ 17-18 }		CONTROL_REGISTER
+
+M	{ 1-2 }			REGISTER
+
+N	{ 1-7, 11-13 }		STORABLE
+
+O	{ 1-13 }		FULL_EA
+
+P	{ 1, 3-7, 11-13 }	STORABLE_NO_A_REGISTER
+
+Q	{ 1, 3-13 }		FULL_EA_NO_A_REG
+
+R	{ 3-4, 6-9, 11-13 }	MISC_1
+
+S	{ 3-7, 11-13 }		STORABLE_NO_REGISTER
+
+T	{ 3, 5-7, 11-13 }	MISC_2
+
+U	{ 3, 6-9, 11-13 }	MISC_3

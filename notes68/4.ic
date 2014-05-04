@@ -1,0 +1,115 @@
+Instruction Classes
+-------------------
+i	ABCD	-	| AA
+	ADDX	bwl	| DD
+	SBCD	-	|
+	SUBX	bwl	|
+	
+ii	ADD	bwl	| AS
+	SUB	bwl	| FP __I
+			| OA
+			| OB __A
+	
+iii	ADDQ	bwl	| FN
+	SUBQ	bwl	|
+	
+iv	AND	bwl	| AS
+	OR	bwl	| FH __CCR
+			| FI __SR
+			| FN __I
+			| GA
+	
+v	ASL	bwl	| AA
+	ASR	bwl	| FA
+	LSL	bwl	| S
+	LSR	bwl	|
+	ROL	bwl	|
+	ROR	bwl	|
+	ROXL	bwl	|
+	ROXR	bwl	|
+	
+vi	Bcc	-	| G
+	BRA	-	|
+	BSR	-	|
+	
+vii	BCHG	-	| AP
+	BCLR	-	| FP
+	BSET	-	|
+	BTST	-	|
+	
+viii	CHK	-	| QA
+	DIVS	-	|
+	DIVU	-	|
+	MULS	-	|
+	MULU	-	|
+	
+ix	CLR	bwl	| P
+	NBCD	-	|
+	NEG	bwl	|
+	NEGX	bwl	|
+	NOT	bwl	|
+	Scc	-	|
+	TAS	-	|
+	TST	bwl	|
+	
+x	CMP	bwl	| FP __I
+			| OA
+			| OB __A
+	
+xi	CMPM	bwl	| CC
+	
+xii	DBcc	-	| AG
+	
+xiii	EOR	bwl	| AP
+			| FH __CCR
+			| FI __SR
+			| FP __I
+	
+xiv	EXG	-	| MM
+	
+xv	EXT	bwl	| A
+	SWAP	-	|
+	
+xvi	ILLEGAL	-	| J
+	NOP	-	|
+	RESET	-	|
+	RTE	-	|
+	RTR	-	|
+	RTS	-	|
+	TRAPV	-	|
+	
+xvii	JMP	-	| U
+	JSR	-	|
+	PEA	-	|
+	
+xviii	LEA	-	| UB
+	
+xix	LINK	-	| BF
+	
+xx	MOV	bwl	| BK __USP
+			| HP CCR__
+			| IP SR__
+			| KB __USP
+			| LM __C
+			| ML __C
+			| OB __I
+			| OP
+			| QH __CCR
+			| QI __SR
+	
+xxi	MOVEM	wl	| M*T
+			| RM*
+	
+xxii	MOVEP	wl	| AE
+			| EA
+	
+xxiii	MOVEQ	-	| FA
+	
+xxiv	MOVS	bwl	| MS
+			| SM
+	
+xxv	RTD	-	| F
+	STOP	-	|
+	TRAP	-	|
+	
+xxvi	UNLK	-	| B

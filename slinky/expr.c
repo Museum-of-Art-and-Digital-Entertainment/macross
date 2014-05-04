@@ -1,0 +1,885 @@
+/*
+	expr.c -- Expression evaluator for the Slinky linker
+
+	Chip Morningstar -- Lucasfilm Ltd.
+
+	6-November-1985
+*/
+
+#include "slinkyTypes.h"
+#include "slinkyGlobals.h"
+#include "slinkyExpressions.h"
+#include "y.tab.h"
+
+#define overSymbol() (pc+=sizeof(symbolType *))
+#define getSymbol() ((symbolType *)getNumber())
+#define overFunction() (pc+=sizeof(functionType *))
+#define getFunction() ((functionType *)getNumber())
+#define overNumber() (pc+=sizeof(addressType))
+#define overByte() pc++
+#define nextByte(byt) (byt = *pc++)
+#define intOp(byt) (byt+256)
+
+addressType evaluateExpression();
+void skipArray();
+void skipClause();
+void skipString();
+void skipExpression();
+
+static bool		hitFreturn = FALSE;
+static addressType	functionResult;
+
+  int
+getNumber()
+{
+	register int	result;
+	register int	i;
+	register int	shift;
+
+	result = 0;
+	for (i=0, shift=0; i<sizeof(symbolType *); ++i, shift+=8)
+		result |= (*pc++) << shift;
+	return(result);
+}
+
+  addressType
+evaluateArray()
+{
+	error(ARRAY_TERM_IN_OBJECT_ERROR);
+	skipArray();
+	return(0);
+}
+
+  addressType
+evaluateAssert()
+{
+	if (!evaluateExpression())
+		error(ASSERT_FAILED_ERROR, pc);
+	skipString();
+}
+
+  addressType
+evaluateBinop()
+{
+	int		op;
+	symbolType     *leftSymbol;
+	addressType	left;
+	addressType	right;
+
+	nextByte(op);
+	if (intOp(op) == ASSIGN) {
+		leftSymbol = getSymbol();
+	} else {
+		left = evaluateExpression();
+	}
+	right = evaluateExpression();
+	switch (intOp(op)) {
+	    case ASSIGN:
+		leftSymbol->symbolValue = right;
+		return(right);
+
+	    case LOGICAL_OR:
+		return(left || right);
+
+	    case LOGICAL_XOR:
+		return((left && !right) || (!left && right));
+
+	    case LOGICAL_AND:
+		return(left && right);
+
+	    case BITWISE_OR:
+		return(left | right);
+
+	    case BITWISE_XOR:
+		return(left ^ right);
+
+	    case BITWISE_AND:
+		return(left & right);
+
+	    case EQUAL_TO:
+		return(left == right);
+
+	    case NOT_EQUAL_TO:
+		return(left != right);
+
+	    case LESS_THAN:
+		return(left < right);
+
+	    case LESS_THAN_OR_EQUAL_TO:
+		return(left <= right);
+
+	    case GREATER_THAN:
+		return(left > right);
+
+	    case GREATER_THAN_OR_EQUAL_TO:
+		return(left >= right);
+
+	    case LEFT_SHIFT:
+		return(left << right);
+
+	    case RIGHT_SHIFT:
+		return(left >> right);
+
+	    case ADD:
+		return(left + right);
+
+	    case SUB:
+		return(left - right);
+
+	    case MUL:
+		return(left * right);
+
+	    case DIV:
+		return(left / right);
+
+	    case MOD:
+		return(left % right);
+	}
+}
+
+  addressType
+evaluateBlock()
+{
+	while (*pc != END_TAG) {
+		evaluateExpression();
+		if (hitFreturn)
+			while (*pc != END_TAG)
+				skipExpression();
+	}
+	overByte();
+	return(0);
+}
+
+  addressType
+evaluateConditionCode()
+{
+	overByte();
+	error(CONDITION_CODE_EXPRESSION_ENCOUNTERED_ERROR);
+	return(0);
+}
+
+  void
+pushSymbol(symbol, value)
+  symbolType	*symbol;
+  addressType	 value;
+{
+	bindingListType		*newBinding;
+
+	newBinding = typeAlloc(bindingListType);
+	newBinding->boundSymbol = symbol;
+	newBinding->previousClass = symbol->symbolClass;
+	symbol->symbolClass = SYMBOL_LOCAL;
+	newBinding->previousValue = symbol->symbolValue;
+	symbol->symbolValue = value;
+	newBinding->nextBinding = localBindings;
+	localBindings = newBinding;
+}
+
+  void
+bindFunctionArguments(theFunction, argCount)
+  functionType	*theFunction;
+  int		 argCount;
+{
+	argumentListType	*argList;
+
+	argList = theFunction->functionArguments;
+	while (argCount > 0) {
+		if (argList == NULL) {
+			error(TOO_MANY_FUNCTION_ARGUMENTS_ERROR);
+			while (argCount-- > 0)
+				skipExpression();
+		} else {
+			pushSymbol(argList->argumentSymbol,
+					evaluateExpression());
+			argList = argList->nextArgument;
+			argCount--;
+		}
+	}
+	while (argList != NULL) {
+		pushSymbol(argList->argumentSymbol, 0);
+		argList = argList->nextArgument;
+	}
+}
+
+  void
+undoBindings()
+{
+	bindingListType	*deadBinding;
+
+	while (localBindings != NULL) {
+		localBindings->boundSymbol->symbolClass = localBindings->
+			previousClass;
+		localBindings->boundSymbol->symbolValue = localBindings->
+			previousValue;
+		deadBinding = localBindings;
+		localBindings = localBindings->nextBinding;
+		free(deadBinding);
+	}
+}
+
+  addressType
+evaluateFreturn()
+{
+	hitFreturn = TRUE;
+	functionResult = evaluateExpression();
+	return(0);
+}
+
+  addressType
+evaluateBuiltinFunctionCall()
+{
+	int	theFunction;
+	int	argCount;
+
+	theFunction = getNumber();
+	nextByte(argCount);
+	if (theFunction<0 || MAX_FUNCTIONS<=theFunction) {
+		printf("illegal built-in function #%d\n", theFunction);
+		chokePukeAndDie();
+	}
+	return((*builtInFunctionTable[theFunction].functionEntry)(argCount));
+}
+
+  addressType
+evaluateFunctionCall()
+{
+	expressionPCType	savePoint;
+	functionType	       *theFunction;
+	int			argCount;
+	bindingListType	       *saveBindings;
+
+	theFunction = getFunction();
+	nextByte(argCount);
+	saveBindings = localBindings;
+	localBindings = NULL;
+	bindFunctionArguments(theFunction, argCount);
+	savePoint = pc;
+	pc = theFunction->functionBody;
+	evaluateExpression();
+	undoBindings();
+	localBindings = saveBindings;
+	pc = savePoint;
+	if (hitFreturn) {
+		hitFreturn = FALSE;
+		return(functionResult);
+	} else
+		return(0);
+}
+
+  addressType
+evaluateHere()
+{
+	return(here);
+}
+
+  addressType
+evaluateMdefine()
+{
+	symbolType	*symbol;
+
+	symbol = getSymbol();
+	pushSymbol(symbol, evaluateExpression);
+}
+
+  addressType
+evaluateMdoUntil()
+{
+	expressionPCType	testPoint;
+	expressionPCType	endPoint;
+
+	testPoint = pc;
+	skipExpression();
+	do {
+		evaluateExpression;
+		endPoint = pc;
+		pc = testPoint;
+	} while (!evaluateExpression());
+	pc = endPoint;
+	return(0);
+}
+
+  addressType
+evaluateMdoWhile()
+{
+	expressionPCType	testPoint;
+	expressionPCType	endPoint;
+
+	testPoint = pc;
+	skipExpression();
+	do {
+		evaluateExpression;
+		endPoint = pc;
+		pc = testPoint;
+	} while (evaluateExpression());
+	pc = endPoint;
+	return(0);
+}
+
+  addressType
+evaluateMfor()
+{
+	expressionPCType	testPoint;
+	expressionPCType	incrPoint;
+	expressionPCType	endPoint;
+	expressionPCType	bodyPoint;
+
+	evaluateExpression();
+	testPoint = pc;
+	if (evaluateExpression()) {
+		incrPoint = pc;
+		skipExpression();
+		bodyPoint = pc;
+		do {
+			pc = bodyPoint;
+			evaluateExpression();
+			endPoint = pc;
+			pc = incrPoint;
+			evaluateExpression();
+			pc = testPoint;
+		} while (evaluateExpression());
+		pc = endPoint;
+	} else {
+		skipExpression();
+		skipExpression();
+	}
+	return(0);
+}
+
+  addressType
+evaluateMif()
+{
+	if (evaluateExpression()) {
+		evaluateExpression();
+		skipExpression();
+	} else {
+		skipExpression();
+		evaluateExpression();
+	}
+	return(0);
+}
+
+  bool
+evaluateClause(pattern)
+  addressType	pattern;
+{
+	bool	match;
+
+	match = FALSE;
+	while (*pc != BLOCK_TAG)
+		if (match)
+			skipExpression();
+		else
+			match = (evaluateExpression() == pattern);
+	if (match)
+		evaluateExpression();
+	else
+		skipExpression();
+	return(match);
+}
+
+  addressType
+evaluateMswitch()
+{
+	addressType	pattern;
+
+	pattern = evaluateExpression();
+	while (*pc != END_TAG)
+		if (evaluateClause(pattern))
+			break;
+	while (*pc != END_TAG)
+		skipClause();
+	overByte();
+	return(0);
+}
+
+  addressType
+evaluateMwhile()
+{
+	expressionPCType	testPoint;
+	expressionPCType	endPoint;
+
+	testPoint = pc;
+	if (evaluateExpression()) {
+		do {
+			evaluateExpression();
+			endPoint = pc;
+			pc = testPoint;
+		} while (evaluateExpression());
+		pc = endPoint;
+	} else {
+		skipExpression();
+	}
+}
+
+  addressType
+evaluateMvariable()
+{
+	symbolType	*symbol;
+
+	symbol = getSymbol();
+	pushSymbol(symbol, evaluateExpression);
+}
+
+  addressType
+evaluateNumber()
+{
+	addressType	result;
+	int		i;
+	int		shift;
+
+	result = 0;
+	for (i=0, shift=0; i<sizeof(addressType); ++i, shift+=8)
+		result |= (*pc++) << shift;
+	return(result);
+}
+
+  addressType
+evaluateRelocatableNumber()
+{
+	return(evaluateNumber() + relocationOffset);
+}
+
+  addressType
+evaluatePerform()
+{
+	evaluateExpression();
+	return(0);
+}
+
+  addressType
+evaluatePostop()
+{
+	int		op;
+	symbolType     *target;
+
+	nextByte(op);
+	target = getSymbol();
+	switch (intOp(op)) {
+	    case INCREMENT:
+		return(target->symbolValue++);
+
+	    case DECREMENT:
+		return(target->symbolValue--);
+	}
+}
+
+  addressType
+evaluatePreop()
+{
+	int		op;
+	symbolType     *target;
+
+	nextByte(op);
+	target = getSymbol();
+	switch (intOp(op)) {
+	    case INCREMENT:
+		return(++target->symbolValue);
+
+	    case DECREMENT:
+		return(--target->symbolValue);
+	}
+}
+
+  addressType
+evaluateString()
+{
+	addressType	result;
+
+	result = (addressType) pc;
+	while (*pc++ != '\0')
+		;
+	return(result);
+}
+
+  addressType
+evaluateSymbol()
+{
+	symbolType     *target;
+
+	target = getSymbol();
+	return(target->symbolValue);
+}
+
+  addressType
+evaluateUnop()
+{
+	int		op;
+	addressType	arg;
+
+	nextByte(op);
+	arg = evaluateExpression();
+	switch(intOp(op)) {
+	    case UNARY_MINUS:
+		return(-arg);
+
+	    case LOGICAL_NOT:
+		return(!arg);
+
+	    case BITWISE_NOT:
+		return(~arg);
+
+	    case HI_BYTE:
+		return((arg & 0xFF00) >> 8);
+
+	    case LO_BYTE:
+		return(arg & 0xFF);
+	}
+}
+
+  addressType
+evaluateExpression()
+{
+	if (pc == NULL)
+		return(0);
+	switch (*pc++) {
+	    case IDENTIFIER_TAG:
+		return(evaluateSymbol());
+
+	    case FUNCTION_CALL_TAG:
+		return(evaluateFunctionCall());
+
+	    case BUILTIN_FUNCTION_CALL_TAG:
+		return(evaluateBuiltinFunctionCall());
+
+	    case NUMBER_TAG:
+		return(evaluateNumber());
+
+	    case RELOCATABLE_TAG:
+		return(evaluateRelocatableNumber());
+
+	    case CONDITION_CODE_TAG:
+		return(evaluateConditionCode());
+
+	    case SUBEXPRESSION_TAG:
+		return(evaluateExpression());
+
+	    case UNOP_TAG:
+		return(evaluateUnop());
+
+	    case BINOP_TAG:
+		return(evaluateBinop());
+
+	    case PREOP_TAG:
+		return(evaluatePreop());
+
+	    case POSTOP_TAG:
+		return(evaluatePostop());
+
+	    case HERE_TAG:
+		return(evaluateHere());
+
+	    case STRING_TAG:
+		return(evaluateString());
+
+	    case ARRAY_TAG:
+		return(evaluateArray());
+
+	    case VALUE_TAG:
+		return(evaluateNumber());
+
+	    case NULL_TAG:
+		return(0);
+
+	    case BLOCK_TAG:
+		return(evaluateBlock());
+
+	    case MDEFINE_TAG:
+		return(evaluateMdefine());
+
+	    case MVARIABLE_TAG:
+		return(evaluateMvariable());
+
+	    case MIF_TAG:
+		return(evaluateMif());
+
+	    case MFOR_TAG:
+		return(evaluateMfor());
+
+	    case MWHILE_TAG:
+		return(evaluateMwhile());
+
+	    case MDOWHILE_TAG:
+		return(evaluateMdoWhile());
+
+	    case MDOUNTIL_TAG:
+		return(evaluateMdoUntil());
+
+	    case PERFORM_TAG:
+		return(evaluatePerform());
+
+	    case GROUP_TAG:
+		return(evaluateBlock());
+
+	    case ASSERT_TAG:
+		return(evaluateAssert());
+
+	    case MSWITCH_TAG:
+		return(evaluateMswitch());
+
+	    case CLAUSE_TAG:
+		error(CLAUSE_AT_TOP_LEVEL_ERROR);
+		chokePukeAndDie();
+
+	    case FRETURN_TAG:
+		return(evaluateFreturn());
+
+	    case END_TAG:
+		return(0);
+	}
+}
+
+  void
+skipArray()
+{
+	overSymbol();
+	skipExpression();
+}
+
+  void
+skipAssert()
+{
+	skipExpression();
+	skipString();
+}
+
+  void
+skipBinop()
+{
+	overByte();
+	skipExpression();
+	skipExpression();
+}
+
+  void
+skipBlock()
+{
+	while (*pc != END_TAG)
+		skipExpression();
+	overByte();
+}
+
+  void
+skipFunctionCall()
+{
+	int	argCount;
+
+	overFunction();
+	nextByte(argCount);
+	while (argCount-- > 0)
+		skipExpression();
+}
+
+  void
+skipMdefine()
+{
+	overSymbol();
+	skipExpression();
+}
+
+  void
+skipMdoUntil()
+{
+	skipExpression();
+	skipExpression();
+}
+
+  void
+skipMdoWhile()
+{
+	skipExpression();
+	skipExpression();
+}
+
+  void
+skipMfor()
+{
+	skipExpression();
+	skipExpression();
+	skipExpression();
+	skipExpression();
+}
+
+  void
+skipMif()
+{
+	skipExpression();
+	skipExpression();
+	skipExpression();
+}
+
+  void
+skipClause()
+{
+	while (*pc != BLOCK_TAG)
+		skipExpression;
+	skipBlock();
+}
+
+  void
+skipMswitch()
+{
+	skipExpression();
+	while (*pc != END_TAG)
+		skipClause();
+	overByte();
+}
+
+  void
+skipMvariable()
+{
+	overSymbol();
+	skipExpression();
+}
+
+  void
+skipMwhile()
+{
+	skipExpression();
+	skipExpression();
+}
+
+  void
+skipPostop()
+{
+	overByte();
+	skipExpression();
+}
+
+  void
+skipPreop()
+{
+	overByte();
+	skipExpression();
+}
+
+  void
+skipString()
+{
+	while (*pc++ != '\0')
+		;
+}
+
+  void
+skipUnop()
+{
+	overByte();
+	skipExpression();
+}
+
+  void
+skipExpression()
+{
+	if (pc == NULL)
+		return;
+	switch (*pc++) {
+	    case IDENTIFIER_TAG:
+		overSymbol();
+		break;
+
+	    case FUNCTION_CALL_TAG:
+		skipFunctionCall();
+		break;
+
+	    case NUMBER_TAG:
+	    case RELOCATABLE_TAG:
+		overNumber();
+		break;
+
+	    case CONDITION_CODE_TAG:
+		overByte();
+		break;
+
+	    case SUBEXPRESSION_TAG:
+		skipExpression();
+		break;
+
+	    case UNOP_TAG:
+		skipUnop();
+		break;
+
+	    case BINOP_TAG:
+		skipBinop();
+		break;
+
+	    case PREOP_TAG:
+		skipPreop();
+		break;
+
+	    case POSTOP_TAG:
+		skipPostop();
+		break;
+
+	    case HERE_TAG:
+		break;
+
+	    case STRING_TAG:
+		skipString();
+		break;
+
+	    case ARRAY_TAG:
+		skipArray();
+		break;
+
+	    case VALUE_TAG:
+		overNumber();
+		break;
+
+	    case NULL_TAG:
+		break;
+
+	    case BLOCK_TAG:
+		skipBlock();
+		break;
+
+	    case MDEFINE_TAG:
+		skipMdefine();
+		break;
+
+	    case MVARIABLE_TAG:
+		skipMvariable();
+		break;
+
+	    case MIF_TAG:
+		skipMif();
+		break;
+
+	    case MFOR_TAG:
+		skipMfor();
+		break;
+
+	    case MWHILE_TAG:
+		skipMwhile();
+		break;
+
+	    case MDOWHILE_TAG:
+		skipMdoWhile();
+		break;
+
+	    case MDOUNTIL_TAG:
+		skipMdoUntil();
+		break;
+
+	    case PERFORM_TAG:
+		skipExpression();
+		break;
+
+	    case GROUP_TAG:
+		skipBlock();
+		break;
+
+	    case ASSERT_TAG:
+		skipAssert();
+		break;
+
+	    case MSWITCH_TAG:
+		skipMswitch();
+		break;
+
+	    case CLAUSE_TAG:
+		skipClause();
+		break;
+
+	    case END_TAG:
+		break;
+	}
+}

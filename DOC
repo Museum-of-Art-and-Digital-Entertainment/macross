@@ -1,0 +1,34 @@
+/u0/chip/macross:
+	This directory contains the source to Macross.  Here's what's here:
+
+DOC			- this file
+
+Makefile		- current makefile
+Makefile_6502		- makefile for 6502 version
+Makefile_68000		- makefile for 68000
+
+	There are both 6502 and 68000 versions of Macross, though the 68000
+version has not been very well tested.  Source for both is here.  Source files
+which come in different flavors for the different versions are marked 6502 or
+68000 in their names as appropriate.  There are two different Makefiles also.
+At any given time, either the 6502 version or the 68000 version is the
+'working' version.  The 'working' version is what the default makefile
+'Makefile' will produce.  Typing 'make foobar' will change the working version
+by swapping the makefiles.
+
+*.c, *.h, *.y		- source for the program
+
+doc/			- the manual and other user documentation are here
+notes68/		- notes on 68000 syntax and operand structure
+opt/			- working directory for 'optimized' version.  When I
+	was developing the program, I needed to keep two separate copies of
+	the source and object code.  This is because the C compiler can
+	compile with debugging or with optimization, but not both.  The
+	version that folks use needs to be compiled with optimization, but I
+	need a version with debugging to fix any problems that crop up.  Since
+	the time to recompile the whole thing is so enormous, it was easiest
+	to keep two copies.  In the interest of saving file space, all that is
+	in this directory now, however, are the Makefiles for compiling with
+	optimization.
+
+slinky/			- Slinky lives here

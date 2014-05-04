@@ -1,0 +1,51 @@
+Address Modes
+-------------
+					      Notation
+Number	Motorola Name			Motorola	Sun	Sun Name
+------	-------------			--------	---	--------
+1	Data Register Direct		Dn		Dn	Register
+
+2	Address Register Direct		An		An	Register
+
+3	Address Register Indirect	(An)		An@	Register
+								 Deferred
+
+4	Address Register Indirect w/	(An)+		An@+	Postincrement
+	 Postincrement
+
+5	Address Register Indirect w/	-(An)		An@-	Predecrement
+	 Predecrement
+
+6	Address Register Indirect w/	d(An)		An@(d)	Displacement
+	 Displacement
+
+7	Address Register Indirect w/	d(An,Rx.W)	An@(d,Rx:W) Word Index
+	 Index				d(An,Rx.L)	An@(d,Rx:L) Long Index
+
+8	Program Counter w/ Displacement	d(PC)		PC@(d) PC Displacement
+
+9	Program Counter w/ Index	d(PC,Rx.W)	PC@(d,Rx:W) PC Word
+								     Index
+					d(PC,Rx.L)	PC@(d,Rx:L) PC Long
+								     Index
+
+10	Immediate			#xxx		#xxx	Immediate
+
+11	Absolute Short			xxx.W		xxx:W	Absolute Short
+
+12	Absolute Long			xxx.L		xxx:L	Absolute Long
+
+13	--				--		xxx	Normal
+
+14	(condition code register)	CCR		CC	--
+
+15	(status register)		SR		SR	--
+
+16	Implied
+
+17	(user stack pointer)		USP		USP	--
+
+18	(control register)		SFC		SFC	--
+					DFC		DFC
+					VBR		VBR
+

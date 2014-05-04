@@ -1,0 +1,60 @@
+Operand Sets
+------------
+ 1	A
+ 2	AA
+ 3	AE
+ 4	AG
+ 5	AP
+ 6	AS
+
+ 7	B
+ 8	BF
+ 9	BK
+
+10	CC
+
+11	DD
+
+12	EA
+
+13	F
+14	FA
+15	FH
+16	FI
+17	FN
+18	FP
+
+19	G
+
+20	HP
+
+21	IP
+
+22	J
+
+23	KB
+
+24	LM
+
+25	ML
+26	MM
+27	MP
+28	MS
+29	M*T
+
+30	OA
+31	OB
+
+32	P
+
+33	QA
+34	QH
+35	QI
+
+36	RM*
+
+37	S
+38	SM
+
+39	U
+40	UB
