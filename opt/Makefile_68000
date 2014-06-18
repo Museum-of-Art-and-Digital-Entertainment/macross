@@ -101,7 +101,7 @@ emitBranch.o: emitBranch_$(PROC).c $(HEADERS)
 	mv emitBranch_$(PROC).o emitBranch.o
 
 emitStuff.o: emitStuff.c $(HEADERS)
-	cc -O -c -DBYTESWAPPED -DTARGET_CPU=CPU_$(PROC) emitStuff.c
+	cc -O -c -DTARGET_CPU=CPU_$(PROC) emitStuff.c
 
 errorStuff.o: errorStuff.c $(HEADERS)
 
