@@ -63,7 +63,7 @@ bindingListType		*localBindings;
 segmentListType		*generatedLoadImage[CODE_REGIONS_IN_ADDRESS_SPACE];
 #define	regionOf(addr)	(addr / CODE_REGION_SIZE)
 
-struct {
+extern struct {
 	stringType	*functionName;
 	addressType	 (*functionEntry)();
 		} builtInFunctionTable[];

@@ -76,9 +76,9 @@ int			 nextEnvironmentNumber;
 int			 nextLabelTagNumber;
 FILE			*objectFileOutput;
 char			 operandBuffer[MAX_NUMBER_OF_OPERANDS][LINE_BUFFER_SIZE];
-char			 pass2IndexFileName[];
-char			 pass2SourceFileName[];
-char			 pass2MacroExpansionFileName[];
+extern char		 pass2IndexFileName[];
+extern char		 pass2SourceFileName[];
+extern char		 pass2MacroExpansionFileName[];
 expressionType		*pendingFixup[MAX_NUMBER_OF_OPERANDS];
 bool			 performingFixups;
 bool			 positionIndependentCodeMode;
@@ -111,14 +111,14 @@ int			(*lexDispatchTable[128])();
 #define HASH_TABLE_SIZE	512
 #define HASH_TABLE_MASK 0x1FF
 
-struct {
+extern struct {
 	stringType	*functionName;
 	valueType	*(*functionEntry)();
 	bool		 isSpecialFunction;
 	int		 ordinal;
 		} builtInFunctionTable[];
 
-struct {
+extern struct {
 	stringType	*symbolName;
 	int		 symbolValue;
 		} predefinedSymbolTable[];
@@ -127,21 +127,21 @@ macroTableEntryType	*macroTable[HASH_TABLE_SIZE];
 
 opcodeTableEntryType	*opcodeTable[HASH_TABLE_SIZE];
 
-opcodeTableEntryType	 theOpcodes[];
+extern opcodeTableEntryType	 theOpcodes[];
 
 keywordTableEntryType	*keywordTable[HASH_TABLE_SIZE];
 
-keywordTableEntryType	 theKeywords[];
+extern keywordTableEntryType	 theKeywords[];
 
 conditionTableEntryType	*conditionTable[HASH_TABLE_SIZE];
 
-conditionTableEntryType	 theConditions[];
+extern conditionTableEntryType	 theConditions[];
 
 symbolTableEntryType	*symbolTable[HASH_TABLE_SIZE];
 
-int			 operandClassTable[];
+extern int		 operandClassTable[];
 
-void		       (*instructionActionTable[])();
+extern void	       (*instructionActionTable[])();
 
 int			 validSymbolValues[NUM_OF_SYM_USAGES];
 
