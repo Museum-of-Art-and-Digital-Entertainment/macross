@@ -31,6 +31,7 @@
 #include "macrossGlobals.h"
 #include "listing.h"
 
+#include <stdarg.h>
 #include <string.h>
 
 static char	 lineBuffer1[LINE_BUFFER_SIZE];
@@ -504,42 +505,40 @@ labeledLine()
 }
 
   void
-addText(buffer, bufferPtr, format, arg1, arg2, arg3)
-  char  *buffer;
-  char **bufferPtr;
-  char	*format;
-  int	 arg1;
-  int	 arg2;
-  int	 arg3;
+vaddText(char *buffer, char **bufferPtr, char *format, va_list ap)
 {
-	sprintf(*bufferPtr, format, arg1, arg2, arg3);
-	*bufferPtr = buffer + strlen(buffer);
+	vsprintf(*bufferPtr, format, ap);
+	*bufferPtr = buffer = strlen(buffer);
 }
 
   void
-moreTextOptional(buffer, bufferPtr, format, arg1, arg2, arg3)
-  char  *buffer;
-  char **bufferPtr;
-  char	*format;
-  int	 arg1;
-  int	 arg2;
-  int	 arg3;
+addText(char *buffer, char **bufferPtr, char *format, ...)
 {
+	va_list ap;
+	va_start(ap, format);
+	vaddText(buffer, bufferPtr, format, ap);
+	va_end(ap);
+}
+
+  void
+moreTextOptional(char *buffer, char **bufferPtr, char *format, ...)
+{
+	va_list ap;
+	va_start(ap, format);
 	if (buffer == NULL)
-		addText(expansionString, &expansionStringPtr, format, arg1,
-			arg2, arg3);
+		vaddText(expansionString, &expansionStringPtr, format, ap);
 	else
-		addText(buffer, bufferPtr, format, arg1, arg2, arg3);
+		vaddText(buffer, bufferPtr, format, ap);
+	va_end(ap);
 }
 
   void
-moreText(format, arg1, arg2, arg3)
-  char	*format;
-  int	 arg1;
-  int	 arg2;
-  int	 arg3;
+moreText(char *format, ...)
 {
-	addText(expansionString, &expansionStringPtr, format, arg1,arg2,arg3);
+	va_list ap;
+	va_start(ap, format);
+	addText(expansionString, &expansionStringPtr, format, ap);
+	va_end(ap);
 }
 
   void
@@ -634,13 +633,12 @@ expandLabel()
 }
 
   void
-moreExpression(format, arg1, arg2, arg3)
-  char	*format;
-  int	 arg1;
-  int	 arg2;
-  int	 arg3;
+moreExpression(char *format, ...)
 {
-	sprintf(expressionStringPtr, format, arg1, arg2, arg3);
+        va_list ap;
+        va_start(ap, format);
+	vsprintf(expressionStringPtr, format, ap);
+        va_end(ap);
 	expressionStringPtr = expressionString + strlen(expressionString);
 }
 
