@@ -24,6 +24,10 @@ conditionDefs_$(PROC).h driver.c slinkyExpressions.h
 HEADERS = macrossTypes.h macrossGlobals.h
 
 CFLAGS=-m32 # macross is not 64 bit clean
+# If yacc is notionally present on a system, it's usually actually
+# bison in a compatibility mode. bison is available by name more often
+# than bison itself is.
+YACC=bison -o y.tab.c
 
 .c.o:
 	cc $(CFLAGS) -c -g -DTARGET_CPU=CPU_$(PROC) $*.c
@@ -153,10 +157,10 @@ y.tab.o: y.tab.c $(HEADERS)
 	cc $(CFLAGS) -c -g -DYYDEBUG -DTARGET_CPU=CPU_$(PROC) y.tab.c
 
 y.tab.c y.tab.h: macross_$(PROC).y
-	yacc -d macross_$(PROC).y
+	$(YACC) -d macross_$(PROC).y
 
 y.output: macross_$(PROC).y
-	yacc -vd macross_$(PROC).y
+	$(YACC) -vd macross_$(PROC).y
 
 cleanup:
 	/bin/rm -f *.o y.output y.tab.c y.tab.h macross
