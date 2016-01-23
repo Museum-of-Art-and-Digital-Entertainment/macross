@@ -31,6 +31,8 @@
 #include "macrossGlobals.h"
 #include "listing.h"
 
+#include <string.h>
+
 static char	 lineBuffer1[LINE_BUFFER_SIZE];
 static char	 lineBuffer2[LINE_BUFFER_SIZE];
 int		 cumulativeLineNumber = 0;

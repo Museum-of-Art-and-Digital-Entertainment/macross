@@ -30,6 +30,8 @@
 #include "macrossTypes.h"
 #include "macrossGlobals.h"
 
+#include <string.h>
+
 #define isAlphaNumeric(c)	(alphaNumericCharacterTable[c])
 
 extern int yydebug;

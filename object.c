@@ -30,6 +30,8 @@
 #include "macrossTypes.h"
 #include "macrossGlobals.h"
 
+#include <string.h>
+
 static int	symbolTableSize;
 static int	symbolTableStringSize;
 bool		encodingFunction;

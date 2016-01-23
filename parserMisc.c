@@ -34,6 +34,8 @@
 #include "y.tab.h"
 #include "parserMisc.h"
 
+#include <string.h>
+
   statementType *
 addLabelToStatement(labelList, statement)
   labelListType	*labelList;

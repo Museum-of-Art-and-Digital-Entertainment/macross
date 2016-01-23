@@ -34,6 +34,8 @@
 #include "expressionSemantics.h"
 #include "semanticMisc.h"
 
+#include <string.h>
+
 operandType		*dbOperand;	/* safe temps for dbx hacking */
 expressionType		*dbExpression;
 symbolTableEntryType	*dbSymbol;

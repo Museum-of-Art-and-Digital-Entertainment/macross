@@ -35,6 +35,8 @@
 #include "semanticMisc.h"
 #include "expressionSemantics.h"
 
+#include <string.h>
+
 #define expansionOff() {saveExpansion=expandMacros; expandMacros=FALSE;}
 #define expansionOn()	expandMacros=saveExpansion;
 
