@@ -351,7 +351,7 @@ initializeStuff(int argc, char **argv)
 	installCommandLineDefineSymbols();
 
 	if (listingOn) {
-		if ((saveFileForPass2 = fopen(mktemp(pass2SourceFileName),
+		if ((saveFileForPass2 = fopen(mkstemp(pass2SourceFileName),
 				"w+")) == NULL) {
 			fatalSystemError(UNABLE_TO_OPEN_PASS_2_FILE_ERROR,
 					pass2SourceFileName);
@@ -360,7 +360,7 @@ initializeStuff(int argc, char **argv)
 			unlink(pass2SourceFileName); /* will take effect on
 							program exit */
 
-		if ((indexFileForPass2 = fopen(mktemp(pass2IndexFileName),
+		if ((indexFileForPass2 = fopen(mkstemp(pass2IndexFileName),
 				"w+")) == NULL) {
 			fatalSystemError(UNABLE_TO_OPEN_PASS_2_FILE_ERROR,
 					pass2IndexFileName);
@@ -370,7 +370,7 @@ initializeStuff(int argc, char **argv)
 							program exit */
 
 		if (expandMacros) {
-			if ((macroFileForPass2 = fopen(mktemp(
+			if ((macroFileForPass2 = fopen(mkstemp(
 				pass2MacroExpansionFileName),"w+")) == NULL) {
 				fatalSystemError(
 					UNABLE_TO_OPEN_PASS_2_FILE_ERROR,
