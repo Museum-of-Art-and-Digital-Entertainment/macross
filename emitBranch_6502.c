@@ -37,11 +37,16 @@
    branching from the current location given a condition to branch upon and a
    target address. */
 
-  void
-emitRelativeBranch(condition, target, fixupLocation)
-  conditionType	 condition;
-  valueType	*target;
-  valueType	 fixupLocation[COMPOUND_BRANCH_MAX];
+  
+extern void emitByte (byte byteValue);
+extern void emitRelativeByteOffset (valueType *target);
+extern void botch (char *message, ...);
+extern void emitWord (wordType wordValue);
+extern void noteAnonymousReference (void);
+extern void emitWordValue (valueType *wordValue);
+
+void
+emitRelativeBranch(conditionType condition, valueType *target, valueType *fixupLocation)
 {
 	int	i;
 
@@ -139,14 +144,12 @@ emitRelativeBranch(condition, target, fixupLocation)
 /* emitJump emits a 6502 jump instruction given the target address */
 
   simpleFixupListType *
-emitJump(target, previousFixups)
-  valueType		*target;
-  simpleFixupListType	*previousFixups;
+emitJump(valueType *target, simpleFixupListType *previousFixups)
 {
 	simpleFixupListType	*result;
 	valueType		 picFixup[COMPOUND_BRANCH_MAX];
 
-	simpleFixupListType	*buildSimpleFixupList();
+	simpleFixupListType	*buildSimpleFixupList(valueType locationToFixup, simpleFixupListType *previousList);
 
 #define JUMP_OPCODE	0x4C
 

@@ -39,7 +39,12 @@ bool			 nullStatementFlag;
    input up to the end of the line, in a (probably futile) effort to recover
    from the booboo. */
 
-  void
+  
+void verror (errorType theError, va_list ap);
+void fatalError (errorType theError, ...);
+extern void chokePukeAndDie (void);
+
+void
 puntOnError(errorType theError, ...)
 {
 	va_list ap;
@@ -289,8 +294,7 @@ fatalSystemError(errorType theError, ...)
    the error message as a string (this is almost always 'syntax error'). */
 
   void
-yyerror(s)
-  char	*s;
+yyerror(char *s)
 {
 	printf("\"%s\", line %d: %s\n", currentFileName, currentLineNumber,s);
 	fflush(stdout);
@@ -304,8 +308,7 @@ yyerror(s)
    in a sentence). */
 
   char *
-usageString(usageKind)
-  symbolUsageKindType	usageKind;
+usageString(symbolUsageKindType usageKind)
 {
 /* This table MUST be maintained congruently with the definition of the
    enumerated type 'symbolUsageKindType'. */
@@ -336,8 +339,7 @@ usageString(usageKind)
 /* valueKindString similarly deals with the different kinds of values. */
 
   char *
-valueKindString(valueKind)
-  valueKindType	valueKind;
+valueKindString(valueKindType valueKind)
 {
 /* This table MUST be maintained congruently with the definition of the
    enumerated type 'valueKindType'. */
@@ -366,8 +368,7 @@ valueKindString(valueKind)
 /* assignmentString similarly handles assignments */
 
   char *
-assignmentString(assignment)
-  assignmentKindType	assignment;
+assignmentString(assignmentKindType assignment)
 {
 /* This table MUST be maintained congruently with the definition of the
    enumerated type 'assignmentKindType'. */

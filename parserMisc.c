@@ -37,12 +37,14 @@
 #include <stdarg.h>
 #include <string.h>
 
-  statementType *
-addLabelToStatement(labelList, statement)
-  labelListType	*labelList;
-  statementType	*statement;
+  
+extern void chokePukeAndDie (void);
+extern void puntOnError (errorType theError, ...);
+
+statementType *
+addLabelToStatement(labelListType *labelList, statementType *statement)
 {
-	statementType	*newStatement();
+	statementType	*newStatement(statementKindType kind, statementBodyType body);
 
 	if (statement == NULL)
 		statement = newStatement(NULL_STATEMENT, (statementBodyType){ NULL });
@@ -66,16 +68,14 @@ botch(char *message, ...)
 }
 
   void
-checkDefineAssignmentOperator(assignmentOperator)
-  assignmentKindType	assignmentOperator;
+checkDefineAssignmentOperator(assignmentKindType assignmentOperator)
 {
 	if (assignmentOperator != ASSIGN_ASSIGN)
 		puntOnError(DEFINE_ASSIGNMENT_WRONG_ERROR);
 }
 
   statementType *
-convertDefineToMdefine(defineStatement)
-  statementType	*defineStatement;
+convertDefineToMdefine(statementType *defineStatement)
 {
 	if (defineStatement->kindOfStatement != DEFINE_STATEMENT)
 		botch("convertDefineToMdefine got statement kind: %d\n",
@@ -85,8 +85,7 @@ convertDefineToMdefine(defineStatement)
 }
 
   ifStatementBodyType *
-extractIfBody(ifStatement)
-  statementType	*ifStatement;
+extractIfBody(statementType *ifStatement)
 {
 	ifStatementBodyType	*result;
 
@@ -101,8 +100,7 @@ extractIfBody(ifStatement)
 }
 
   mifStatementBodyType *
-extractMifBody(mifStatement)
-  statementType	*mifStatement;
+extractMifBody(statementType *mifStatement)
 {
 	mifStatementBodyType	*result;
 
@@ -117,8 +115,7 @@ extractMifBody(mifStatement)
 }
 
   stringType *
-extractString(textExpression)
-  operandType	*textExpression;
+extractString(operandType *textExpression)
 {
 	stringType	*result;
 
@@ -131,22 +128,21 @@ extractString(textExpression)
 }
 
   void
-popMacroOrFunctionNestingDepth()
+popMacroOrFunctionNestingDepth(void)
 {
 	if (--macroOrFunctionNestingDepth == 0)
 		unknownSymbolTag = UNKNOWN_SYMBOL;
 }
 
   void
-pushMacroOrFunctionNestingDepth()
+pushMacroOrFunctionNestingDepth(void)
 {
 	macroOrFunctionNestingDepth++;
 	unknownSymbolTag = NESTED_UNKNOWN_SYMBOL;
 }
 
   char *
-saveString(s)
-  char	*s;
+saveString(char *s)
 {
 	char	*result;
 

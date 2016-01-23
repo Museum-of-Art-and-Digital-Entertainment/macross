@@ -30,10 +30,22 @@
 #include "macrossTypes.h"
 #include "macrossGlobals.h"
 
-  void
-putStructFixups(base, fixups)
-  int		 base;
-  fixupListType	*fixups;
+  
+extern void botch (char *message, ...);
+extern void error (errorType theError, ...);
+extern void moreText (char *format, ...);
+extern void endLine (void);
+extern void emitByte (byte byteValue);
+extern bool listableStatement (statementKindType kind);
+extern void startLine (void);
+extern void assembleLabelList (labelListType *labelList);
+extern void expandLabel (void);
+extern void tabIndent (void);
+extern bool assembleStatementBody (statementKindType kind, statementBodyType body, int cumulativeLineNumber, bool worryAboutIf, simpleFixupListType **ifFixupList);
+extern void startLineMarked (void);
+
+void
+putStructFixups(int base, fixupListType *fixups)
 {
 	fixupListType	*newFixup;
 
@@ -54,9 +66,7 @@ putStructFixups(base, fixups)
 }
 
   void
-putStructReferences(base, references)
-  int				 base;
-  expressionReferenceListType	*references;
+putStructReferences(int base, expressionReferenceListType *references)
 {
 	expressionReferenceListType	*newReference;
 	int				 currentMode;
@@ -80,14 +90,13 @@ putStructReferences(base, references)
 }
 
   void
-instantiateStruct(structStatement)
-  structStatementBodyType	*structStatement;
+instantiateStruct(structStatementBodyType *structStatement)
 {
 	int			 i;
 	int			 base;
 	symbolInContextType	*context;
 
-	symbolInContextType	*getWorkingContext();
+	symbolInContextType	*getWorkingContext(symbolTableEntryType *identifier);
 
 #define structInstance	((structInstanceType *)	context->value->value)
 
@@ -112,8 +121,7 @@ instantiateStruct(structStatement)
 }
 
   structInstanceType *
-assembleStructDefinitionBody(structBody)
-  structBodyType	*structBody;
+assembleStructDefinitionBody(structBodyType *structBody)
 {
 	int			 i;
 	simpleFixupListType	*dummy;
@@ -144,13 +152,12 @@ assembleStructDefinitionBody(structBody)
 }
 
   void
-assembleStructDefinition(structStatement)
-  structStatementBodyType	*structStatement;
+assembleStructDefinition(structStatementBodyType *structStatement)
 {
 	symbolTableEntryType	*name;
 	symbolInContextType	*context;
 
-	symbolTableEntryType	*effectiveSymbol();
+	symbolTableEntryType	*effectiveSymbol(symbolTableEntryType *symbol, symbolInContextType **assignmentTargetContext);
 
 	name = effectiveSymbol(structStatement->structName, &context);
 	if (context == NULL)

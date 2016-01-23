@@ -9,7 +9,7 @@ valueType *evaluateBinopTerm(binopTermType *assignmentTerm, bool isTopLevel, fix
 valueType *evaluateCondition(conditionType condition);
 valueType *evaluateBuiltInFunctionCall(symbolInContextType *workingContext, operandListType *parameters, fixupKindType kindOfFixup);
 valueType *evaluateFunctionCall(functionCallTermType *functionCall, fixupKindType kindOfFixup, bool isStandalone);
-valueType *evaluateHere();
+valueType *evaluateHere(void);
 valueType *evaluateIdentifier(symbolTableEntryType *identifier, bool isTopLevel, fixupKindType kindOfFixup);
 valueType *evaluateNumber(numberTermType number);
 valueType *evaluatePostopTerm(postOpTermType *postopTerm);

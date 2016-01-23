@@ -80,7 +80,7 @@ union	overhead {
  */
 #define	NBUCKETS 30
 static	union overhead *nextf[NBUCKETS];
-extern	char *sbrk();
+extern	char *sbrk(int);
 
 #ifdef MSTATS
 /*
@@ -109,8 +109,7 @@ static void morecore(int);
 static int findbucket(union overhead *, int);
 
 char *
-malloc(nbytes)
-	register unsigned nbytes;
+malloc(register unsigned int nbytes)
 {
   	register union overhead *p;
   	register int bucket = 0;
@@ -160,8 +159,7 @@ malloc(nbytes)
  * Allocate more memory to the indicated bucket.
  */
 static void
-morecore(bucket)
-	register bucket;
+morecore(register int bucket)
 {
   	register union overhead *op;
   	register int rnu;       /* 2^rnu bytes will be requested */
@@ -209,8 +207,7 @@ morecore(bucket)
 }
 
 void
-free(cp)
-	char *cp;
+free(char *cp)
 {   
   	register int size;
 	register union overhead *op;
@@ -252,9 +249,7 @@ free(cp)
 int realloc_srchlen = 4;	/* 4 should be plenty, -1 =>'s whole list */
 
 char *
-realloc(cp, nbytes)
-	char *cp; 
-	unsigned nbytes;
+realloc(char *cp, unsigned int nbytes)
 {   
   	register u_int onb;
 	union overhead *op;
@@ -304,9 +299,7 @@ realloc(cp, nbytes)
  * Return bucket number, or -1 if not found.
  */
 static
-findbucket(freep, srchlen)
-	union overhead *freep;
-	int srchlen;
+findbucket(union overhead *freep, int srchlen)
 {
 	register union overhead *p;
 	register int i, j;

@@ -44,11 +44,11 @@ void valueLabel(symbolTableEntryType *symbol, valueType *value);
 
 /* Fixups and references */
 void createFixup(expressionType *expression, addressType location, fixupKindType kindOfFixup, codeBufferKindType codeMode, int whichFixup);
-void finishUp();
-void noteAnonymousReference();
+void finishUp(void);
+void noteAnonymousReference(void);
 void noteReference(expressionType *expression, fixupKindType kindOfFixup, addressType location, codeBufferKindType codeMode);
 void performFixups(fixupListType *fixups);
-void performStartAddressFixup();
+void performStartAddressFixup(void);
 void putFixupsHere(fixupKindType kindOfFixupsToPut, int whichFixup);
 
 /* Contexts and dynamic symbol creation */

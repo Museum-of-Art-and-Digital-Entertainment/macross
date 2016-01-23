@@ -64,10 +64,32 @@ stringType		*dbString;
 #define moreStuff(f) (generatingFixup ? moreExpression(f) : moreText(f))
 #define moreStuff1(f,x) (generatingFixup? moreExpression(f,x) : moreText(f,x))
 
-  anyOldThing *
-arrayLookup(arrayTerm, kindOfThing)
-  arrayTermType	*arrayTerm;
-  valueKindType	*kindOfThing;
+  
+extern void error (errorType theError, ...);
+extern char *valueKindString (valueKindType valueKind);
+extern void moreExpression (char *format, ...);
+extern valueType *evaluateOperand (operandType *operand);
+extern char *tokenString (int token);
+extern char *assignmentString (assignmentKindType assignment);
+extern char *usageString (symbolUsageKindType usageKind);
+extern valueType *makeUndefinedValue (void);
+extern void botch (char *message, ...);
+extern char *conditionString (conditionType condition);
+extern int bindFunctionArguments (argumentDefinitionListType *argumentList, operandListType *parameterList, stringType *functionName);
+extern void assembleBlock (blockType *block);
+extern void unbindArguments (argumentDefinitionListType *argumentList, int numberToUnbind);
+extern void unbindLocalVariables (identifierListType *identifierList);
+extern void reincarnateSymbol (symbolInContextType *context, symbolUsageKindType newUsage);
+extern bool shouldParenthesize (operandType *operand);
+extern void moreText (char *format, ...);
+extern void endLine (void);
+extern void tabIndent (void);
+extern void flushExpressionString (void);
+extern operandType *buildOperand (operandKindType kindOfOperand, anyOldThing *arg);
+extern expressionType *generateFixupExpression (expressionType *expression);
+
+anyOldThing *
+arrayLookup(arrayTermType *arrayTerm, valueKindType *kindOfThing)
 {
 	valueType		*arrayValue;
 	valueType		*indexValue;
@@ -124,8 +146,7 @@ arrayLookup(arrayTerm, kindOfThing)
 }
 
   valueType *
-evaluateArrayTerm(arrayTerm)
-  arrayTermType	*arrayTerm;
+evaluateArrayTerm(arrayTermType *arrayTerm)
 {
 	anyOldThing		*resultThing;
 	valueKindType		 kindOfResult;
@@ -169,9 +190,7 @@ evaluateArrayTerm(arrayTerm)
 }
 
   valueType *
-evaluateAssignmentTerm(assignmentTerm, kindOfFixup)
-  binopTermType	*assignmentTerm;
-  fixupKindType	 kindOfFixup;
+evaluateAssignmentTerm(binopTermType *assignmentTerm, fixupKindType kindOfFixup)
 {
 	symbolTableEntryType	*targetSymbol;
 	valueType		*target;
@@ -363,10 +382,7 @@ evaluateAssignmentTerm(assignmentTerm, kindOfFixup)
 }
 
   valueType *
-evaluateBinopTerm(binopTerm, isTopLevel, kindOfFixup)
-  binopTermType	*binopTerm;
-  bool		 isTopLevel;
-  fixupKindType	 kindOfFixup;
+evaluateBinopTerm(binopTermType *binopTerm, bool isTopLevel, fixupKindType kindOfFixup)
 {
 	valueType		*leftOperand;
 	valueType		*rightOperand;
@@ -580,18 +596,14 @@ evaluateBinopTerm(binopTerm, isTopLevel, kindOfFixup)
 }
 
   valueType *
-evaluateCondition(condition)
-  conditionType	condition;
+evaluateCondition(conditionType condition)
 {
 	expand(moreExpression("%s", conditionString(condition)));
 	return(newValue(CONDITION_VALUE, condition, EXPRESSION_OPND));
 }
 
   valueType *
-evaluateBuiltInFunctionCall(workingContext, parameters, kindOfFixup)
-  symbolInContextType	*workingContext;
-  operandListType	*parameters;
-  fixupKindType		 kindOfFixup;
+evaluateBuiltInFunctionCall(symbolInContextType *workingContext, operandListType *parameters, fixupKindType kindOfFixup)
 {
 	sideEffectFlag = TRUE;
 	return((*builtInFunctionTable[workingContext->value->value].
@@ -599,10 +611,7 @@ evaluateBuiltInFunctionCall(workingContext, parameters, kindOfFixup)
 }
 
   valueType *
-evaluateFunctionCall(functionCall, kindOfFixup, isStandalone)
-  functionCallTermType	*functionCall;
-  fixupKindType		 kindOfFixup;
-  bool			 isStandalone;
+evaluateFunctionCall(functionCallTermType *functionCall, fixupKindType kindOfFixup, bool isStandalone)
 {
 	functionDefinitionType	*theFunction;
 	int			 numberBound;
@@ -682,7 +691,7 @@ evaluateFunctionCall(functionCall, kindOfFixup, isStandalone)
 }
 
   valueType *
-evaluateHere()
+evaluateHere(void)
 {
 	valueType	*result;
 
@@ -694,10 +703,7 @@ evaluateHere()
 }
 
   valueType *
-evaluateIdentifier(identifier, isTopLevel, kindOfFixup)
-  symbolTableEntryType	*identifier;
-  bool			 isTopLevel;
-  fixupKindType		 kindOfFixup;
+evaluateIdentifier(symbolTableEntryType *identifier, bool isTopLevel, fixupKindType kindOfFixup)
 {
 	symbolInContextType	*workingContext;
 	valueType		*resultValue;
@@ -821,16 +827,14 @@ evaluateIdentifier(identifier, isTopLevel, kindOfFixup)
 }
 
   valueType *
-evaluateNumber(number)
-  numberTermType	number;
+evaluateNumber(numberTermType number)
 {
 	expand(moreExpression("0x%x", number));
 	return(newValue(ABSOLUTE_VALUE, number, EXPRESSION_OPND));
 }
 
   valueType *
-evaluatePostopTerm(postopTerm)
-  postOpTermType	*postopTerm;
+evaluatePostopTerm(postOpTermType *postopTerm)
 {
 	valueType		*theOperand;
 	valueType	       **theOperandPtr;
@@ -897,8 +901,7 @@ evaluatePostopTerm(postopTerm)
 }
 
   valueType *
-evaluatePreopTerm(preopTerm)
-  preOpTermType	*preopTerm;
+evaluatePreopTerm(preOpTermType *preopTerm)
 {
 	valueType		*theOperand;
 	valueType		*result;
@@ -965,8 +968,7 @@ evaluatePreopTerm(preopTerm)
 }
 
   valueType *
-evaluateString(string)
-  stringType	*string;
+evaluateString(stringType *string)
 {
 	stringType	*newString;
 
@@ -977,9 +979,7 @@ evaluateString(string)
 }
 
   valueType *
-evaluateUnopTerm(unopTerm, kindOfFixup)
-  unopTermType	*unopTerm;
-  fixupKindType	 kindOfFixup;
+evaluateUnopTerm(unopTermType *unopTerm, fixupKindType kindOfFixup)
 {
 	valueType	*theOperand;
 	valueKindType	 resultKindOfValue;
@@ -1031,11 +1031,7 @@ evaluateUnopTerm(unopTerm, kindOfFixup)
 }
 
   valueType *
-evaluateExpressionInternally(expression, isTopLevel, kindOfFixup,isStandalone)
-  expressionType	*expression;
-  bool			 isTopLevel;
-  fixupKindType		 kindOfFixup;
-  bool			 isStandalone;
+evaluateExpressionInternally(expressionType *expression, bool isTopLevel, fixupKindType kindOfFixup, bool isStandalone)
 {
 	valueType	*result;
 
@@ -1125,9 +1121,7 @@ evaluateExpressionInternally(expression, isTopLevel, kindOfFixup,isStandalone)
 }
 
   valueType *
-evaluateExpression(expression, kindOfFixup)
-  expressionType	*expression;
-  fixupKindType		 kindOfFixup;
+evaluateExpression(expressionType *expression, fixupKindType kindOfFixup)
 {
 	valueType	*result;
 
@@ -1148,8 +1142,7 @@ evaluateExpression(expression, kindOfFixup)
 }
 
   void
-evaluateExpressionStandalone(expression)
-  expressionType	*expression;
+evaluateExpressionStandalone(expressionType *expression)
 {
 	bool		 saveExpansion;
 	valueType	*expressionResult;
@@ -1169,8 +1162,7 @@ evaluateExpressionStandalone(expression)
 }
 
   valueType *
-evaluateDefineExpression(expression)
-  expressionType	*expression;
+evaluateDefineExpression(expressionType *expression)
 {
 	nullEvaluate(expression);
 	return(newValue(OPERAND_VALUE, buildOperand(EXPRESSION_OPND,
@@ -1178,8 +1170,7 @@ evaluateDefineExpression(expression)
 }
 
   valueType *
-evaluateSelectionList(selectionList)
-  selectionListType	*selectionList;
+evaluateSelectionList(selectionListType *selectionList)
 {
 	int		 offset;
 

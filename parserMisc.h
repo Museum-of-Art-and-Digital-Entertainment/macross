@@ -9,8 +9,8 @@ void convertDefineToMDefine(statementType *defineStatement);
 ifStatementBodyType *extractIfBody(statementType *ifStatement);
 mifStatementBodyType *extractMifBody(statementType *mifStatement);
 stringType *extractString(operandType *textExpression);
-void popMacroOrFunctionNestingDepth();
-void pushMacroOrFunctionNestingDepth();
+void popMacroOrFunctionNestingDepth(void);
+void pushMacroOrFunctionNestingDepth(void);
 char *saveString(char *s);
 
 #endif

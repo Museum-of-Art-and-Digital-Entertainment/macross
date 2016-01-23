@@ -30,16 +30,20 @@
 #include "macrossTypes.h"
 #include "macrossGlobals.h"
 
-main(argc, argv)
-  int	argc;
-  char *argv[];
+
+extern void initializeStuff (int argc, char **argv);
+extern int yyparse (void);
+extern void finishUp (void);
+extern void chokePukeAndDie (void);
+
+main(int argc, char **argv)
 {
 #ifdef __APPLE__
 	char end = get_end();
 #else
 	extern char	 end;
 #endif
-	char		*sbrk();
+	char		*sbrk(int);
 
 	fflush(stdout);
 	initializeStuff(argc, argv);
@@ -55,7 +59,7 @@ main(argc, argv)
 }
 
   void
-printVersion()
+printVersion(void)
 {
 	printf("Macross %s version 4.20.\n", TARGET_CPU_STRING);
 }

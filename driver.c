@@ -38,8 +38,7 @@ char	*m68000 = "68000";
 
 char	**mlist;
 
-main(argc, argv)
-	char **argv;
+main(int argc, char **argv)
 {
 	char   *processor = m6502;
 	int	i;

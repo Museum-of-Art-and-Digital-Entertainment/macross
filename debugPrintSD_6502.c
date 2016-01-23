@@ -39,9 +39,14 @@ int	tablevel;
 /* Fundamental nop print operation */
 #define nullPrint(thing)   if (thing==NULL) { tab(); printf("()\n"); return; }
 
-  void
-printCondition(condition)
-  conditionType	condition;
+  
+extern void tab (void);
+extern void printExpression (expressionType *expression);
+extern void printIdentifierList (identifierListType *identifierList);
+extern void printBlock (blockType *block);
+
+void
+printCondition(conditionType condition)
 {
 /* This table MUST be maintained congruently with the definition of the
    enumerated type 'conditionType'. */
@@ -70,8 +75,7 @@ printCondition(condition)
 }
 
   void
-printOperandKind(kind)
-  operandKindType	kind;
+printOperandKind(operandKindType kind)
 {
 /* This table MUST be maintained congruently with the definition of the
    enumerated type 'operandKindType'. */
@@ -97,8 +101,7 @@ printOperandKind(kind)
 }
 
   void
-printToken(token)
-  int	token;
+printToken(int token)
 {
 /* This table MUST be maintained congruently with the set of '#define's in
    the file 'y.tab.h' as produced by yacc. */
@@ -193,8 +196,7 @@ printToken(token)
 }
 
   void
-printOperand(operand)
-  operandType	*operand;
+printOperand(operandType *operand)
 {
 	nullPrint(operand);
 	tab(); printf("(operand: [");

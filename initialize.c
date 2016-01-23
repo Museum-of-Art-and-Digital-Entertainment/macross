@@ -39,17 +39,27 @@ extern int yydebug;
 static fileNameListType		*bottomOfInputFileStack;
 static char			 *outputFileName;
 
-  void
-chokePukeAndDie()
+  
+extern int unlink (const char *);
+bool isDotMName (stringType *fileName);
+extern void fatalError (errorType theError, ...);
+extern void printVersion (void);
+extern void warning (errorType theError, ...);
+extern void fatalSystemError (errorType theError, ...);
+extern void initializeLexDispatchTable (void);
+extern genericTableEntryType *hashStringEnter (genericTableEntryType *entry, genericTableEntryType **table);
+extern int fancyAtoI (char *buffer, int base);
+extern void error (errorType theError, ...);
+
+void
+chokePukeAndDie(void)
 {
 	unlink(outputFileName);
 	exit(1);
 }
 
   void
-initializeStuff(argc, argv)
-  int	argc;
-  char *argv[];
+initializeStuff(int argc, char **argv)
 {
 	int	  i;
 	int	  j;
@@ -62,13 +72,13 @@ initializeStuff(argc, argv)
 	char	 *symbolDumpFileName;
 	bool	  dontUnlinkTempFiles;
 
-	void	  createHashTables();
-	void	  installBuiltInFunctions();
-	void	  installPredefinedSymbols();
-	void	  installCommandLineDefineSymbols();
-	void	  openFirstInputFile();
-	void	  queueInputFile();
-	void	  noteCommandLineDefine();
+	void	  createHashTables(void);
+	void	  installBuiltInFunctions(void);
+	void	  installPredefinedSymbols(void);
+	void	  installCommandLineDefineSymbols(void);
+	void	  openFirstInputFile(void);
+	void	  queueInputFile(char *name);
+	void	  noteCommandLineDefine(char *arg);
 
 	for (i=0; i<128; i++) {
 		lowerCaseCharacterTable[i] = i;
@@ -381,13 +391,13 @@ initializeStuff(argc, argv)
 }
 
   void
-installBuiltInFunctions()
+installBuiltInFunctions(void)
 {
 	int				 i;
 	symbolTableEntryType		*newFunction;
 
-	symbolTableEntryType		*lookupOrEnterSymbol();
-	valueType			*newValue();
+	symbolTableEntryType		*lookupOrEnterSymbol(stringType *s, symbolUsageKindType kind);
+	valueType			*newValue(valueKindType kindOfValue, int value, operandKindType addressMode);
 
 	for (i=0; builtInFunctionTable[i].functionName!=NULL; i++) {
 		newFunction = lookupOrEnterSymbol(builtInFunctionTable[i].
@@ -401,13 +411,13 @@ installBuiltInFunctions()
 }
 
   void
-installPredefinedSymbols()
+installPredefinedSymbols(void)
 {
 	int				 i;
 	symbolTableEntryType		*newSymbol;
 
-	symbolTableEntryType		*lookupOrEnterSymbol();
-	valueType			*newValue();
+	symbolTableEntryType		*lookupOrEnterSymbol(stringType *s, symbolUsageKindType kind);
+	valueType			*newValue(valueKindType kindOfValue, int value, operandKindType addressMode);
 
 	for (i=0; predefinedSymbolTable[i].symbolName!=NULL; i++) {
 		newSymbol = lookupOrEnterSymbol(predefinedSymbolTable[i].
@@ -420,13 +430,13 @@ installPredefinedSymbols()
 }
 
   void
-installCommandLineDefineSymbols()
+installCommandLineDefineSymbols(void)
 {
 	int				 i;
 	symbolTableEntryType		*newSymbol;
 
-	symbolTableEntryType		*lookupOrEnterSymbol();
-	valueType			*newValue();
+	symbolTableEntryType		*lookupOrEnterSymbol(stringType *s, symbolUsageKindType kind);
+	valueType			*newValue(valueKindType kindOfValue, int value, operandKindType addressMode);
 
 	while (commandLineDefines != NULL) {
 		newSymbol = lookupOrEnterSymbol(commandLineDefines->name,
@@ -439,7 +449,7 @@ installCommandLineDefineSymbols()
 }
 
   void
-createHashTables()
+createHashTables(void)
 {
 	opcodeTableEntryType	*newOpcodeEntry;
 	keywordTableEntryType	*newKeywordEntry;
@@ -459,8 +469,7 @@ createHashTables()
 }
 
   void
-queueInputFile(name)
-  char	*name;
+queueInputFile(char *name)
 {
 	fileNameListType	*newFileName;
 
@@ -479,7 +488,7 @@ queueInputFile(name)
 }
 
   void
-openFirstInputFile()
+openFirstInputFile(void)
 {
 	if (inputFileStack == NULL) {
 		inputFileStack = typeAlloc(fileNameListType);
@@ -504,8 +513,7 @@ openFirstInputFile()
 }
 
   bool
-isDotMName(fileName)
-  stringType	*fileName;
+isDotMName(stringType *fileName)
 {
 	int	length;
 
@@ -515,10 +523,7 @@ isDotMName(fileName)
 }
 
   bool
-parseCommandLineDefine(arg, name, value)
-  char	 *arg;
-  char	**name;
-  int	 *value;
+parseCommandLineDefine(char *arg, char **name, int *value)
 {
 	char	*ptr;
 	char	 c;
@@ -561,14 +566,13 @@ parseCommandLineDefine(arg, name, value)
 }
 
   void
-noteCommandLineDefine(arg)
-  char	*arg;
+noteCommandLineDefine(char *arg)
 {
 	char			*name;
 	int			 value;
 	commandLineDefineType	*newCommandLineDefine;
 
-	bool	 parseCommandLineDefine();
+	bool	 parseCommandLineDefine(char *arg, char **name, int *value);
 
 	if (parseCommandLineDefine(arg, &name, &value)) {
 		newCommandLineDefine = typeAlloc(commandLineDefineType);

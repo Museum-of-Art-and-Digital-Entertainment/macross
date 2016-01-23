@@ -54,28 +54,63 @@ bool			 nullStatementFlag = FALSE;
 #define expansionOff() {saveExpansion=expandMacros; expandMacros=FALSE;}
 #define expansionOn()	expandMacros=saveExpansion;
 
-  void
-assembleBlock(block)
-  blockType	*block;
+  
+extern void error (errorType theError, ...);
+extern void moreText (char *format, ...);
+extern void expandOperands (int op);
+extern void endLine (void);
+extern int bindMacroArguments (argumentDefinitionListType *argumentList, operandListType *parameterList, stringType *macroName);
+extern void unbindArguments (argumentDefinitionListType *argumentList, int numberToUnbind);
+extern void unbindLocalVariables (identifierListType *identifierList);
+extern void expandExpression (char *toBuffer, char **toBufferPtr);
+extern void emitByte (byte byteValue);
+extern void emitString (stringType *string);
+extern void emitByteValue (valueType *byteValue);
+extern void startLineMarked (void);
+extern void tabIndent (void);
+extern void emitWordValue (valueType *wordValue);
+extern void reincarnateSymbol (symbolInContextType *context, symbolUsageKindType newUsage);
+extern char *conditionString (conditionType condition);
+extern char *usageString (symbolUsageKindType usageKind);
+extern symbolTableEntryType *lookupOrEnterSymbol (stringType *s, symbolUsageKindType kind);
+extern bool isDefined (valueType *value);
+extern void fixupBranch (valueType *location, valueType target);
+extern void fixupJump (simpleFixupListType *locations, valueType target);
+extern void pushInputFileStack (stringType *fileName);
+extern void saveIndexForListing (statementKindType kindOfStatement, int cumulativeLineNumber);
+extern void startLine (void);
+extern void expandLabel (void);
+extern void emitLongValue (valueType *longValue);
+extern void pushBinding (symbolTableEntryType *symbol, valueType *newBinding, symbolUsageKindType newUsage);
+extern void saveEndMifForListing (int cumulativeLineNumber);
+extern char *valueKindString (valueKindType valueKind);
+extern bool strcmplc (char *s1, char *s2);
+extern void warning (errorType theError, ...);
+extern expressionType *generateFixupExpression (expressionType *expression);
+extern void instantiateStruct (structStatementBodyType *structStatement);
+extern void assembleStructDefinition (structStatementBodyType *structStatement);
+extern void purgeSymbol (symbolTableEntryType *symbol);
+extern bool labeledLine (void);
+extern void flushExpressionString (void);
+extern void freeStatement (statementType *statement);
+extern void printStatement (statementType *statement);
+
+void
+assembleBlock(blockType *block)
 {
 	nullAssemble(block);
 	assembleStatement(block, FALSE, NULL);
 }
 
   simpleFixupListType *
-assembleBlockInsideIf(block, ongoingFixupList)
-  blockType		*block;
-  simpleFixupListType	*ongoingFixupList;
+assembleBlockInsideIf(blockType *block, simpleFixupListType *ongoingFixupList)
 {
 	nullAssembleNULL(block);
 	return(assembleStatement(block, TRUE, ongoingFixupList));
 }
 
   bool
-operandCheck(opcode, numberOfOperands, evaluatedOperands)
-  opcodeTableEntryType	*opcode;
-  int			 numberOfOperands;
-  valueType		*evaluatedOperands[];
+operandCheck(opcodeTableEntryType *opcode, int numberOfOperands, valueType **evaluatedOperands)
 {
 	int	i;
 
@@ -91,9 +126,7 @@ operandCheck(opcode, numberOfOperands, evaluatedOperands)
 }
 
   void
-assembleMachineInstruction(opcode, operands)
-  opcodeTableEntryType	*opcode;
-  operandListType	*operands;
+assembleMachineInstruction(opcodeTableEntryType *opcode, operandListType *operands)
 {
 	int		 i;
 	int		 op;
@@ -140,9 +173,7 @@ assembleMachineInstruction(opcode, operands)
 }
 
   void
-assembleMacro(macroInstruction, operands)
-  macroTableEntryType	*macroInstruction;
-  operandListType	*operands;
+assembleMacro(macroTableEntryType *macroInstruction, operandListType *operands)
 {
 	int			 numberBound;
 	identifierListType	*savedLocalVariableList;
@@ -186,8 +217,7 @@ assembleMacro(macroInstruction, operands)
 }
 
   void
-assembleAlignStatement(alignStatement)
-  alignStatementBodyType	*alignStatement;
+assembleAlignStatement(alignStatementBodyType *alignStatement)
 {
 	int		 alignment;
 	bool		 saveExpansion;
@@ -218,8 +248,7 @@ assembleAlignStatement(alignStatement)
 }
 
   void
-assembleAssertStatement(assertStatement)
-  assertStatementBodyType	*assertStatement;
+assembleAssertStatement(assertStatementBodyType *assertStatement)
 {
 	valueType	*test;
 	valueType	*message;
@@ -249,8 +278,7 @@ assembleAssertStatement(assertStatement)
 }
 
   void
-assembleBlockStatement(blockStatement)
-  blockStatementBodyType	*blockStatement;
+assembleBlockStatement(blockStatementBodyType *blockStatement)
 {
 	valueType		*blockIncrement;
 	int			 blockSize;
@@ -286,8 +314,7 @@ assembleBlockStatement(blockStatement)
 }
 
   void
-assembleByteStatement(byteStatement)
-  byteStatementBodyType	*byteStatement;
+assembleByteStatement(byteStatementBodyType *byteStatement)
 {
 	valueType		*byteValue;
 
@@ -311,8 +338,7 @@ assembleByteStatement(byteStatement)
 }
 
   void
-assembleConstrainStatement(constrainStatement)
-  constrainStatementBodyType	*constrainStatement;
+assembleConstrainStatement(constrainStatementBodyType *constrainStatement)
 {
 	valueType	*constraintValue;
 	int		 constraint;
@@ -355,8 +381,7 @@ assembleConstrainStatement(constrainStatement)
 }
 
   void
-assembleDbyteStatement(dbyteStatement)
-  dbyteStatementBodyType	*dbyteStatement;
+assembleDbyteStatement(dbyteStatementBodyType *dbyteStatement)
 {
 	valueType		*wordValue;
 
@@ -376,8 +401,7 @@ assembleDbyteStatement(dbyteStatement)
 }
 
   void
-assembleDefineStatement(defineStatement)
-  defineStatementBodyType	*defineStatement;
+assembleDefineStatement(defineStatementBodyType *defineStatement)
 {
 	symbolTableEntryType	*symbolToDefine;
 	symbolInContextType	*contextToDefine;
@@ -417,8 +441,7 @@ assembleDefineStatement(defineStatement)
 }
 
   void
-assembleDoUntilStatement(doUntilStatement)
-  doUntilStatementBodyType	*doUntilStatement;
+assembleDoUntilStatement(doUntilStatementBodyType *doUntilStatement)
 {
 	valueType	topOfLoop;
 
@@ -442,8 +465,7 @@ assembleDoUntilStatement(doUntilStatement)
 }
 
   void
-assembleDoWhileStatement(doWhileStatement)
-  doWhileStatementBodyType	*doWhileStatement;
+assembleDoWhileStatement(doWhileStatementBodyType *doWhileStatement)
 {
 	valueType	topOfLoop;
 
@@ -467,8 +489,7 @@ assembleDoWhileStatement(doWhileStatement)
 }
 
   void
-assembleExternStatement(externStatement)
-  externStatementBodyType	*externStatement;
+assembleExternStatement(externStatementBodyType *externStatement)
 {
 	symbolInContextType	*context;
 	symbolTableEntryType	*theSymbol;
@@ -496,8 +517,7 @@ assembleExternStatement(externStatement)
 }
 
   void
-assembleFreturnStatement(freturnStatement)
-  freturnStatementBodyType	*freturnStatement;
+assembleFreturnStatement(freturnStatementBodyType *freturnStatement)
 {
 	freturnExit = TRUE;
 	resultOfLastFunctionCall = evaluateExpression(freturnStatement,
@@ -505,8 +525,7 @@ assembleFreturnStatement(freturnStatement)
 }
 
   void
-assembleFunctionStatement(functionStatement)
-  functionStatementBodyType	*functionStatement;
+assembleFunctionStatement(functionStatementBodyType *functionStatement)
 {
 	symbolTableEntryType		*newFunctionSymbol;
 	functionDefinitionType		*newFunction;
@@ -545,8 +564,7 @@ assembleFunctionStatement(functionStatement)
 }
 
   void
-assembleGroupStatement(groupStatement)
-  blockType	*groupStatement;
+assembleGroupStatement(blockType *groupStatement)
 {
 	expand((startLineMarked(), tabIndent(), moreText("{"), endLine(),
 		tabCount++));
@@ -556,10 +574,7 @@ assembleGroupStatement(groupStatement)
 }
 
   simpleFixupListType *
-assembleIfStatement(ifStatement, terminalIf, ongoingFixupList)
-  ifStatementBodyType	*ifStatement;
-  bool			 terminalIf;
-  simpleFixupListType	*ongoingFixupList;
+assembleIfStatement(ifStatementBodyType *ifStatement, bool terminalIf, simpleFixupListType *ongoingFixupList)
 {
 	valueType		 fixupLocation1[COMPOUND_BRANCH_MAX];
 	simpleFixupListType	*fixupLocation2;
@@ -609,8 +624,7 @@ assembleIfStatement(ifStatement, terminalIf, ongoingFixupList)
 }
 
   void
-assembleIfStatementOldStyle(ifStatement)
-  ifStatementBodyType	*ifStatement;
+assembleIfStatementOldStyle(ifStatementBodyType *ifStatement)
 {
 	valueType		 fixupLocation1[COMPOUND_BRANCH_MAX];
 	simpleFixupListType	*fixupLocation2;
@@ -642,8 +656,7 @@ assembleIfStatementOldStyle(ifStatement)
 }
 
   void
-assembleIncludeStatement(includeStatement)
-  includeStatementBodyType	*includeStatement;
+assembleIncludeStatement(includeStatementBodyType *includeStatement)
 {
 	stringType	*fileName;
 	valueType	*possibleFileName;
@@ -663,9 +676,7 @@ assembleIncludeStatement(includeStatement)
 }
 
   void
-assembleInstructionStatement(instructionStatement, cumulativeLineNumber)
-  instructionStatementBodyType	*instructionStatement;
-  int				 cumulativeLineNumber;
+assembleInstructionStatement(instructionStatementBodyType *instructionStatement, int cumulativeLineNumber)
 {
 	nullAssemble(instructionStatement);
 	switch(instructionStatement->kindOfInstruction) {
@@ -695,8 +706,7 @@ assembleInstructionStatement(instructionStatement, cumulativeLineNumber)
 }
 
   void
-assembleLongStatement(longStatement)
-  longStatementBodyType	*longStatement;
+assembleLongStatement(longStatementBodyType *longStatement)
 {
 	valueType		*longValue;
 
@@ -716,8 +726,7 @@ assembleLongStatement(longStatement)
 }
 
   void
-assembleMacroStatement(macroStatement)
-  macroStatementBodyType	*macroStatement;
+assembleMacroStatement(macroStatementBodyType *macroStatement)
 {
 	macroTableEntryType		*newMacro;
 
@@ -739,8 +748,7 @@ assembleMacroStatement(macroStatement)
 }
 
   void
-assembleMdefineStatement(mdefineStatement)
-  defineStatementBodyType	*mdefineStatement;
+assembleMdefineStatement(defineStatementBodyType *mdefineStatement)
 {
 	bool			 saveExpansion;
 
@@ -753,8 +761,7 @@ assembleMdefineStatement(mdefineStatement)
 }
 
   void
-assembleMdoUntilStatement(mdoUntilStatement)
-  mdoUntilStatementBodyType	*mdoUntilStatement;
+assembleMdoUntilStatement(mdoUntilStatementBodyType *mdoUntilStatement)
 {
 	bool	saveListingOn;
 
@@ -768,8 +775,7 @@ assembleMdoUntilStatement(mdoUntilStatement)
 }
 
   void
-assembleMdoWhileStatement(mdoWhileStatement)
-  mdoWhileStatementBodyType	*mdoWhileStatement;
+assembleMdoWhileStatement(mdoWhileStatementBodyType *mdoWhileStatement)
 {
 	bool	saveListingOn;
 
@@ -783,8 +789,7 @@ assembleMdoWhileStatement(mdoWhileStatement)
 }
 
   void
-assembleMforStatement(mforStatement)
-  mforStatementBodyType	*mforStatement;
+assembleMforStatement(mforStatementBodyType *mforStatement)
 {
 	bool	saveListingOn;
 	bool	saveExpansion;
@@ -805,9 +810,7 @@ assembleMforStatement(mforStatement)
 }
 
   void
-assembleMifStatement(mifStatement, cumulativeLineNumber)
-  mifStatementBodyType	*mifStatement;
-  int			 cumulativeLineNumber;
+assembleMifStatement(mifStatementBodyType *mifStatement, int cumulativeLineNumber)
 {
 	while (mifStatement != NULL) {
 		if (mifStatement->mifCondition == NULL) {
@@ -826,8 +829,7 @@ assembleMifStatement(mifStatement, cumulativeLineNumber)
 }
 
   void
-assembleMswitchStatement(mswitchStatement)
-  mswitchStatementBodyType	*mswitchStatement;
+assembleMswitchStatement(mswitchStatementBodyType *mswitchStatement)
 {
     valueType		*switchValue;
     caseListType	*caseList;
@@ -888,8 +890,7 @@ assembleMswitchStatement(mswitchStatement)
 }
 
   void
-assembleMvariableStatement(mvariableStatement)
-  mvariableStatementBodyType	*mvariableStatement;
+assembleMvariableStatement(mvariableStatementBodyType *mvariableStatement)
 {
 	identifierListType	*newLocalVariable;
 	int			 initCount;
@@ -923,8 +924,7 @@ assembleMvariableStatement(mvariableStatement)
 }
 
   void
-assembleMwhileStatement(mwhileStatement)
-  mwhileStatementBodyType	*mwhileStatement;
+assembleMwhileStatement(mwhileStatementBodyType *mwhileStatement)
 {
 	bool	saveListingOn;
 
@@ -938,8 +938,7 @@ assembleMwhileStatement(mwhileStatement)
 }
 
   void
-assembleOrgStatement(orgStatement)
-  orgStatementBodyType	*orgStatement;
+assembleOrgStatement(orgStatementBodyType *orgStatement)
 {
 	valueType	*orgAddress;
 	bool		 saveExpansion;
@@ -967,8 +966,7 @@ assembleOrgStatement(orgStatement)
 }
 
   void
-assemblePerformStatement(performStatement)
-  performStatementBodyType	*performStatement;
+assemblePerformStatement(performStatementBodyType *performStatement)
 {
 	nullAssemble(performStatement);
 	sideEffectFlag = FALSE;
@@ -978,8 +976,7 @@ assemblePerformStatement(performStatement)
 }
 
   void
-assembleRelStatement(relStatement)
-  relStatementBodyType	*relStatement;
+assembleRelStatement(relStatementBodyType *relStatement)
 {
 	targetOffset = 0;
 	if (!relocatableValue(&currentLocationCounter)) {
@@ -992,8 +989,7 @@ assembleRelStatement(relStatement)
 }
 
   void
-assembleStartStatement(startStatement)
-  startStatementBodyType	*startStatement;
+assembleStartStatement(startStatementBodyType *startStatement)
 {
 	nullAssemble(startStatement);
 	expand(moreText("start\t"));
@@ -1020,8 +1016,7 @@ assembleStartStatement(startStatement)
 }
 
   void
-assembleStringStatement(stringStatement)
-  stringStatementBodyType	*stringStatement;
+assembleStringStatement(stringStatementBodyType *stringStatement)
 {
 	valueType		*byteValue;
 
@@ -1046,8 +1041,7 @@ assembleStringStatement(stringStatement)
 }
 
   void
-assembleStructStatement(structStatement)
-  structStatementBodyType	*structStatement;
+assembleStructStatement(structStatementBodyType *structStatement)
 {
 	nullAssemble(structStatement);
 	if (structStatement->structBody == NULL)
@@ -1057,8 +1051,7 @@ assembleStructStatement(structStatement)
 }
 
   void
-assembleTargetStatement(targetStatement)
-  targetStatementBodyType	*targetStatement;
+assembleTargetStatement(targetStatementBodyType *targetStatement)
 {
 	valueType	*targetAddress;
 	bool		 saveExpansion;
@@ -1081,8 +1074,7 @@ assembleTargetStatement(targetStatement)
 }
 
   void
-assembleUndefineStatement(undefineStatement)
-  undefineStatementBodyType	*undefineStatement;
+assembleUndefineStatement(undefineStatementBodyType *undefineStatement)
 {
 	expand(moreText("undefine\t"));
 	while (undefineStatement != NULL) {
@@ -1096,8 +1088,7 @@ assembleUndefineStatement(undefineStatement)
 }
 
   void
-assembleVariableStatement(variableStatement)
-  variableStatementBodyType	*variableStatement;
+assembleVariableStatement(variableStatementBodyType *variableStatement)
 {
     symbolTableEntryType	*newVariable;
     symbolInContextType		*contextForVariable;
@@ -1143,8 +1134,7 @@ assembleVariableStatement(variableStatement)
 }
 
   void
-assembleWhileStatement(whileStatement)
-  whileStatementBodyType	*whileStatement;
+assembleWhileStatement(whileStatementBodyType *whileStatement)
 {
 	valueType	 topOfLoop;
 	valueType	 fixupLocation[COMPOUND_BRANCH_MAX];
@@ -1175,8 +1165,7 @@ assembleWhileStatement(whileStatement)
 }
 
   void
-assembleWordStatement(wordStatement)
-  wordStatementBodyType	*wordStatement;
+assembleWordStatement(wordStatementBodyType *wordStatement)
 {
 	valueType		*word;
 
@@ -1411,8 +1400,7 @@ assembleStatementBody(kind, body, cumulativeLineNumber, worryAboutIf,
 }
 
   void
-assembleLabelList(labelList)
-  labelListType	*labelList;
+assembleLabelList(labelListType *labelList)
 {
 	while (labelList != NULL) {
 		if (structNestingDepth == 0)
@@ -1428,10 +1416,7 @@ assembleLabelList(labelList)
 }
 
   simpleFixupListType *
-assembleStatement(statement, insideIf, ongoingFixupList)
-  statementType		*statement;
-  bool			 insideIf;
-  simpleFixupListType	*ongoingFixupList;
+assembleStatement(statementType *statement, bool insideIf, simpleFixupListType *ongoingFixupList)
 {
 	char			*saveFileName;
 	int			 saveLineNumber;
@@ -1477,8 +1462,7 @@ assembleStatement(statement, insideIf, ongoingFixupList)
 }
 
   void
-eatStatement(statement)
-  statementType	*statement;
+eatStatement(statementType *statement)
 {
 	if (debug) {
 		printf("assembling:\n");

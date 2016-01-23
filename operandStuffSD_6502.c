@@ -33,10 +33,19 @@
 
 /* corresponds to routines in buildStuff2.c */
 
-  operandType *
-buildOperand(kindOfOperand, arg)
-  operandKindType	 kindOfOperand;
-  anyOldThing		*arg;
+  
+extern void botch (char *message, ...);
+extern void error (errorType theError, ...);
+extern void freeExpression (expressionType *expression);
+extern void freeSelectionList (selectionListType *selectionList);
+extern void freeString (stringType *string);
+extern void freeBlock (blockType *block);
+extern void moreText (char *format, ...);
+extern void expandExpression (char *toBuffer, char **toBufferPtr);
+extern void assembleBlock (blockType *block);
+
+operandType *
+buildOperand(operandKindType kindOfOperand, anyOldThing *arg)
 {
 	operandType	*result;
 
@@ -129,13 +138,11 @@ buildOperand(kindOfOperand, arg)
 /* corresponds to routines in fixups.c */
 
   operandListType *
-duplicateOperandForFixup(operand, isSpecialFunctionOperand)
-  operandListType	*operand;
-  bool			 isSpecialFunctionOperand;
+duplicateOperandForFixup(operandListType *operand, bool isSpecialFunctionOperand)
 {
 	operandListType	*result;
 
-	expressionType	*duplicateExpressionForFixup();
+	expressionType	*duplicateExpressionForFixup(expressionType *expression, bool isTopLevel, bool isSpecialFunctionOperand);
 
 	result = typeAlloc(operandListType);
 	result->kindOfOperand = operand->kindOfOperand;
@@ -182,8 +189,7 @@ duplicateOperandForFixup(operand, isSpecialFunctionOperand)
 #define nullFree(thing) if (thing == NULL) return;
 
   void
-freeOperand(operand)
-  operandType	*operand;
+freeOperand(operandType *operand)
 {
 	nullFree(operand);
 	switch (operand->kindOfOperand) {
@@ -229,9 +235,7 @@ freeOperand(operand)
 /* corresponds to routines in listing.c */
 
   void
-expandOperand(addressMode, buffer)
-  operandKindType	addressMode;
-  char *		buffer;
+expandOperand(operandKindType addressMode, char *buffer)
 {
 	switch (addressMode) {
 	case IMMEDIATE_OPND:		moreText("#"); break;
@@ -279,16 +283,15 @@ expandOperand(addressMode, buffer)
 #define expansionOn()	expandMacros=saveExpansion;
 
   valueType *
-evaluateOperand(operand)
-  operandType	*operand;
+evaluateOperand(operandType *operand)
 {
 	valueType		*result;
 	bool			 saveExpansion;
 	expressionType		*expression;
 
-	valueType		*evaluateExpression();
-	valueType		*evaluateSelectionList();
-	valueType		*newValue();
+	valueType		*evaluateExpression(expressionType *expression, fixupKindType kindOfFixup);
+	valueType		*evaluateSelectionList(selectionListType *selectionList);
+	valueType		*newValue(valueKindType kindOfValue, int value, operandKindType addressMode);
 
 	nullEvaluate(operand);
 	if (operand->kindOfOperand != EXPRESSION_OPND)
@@ -358,8 +361,7 @@ evaluateOperand(operand)
 /* from parserMisc.c */
 
   conditionType
-invertConditionCode(conditionCode)
-  conditionType	conditionCode;
+invertConditionCode(conditionType conditionCode)
 {
 #define cc (int)conditionCode
 
@@ -376,8 +378,7 @@ invertConditionCode(conditionCode)
 /* from semanticMisc.c */
 
   bool
-shouldParenthesize(operand)
-  operandType	*operand;
+shouldParenthesize(operandType *operand)
 {
 	expressionTermKindType	 kind;
 

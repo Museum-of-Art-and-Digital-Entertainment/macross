@@ -36,14 +36,24 @@
    lists that are sorted alphabetically.
  */
 
-  conditionType
-lookupConditionCode(s, hashValue)
-  char	*s;
-  int	 hashValue;
+  
+extern void botch (char *message, ...);
+extern void freeValue (valueType *value);
+extern void error (errorType theError, ...);
+bool strcmplc (char *s1, char *s2);
+int hashString (char *s);
+extern int countParameters (operandListType *parameterList);
+extern arrayType *allocArray (int size, valueType ***contentsPtr);
+extern bool isUsable (valueType *value);
+extern void moreExpression (char *format, ...);
+extern bool isUndefined (valueType *value);
+
+conditionType
+lookupConditionCode(char *s, int hashValue)
 {
 	conditionTableEntryType	*result;
 
-	genericTableEntryType	*prehashedStringLookup();
+	genericTableEntryType	*prehashedStringLookup(char *s, genericTableEntryType **table, int hashValue);
 
 	result = (conditionTableEntryType *) prehashedStringLookup(s,
 		conditionTable, hashValue);
@@ -54,13 +64,11 @@ lookupConditionCode(s, hashValue)
 }
 
   int
-lookupKeyword(s, hashValue)
-  char	*s;
-  int	 hashValue;
+lookupKeyword(char *s, int hashValue)
 {
 	keywordTableEntryType	*result;
 
-	genericTableEntryType	*prehashedStringLookup();
+	genericTableEntryType	*prehashedStringLookup(char *s, genericTableEntryType **table, int hashValue);
 
 	result = (keywordTableEntryType *) prehashedStringLookup(s,
 		keywordTable, hashValue);
@@ -71,22 +79,18 @@ lookupKeyword(s, hashValue)
 }
 
   macroTableEntryType *
-lookupMacroName(s, hashValue)
-  char	*s;
-  int	 hashValue;
+lookupMacroName(char *s, int hashValue)
 {
-	genericTableEntryType	*prehashedStringLookup();
+	genericTableEntryType	*prehashedStringLookup(char *s, genericTableEntryType **table, int hashValue);
 
 	return((macroTableEntryType *) prehashedStringLookup(s, macroTable,
 		hashValue));
 }
 
   opcodeTableEntryType *
-lookupOpcode(s, hashValue)
-  char	*s;
-  int	 hashValue;
+lookupOpcode(char *s, int hashValue)
 {
-	genericTableEntryType	*prehashedStringLookup();
+	genericTableEntryType	*prehashedStringLookup(char *s, genericTableEntryType **table, int hashValue);
 
 	return((opcodeTableEntryType *) prehashedStringLookup(s,
 		opcodeTable, hashValue));
@@ -97,14 +101,12 @@ lookupOpcode(s, hashValue)
    the given kind and return *that* */
 
   symbolTableEntryType *
-lookupOrEnterSymbol(s, kind)
-  stringType		*s;
-  symbolUsageKindType	 kind;
+lookupOrEnterSymbol(stringType *s, symbolUsageKindType kind)
 {
 	symbolTableEntryType	*result;
-	genericTableEntryType	*hashStringLookup();
-	genericTableEntryType	*hashStringEnter();
-	symbolTableEntryType	*buildSymbolTableEntry();
+	genericTableEntryType	*hashStringLookup(char *s, genericTableEntryType **table);
+	genericTableEntryType	*hashStringEnter(genericTableEntryType *entry, genericTableEntryType **table);
+	symbolTableEntryType	*buildSymbolTableEntry(stringType *name, symbolUsageKindType usage);
 
 	if (result = (symbolTableEntryType *)hashStringLookup(s,symbolTable)){
 /*		result->referenceCount++;*/
@@ -116,8 +118,7 @@ lookupOrEnterSymbol(s, kind)
 }
 
   void
-pushSymbol(symbol)
-  symbolTableEntryType *symbol;
+pushSymbol(symbolTableEntryType *symbol)
 {
 	symbolInContextType	*newContext;
 
@@ -127,8 +128,7 @@ pushSymbol(symbol)
 }
 
   void
-popSymbol(symbol)
-  symbolTableEntryType	*symbol;
+popSymbol(symbolTableEntryType *symbol)
 {
 	symbolInContextType	*deadContext;
 
@@ -146,16 +146,15 @@ popSymbol(symbol)
 }
 
   macroTableEntryType *
-createMacro(macroName)
-  stringType	*macroName;
+createMacro(stringType *macroName)
 {
 	macroTableEntryType		*result;
 	symbolTableEntryType		*testSymbol;
 
-	genericTableEntryType		*hashStringLookup();
-	genericTableEntryType		*hashStringEnter();
-	macroTableEntryType		*buildMacroTableEntry();
-	symbolTableEntryType		*lookupOrEnterSymbol();
+	genericTableEntryType		*hashStringLookup(char *s, genericTableEntryType **table);
+	genericTableEntryType		*hashStringEnter(genericTableEntryType *entry, genericTableEntryType **table);
+	macroTableEntryType		*buildMacroTableEntry(stringType *name);
+	symbolTableEntryType		*lookupOrEnterSymbol(stringType *s, symbolUsageKindType kind);
 
 	testSymbol = lookupOrEnterSymbol(macroName, MACRO_SYMBOL);
 	if (testSymbol->context->usage != MACRO_SYMBOL) {
@@ -179,10 +178,7 @@ createMacro(macroName)
  */
 
   genericTableEntryType *
-prehashedStringLookup(s, table, hashValue)
-  char			*s;
-  genericTableEntryType	*table[];
-  int			 hashValue;
+prehashedStringLookup(char *s, genericTableEntryType **table, int hashValue)
 {
 	genericTableEntryType	*result;
 	int			 test;
@@ -202,17 +198,13 @@ prehashedStringLookup(s, table, hashValue)
 }
 
   genericTableEntryType *
-hashStringLookup(s, table)
-  char			*s;
-  genericTableEntryType	*table[];
+hashStringLookup(char *s, genericTableEntryType **table)
 {
 	return(prehashedStringLookup(s, table, hashString(s)));
 }
 
   genericTableEntryType *
-hashStringEnter(entry, table)
-  genericTableEntryType	*entry;
-  genericTableEntryType	*table[];
+hashStringEnter(genericTableEntryType *entry, genericTableEntryType **table)
 {
 	genericTableEntryType	*result;
 	genericTableEntryType	*oldResult;
@@ -252,8 +244,7 @@ hashStringEnter(entry, table)
 }
 
   int
-hashString(s)
-  char	*s;
+hashString(char *s)
 {
 	unsigned	result;
 
@@ -264,9 +255,9 @@ hashString(s)
 }
 
   bool
-strcmplc(s1, s2)	/* string compare in lower case */
-  char *s1;		/*  heavily optimized version */
-  char *s2;
+strcmplc(char *s1, char *s2)	/* string compare in lower case */
+           		/*  heavily optimized version */
+           
 {
 	char	c1;
 	int	result;
@@ -284,9 +275,9 @@ strcmplc(s1, s2)	/* string compare in lower case */
 }
 
   bool
-strcmplct(s1, s2)	/* For tables: s2 is already lower case */
-  char *s1;		/*  heavily optimized version.  */
-  char *s2;
+strcmplct(char *s1, char *s2)	/* For tables: s2 is already lower case */
+           		/*  heavily optimized version.  */
+           
 {
 	char	c1;
 	int	result;
@@ -302,21 +293,18 @@ strcmplct(s1, s2)	/* For tables: s2 is already lower case */
 }
 
   void
-purgeSymbol(symbol)
-  symbolTableEntryType	*symbol;
+purgeSymbol(symbolTableEntryType *symbol)
 {
 	symbolInContextType	*context;
 
-	symbolInContextType	*getWorkingContext();
+	symbolInContextType	*getWorkingContext(symbolTableEntryType *identifier);
 
 	if ((context = getWorkingContext(symbol)) != NULL)
 		context->usage = DEAD_SYMBOL;
 }
 
   void
-reincarnateSymbol(context, newUsage)
-  symbolInContextType	*context;
-  symbolUsageKindType	 newUsage;
+reincarnateSymbol(symbolInContextType *context, symbolUsageKindType newUsage)
 {
 	context->attributes = 0;
 	dupValue(context->value, UndefinedValue);
@@ -329,12 +317,9 @@ reincarnateSymbol(context, newUsage)
  */
 
   void
-pushBinding(symbol, newBinding, newUsage)
-  symbolTableEntryType	*symbol;
-  valueType		*newBinding;
-  symbolUsageKindType	 newUsage;
+pushBinding(symbolTableEntryType *symbol, valueType *newBinding, symbolUsageKindType newUsage)
 {
-	valueType	*newValue();
+	valueType	*newValue(valueKindType kindOfValue, int value, operandKindType addressMode);
 
 	pushSymbol(symbol);
 	if (newBinding == NULL)
@@ -347,17 +332,13 @@ pushBinding(symbol, newBinding, newUsage)
 }
 
   void
-popBinding(symbol)
-  symbolTableEntryType	*symbol;
+popBinding(symbolTableEntryType *symbol)
 {
 	popSymbol(symbol);
 }
 
   int	/* returns number of bindings completed, negative this if failure */
-bindMacroArguments(argumentList, parameterList, macroName)
-  argumentDefinitionListType	*argumentList;
-  operandListType		*parameterList;
-  stringType			*macroName;
+bindMacroArguments(argumentDefinitionListType *argumentList, operandListType *parameterList, stringType *macroName)
 {
 	int			 numberBound;
 	bool			 arrayTag;
@@ -365,7 +346,7 @@ bindMacroArguments(argumentList, parameterList, macroName)
 	valueType	       **arrayContents;
 	int			 i;
 
-	valueType		*newValue();
+	valueType		*newValue(valueKindType kindOfValue, int value, operandKindType addressMode);
 
 	if (argumentList == NULL)
 		arrayTag = FALSE;
@@ -417,10 +398,7 @@ bindMacroArguments(argumentList, parameterList, macroName)
 }
 
   int	/* returns number of bindings completed, negative this if failure */
-bindFunctionArguments(argumentList, parameterList, functionName)
-  argumentDefinitionListType	*argumentList;
-  operandListType		*parameterList;
-  stringType			*functionName;
+bindFunctionArguments(argumentDefinitionListType *argumentList, operandListType *parameterList, stringType *functionName)
 {
 	valueType	*argument;
 	bool		 arrayTag;
@@ -431,8 +409,8 @@ bindFunctionArguments(argumentList, parameterList, functionName)
 	valueType	*firstArgument;
 	environmentType	*saveEnvironment;
 
-	valueType	*evaluateOperand();
-	valueType	*newValue();
+	valueType	*evaluateOperand(operandType *operand);
+	valueType	*newValue(valueKindType kindOfValue, int value, operandKindType addressMode);
 
 	if (argumentList == NULL)
 		arrayTag = FALSE;
@@ -515,9 +493,7 @@ bindFunctionArguments(argumentList, parameterList, functionName)
 }
 
   void
-unbindArguments(argumentList, numberToUnbind)
-  argumentDefinitionListType	*argumentList;
-  int				 numberToUnbind;
+unbindArguments(argumentDefinitionListType *argumentList, int numberToUnbind)
 {
 	while (argumentList != NULL  &&  numberToUnbind-- > 0) {
 		popBinding(argumentList->theArgument);
@@ -528,8 +504,7 @@ unbindArguments(argumentList, numberToUnbind)
 }
 
   void
-unbindLocalVariables(identifierList)
-  identifierListType	*identifierList;
+unbindLocalVariables(identifierListType *identifierList)
 {
 	identifierListType	*deadEntry;
 

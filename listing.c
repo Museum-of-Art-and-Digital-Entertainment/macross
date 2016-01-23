@@ -44,8 +44,16 @@ static int	 nextMacroAddress;
 static int	 macroDepth;
 static int	 nextMacroDepth;
 
-  void
-outputListing()
+  
+extern void saveLineForListing (stringType *line);
+extern void saveIndexForListing (statementKindType kindOfStatement, int cumulativeLineNumber);
+extern char *myfgets (char *buffer, int length, FILE *stream);
+bool isBlankStatement (statementKindType statementKind);
+extern byte getByte (addressType address);
+extern bool listableStatement (statementKindType kind);
+
+void
+outputListing(void)
 {
 	rewind(saveFileForPass2);
 	rewind(indexFileForPass2);
@@ -54,7 +62,7 @@ outputListing()
 }
 
   void
-terminateListingFiles()
+terminateListingFiles(void)
 {
 	saveLineForListing("\n");
 	saveIndexForListing(NULL_STATEMENT, cumulativeLineNumber);
@@ -96,7 +104,7 @@ terminateListingFiles()
 /* This is the most horrible piece of code I have ever written in my entire
 	life -- cbm */
   void
-generateListing()
+generateListing(void)
 {
 	int			 sourceAddress;
 	int			 sourceDepth;
@@ -297,10 +305,7 @@ generateListing()
 bool	longLineFlag; /* defined in lexer.c */
 
   int
-printMacroLine(numberOfBytes, byteAddress, kind)
-  int			 numberOfBytes;
-  int			 byteAddress;
-  statementKindType	 kind;
+printMacroLine(int numberOfBytes, int byteAddress, statementKindType kind)
 {
 	macroAddress = nextMacroAddress;
 	macroDepth = nextMacroDepth;
@@ -312,11 +317,7 @@ printMacroLine(numberOfBytes, byteAddress, kind)
 }
 
   void
-readSourceFileLine(sourceAddressPtr, sourceDepthPtr, lineBuffer, file)
-  int	*sourceAddressPtr;
-  int	*sourceDepthPtr;
-  char	 lineBuffer[];
-  FILE	*file;
+readSourceFileLine(int *sourceAddressPtr, int *sourceDepthPtr, char *lineBuffer, FILE *file)
 {
 	char	c;
 
@@ -331,10 +332,7 @@ readSourceFileLine(sourceAddressPtr, sourceDepthPtr, lineBuffer, file)
 }
 
   void
-readIndexFileLine(statementKindPtr, indexAddressPtr, indexLineNumberPtr)
-  statementKindType	*statementKindPtr;
-  int			*indexAddressPtr;
-  int			*indexLineNumberPtr;
+readIndexFileLine(statementKindType *statementKindPtr, int *indexAddressPtr, int *indexLineNumberPtr)
 {
 	statementKindType	 statementKindRead;
 	int			 indexAddressRead;
@@ -353,11 +351,7 @@ readIndexFileLine(statementKindPtr, indexAddressPtr, indexLineNumberPtr)
 }
 
   int
-printListingLine(numberOfBytes, byteAddress, text, kind)
-  int			 numberOfBytes;
-  int			 byteAddress;
-  char			*text;
-  statementKindType	 kind;
+printListingLine(int numberOfBytes, int byteAddress, char *text, statementKindType kind)
 {
 	int	i;
 
@@ -408,8 +402,7 @@ printListingLine(numberOfBytes, byteAddress, text, kind)
 
 	
   bool
-isBlockOpener(statementKind)
-  statementKindType	statementKind;
+isBlockOpener(statementKindType statementKind)
 {
 	return (statementKind==IF_STATEMENT ||
 		statementKind==WHILE_STATEMENT ||
@@ -428,8 +421,7 @@ isBlockOpener(statementKind)
 }
 
   bool
-isBlankStatement(statementKind)
-  statementKindType	statementKind;
+isBlankStatement(statementKindType statementKind)
 {
 	return(	statementKind == DEFINE_STATEMENT ||
 		statementKind == NULL_STATEMENT ||
@@ -455,8 +447,7 @@ isBlankStatement(statementKind)
 }
 
   void
-tabPrint(text)
-  stringType	*text;
+tabPrint(stringType *text)
 {
 	int	column;
 	int	spaces;
@@ -477,16 +468,14 @@ tabPrint(text)
 }
 
   void
-printNTimes(aChar, times)
-  char	aChar;
-  int	times;
+printNTimes(char aChar, int times)
 {
 	while (times-- > 0)
             moreText("%c", aChar, 0, 0);
 }
 
   void
-tabIndent()
+tabIndent(void)
 {
 	printNTimes('\t', tabCount);
 }
@@ -499,7 +488,7 @@ static char	 labelString[LINE_BUFFER_SIZE] = { '\0' };
 static char	*labelStringPtr = labelString;
 
   bool
-labeledLine()
+labeledLine(void)
 {
 	return(labelStringPtr != labelString);
 }
@@ -542,9 +531,7 @@ moreText(char *format, ...)
 }
 
   void
-moreLabel(format, arg1)
-  char	*format;
-  int	 arg1;
+moreLabel(char *format, int arg1)
 {
 	sprintf(labelStringPtr, format, arg1);
 	labelStringPtr = labelString + strlen(labelString);
@@ -554,7 +541,7 @@ static addressType	savedCurrentLocationCounterValue;
 static int		savedIncludeNestingDepth;
 
   void
-startLine()
+startLine(void)
 {
 	printNTimes('+', macroCallDepth);
 	savedCurrentLocationCounterValue = currentLocationCounter.value;
@@ -562,7 +549,7 @@ startLine()
 }
 
   void
-endLine()
+endLine(void)
 {
 	if (amListing()) {
 		putw(savedCurrentLocationCounterValue, macroFileForPass2);
@@ -574,16 +561,14 @@ endLine()
 }
 
   void
-flushExpressionString()
+flushExpressionString(void)
 {
 	expressionStringPtr = expressionString;
 	*expressionStringPtr = '\0';
 }
 
   void
-expandExpression(toBuffer, toBufferPtr)
-  char	 *toBuffer;
-  char	**toBufferPtr;
+expandExpression(char *toBuffer, char **toBufferPtr)
 {
 	if (toBuffer == NULL)
 		moreText("%s", expressionString, 0, 0);
@@ -593,25 +578,20 @@ expandExpression(toBuffer, toBufferPtr)
 }
 
   void
-expandNum(buffer, bufferPtr, n)
-  char	 *buffer;
-  char	**bufferPtr;
-  int	  n;
+expandNum(char *buffer, char **bufferPtr, int n)
 {
 	moreTextOptional(buffer, bufferPtr, "%d", n, 0, 0);
 }
 
   void
-flushOperand(n)
-  int	n;
+flushOperand(int n)
 {
 	moreText("%s", operandBuffer[n], 0, 0);
 	operandBuffer[n][0] = '\0';
 }
 
   void
-expandOperands(op)
-  int	op;
+expandOperands(int op)
 {
 	int	i;
 
@@ -625,7 +605,7 @@ expandOperands(op)
 }
 
   void
-expandLabel()
+expandLabel(void)
 {
 	moreText("%s", labelString, 0, 0);
 	labelStringPtr = labelString;
@@ -643,7 +623,7 @@ moreExpression(char *format, ...)
 }
 
   void
-startLineMarked()
+startLineMarked(void)
 {
 	startLine();
 	if (amListing())
@@ -651,8 +631,7 @@ startLineMarked()
 }
 
   bool
-notListable(statementKind)
-  statementKindType	statementKind;
+notListable(statementKindType statementKind)
 {
 	return(!listableStatement(statementKind) &&
 		statementKind != INSTRUCTION_STATEMENT &&

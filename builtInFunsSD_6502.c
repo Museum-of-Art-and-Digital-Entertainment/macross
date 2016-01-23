@@ -34,23 +34,21 @@
 #include "macrossGlobals.h"
 
 /* Helper functions, defined in builtInFunctions.c */
-valueType	*makeBooleanValue();
-valueType	*makeFailureValue();
-valueType	*makeIntegerValue();
-valueType	*makeOperandValue();
-valueType	*makeStringValue();
-valueType	*makeUndefinedValue();
+valueType	*makeBooleanValue(int test);
+valueType	*makeFailureValue(void);
+valueType	*makeIntegerValue(int integer);
+valueType	*makeOperandValue(operandType *operand);
+valueType	*makeStringValue(stringType *string);
+valueType	*makeUndefinedValue(void);
 
 
 /* Check if operand is the accumulator */
   valueType *
-isARegisterBIF(parameterList, kindOfFixup)
-  operandListType	*parameterList;
-  fixupKindType		 kindOfFixup;
+isARegisterBIF(operandListType *parameterList, fixupKindType kindOfFixup)
 {
 	valueType	*evaluatedParameter;
 
-	valueType	*evaluateOperand();
+	valueType	*evaluateOperand(operandType *operand);
 
 	if (parameterList != NULL) {
 		evaluatedParameter = evaluateOperand(parameterList);
@@ -63,13 +61,11 @@ isARegisterBIF(parameterList, kindOfFixup)
 
 /* Check if an operand's address mode is DIRECT */
   valueType *
-isDirectModeBIF(parameterList, kindOfFixup)
-  operandListType	*parameterList;
-  fixupKindType		 kindOfFixup;
+isDirectModeBIF(operandListType *parameterList, fixupKindType kindOfFixup)
 {
 	valueType	*evaluatedParameter;
 
-	valueType	*evaluateOperand();
+	valueType	*evaluateOperand(operandType *operand);
 
 	if (parameterList != NULL) {
 		evaluatedParameter = evaluateOperand(parameterList);
@@ -82,13 +78,11 @@ isDirectModeBIF(parameterList, kindOfFixup)
 
 /* Check if an operand's address mode is IMMEDIATE */
   valueType *
-isImmediateModeBIF(parameterList, kindOfFixup)
-  operandListType	*parameterList;
-  fixupKindType		 kindOfFixup;
+isImmediateModeBIF(operandListType *parameterList, fixupKindType kindOfFixup)
 {
 	valueType	*evaluatedParameter;
 
-	valueType	*evaluateOperand();
+	valueType	*evaluateOperand(operandType *operand);
 
 	if (parameterList != NULL) {
 		evaluatedParameter = evaluateOperand(parameterList);
@@ -101,13 +95,11 @@ isImmediateModeBIF(parameterList, kindOfFixup)
 
 /* Check if an operand's address mode is INDEXED (either X or Y) */
   valueType *
-isIndexedModeBIF(parameterList, kindOfFixup)
-  operandListType	*parameterList;
-  fixupKindType		 kindOfFixup;
+isIndexedModeBIF(operandListType *parameterList, fixupKindType kindOfFixup)
 {
 	valueType	*evaluatedParameter;
 
-	valueType	*evaluateOperand();
+	valueType	*evaluateOperand(operandType *operand);
 
 	if (parameterList != NULL) {
 		evaluatedParameter = evaluateOperand(parameterList);
@@ -123,13 +115,11 @@ isIndexedModeBIF(parameterList, kindOfFixup)
 
 /* Check if an operand's address mode is INDIRECT */
   valueType *
-isIndirectModeBIF(parameterList, kindOfFixup)
-  operandListType	*parameterList;
-  fixupKindType		 kindOfFixup;
+isIndirectModeBIF(operandListType *parameterList, fixupKindType kindOfFixup)
 {
 	valueType	*evaluatedParameter;
 
-	valueType	*evaluateOperand();
+	valueType	*evaluateOperand(operandType *operand);
 
 	if (parameterList != NULL) {
 		evaluatedParameter = evaluateOperand(parameterList);
@@ -142,13 +132,11 @@ isIndirectModeBIF(parameterList, kindOfFixup)
 
 /* Check if an operand's address mode is POST-INDEXED */
   valueType *
-isPostIndexedModeBIF(parameterList, kindOfFixup)
-  operandListType	*parameterList;
-  fixupKindType		 kindOfFixup;
+isPostIndexedModeBIF(operandListType *parameterList, fixupKindType kindOfFixup)
 {
 	valueType	*evaluatedParameter;
 
-	valueType	*evaluateOperand();
+	valueType	*evaluateOperand(operandType *operand);
 
 	if (parameterList != NULL) {
 		evaluatedParameter = evaluateOperand(parameterList);
@@ -161,13 +149,11 @@ isPostIndexedModeBIF(parameterList, kindOfFixup)
 
 /* Check if an operand's address mode is PRE-INDEXED */
   valueType *
-isPreIndexedModeBIF(parameterList, kindOfFixup)
-  operandListType	*parameterList;
-  fixupKindType		 kindOfFixup;
+isPreIndexedModeBIF(operandListType *parameterList, fixupKindType kindOfFixup)
 {
 	valueType	*evaluatedParameter;
 
-	valueType	*evaluateOperand();
+	valueType	*evaluateOperand(operandType *operand);
 
 	if (parameterList != NULL) {
 		evaluatedParameter = evaluateOperand(parameterList);
@@ -181,13 +167,11 @@ isPreIndexedModeBIF(parameterList, kindOfFixup)
 
 /* Check if an operand's address mode is X-INDEXED */
   valueType *
-isXIndexedModeBIF(parameterList, kindOfFixup)
-  operandListType	*parameterList;
-  fixupKindType		 kindOfFixup;
+isXIndexedModeBIF(operandListType *parameterList, fixupKindType kindOfFixup)
 {
 	valueType	*evaluatedParameter;
 
-	valueType	*evaluateOperand();
+	valueType	*evaluateOperand(operandType *operand);
 
 	if (parameterList != NULL) {
 		evaluatedParameter = evaluateOperand(parameterList);
@@ -201,13 +185,11 @@ isXIndexedModeBIF(parameterList, kindOfFixup)
 
 /* Check if an operand is the X index register */
   valueType *
-isXRegisterBIF(parameterList, kindOfFixup)
-  operandListType	*parameterList;
-  fixupKindType		 kindOfFixup;
+isXRegisterBIF(operandListType *parameterList, fixupKindType kindOfFixup)
 {
 	valueType	*evaluatedParameter;
 
-	valueType	*evaluateOperand();
+	valueType	*evaluateOperand(operandType *operand);
 
 	if (parameterList != NULL) {
 		evaluatedParameter = evaluateOperand(parameterList);
@@ -220,13 +202,11 @@ isXRegisterBIF(parameterList, kindOfFixup)
 
 /* Check if an operand's address mode is Y-INDEXED */
   valueType *
-isYIndexedModeBIF(parameterList, kindOfFixup)
-  operandListType	*parameterList;
-  fixupKindType		 kindOfFixup;
+isYIndexedModeBIF(operandListType *parameterList, fixupKindType kindOfFixup)
 {
 	valueType	*evaluatedParameter;
 
-	valueType	*evaluateOperand();
+	valueType	*evaluateOperand(operandType *operand);
 
 	if (parameterList != NULL) {
 		evaluatedParameter = evaluateOperand(parameterList);
@@ -240,13 +220,11 @@ isYIndexedModeBIF(parameterList, kindOfFixup)
 
 /* Check if an operand is the Y index register */
   valueType *
-isYRegisterBIF(parameterList, kindOfFixup)
-  operandListType	*parameterList;
-  fixupKindType		 kindOfFixup;
+isYRegisterBIF(operandListType *parameterList, fixupKindType kindOfFixup)
 {
 	valueType	*evaluatedParameter;
 
-	valueType	*evaluateOperand();
+	valueType	*evaluateOperand(operandType *operand);
 
 	if (parameterList != NULL) {
 		evaluatedParameter = evaluateOperand(parameterList);

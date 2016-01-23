@@ -41,10 +41,11 @@
 
 /* Fragments of statement structures */
 
-  caseType *
-buildCase(caseTags, caseBody)
-  expressionListType	*caseTags;
-  blockType		*caseBody;
+  
+extern void botch (char *message, ...);
+
+caseType *
+buildCase(expressionListType *caseTags, blockType *caseBody)
 {
 	caseType	*result;
 
@@ -55,9 +56,7 @@ buildCase(caseTags, caseBody)
 }
 
   doEndType *
-buildDoEnd(condition, kindOfDoEnd)
-  conditionType		 condition;
-  doEndKindType		 kindOfDoEnd;
+buildDoEnd(conditionType condition, doEndKindType kindOfDoEnd)
 {
 	doEndType	*result;
 
@@ -68,10 +67,7 @@ buildDoEnd(condition, kindOfDoEnd)
 }
 
   forExpressionsType *
-buildForExpressions(initExpression, testExpression, incrExpression)
-  expressionType	*initExpression;
-  expressionType	*testExpression;
-  expressionType	*incrExpression;
+buildForExpressions(expressionType *initExpression, expressionType *testExpression, expressionType *incrExpression)
 {
 	forExpressionsType	*result;
 
@@ -83,9 +79,7 @@ buildForExpressions(initExpression, testExpression, incrExpression)
 }
 
   ifHeadType *
-buildIfHead(condition, block)
-  conditionType	 condition;
-  blockType	*block;
+buildIfHead(conditionType condition, blockType *block)
 {
 	ifHeadType	*result;
 
@@ -96,9 +90,7 @@ buildIfHead(condition, block)
 }
 
   mdoEndType *
-buildMdoEnd(condition, kindOfMdoEnd)
-  expressionType	*condition;
-  doEndKindType		 kindOfMdoEnd;
+buildMdoEnd(expressionType *condition, doEndKindType kindOfMdoEnd)
 {
 	mdoEndType	*result;
 
@@ -110,9 +102,7 @@ buildMdoEnd(condition, kindOfMdoEnd)
 
 
   mifHeadType *
-buildMifHead(condition, block)
-  expressionType	*condition;
-  blockType		*block;
+buildMifHead(expressionType *condition, blockType *block)
 {
 	mifHeadType	*result;
 
@@ -126,9 +116,7 @@ buildMifHead(condition, block)
 /* Fragments of expression structures */
 
   arrayTermType *
-buildArrayTerm(array, index)
-  expressionType	*array;
-  expressionType	*index;
+buildArrayTerm(expressionType *array, expressionType *index)
 {
 	arrayTermType	*result;
 
@@ -139,10 +127,7 @@ buildArrayTerm(array, index)
 }
 
   binopTermType *
-buildBinopTerm(binop, leftArgument, rightArgument)
-  binopKindType		 binop;
-  expressionType	*leftArgument;
-  expressionType	*rightArgument;
+buildBinopTerm(binopKindType binop, expressionType *leftArgument, expressionType *rightArgument)
 {
 	binopTermType	*result;
 
@@ -154,12 +139,10 @@ buildBinopTerm(binop, leftArgument, rightArgument)
 }
 
   functionCallTermType *
-buildFunctionCall(functionName, arguments)
-  stringType		*functionName;
-  operandListType	*arguments;
+buildFunctionCall(stringType *functionName, operandListType *arguments)
 {
 	functionCallTermType	*result;
-	symbolTableEntryType	*lookupOrEnterSymbol();
+	symbolTableEntryType	*lookupOrEnterSymbol(stringType *s, symbolUsageKindType kind);
 
 	result = typeAlloc(functionCallTermType);
 	result->functionName = lookupOrEnterSymbol(functionName,
@@ -169,9 +152,7 @@ buildFunctionCall(functionName, arguments)
 }
 
   postOpTermType *
-buildPostOpTerm(postOp, postOpArgument)
-  postOpKindType	 postOp;
-  expressionType	*postOpArgument;
+buildPostOpTerm(postOpKindType postOp, expressionType *postOpArgument)
 {
 	postOpTermType	*result;
 
@@ -182,9 +163,7 @@ buildPostOpTerm(postOp, postOpArgument)
 }
 
   preOpTermType *
-buildPreOpTerm(preOp, preOpArgument)
-  preOpKindType		 preOp;
-  expressionType	*preOpArgument;
+buildPreOpTerm(preOpKindType preOp, expressionType *preOpArgument)
 {
 	preOpTermType	*result;
 
@@ -195,9 +174,7 @@ buildPreOpTerm(preOp, preOpArgument)
 }
 
   unopTermType *
-buildUnopTerm(unop, unopArgument)
-  unopKindType		 unop;
-  expressionType	*unopArgument;
+buildUnopTerm(unopKindType unop, expressionType *unopArgument)
 {
 	unopTermType	*result;
 
@@ -208,15 +185,11 @@ buildUnopTerm(unop, unopArgument)
 }
 
   expressionTermType *  
-buildExpressionTerm(kindOfExpressionTerm, arg1, arg2, arg3)
-  expressionTermKindType	 kindOfExpressionTerm;
-  anyOldThing			*arg1;
-  anyOldThing			*arg2;
-  anyOldThing			*arg3;
+buildExpressionTerm(expressionTermKindType kindOfExpressionTerm, anyOldThing *arg1, anyOldThing *arg2, anyOldThing *arg3)
 {
 	expressionType		*result;
 
-	symbolTableEntryType	*lookupOrEnterSymbol();
+	symbolTableEntryType	*lookupOrEnterSymbol(stringType *s, symbolUsageKindType kind);
 
 	result = typeAlloc(expressionType);
 	result->kindOfTerm = kindOfExpressionTerm;
@@ -298,11 +271,10 @@ buildExpressionTerm(kindOfExpressionTerm, arg1, arg2, arg3)
 /* Other stuff */
 
   macroTableEntryType *
-buildMacroTableEntry(name)
-  stringType		*name;
+buildMacroTableEntry(stringType *name)
 {
 	macroTableEntryType	*result;
-	char			*saveString();
+	char			*saveString(char *s);
 
 	result = typeAlloc(macroTableEntryType);
 	result->macroName = saveString(name);
@@ -313,12 +285,10 @@ buildMacroTableEntry(name)
 }
 
   symbolTableEntryType *
-buildSymbolTableEntry(name, usage)
-  stringType		*name;
-  symbolUsageKindType	 usage;
+buildSymbolTableEntry(stringType *name, symbolUsageKindType usage)
 {
 	symbolTableEntryType	*result;
-	char			*saveString();
+	char			*saveString(char *s);
 
 	result = typeAlloc(symbolTableEntryType);
 	result->symbolName = saveString(name);
@@ -335,10 +305,7 @@ buildSymbolTableEntry(name, usage)
 }
 
   codeBreakType *
-buildCodeBreak(kind, address, data)
-  codeBreakKindType	kind;
-  addressType		address;
-  int			data;
+buildCodeBreak(codeBreakKindType kind, addressType address, int data)
 {
 	codeBreakType	*result;
 
@@ -351,10 +318,7 @@ buildCodeBreak(kind, address, data)
 }
 
   reservationListType *
-buildReservation(startAddress, blockSize, nextReservation)
-  addressType		 startAddress;
-  int			 blockSize;
-  reservationListType	*nextReservation;
+buildReservation(addressType startAddress, int blockSize, reservationListType *nextReservation)
 {
 	reservationListType	*result;
 
@@ -366,9 +330,7 @@ buildReservation(startAddress, blockSize, nextReservation)
 }
 
   simpleFixupListType *
-buildSimpleFixupList(locationToFixup, previousList)
-  valueType		 locationToFixup;
-  simpleFixupListType	*previousList;
+buildSimpleFixupList(valueType locationToFixup, simpleFixupListType *previousList)
 {
 	simpleFixupListType	*result;
 

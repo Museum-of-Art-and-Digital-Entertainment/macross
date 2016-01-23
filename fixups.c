@@ -57,12 +57,19 @@ stringType		*dbString = "graphics2.m";
    The routines below collectively duplicate expressions for later evaluation.
  */
 
-  expressionType *
-generateFixupExpression(expression)
-  expressionType	*expression;
+  
+extern void moreExpression (char *format, ...);
+extern bool isUndefined (valueType *value);
+extern char *tokenString (int token);
+extern void error (errorType theError, ...);
+extern char *conditionString (conditionType condition);
+extern void botch (char *message, ...);
+
+expressionType *
+generateFixupExpression(expressionType *expression)
 {
 	expressionType	*result;
-	expressionType	*duplicateExpressionForFixup();
+	expressionType	*duplicateExpressionForFixup(expressionType *expression, bool isTopLevel, bool isSpecialFunctionOperand);
 
 	generatingFixup = TRUE;
 	result = duplicateExpressionForFixup(expression, TRUE, FALSE);
@@ -71,10 +78,7 @@ generateFixupExpression(expression)
 }
 
   expressionType *
-duplicateExpressionForFixup(expression, isTopLevel, isSpecialFunctionOperand)
-  expressionType	*expression;
-  bool			 isTopLevel;
-  bool			 isSpecialFunctionOperand;
+duplicateExpressionForFixup(expressionType *expression, bool isTopLevel, bool isSpecialFunctionOperand)
 {
 	expressionType		*result;
 	expressionType		*originalResult;
@@ -85,15 +89,15 @@ duplicateExpressionForFixup(expression, isTopLevel, isSpecialFunctionOperand)
 	environmentType		*saveEnvironment;
 	bool			 saveExpansion;
 
-	operandType		*duplicateOperandForFixup();
-	symbolInContextType	*getWorkingContext();
-	functionCallTermType	*duplicateFunctionCall();
-	expressionType		*duplicateArrayReference();
-	valueType		*evaluateIdentifier();
-	valueType		*evaluateHere();
-	valueType		*newValue();
-	symbolTableEntryType	*generateLocalLabel();
-	stringType		*saveString();
+	operandType		*duplicateOperandForFixup(operandListType *operand, bool isSpecialFunctionOperand);
+	symbolInContextType	*getWorkingContext(symbolTableEntryType *identifier);
+	functionCallTermType	*duplicateFunctionCall(functionCallTermType *functionCall);
+	expressionType		*duplicateArrayReference(arrayTermType *arrayTerm);
+	valueType		*evaluateIdentifier(symbolTableEntryType *identifier, bool isTopLevel, fixupKindType kindOfFixup);
+	valueType		*evaluateHere(void);
+	valueType		*newValue(valueKindType kindOfValue, int value, operandKindType addressMode);
+	symbolTableEntryType	*generateLocalLabel(symbolTableEntryType *symbol);
+	stringType		*saveString(char *s);
 
     nullDup(expression);
     result = originalResult = typeAlloc(expressionType);
@@ -280,14 +284,13 @@ duplicateExpressionForFixup(expression, isTopLevel, isSpecialFunctionOperand)
 }
 
   functionCallTermType *
-duplicateFunctionCall(functionCall)
-  functionCallTermType	*functionCall;
+duplicateFunctionCall(functionCallTermType *functionCall)
 {
 	functionCallTermType	*result;
 	operandListType        **argument;
 	operandListType		*parameterList;
 
-	operandListType		*duplicateOperandForFixup();
+	operandListType		*duplicateOperandForFixup(operandListType *operand, bool isSpecialFunctionOperand);
 
 	result = typeAlloc(functionCallTermType);
 	result->functionName = functionCall->functionName;
@@ -310,8 +313,7 @@ duplicateFunctionCall(functionCall)
 
 
   expressionType *
-duplicateArrayReference(arrayTerm)
-  arrayTermType	*arrayTerm;
+duplicateArrayReference(arrayTermType *arrayTerm)
 {
 	anyOldThing	*resultThing;
 	valueKindType	 kindOfResult;
@@ -322,9 +324,9 @@ duplicateArrayReference(arrayTerm)
 	bool		 saveExpansion;
 	operandType	*newOperand;
 
-	valueType	*newValue();
-	operandType	*duplicateOperandForFixup();
-	anyOldThing	*arrayLookup();
+	valueType	*newValue(valueKindType kindOfValue, int value, operandKindType addressMode);
+	operandType	*duplicateOperandForFixup(operandListType *operand, bool isSpecialFunctionOperand);
+	anyOldThing	*arrayLookup(arrayTermType *arrayTerm, valueKindType *kindOfThing);
 
 	expansionOff();
 	resultThing = arrayLookup(arrayTerm, &kindOfResult);
