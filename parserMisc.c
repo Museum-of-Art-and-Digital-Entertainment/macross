@@ -45,7 +45,7 @@ addLabelToStatement(labelList, statement)
 	statementType	*newStatement();
 
 	if (statement == NULL)
-		statement = newStatement(NULL_STATEMENT, NULL);
+		statement = newStatement(NULL_STATEMENT, (statementBodyType){ NULL });
 	statement->labels = labelList;
 	return(statement);
 }
