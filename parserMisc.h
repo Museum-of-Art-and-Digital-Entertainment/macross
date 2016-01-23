@@ -3,7 +3,7 @@
 #include "macrossTypes.h"
 
 statementType *addLabelToSatement(labelListType *labelList, statementType *statement);
-void botch(char *message, int arg1, int arg2, int arg3);
+void botch(char *message, ...);
 void checkDefineAssignmentOperator(assignmentKindType assignmentOperator);
 void convertDefineToMDefine(statementType *defineStatement);
 ifStatementBodyType *extractIfBody(statementType *ifStatement);

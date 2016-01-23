@@ -34,6 +34,7 @@
 #include "y.tab.h"
 #include "parserMisc.h"
 
+#include <stdarg.h>
 #include <string.h>
 
   statementType *
@@ -54,14 +55,13 @@ addLabelToStatement(labelList, statement)
  * function does almost exactly what we want. */
 
   void
-botch(message, arg1, arg2, arg3)
-  char		*message;
-  int           arg1;
-  int           arg2;
-  int           arg3;
+botch(char *message, ...)
 {
+	va_list ap;
 	printf("Macross horrible terrible internal botch: ");
-	printf(message, arg1, arg2, arg3);
+	va_start(ap, message);
+	vprintf(message, ap);
+	va_end(ap);
 	chokePukeAndDie();
 }
 
