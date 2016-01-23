@@ -248,7 +248,7 @@ expandOperand(addressMode, buffer)
 	case PRE_SELECTED_X_OPND:	moreText("@x"); break;
 	default:			break;
 	}
-	expandExpression(NULL);
+	expandExpression(NULL, NULL);
 	if (addressMode == POST_INDEXED_Y_OPND ||
 	    addressMode == PRE_INDEXED_X_OPND ||
 	    addressMode == X_INDEXED_OPND ||

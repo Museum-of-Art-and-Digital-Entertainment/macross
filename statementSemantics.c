@@ -263,7 +263,7 @@ assembleBlockStatement(blockStatement)
 				theExpression, NO_FIXUP);
 		blockSize += intValue(blockIncrement);
 		blockStatement = blockStatement->nextExpression;
-		expand((expandExpression(NULL), blockStatement!=NULL ?
+		expand((expandExpression(NULL, NULL), blockStatement!=NULL ?
 			moreText(", ") : 0));
 		qfree(blockIncrement);
 	}
@@ -304,7 +304,7 @@ assembleByteStatement(byteStatement)
 		}
 		qfree(byteValue);
 		byteStatement = byteStatement->nextExpression;
-		expand((expandExpression(NULL), byteStatement != NULL ?
+		expand((expandExpression(NULL, NULL), byteStatement != NULL ?
 			moreText(", ") : 0));
 	}
 	expand(endLine());
@@ -366,7 +366,7 @@ assembleDbyteStatement(dbyteStatement)
 		wordValue = swabValue(evaluateExpression(dbyteStatement->
 			theExpression, DBYTE_FIXUP));
 		dbyteStatement = dbyteStatement->nextExpression;
-		expand((expandExpression(NULL), dbyteStatement != NULL ?
+		expand((expandExpression(NULL, NULL), dbyteStatement != NULL ?
 			moreText(", ") : 0));
 		putFixupsHere(DBYTE_FIXUP, 0);
 		emitWordValue(wordValue);
@@ -402,7 +402,7 @@ assembleDefineStatement(defineStatement)
 					evaluateDefineExpression(
 					defineStatement->theValue);
 				contextToDefine->usage = DEFINE_SYMBOL;
-				expand(expandExpression(NULL));
+				expand(expandExpression(NULL, NULL));
 			} else
 				contextToDefine->value = newValue(FAIL, 0,
 					EXPRESSION_OPND);
@@ -706,7 +706,7 @@ assembleLongStatement(longStatement)
 		longValue = evaluateExpression(longStatement->theExpression,
 			LONG_FIXUP);
 		longStatement = longStatement->nextExpression;
-		expand((expandExpression(NULL), longStatement != NULL ?
+		expand((expandExpression(NULL, NULL), longStatement != NULL ?
 			moreText(", ") : 0));
 		putFixupsHere(LONG_FIXUP, 0);
 		emitLongValue(longValue);
@@ -1012,7 +1012,7 @@ assembleStartStatement(startStatement)
 			expand((moreText("*fail*"), endLine()));
 			error(BAD_START_ADDRESS_ERROR);
 		} else {
-			expand((expandExpression(NULL), endLine()));
+			expand((expandExpression(NULL, NULL), endLine()));
 			haveUserStartAddress = TRUE;
 			fixupStartAddress = FALSE;
 		}
@@ -1039,7 +1039,7 @@ assembleStringStatement(stringStatement)
 		}
 		qfree(byteValue);
 		stringStatement = stringStatement->nextExpression;
-		expand((expandExpression(NULL), stringStatement != NULL ?
+		expand((expandExpression(NULL, NULL), stringStatement != NULL ?
 			moreText(", ") : 0));
 	}
 	expand(endLine());
@@ -1121,7 +1121,7 @@ assembleVariableStatement(variableStatement)
 			theValue)) == 1) {
 		    contextForVariable->value = evaluateExpression(
 			variableStatement->theValue->theExpression, NO_FIXUP);
-		    expand(expandExpression(NULL));
+		    expand(expandExpression(NULL, NULL));
 		} else {
 		    if (initCount > 1)
 			error(TOO_MANY_VARIABLE_INITIALIZERS_ERROR);
@@ -1186,7 +1186,7 @@ assembleWordStatement(wordStatement)
 		word = evaluateExpression(wordStatement->theExpression,
 			WORD_FIXUP);
 		wordStatement = wordStatement->nextExpression;
-		expand((expandExpression(NULL), wordStatement != NULL ?
+		expand((expandExpression(NULL, NULL), wordStatement != NULL ?
 			moreText(", ") : 0));
 		putFixupsHere(WORD_FIXUP, 0);
 		emitWordValue(word);
