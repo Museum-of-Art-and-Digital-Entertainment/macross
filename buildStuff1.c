@@ -355,16 +355,16 @@ buildMdoWhileStatement(body, condition)
   statementType *
 buildMdoStatement(body, end)
   blockType	*body;
-  doEndType	*end;
+  mdoEndType	*end;
 {
 	statementType	*result;
 
-	if (end->doEndKind == UNTIL_END)
-		result = buildMdoUntilStatement(body, end->doEndCondition);
-	else if (end->doEndKind == WHILE_END)
-		result = buildMdoWhileStatement(body, end->doEndCondition);
+	if (end->mdoEndKind == UNTIL_END)
+		result = buildMdoUntilStatement(body, end->mdoEndCondition);
+	else if (end->mdoEndKind == WHILE_END)
+		result = buildMdoWhileStatement(body, end->mdoEndCondition);
 	else
-		botch("bad mdo-end kind: %d\n", end->doEndCondition);
+		botch("bad mdo-end kind: %d\n", end->mdoEndCondition);
 	qfree(end);
 	return(result);
 }
