@@ -217,7 +217,7 @@ buildSelectionList(new, rest)
   selectionListType	*new;
   selectionListHeadType	*rest;
 {
-	return((selectionListHeadType *) buildIdentifierList(new, rest));
+	return((selectionListHeadType *) buildIdentifierList(new, rest, unknownSymbolTag /* random guess */));
 }
 
   statementListHeadType *
