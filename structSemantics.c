@@ -128,7 +128,7 @@ assembleStructDefinitionBody(structBody)
 		expand(listableStatement(structBody->kindOfStatement) ?
 			(expandLabel(), tabIndent()) : 0);
 		assembleStatementBody(structBody->kindOfStatement,
-				structBody->statementBody, FALSE, &dummy);
+				structBody->statementBody, 0 /* random guess */, FALSE, &dummy);
 		if (currentFieldOffset > MAXIMUM_ALLOWED_STRUCT_SIZE) {
 			error(STRUCT_TOO_BIG_ERROR);
 			return(NULL);
