@@ -34,7 +34,7 @@
 #include "operandStuff.h"
 #include "semanticMisc.h"
 
-#include <strings.h>
+#include <string.h>
 
 
 /* 

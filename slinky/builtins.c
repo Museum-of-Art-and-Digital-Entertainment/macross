@@ -30,7 +30,7 @@
 #include "slinkyTypes.h"
 #include "slinkyGlobals.h"
 #include "slinkyExpressions.h"
-#include <strings.h>
+#include <string.h>
 
 #define getSymbol() ((symbolType *)getNumber())
 
