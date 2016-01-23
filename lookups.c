@@ -444,7 +444,7 @@ bindFunctionArguments(argumentList, parameterList, functionName)
 			nextArgument!=NULL) && parameterList!=NULL) {
 		saveEnvironment = currentEnvironment;
 		currentEnvironment = currentEnvironment->previousEnvironment;
-		argument = evaluateOperand(parameterList, NO_FIXUP);
+		argument = evaluateOperand(parameterList);
 		currentEnvironment = saveEnvironment;
 		if (firstArgument == NULL)
 			firstArgument = argument;
@@ -495,7 +495,7 @@ bindFunctionArguments(argumentList, parameterList, functionName)
 			saveEnvironment = currentEnvironment;
 			currentEnvironment = currentEnvironment->
 				previousEnvironment;
-			argument = evaluateOperand(parameterList, NO_FIXUP);
+			argument = evaluateOperand(parameterList);
 			currentEnvironment = saveEnvironment;
 			if (firstArgument == NULL)
 				firstArgument = argument;

@@ -53,7 +53,7 @@ isARegisterBIF(parameterList, kindOfFixup)
 	valueType	*evaluateOperand();
 
 	if (parameterList != NULL) {
-		evaluatedParameter = evaluateOperand(parameterList, NO_FIXUP);
+		evaluatedParameter = evaluateOperand(parameterList);
 		return(makeBooleanValue(evaluatedParameter->addressMode ==
 			A_REGISTER_OPND));
 	} else {
@@ -72,7 +72,7 @@ isDirectModeBIF(parameterList, kindOfFixup)
 	valueType	*evaluateOperand();
 
 	if (parameterList != NULL) {
-		evaluatedParameter = evaluateOperand(parameterList, NO_FIXUP);
+		evaluatedParameter = evaluateOperand(parameterList);
 		return(makeBooleanValue(evaluatedParameter->addressMode ==
 			EXPRESSION_OPND));
 	} else {
@@ -91,7 +91,7 @@ isImmediateModeBIF(parameterList, kindOfFixup)
 	valueType	*evaluateOperand();
 
 	if (parameterList != NULL) {
-		evaluatedParameter = evaluateOperand(parameterList, NO_FIXUP);
+		evaluatedParameter = evaluateOperand(parameterList);
 		return(makeBooleanValue(evaluatedParameter->addressMode ==
 			IMMEDIATE_OPND));
 	} else {
@@ -110,7 +110,7 @@ isIndexedModeBIF(parameterList, kindOfFixup)
 	valueType	*evaluateOperand();
 
 	if (parameterList != NULL) {
-		evaluatedParameter = evaluateOperand(parameterList, NO_FIXUP);
+		evaluatedParameter = evaluateOperand(parameterList);
 		return(makeBooleanValue(evaluatedParameter->addressMode ==
 			X_INDEXED_OPND || evaluatedParameter->addressMode ==
 			Y_INDEXED_OPND || evaluatedParameter->addressMode ==
@@ -132,7 +132,7 @@ isIndirectModeBIF(parameterList, kindOfFixup)
 	valueType	*evaluateOperand();
 
 	if (parameterList != NULL) {
-		evaluatedParameter = evaluateOperand(parameterList, NO_FIXUP);
+		evaluatedParameter = evaluateOperand(parameterList);
 		return(makeBooleanValue(evaluatedParameter->addressMode ==
 			INDIRECT_OPND));
 	} else {
@@ -151,7 +151,7 @@ isPostIndexedModeBIF(parameterList, kindOfFixup)
 	valueType	*evaluateOperand();
 
 	if (parameterList != NULL) {
-		evaluatedParameter = evaluateOperand(parameterList, NO_FIXUP);
+		evaluatedParameter = evaluateOperand(parameterList);
 		return(makeBooleanValue(evaluatedParameter->addressMode ==
 			POST_INDEXED_Y_OPND));
 	} else {
@@ -170,7 +170,7 @@ isPreIndexedModeBIF(parameterList, kindOfFixup)
 	valueType	*evaluateOperand();
 
 	if (parameterList != NULL) {
-		evaluatedParameter = evaluateOperand(parameterList, NO_FIXUP);
+		evaluatedParameter = evaluateOperand(parameterList);
 		return(makeBooleanValue(evaluatedParameter->addressMode ==
 			PRE_INDEXED_X_OPND || evaluatedParameter->
 			addressMode == PRE_SELECTED_X_OPND));
@@ -190,7 +190,7 @@ isXIndexedModeBIF(parameterList, kindOfFixup)
 	valueType	*evaluateOperand();
 
 	if (parameterList != NULL) {
-		evaluatedParameter = evaluateOperand(parameterList, NO_FIXUP);
+		evaluatedParameter = evaluateOperand(parameterList);
 		return(makeBooleanValue(evaluatedParameter->addressMode ==
 			X_INDEXED_OPND || evaluatedParameter->addressMode ==
 			X_SELECTED_OPND));
@@ -210,7 +210,7 @@ isXRegisterBIF(parameterList, kindOfFixup)
 	valueType	*evaluateOperand();
 
 	if (parameterList != NULL) {
-		evaluatedParameter = evaluateOperand(parameterList, NO_FIXUP);
+		evaluatedParameter = evaluateOperand(parameterList);
 		return(makeBooleanValue(evaluatedParameter->addressMode ==
 			X_REGISTER_OPND));
 	} else {
@@ -229,7 +229,7 @@ isYIndexedModeBIF(parameterList, kindOfFixup)
 	valueType	*evaluateOperand();
 
 	if (parameterList != NULL) {
-		evaluatedParameter = evaluateOperand(parameterList, NO_FIXUP);
+		evaluatedParameter = evaluateOperand(parameterList);
 		return(makeBooleanValue(evaluatedParameter->addressMode ==
 			Y_INDEXED_OPND || evaluatedParameter->addressMode ==
 			Y_SELECTED_OPND));
@@ -249,7 +249,7 @@ isYRegisterBIF(parameterList, kindOfFixup)
 	valueType	*evaluateOperand();
 
 	if (parameterList != NULL) {
-		evaluatedParameter = evaluateOperand(parameterList, NO_FIXUP);
+		evaluatedParameter = evaluateOperand(parameterList);
 		return(makeBooleanValue(evaluatedParameter->addressMode ==
 			Y_REGISTER_OPND));
 	} else {
