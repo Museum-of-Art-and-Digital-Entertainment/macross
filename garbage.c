@@ -443,7 +443,7 @@ freeMacroStatement(macroStatement)
 
   void
 freeMdefineStatement(mdefineStatement)
-  defineStatementBodyType	*mdefineStatement; // MIST: shouldn't this be "mdefineStatementBodyType"?
+       defineStatementBodyType	*mdefineStatement; /* MIST: shouldn't this be "mdefineStatementBodyType"? */
 {
 	valueType		*freeDefineExpression();
 

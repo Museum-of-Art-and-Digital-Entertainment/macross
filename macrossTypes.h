@@ -444,7 +444,7 @@ typedef union expressionTermBodyUnion {
 		valueType		*valueUnion;
 		symbolTableEntryType	*symbolTableUnion;
 		conditionType		 conditionTypeUnion;
-		void			*expressionUnion; // this should be expressionTermType, but there's a cycle
+		void			*expressionUnion; /* this should be expressionTermType, but there's a cycle */
 			       } expressionTermBodyType;
 
 typedef struct expressionTermStruct {
