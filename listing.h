@@ -22,7 +22,7 @@ bool labeledLine();
 void addText(char *buffer, char **bufferPtr, char *format, int arg1, int arg2, int arg3);
 void moreTextOptional(char *buffer, char **bufferPtr, char *format, int arg1, int arg2, int arg3);
 void moreText(char *format, int arg1, int arg2, int arg3);
-void moreLabel(char *format, int arg1, int arg2, int arg3);
+void moreLabel(char *format, int arg1);
 void startLine();
 void endLine();
 void flushExpressionString();

@@ -543,13 +543,11 @@ moreText(format, arg1, arg2, arg3)
 }
 
   void
-moreLabel(format, arg1, arg2, arg3)
+moreLabel(format, arg1)
   char	*format;
   int	 arg1;
-  int	 arg2;
-  int	 arg3;
 {
-	sprintf(labelStringPtr, format, arg1, arg2, arg3);
+	sprintf(labelStringPtr, format, arg1);
 	labelStringPtr = labelString + strlen(labelString);
 }
 
