@@ -32,6 +32,8 @@
 #include "macrossGlobals.h"
 #include "y.tab.h"
 
+void printExpression(expressionType *expression);
+
 /*
    Print out the parse-tree.
  */
@@ -274,7 +276,6 @@ printArrayTerm(arrayTerm)
   arrayTermType	*arrayTerm;
 {
 	void	printIdentifier();
-	void	printExpression();
 
 	nullPrint(arrayTerm);
 	tab(); printf("(array\n");
@@ -289,7 +290,6 @@ printArrayTerm(arrayTerm)
 printAssignmentTerm(assignmentTerm)
   binopTermType	*assignmentTerm;
 {
-	void	printExpression();
 
 	nullPrint(assignmentTerm);
 	tab(); printf("(assignment [");
@@ -307,7 +307,6 @@ printBinopTerm(binopTerm)
   binopTermType	*binopTerm;
 {
 	void	printIdentifier();
-	void	printExpression();
 
 	nullPrint(binopTerm);
 	tab(); printf("(binop [");
@@ -391,8 +390,6 @@ printPreopTerm(preopTerm)
 printUnopTerm(unopTerm)
   unopTermType	*unopTerm;
 {
-	void	printExpression();
-
 	nullPrint(unopTerm);
 	tab(); printf("(unop [");
 	       printToken(unopTerm->unop);

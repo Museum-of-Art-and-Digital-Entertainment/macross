@@ -32,6 +32,9 @@
 #include "macrossGlobals.h"
 #include "y.tab.h"
 
+#include "semanticMisc.h"
+#include "expressionSemantics.h"
+
 #define expansionOff() {saveExpansion=expandMacros; expandMacros=FALSE;}
 #define expansionOn()	expandMacros=saveExpansion;
 
@@ -219,7 +222,6 @@ booleanTest(expression)
 	bool		 result;
 	valueType	*expressionResult;
 	bool		 saveExpansion;
-	valueType	*evaluateExpression();
 
 	expansionOff();
 	expressionResult = evaluateExpression(expression, NO_FIXUP);
@@ -1009,7 +1011,6 @@ noteReference(expression, kindOfFixup, location, codeMode)
 performFixups(fixups)
   fixupListType		*fixups;
 {
-	valueType	*evaluateExpression();
 	valueType	*valueToPoke;
 
 	performingFixups = TRUE;

@@ -31,6 +31,7 @@
 #include "macrossGlobals.h"
 #include "y.tab.h"
 #include "lexerTables.h"
+#include "parserMisc.h"
 
 extern int yylval;
 extern int yydebug;

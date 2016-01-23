@@ -30,6 +30,12 @@
 
 #include "macrossTypes.h"
 #include "macrossGlobals.h"
+#include "emitBranch.h"
+#include "expressionSemantics.h"
+#include "operandStuff.h"
+#include "parserMisc.h"
+#include "semanticMisc.h"
+#include "statementSemantics.h"
 
 operandType		*dbOperand;	/* safe temps for dbx hacking */
 expressionType		*dbExpression;
@@ -52,8 +58,6 @@ bool			 nullStatementFlag = FALSE;
 assembleBlock(block)
   blockType	*block;
 {
-	simpleFixupListType	*assembleStatement();
-
 	nullAssemble(block);
 	assembleStatement(block, FALSE, NULL);
 }
@@ -63,8 +67,6 @@ assembleBlockInsideIf(block, ongoingFixupList)
   blockType		*block;
   simpleFixupListType	*ongoingFixupList;
 {
-	simpleFixupListType	*assembleStatement();
-
 	nullAssembleNULL(block);
 	return(assembleStatement(block, TRUE, ongoingFixupList));
 }
@@ -97,9 +99,6 @@ assembleMachineInstruction(opcode, operands)
 	int		 op;
 	valueType	*evaluatedOperands[MAX_NUMBER_OF_OPERANDS];
 	valueType	*value;
-
-	valueType	*evaluateOperand();
-	addressType	 addressValue();
 
 	nullAssemble(opcode);
 	expand(moreText("%s\t", opcode->mnemonic));
@@ -193,9 +192,6 @@ assembleAlignStatement(alignStatement)
 	int		 alignment;
 	bool		 saveExpansion;
 
-	int		 intValue();
-	valueType	*evaluateExpression();
-
 	nullAssemble(alignStatement);
 	expansionOff();
 	alignment = intValue(evaluateExpression(alignStatement, NO_FIXUP));
@@ -229,8 +225,6 @@ assembleAssertStatement(assertStatement)
 	valueType	*message;
 	bool		 saveExpansion;
 
-	valueType	*evaluateExpression();
-
 	expansionOff();
 	test = evaluateExpression(assertStatement->condition, NO_FIXUP);
 	expansionOn();
@@ -260,9 +254,6 @@ assembleBlockStatement(blockStatement)
 {
 	valueType		*blockIncrement;
 	int			 blockSize;
-
-	valueType		*evaluateExpression();
-	int			 intValue();
 
 	blockSize = 0;
 	nullAssemble(blockStatement);
@@ -300,8 +291,6 @@ assembleByteStatement(byteStatement)
 {
 	valueType		*byteValue;
 
-	valueType		*evaluateExpression();
-
 	nullAssemble(byteStatement);
 	expand(moreText("byte\t"));
 	while (byteStatement != NULL) {
@@ -330,8 +319,6 @@ assembleConstrainStatement(constrainStatement)
 	addressType	 startAddress;
 	addressType	 endAddress;
 	bool		 saveExpansion;
-
-	valueType	*evaluateExpression();
 
 	expansionOff();
 	constraintValue = evaluateExpression(constrainStatement->constraint,
@@ -373,9 +360,6 @@ assembleDbyteStatement(dbyteStatement)
 {
 	valueType		*wordValue;
 
-	valueType		*evaluateExpression();
-	valueType		*swabValue();
-
 	nullAssemble(dbyteStatement);
 	expand(moreText("dbyte\t"));
 	while (dbyteStatement != NULL) {
@@ -398,10 +382,6 @@ assembleDefineStatement(defineStatement)
 	symbolTableEntryType	*symbolToDefine;
 	symbolInContextType	*contextToDefine;
 	bool			 saveExpansion;
-
-	valueType		*evaluateDefineExpression();
-	valueType		*newValue();
-	symbolTableEntryType	*effectiveSymbol();
 
 	nullAssemble(defineStatement);
 	symbolToDefine = effectiveSymbol(defineStatement->theSymbol,
@@ -442,8 +422,6 @@ assembleDoUntilStatement(doUntilStatement)
 {
 	valueType	topOfLoop;
 
-	simpleFixupListType	*emitJump();
-
 	nullAssemble(doUntilStatement);
 	topOfLoop = currentLocationCounter;
 	if (doUntilStatement->doUntilCondition == NEVER_COND)
@@ -468,8 +446,6 @@ assembleDoWhileStatement(doWhileStatement)
   doWhileStatementBodyType	*doWhileStatement;
 {
 	valueType	topOfLoop;
-
-	simpleFixupListType	*emitJump();
 
 	nullAssemble(doWhileStatement);
 	topOfLoop = currentLocationCounter;
@@ -496,9 +472,6 @@ assembleExternStatement(externStatement)
 {
 	symbolInContextType	*context;
 	symbolTableEntryType	*theSymbol;
-
-	symbolInContextType	*getBaseContext();
-	symbolTableEntryType	*effectiveSymbol();
 
 	expand(moreText("extern\t"));
 	while (externStatement != NULL) {
@@ -538,10 +511,6 @@ assembleFunctionStatement(functionStatement)
 	symbolTableEntryType		*newFunctionSymbol;
 	functionDefinitionType		*newFunction;
 	symbolInContextType		*context;
-
-	symbolTableEntryType		*lookupOrEnterSymbol();
-	valueType			*newValue();
-	symbolInContextType		*getBaseContext();
 
 	nullAssemble(functionStatement);
 	if (currentEnvironment != &globalEnvironment) {
@@ -595,9 +564,6 @@ assembleIfStatement(ifStatement, terminalIf, ongoingFixupList)
 	valueType		 fixupLocation1[COMPOUND_BRANCH_MAX];
 	simpleFixupListType	*fixupLocation2;
 
-	simpleFixupListType	*emitJump();
-	void			 assembleIfStatementOldStyle();
-
 	if (backwardsCompatibleIfFlag) {
 		assembleIfStatementOldStyle(ifStatement);
 		return(NULL);
@@ -649,8 +615,6 @@ assembleIfStatementOldStyle(ifStatement)
 	valueType		 fixupLocation1[COMPOUND_BRANCH_MAX];
 	simpleFixupListType	*fixupLocation2;
 
-	simpleFixupListType	*emitJump();
-
 	nullAssemble(ifStatement);
 	if (ifStatement->ifCondition != ALWAYS_COND) {
 		emitRelativeBranch(invertConditionCode(ifStatement->
@@ -684,8 +648,6 @@ assembleIncludeStatement(includeStatement)
 	stringType	*fileName;
 	valueType	*possibleFileName;
 	bool		 saveExpansion;
-	valueType	*evaluateExpression();
-	stringType	*saveString();
 
 	expansionOff();
 	possibleFileName = evaluateExpression(includeStatement, NO_FIXUP);
@@ -727,7 +689,7 @@ assembleInstructionStatement(instructionStatement, cumulativeLineNumber)
 
 	default:
 		botch("bad instruction type=%d\n", instructionStatement->
-					kindOfInstruction);
+                      kindOfInstruction, 0, 0);
 		break;
 	}
 }
@@ -737,8 +699,6 @@ assembleLongStatement(longStatement)
   longStatementBodyType	*longStatement;
 {
 	valueType		*longValue;
-
-	valueType		*evaluateExpression();
 
 	nullAssemble(longStatement);
 	expand(moreText("long\t"));
@@ -760,8 +720,6 @@ assembleMacroStatement(macroStatement)
   macroStatementBodyType	*macroStatement;
 {
 	macroTableEntryType		*newMacro;
-
-	macroTableEntryType		*installMacro();
 
 	nullAssemble(macroStatement);
 	if (currentEnvironment != &globalEnvironment) {
@@ -785,7 +743,6 @@ assembleMdefineStatement(mdefineStatement)
   defineStatementBodyType	*mdefineStatement;
 {
 	bool			 saveExpansion;
-	valueType		*evaluateDefineExpression();
 
 	nullAssemble(mdefineStatement);
 	expansionOff();
@@ -879,7 +836,6 @@ assembleMswitchStatement(mswitchStatement)
     expressionListType	*tagExpressionList;
     valueType		*tagValue;
     bool		 saveExpansion;
-    valueType		*evaluateExpression();
 
     expansionOff();
     switchValue = evaluateExpression(mswitchStatement->switchExpression,
@@ -939,9 +895,6 @@ assembleMvariableStatement(mvariableStatement)
 	int			 initCount;
 	bool			 saveExpansion;
 
-	valueType		*createArray();
-	int			 expressionListLength();
-
 	nullAssemble(mvariableStatement);
 	expansionOff();
 	if (mvariableStatement->theDimension == NULL) {
@@ -990,7 +943,6 @@ assembleOrgStatement(orgStatement)
 {
 	valueType	*orgAddress;
 	bool		 saveExpansion;
-	valueType	*evaluateExpression();
 
 	nullAssemble(orgStatement);
 	targetOffset = 0;
@@ -1018,8 +970,6 @@ assembleOrgStatement(orgStatement)
 assemblePerformStatement(performStatement)
   performStatementBodyType	*performStatement;
 {
-	void	evaluateExpressionStandalone();
-
 	nullAssemble(performStatement);
 	sideEffectFlag = FALSE;
 	evaluateExpressionStandalone(performStatement);
@@ -1045,10 +995,6 @@ assembleRelStatement(relStatement)
 assembleStartStatement(startStatement)
   startStatementBodyType	*startStatement;
 {
-	valueType	*evaluateExpression();
-	addressType	 addressValue();
-	expressionType	*generateFixupExpression();
-
 	nullAssemble(startStatement);
 	expand(moreText("start\t"));
 	if (haveUserStartAddress) {
@@ -1078,8 +1024,6 @@ assembleStringStatement(stringStatement)
   stringStatementBodyType	*stringStatement;
 {
 	valueType		*byteValue;
-
-	valueType		*evaluateExpression();
 
 	nullAssemble(stringStatement);
 	expand(moreText("string\t"));
@@ -1118,7 +1062,6 @@ assembleTargetStatement(targetStatement)
 {
 	valueType	*targetAddress;
 	bool		 saveExpansion;
-	valueType	*evaluateExpression();
 
 	nullAssemble(targetStatement);
 	targetOffset = 0;
@@ -1141,8 +1084,6 @@ assembleTargetStatement(targetStatement)
 assembleUndefineStatement(undefineStatement)
   undefineStatementBodyType	*undefineStatement;
 {
-	symbolTableEntryType	*effectiveSymbol();
-
 	expand(moreText("undefine\t"));
 	while (undefineStatement != NULL) {
 		expand(moreText("%s", symbName(undefineStatement->theSymbol)));
@@ -1161,10 +1102,6 @@ assembleVariableStatement(variableStatement)
     symbolTableEntryType	*newVariable;
     symbolInContextType		*contextForVariable;
     int				 initCount;
-
-    symbolTableEntryType	*effectiveSymbol();
-    valueType			*createArray();
-    int				 expressionListLength();
 
     nullAssemble(variableStatement);
     newVariable = effectiveSymbol(variableStatement->theSymbol,
@@ -1242,8 +1179,6 @@ assembleWordStatement(wordStatement)
   wordStatementBodyType	*wordStatement;
 {
 	valueType		*word;
-
-	valueType		*evaluateExpression();
 
 	nullAssemble(wordStatement);
 	expand(moreText("word\t"));
@@ -1468,7 +1403,7 @@ assembleStatementBody(kind, body, cumulativeLineNumber, worryAboutIf,
 		break;
 
 	default:
-		botch("assembleStatementBody doesn't know kind %d\n", kind);
+            botch("assembleStatementBody doesn't know kind %d\n", kind, 0, 0);
 		break;
 	}
 /*	return(result);*/
@@ -1479,8 +1414,6 @@ assembleStatementBody(kind, body, cumulativeLineNumber, worryAboutIf,
 assembleLabelList(labelList)
   labelListType	*labelList;
 {
-	valueType	*newValue();
-
 	while (labelList != NULL) {
 		if (structNestingDepth == 0)
 			valueLabel(labelList->theLabel,

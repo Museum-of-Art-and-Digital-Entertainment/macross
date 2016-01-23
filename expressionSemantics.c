@@ -31,6 +31,8 @@
 #include "macrossTypes.h"
 #include "macrossGlobals.h"
 #include "y.tab.h"
+#include "expressionSemantics.h"
+#include "semanticMisc.h"
 
 operandType		*dbOperand;	/* safe temps for dbx hacking */
 expressionType		*dbExpression;
@@ -70,8 +72,6 @@ arrayLookup(arrayTerm, kindOfThing)
 	arrayType		*array;
 	int			 index;
 	stringType		*string;
-
-	valueType		*evaluateExpression();
 
 	*kindOfThing = FAIL;
 	arrayValue = evaluateExpression(arrayTerm->arrayName, NO_FIXUP);
@@ -133,9 +133,6 @@ evaluateArrayTerm(arrayTerm)
 	environmentType		*saveEnvironment;
 	bool			 saveExpansion;
 
-	valueType		*newValue();
-	valueType		*evaluateOperand();
-
 	expansionOff();
 	resultThing = arrayLookup(arrayTerm, &kindOfResult);
 	expansionOn();
@@ -186,15 +183,6 @@ evaluateAssignmentTerm(assignmentTerm, kindOfFixup)
 	bool			 stringAssign;
 	char			*charPtr;
 	char			 objectChar;
-
-	symbolTableEntryType	*effectiveSymbol();
-	valueType		*evaluateExpressionInternally();
-	valueKindType		 addValueKind();
-	valueKindType		 selectValueKind();
-	valueKindType		 subValueKind();
-	valueKindType		 opValueKind();
-	valueType		*makeUndefinedValue();
-	valueType		*newValue();
 
     nullEvaluate(assignmentTerm);
     sideEffectFlag = TRUE;
@@ -385,11 +373,6 @@ evaluateBinopTerm(binopTerm, isTopLevel, kindOfFixup)
 	int			 resultValue;
 	operandKindType		 resultAddressMode;
 	valueType		*result;
-
-	symbolInContextType	*getWorkingContext();
-	valueType		*evaluateExpressionInternally();
-	valueType		*newValue();
-	valueType		*makeUndefinedValue();
 
 	nullEvaluate(binopTerm);
 	if (binopTerm->binop != SUB && binopTerm->binop != ADD)
@@ -598,8 +581,6 @@ evaluateBinopTerm(binopTerm, isTopLevel, kindOfFixup)
 evaluateCondition(condition)
   conditionType	condition;
 {
-	valueType	*newValue();
-
 	expand(moreExpression("%s", conditionString(condition)));
 	return(newValue(CONDITION_VALUE, condition, EXPRESSION_OPND));
 }
@@ -632,10 +613,6 @@ evaluateFunctionCall(functionCall, kindOfFixup, isStandalone)
 	environmentType		 newEnvironment;
 	valueType		*result;
 	bool			 saveExpansion;
-
-	symbolInContextType	*getWorkingContext();
-	valueType		*evaluateBuiltInFunctionCall();
-	valueType		*newValue();
 
 	nullEvaluate(functionCall);
 	sideEffectFlag = TRUE;
@@ -705,7 +682,6 @@ evaluateFunctionCall(functionCall, kindOfFixup, isStandalone)
   valueType *
 evaluateHere()
 {
-	valueType	*newValue();
 	valueType	*result;
 
 	expand(moreExpression("here"));
@@ -726,11 +702,6 @@ evaluateIdentifier(identifier, isTopLevel, kindOfFixup)
 	valueType		*result;
 	environmentType		*saveEnvironment;
 	bool			 saveExpansion;
-
-	valueType		*newValue();
-	valueType		*evaluateOperand();
-	symbolInContextType	*getWorkingContext();
-	symbolTableEntryType	*generateLocalLabel();
 
 	nullEvaluate(identifier);
 	identifier->referenceCount++;
@@ -851,8 +822,6 @@ evaluateIdentifier(identifier, isTopLevel, kindOfFixup)
 evaluateNumber(number)
   numberTermType	number;
 {
-	valueType	*newValue();
-
 	expand(moreExpression("0x%x", number));
 	return(newValue(ABSOLUTE_VALUE, number, EXPRESSION_OPND));
 }
@@ -867,9 +836,6 @@ evaluatePostopTerm(postopTerm)
 	valueType		*result;
 	symbolInContextType	*workingContext;
 	symbolTableEntryType	*targetSymbol;
-
-	symbolTableEntryType	*effectiveSymbol();
-	symbolInContextType	*getWorkingContext();
 
 	nullEvaluate(postopTerm);
 	sideEffectFlag = TRUE;
@@ -939,9 +905,6 @@ evaluatePreopTerm(preopTerm)
 	symbolInContextType	*workingContext;
 	symbolTableEntryType	*targetSymbol;
 
-	symbolTableEntryType	*effectiveSymbol();
-	symbolInContextType	*getWorkingContext();
-
 	nullEvaluate(preopTerm);
 	sideEffectFlag = TRUE;
 	if (preopTerm->preOpArgument->kindOfTerm == IDENTIFIER_EXPR) {
@@ -1003,7 +966,6 @@ evaluatePreopTerm(preopTerm)
 evaluateString(string)
   stringType	*string;
 {
-	valueType	*newValue();
 	stringType	*newString;
 
 	expand(moreExpression("\"%s\"", string));
@@ -1022,11 +984,6 @@ evaluateUnopTerm(unopTerm, kindOfFixup)
 	int		 resultValue;
 	operandKindType	 resultAddressMode;
 	valueType	*result;
-
-	valueKindType	 unopValueKind();
-	valueType	*newValue();
-	valueType	*evaluateExpressionInternally();
-	valueType	*makeUndefinedValue();
 
 	nullEvaluate(unopTerm);
 	expand(moreExpression("%s", tokenString(unopTerm->unop)));
@@ -1213,10 +1170,6 @@ evaluateExpressionStandalone(expression)
 evaluateDefineExpression(expression)
   expressionType	*expression;
 {
-	valueType	*newValue();
-	expressionType	*generateFixupExpression();
-	operandType	*buildOperand();
-
 	nullEvaluate(expression);
 	return(newValue(OPERAND_VALUE, buildOperand(EXPRESSION_OPND,
 		generateFixupExpression(expression)), EXPRESSION_OPND));
@@ -1227,7 +1180,6 @@ evaluateSelectionList(selectionList)
   selectionListType	*selectionList;
 {
 	int		 offset;
-	valueType	*newValue();
 
 	offset = 0;
 	while (selectionList != NULL) {

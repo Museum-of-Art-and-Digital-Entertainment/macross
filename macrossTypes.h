@@ -28,6 +28,9 @@
 
 */
 
+#ifndef MACROSS_TYPES_H_
+#define MACROSS_TYPES_H_
+
 #include <stdio.h>
 
 /*
@@ -1093,3 +1096,5 @@ typedef enum {/* horrible kludge due to C compiler bug on Sun */
 /* Boy, is this macro useful! */
 
 #define typeAlloc(type)	(type *)malloc(sizeof(type))
+
+#endif

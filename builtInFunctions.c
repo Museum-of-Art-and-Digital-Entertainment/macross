@@ -30,7 +30,12 @@
 
 #include "macrossTypes.h"
 #include "macrossGlobals.h"
+#include "expressionSemantics.h"
+#include "operandStuff.h"
+#include "semanticMisc.h"
+
 #include <strings.h>
+
 
 /* 
    Helper routines to return values into the Macross expression evaluation
@@ -41,7 +46,6 @@
 makeBooleanValue(test)
   int	test;
 {
-	valueType	*newValue();
 
 	return(newValue(ABSOLUTE_VALUE, test!=0, EXPRESSION_OPND));
 }
@@ -49,7 +53,6 @@ makeBooleanValue(test)
   valueType *
 makeFailureValue()
 {
-	valueType	*newValue();
 
 	return(newValue(FAIL, 0, EXPRESSION_OPND));
 }
@@ -58,7 +61,6 @@ makeFailureValue()
 makeIntegerValue(integer)
   int	integer;
 {
-	valueType	*newValue();
 
 	return(newValue(ABSOLUTE_VALUE, integer, EXPRESSION_OPND));
 }
@@ -67,7 +69,6 @@ makeIntegerValue(integer)
 makeOperandValue(operand)
   operandType	*operand;
 {
-	valueType	*newValue();
 
 	return(newValue(OPERAND_VALUE, operand, EXPRESSION_OPND));
 }
@@ -76,7 +77,6 @@ makeOperandValue(operand)
 makeStringValue(string)
   stringType	*string;
 {
-	valueType	*newValue();
 
 	return(newValue(STRING_VALUE, string, STRING_OPND));
 }
@@ -84,7 +84,6 @@ makeStringValue(string)
   valueType *
 makeUndefinedValue()
 {
-	valueType	*newValue();
 
 	return(newValue(UNDEFINED_VALUE, 0, EXPRESSION_OPND));
 }
@@ -105,10 +104,9 @@ addressModeBIF(parameterList, kindOfFixup)
 {
 	valueType	*evaluatedParameter;
 
-	valueType	*evaluateOperand();
 
 	if (parameterList != NULL) {
-		evaluatedParameter = evaluateOperand(parameterList, NO_FIXUP);
+		evaluatedParameter = evaluateOperand(parameterList);
 		return(makeIntegerValue(evaluatedParameter->addressMode));
 	} else {
 		return(makeIntegerValue(-1));
@@ -126,13 +124,12 @@ applyBIF(parameterList, kindOfFixup)
 	macroTableEntryType	*macroToCall;
 
 	macroTableEntryType	*lookupMacroName();
-	valueType		*evaluateOperand();
 
 	if (parameterList == NULL) {
 		error(NO_ARGUMENTS_TO_BIF_ERROR, "apply");
 		return(makeFailureValue());
 	}
-	stringValue = evaluateOperand(parameterList, NO_FIXUP);
+	stringValue = evaluateOperand(parameterList);
 	if (stringValue->kindOfValue != STRING_VALUE) {
 		error(BIF_ARGUMENT_IS_NOT_A_STRING_ERROR, "apply");
 		return(makeFailureValue());
@@ -154,11 +151,10 @@ arrayLengthBIF(parameterList, kindOfFixup)
   fixupKindType		 kindOfFixup;
 {
 	valueType	*testObjectValue;
-	valueType	*evaluateOperand();
 
 	if (parameterList == NULL)
 		return(makeIntegerValue(0));
-	testObjectValue = evaluateOperand(parameterList, NO_FIXUP_OK);
+	testObjectValue = evaluateOperand(parameterList);
 	if (testObjectValue->kindOfValue == STRING_VALUE) {
 		return(makeIntegerValue(strlen(testObjectValue->value)));
 	} else if (testObjectValue->kindOfValue == ARRAY_VALUE) {
@@ -201,11 +197,10 @@ atasciiBIF(parameterList, kindOfFixup)
 	stringType	*string;
 	stringType	*newString;
 
-	valueType	*evaluateOperand();
 
 	if (parameterList == NULL)
 		return(makeStringValue(""));
-	stringValue = evaluateOperand(parameterList, NO_FIXUP);
+	stringValue = evaluateOperand(parameterList);
 	if (stringValue->kindOfValue != STRING_VALUE) {
 		error(BIF_ARGUMENT_IS_NOT_A_STRING_ERROR, "atascii");
 		return(makeFailureValue());
@@ -232,16 +227,15 @@ atasciiColorBIF(parameterList, kindOfFixup)
 	stringType	*newString;
 	byte		 testChar;
 
-	valueType	*evaluateOperand();
 
 	if (parameterList == NULL)
 		return(makeStringValue(""));
-	stringValue = evaluateOperand(parameterList, NO_FIXUP);
+	stringValue = evaluateOperand(parameterList);
 	parameterList = parameterList->nextOperand;
 	if (parameterList == NULL) {
 		color = 0;
 	} else {
-		colorValue = evaluateOperand(parameterList, NO_FIXUP);
+		colorValue = evaluateOperand(parameterList);
 		if (colorValue->kindOfValue != ABSOLUTE_VALUE) {
 			error(BAD_COLOR_ARGUMENT_TO_ATASCII_COLOR_ERROR);
 			return(makeFailureValue());
@@ -314,10 +308,9 @@ isAbsoluteValueBIF(parameterList, kindOfFixup)
 {
 	valueType	*evaluatedParameter;
 
-	valueType	*evaluateOperand();
 
 	if (parameterList != NULL) {
-		evaluatedParameter = evaluateOperand(parameterList, NO_FIXUP);
+		evaluatedParameter = evaluateOperand(parameterList);
 		return(makeBooleanValue(evaluatedParameter->kindOfValue ==
 			ABSOLUTE_VALUE));
 	} else {
@@ -333,10 +326,9 @@ isBlockBIF(parameterList, kindOfFixup) /* questionable */
 {
 	valueType	*evaluatedParameter;
 
-	valueType	*evaluateOperand();
 
 	if (parameterList != NULL) {
-		evaluatedParameter = evaluateOperand(parameterList, NO_FIXUP);
+		evaluatedParameter = evaluateOperand(parameterList);
 		return(makeBooleanValue(evaluatedParameter->kindOfValue ==
 			BLOCK_VALUE));
 	} else {
@@ -352,10 +344,9 @@ isBuiltInFunctionBIF(parameterList, kindOfFixup)
 {
 	valueType	*evaluatedParameter;
 
-	valueType	*evaluateOperand();
 
 	if (parameterList != NULL) {
-		evaluatedParameter = evaluateOperand(parameterList, NO_FIXUP);
+		evaluatedParameter = evaluateOperand(parameterList);
 		return(makeBooleanValue(evaluatedParameter->kindOfValue ==
 			BUILT_IN_FUNCTION_VALUE));
 	} else {
@@ -371,10 +362,9 @@ isConditionCodeBIF(parameterList, kindOfFixup)
 {
 	valueType	*evaluatedParameter;
 
-	valueType	*evaluateOperand();
 
 	if (parameterList != NULL) {
-		evaluatedParameter = evaluateOperand(parameterList, NO_FIXUP);
+		evaluatedParameter = evaluateOperand(parameterList);
 		return(makeBooleanValue(evaluatedParameter->kindOfValue ==
 			CONDITION_VALUE));
 	} else {
@@ -448,10 +438,9 @@ isFieldBIF(parameterList, kindOfFixup)
 {
 	valueType	*evaluatedParameter;
 
-	valueType	*evaluateOperand();
 
 	if (parameterList != NULL) {
-		evaluatedParameter = evaluateOperand(parameterList, NO_FIXUP);
+		evaluatedParameter = evaluateOperand(parameterList);
 		return(makeBooleanValue(evaluatedParameter->kindOfValue ==
 			FIELD_VALUE));
 	} else {
@@ -467,10 +456,9 @@ isFunctionBIF(parameterList, kindOfFixup)
 {
 	valueType	*evaluatedParameter;
 
-	valueType	*evaluateOperand();
 
 	if (parameterList != NULL) {
-		evaluatedParameter = evaluateOperand(parameterList, NO_FIXUP);
+		evaluatedParameter = evaluateOperand(parameterList);
 		return(makeBooleanValue(evaluatedParameter->kindOfValue ==
 			FUNCTION_VALUE));
 	} else {
@@ -486,10 +474,9 @@ isRelocatableValueBIF(parameterList, kindOfFixup)
 {
 	valueType	*evaluatedParameter;
 
-	valueType	*evaluateOperand();
 
 	if (parameterList != NULL) {
-		evaluatedParameter = evaluateOperand(parameterList, NO_FIXUP);
+		evaluatedParameter = evaluateOperand(parameterList);
 		return(makeBooleanValue(evaluatedParameter->kindOfValue ==
 			RELOCATABLE_VALUE || evaluatedParameter->
 			kindOfValue == DATA_VALUE));
@@ -506,10 +493,9 @@ isStringBIF(parameterList, kindOfFixup)
 {
 	valueType	*evaluatedParameter;
 
-	valueType	*evaluateOperand();
 
 	if (parameterList != NULL) {
-		evaluatedParameter = evaluateOperand(parameterList, NO_FIXUP);
+		evaluatedParameter = evaluateOperand(parameterList);
 		return(makeBooleanValue(evaluatedParameter->kindOfValue ==
 			STRING_VALUE));
 	} else {
@@ -525,10 +511,9 @@ isStructBIF(parameterList, kindOfFixup)
 {
 	valueType	*evaluatedParameter;
 
-	valueType	*evaluateOperand();
 
 	if (parameterList != NULL) {
-		evaluatedParameter = evaluateOperand(parameterList, NO_FIXUP);
+            evaluatedParameter = evaluateOperand(parameterList);
 		return(makeBooleanValue(evaluatedParameter->kindOfValue ==
 			STRUCT_VALUE));
 	} else {
@@ -604,7 +589,7 @@ makeArrayBIF(parameterList, kindOfFixup)
 		error(NO_ARGUMENTS_TO_BIF_ERROR, "makeArray");
 		return(makeFailureValue());
 	}
-	lengthValue = evaluateOperand(parameterList, NO_FIXUP);
+	lengthValue = evaluateOperand(parameterList);
 	if (lengthValue->kindOfValue != ABSOLUTE_VALUE) {
 		error(BIF_NTH_ARGUMENT_IS_NOT_ABSOLUTE_VALUE_ERROR,
 			"makeArray", 1);
@@ -619,8 +604,7 @@ makeArrayBIF(parameterList, kindOfFixup)
 	parameterList = parameterList->nextOperand;
 	for (i=0; i<length; ++i) {
 		if (parameterList != NULL) {
-			arrayContents[i] = evaluateOperand(parameterList,
-				NO_FIXUP);
+			arrayContents[i] = evaluateOperand(parameterList);
 			parameterList = parameterList->nextOperand;
 		} else {
 			arrayContents[i] = NULL;
@@ -644,11 +628,10 @@ nthCharBIF(parameterList, kindOfFixup)
 	valueType	*stringValue;
 	stringType	*string;
 
-	valueType	*evaluateOperand();
 
 	if (parameterList == NULL)
 		return(makeFailureValue());
-	stringValue = evaluateOperand(parameterList, NO_FIXUP);
+	stringValue = evaluateOperand(parameterList);
 	if (stringValue->kindOfValue != STRING_VALUE) {
 		error(BIF_ARGUMENT_IS_NOT_A_STRING_ERROR, "nthChar");
 		return(makeFailureValue());
@@ -657,7 +640,7 @@ nthCharBIF(parameterList, kindOfFixup)
 	if (parameterList == NULL) {
 		position = 0;
 	} else {
-		positionValue = evaluateOperand(parameterList, NO_FIXUP);
+		positionValue = evaluateOperand(parameterList);
 		if (positionValue->kindOfValue != ABSOLUTE_VALUE) {
 			error(BAD_POSITION_ARGUMENT_TO_NTH_CHAR_ERROR);
 			return(makeFailureValue());
@@ -685,11 +668,10 @@ printfBIF(parameterList, kindOfFixup)
 	int		 argument[20];
 	valueType	*result;
 
-	valueType	*evaluateOperand();
 
 	result = makeFailureValue();
 	if (parameterList != NULL) {
-		stringValue = evaluateOperand(parameterList, NO_FIXUP);
+		stringValue = evaluateOperand(parameterList);
 		if (stringValue->kindOfValue != STRING_VALUE) {
 			error(PRINTF_FORMAT_IS_NOT_A_STRING_ERROR);
 			return(result);
@@ -699,7 +681,7 @@ printfBIF(parameterList, kindOfFixup)
 		argumentCount = 0;
 		while (parameterList != NULL && argumentCount < 20) {
 			argument[argumentCount++] = evaluateOperand(
-				parameterList)->value;
+                            parameterList)->value;
 			parameterList = parameterList->nextOperand;
 		}
 		/* cretinous hack */
@@ -726,7 +708,7 @@ strcatBIF(parameterList, kindOfFixup)
 
 	if (parameterList == NULL)
 		return(makeStringValue(""));
-	stringValue = evaluateOperand(parameterList, NO_FIXUP);
+	stringValue = evaluateOperand(parameterList);
 	if (stringValue->kindOfValue != STRING_VALUE) {
 		error(BIF_NTH_ARGUMENT_IS_NOT_A_STRING_ERROR, "strcat", 1);
 		return(makeFailureValue());
@@ -735,7 +717,7 @@ strcatBIF(parameterList, kindOfFixup)
 	parameterList = parameterList->nextOperand;
 	if (parameterList == NULL)
 		return(makeStringValue(string1));
-	stringValue = evaluateOperand(parameterList, NO_FIXUP);
+	stringValue = evaluateOperand(parameterList);
 	if (stringValue->kindOfValue != STRING_VALUE) {
 		error(BIF_NTH_ARGUMENT_IS_NOT_A_STRING_ERROR, "strcat", 2);
 		return(makeFailureValue());
@@ -762,7 +744,7 @@ strcmpBIF(parameterList, kindOfFixup)
 		error(NO_ARGUMENTS_TO_BIF_ERROR, "strcmp");
 		return(makeFailureValue());
 	}
-	stringValue = evaluateOperand(parameterList, NO_FIXUP);
+	stringValue = evaluateOperand(parameterList);
 	if (stringValue->kindOfValue != STRING_VALUE) {
 		error(BIF_NTH_ARGUMENT_IS_NOT_A_STRING_ERROR, "strcmp", 1);
 		return(makeFailureValue());
@@ -771,7 +753,7 @@ strcmpBIF(parameterList, kindOfFixup)
 	parameterList = parameterList->nextOperand;
 	if (parameterList == NULL)
 		return(makeStringValue(string1));
-	stringValue = evaluateOperand(parameterList, NO_FIXUP);
+	stringValue = evaluateOperand(parameterList);
 	if (stringValue->kindOfValue != STRING_VALUE) {
 		error(BIF_NTH_ARGUMENT_IS_NOT_A_STRING_ERROR, "strcmp", 2);
 		return(makeFailureValue());
@@ -795,7 +777,7 @@ strcmplcBIF(parameterList, kindOfFixup)
 		error(NO_ARGUMENTS_TO_BIF_ERROR, "strcmplc");
 		return(makeFailureValue());
 	}
-	stringValue = evaluateOperand(parameterList, NO_FIXUP);
+	stringValue = evaluateOperand(parameterList);
 	if (stringValue->kindOfValue != STRING_VALUE) {
 		error(BIF_NTH_ARGUMENT_IS_NOT_A_STRING_ERROR, "strcmplc", 1);
 		return(makeFailureValue());
@@ -804,7 +786,7 @@ strcmplcBIF(parameterList, kindOfFixup)
 	parameterList = parameterList->nextOperand;
 	if (parameterList == NULL)
 		return(makeStringValue(string1));
-	stringValue = evaluateOperand(parameterList, NO_FIXUP);
+	stringValue = evaluateOperand(parameterList);
 	if (stringValue->kindOfValue != STRING_VALUE) {
 		error(BIF_NTH_ARGUMENT_IS_NOT_A_STRING_ERROR, "strcmplc", 2);
 		return(makeFailureValue());
@@ -823,7 +805,7 @@ strlenBIF(parameterList, kindOfFixup)
 
 	if (parameterList == NULL)
 		return(makeIntegerValue(-1));
-	stringValue = evaluateOperand(parameterList, NO_FIXUP);
+	stringValue = evaluateOperand(parameterList);
 	if (stringValue->kindOfValue != STRING_VALUE) {
 		error(BIF_ARGUMENT_IS_NOT_A_STRING_ERROR, "strlen");
 		return(makeFailureValue());
@@ -851,7 +833,7 @@ substrBIF(parameterList, kindOfFixup)
 		error(NO_ARGUMENTS_TO_BIF_ERROR, "substr");
 		return(makeFailureValue());
 	}
-	stringValue = evaluateOperand(parameterList, NO_FIXUP);
+	stringValue = evaluateOperand(parameterList);
 	if (stringValue->kindOfValue != STRING_VALUE) {
 		error(BIF_ARGUMENT_IS_NOT_A_STRING_ERROR, "substr");
 		return(makeFailureValue());
@@ -864,7 +846,7 @@ substrBIF(parameterList, kindOfFixup)
 		error(TOO_FEW_ARGUMENTS_TO_BIF_ERROR, "substr");
 		return(makeFailureValue());
 	}
-	startValue = evaluateOperand(parameterList, NO_FIXUP);
+	startValue = evaluateOperand(parameterList);
 	if (startValue->kindOfValue != ABSOLUTE_VALUE) {
 		error(BIF_NTH_ARGUMENT_IS_NOT_ABSOLUTE_VALUE_ERROR, "substr",
 			2);
@@ -883,7 +865,7 @@ substrBIF(parameterList, kindOfFixup)
 		if (backwards)
 			length = -length;
 	} else {
-		lengthValue = evaluateOperand(parameterList, NO_FIXUP);
+		lengthValue = evaluateOperand(parameterList);
 		if (lengthValue->kindOfValue != ABSOLUTE_VALUE) {
 			error(BIF_NTH_ARGUMENT_IS_NOT_ABSOLUTE_VALUE_ERROR,
 				"substr", 3);
@@ -928,7 +910,7 @@ symbolLookupBIF(parameterList, kindOfFixup)
 		error(NO_ARGUMENTS_TO_BIF_ERROR, "symbolLookup");
 		return(makeFailureValue());
 	}
-	stringValue = evaluateOperand(parameterList, NO_FIXUP);
+	stringValue = evaluateOperand(parameterList);
 	if (stringValue->kindOfValue != STRING_VALUE) {
 		error(BIF_ARGUMENT_IS_NOT_A_STRING_ERROR, "symbolLookup");
 		return(makeFailureValue());
@@ -952,7 +934,7 @@ symbolDefineBIF(parameterList, kindOfFixup)
 		error(NO_ARGUMENTS_TO_BIF_ERROR, "symbolDefine");
 		return(makeFailureValue());
 	}
-	stringValue = evaluateOperand(parameterList, NO_FIXUP);
+	stringValue = evaluateOperand(parameterList);
 	if (stringValue->kindOfValue != STRING_VALUE) {
 		error(BIF_ARGUMENT_IS_NOT_A_STRING_ERROR, "symbolDefine");
 		return(makeFailureValue());
@@ -1042,10 +1024,9 @@ valueTypeBIF(parameterList, kindOfFixup)
 {
 	valueType	*evaluatedParameter;
 
-	valueType	*evaluateOperand();
 
 	if (parameterList != NULL) {
-		evaluatedParameter = evaluateOperand(parameterList, NO_FIXUP);
+		evaluatedParameter = evaluateOperand(parameterList);
 		return(makeIntegerValue(evaluatedParameter->kindOfValue));
 	} else {
 		return(makeIntegerValue(-1));

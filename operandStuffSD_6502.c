@@ -229,8 +229,9 @@ freeOperand(operand)
 /* corresponds to routines in listing.c */
 
   void
-expandOperand(addressMode)
+expandOperand(addressMode, buffer)
   operandKindType	addressMode;
+  char *		buffer;
 {
 	switch (addressMode) {
 	case IMMEDIATE_OPND:		moreText("#"); break;

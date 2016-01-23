@@ -32,6 +32,7 @@
 #include "macrossTypes.h"
 #include "macrossGlobals.h"
 #include "y.tab.h"
+#include "parserMisc.h"
 
   statementType *
 addLabelToStatement(labelList, statement)
@@ -46,12 +47,16 @@ addLabelToStatement(labelList, statement)
 	return(statement);
 }
 
+/* TODO: This should be a varargs function. In 1984 it probably wasn't
+ * standardized, but here in Glorious Future Year 1989 the vprintf
+ * function does almost exactly what we want. */
+
   void
 botch(message, arg1, arg2, arg3)
   char		*message;
-  anyOldThing	*arg1;
-  anyOldThing	*arg2;
-  anyOldThing	*arg3;
+  int           arg1;
+  int           arg2;
+  int           arg3;
 {
 	printf("Macross horrible terrible internal botch: ");
 	printf(message, arg1, arg2, arg3);
@@ -72,7 +77,7 @@ convertDefineToMdefine(defineStatement)
 {
 	if (defineStatement->kindOfStatement != DEFINE_STATEMENT)
 		botch("convertDefineToMdefine got statement kind: %d\n",
-			defineStatement->kindOfStatement);
+			defineStatement->kindOfStatement, 0, 0);
 	defineStatement->kindOfStatement = MDEFINE_STATEMENT;
 	return(defineStatement);
 }
@@ -85,9 +90,9 @@ extractIfBody(ifStatement)
 
 	result = ifStatement->statementBody.ifUnion;
 	if (ifStatement->labels != NULL)
-		botch("extract if body with non-null labels\n");
+		botch("extract if body with non-null labels\n", 0, 0, 0);
 	else if (ifStatement->nextStatement != NULL)
-		botch("extract if body with non-null next\n");
+		botch("extract if body with non-null next\n", 0, 0, 0);
 	else
 		qfree(ifStatement);
 	return(result);
@@ -101,9 +106,9 @@ extractMifBody(mifStatement)
 
 	result = mifStatement->statementBody.mifUnion;
 	if (mifStatement->labels != NULL)
-		botch("extract mif body with non-null labels\n");
+		botch("extract mif body with non-null labels\n", 0, 0, 0);
 	else if (mifStatement->nextStatement != NULL)
-		botch("extract mif body with non-null next\n");
+		botch("extract mif body with non-null next\n", 0, 0, 0);
 	else
 		qfree(mifStatement);
 	return(result);
@@ -117,7 +122,7 @@ extractString(textExpression)
 
 	if (textExpression->kindOfOperand != STRING_OPND)
 		botch("extract string got handed an opnd kind: %d\n",
-			textExpression->kindOfOperand);
+			textExpression->kindOfOperand, 0, 0);
 	result = textExpression->theOperand.stringUnion;
 	qfree(textExpression);
 	return(result);

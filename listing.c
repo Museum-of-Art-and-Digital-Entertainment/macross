@@ -29,6 +29,7 @@
 
 #include "macrossTypes.h"
 #include "macrossGlobals.h"
+#include "listing.h"
 
 static char	 lineBuffer1[LINE_BUFFER_SIZE];
 static char	 lineBuffer2[LINE_BUFFER_SIZE];
@@ -43,8 +44,6 @@ static int	 nextMacroDepth;
   void
 outputListing()
 {
-	void	generateListing();
-
 	rewind(saveFileForPass2);
 	rewind(indexFileForPass2);
 	rewind(macroFileForPass2);
@@ -121,9 +120,6 @@ generateListing()
 	int			 numberOfBytesToList;
 	int			 numberOfBytesListed;
 	char			*tempText;
-
-	void			 readIndexFileLine();
-	void			 readSourceFileLine();
 
 	sourceLineNumber = 1;
 	alreadyListingMacroExpansion = FALSE;
@@ -362,8 +358,6 @@ printListingLine(numberOfBytes, byteAddress, text, kind)
 {
 	int	i;
 
-	void	tabPrint();
-
 	if (kind != BLOCK_STATEMENT)
 		numberOfBytes = (numberOfBytes < 4) ? numberOfBytes : 4;
 
@@ -484,10 +478,8 @@ printNTimes(aChar, times)
   char	aChar;
   int	times;
 {
-	void	moreText();
-
 	while (times-- > 0)
-		moreText("%c", aChar);
+            moreText("%c", aChar, 0, 0);
 }
 
   void
@@ -595,9 +587,9 @@ expandExpression(toBuffer, toBufferPtr)
   char	**toBufferPtr;
 {
 	if (toBuffer == NULL)
-		moreText("%s", expressionString);
+		moreText("%s", expressionString, 0, 0);
 	else
-		addText(toBuffer, toBufferPtr, "%s", expressionString);
+		addText(toBuffer, toBufferPtr, "%s", expressionString, 0, 0);
 	flushExpressionString();
 }
 
@@ -607,14 +599,14 @@ expandNum(buffer, bufferPtr, n)
   char	**bufferPtr;
   int	  n;
 {
-	moreTextOptional(buffer, bufferPtr, "%d", n);
+	moreTextOptional(buffer, bufferPtr, "%d", n, 0, 0);
 }
 
   void
 flushOperand(n)
   int	n;
 {
-	moreText("%s", operandBuffer[n]);
+	moreText("%s", operandBuffer[n], 0, 0);
 	operandBuffer[n][0] = '\0';
 }
 
@@ -627,7 +619,7 @@ expandOperands(op)
 	if (op > 0) {
 		flushOperand(0);
 		for (i=1; i<op; i++) {
-			moreText(", ");
+			moreText(", ", 0, 0, 0);
 			flushOperand(i);
 		}
 	}
@@ -636,7 +628,7 @@ expandOperands(op)
   void
 expandLabel()
 {
-	moreText("%s", labelString);
+	moreText("%s", labelString, 0, 0);
 	labelStringPtr = labelString;
 	*labelStringPtr = '\0';
 }

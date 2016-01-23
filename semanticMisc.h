@@ -13,7 +13,7 @@ bool booleanTest(expressionType *expression);
 int countArguments(functionDefinitionType *function);
 int countParameters(operandListType *parameterList);
 arrayType *allocArray(int size, valueType ***contentsPtr);
-valueType *createArray(expresionType *dimension, expressionListType *initializers);
+valueType *createArray(expressionType *dimension, expressionListType *initializers);
 bool decrementable(valueType *value);
 int expressionListLength(expressionListType *expressionList);
 int fieldValue(symbolTableEntryType *symbol);

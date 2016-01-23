@@ -31,6 +31,7 @@
 #include "macrossTypes.h"
 #include "macrossGlobals.h"
 #include "y.tab.h"
+#include "semanticMisc.h"
 #include "slinkyExpressions.h"
 
 #define nullEncode(thing)   if (thing==NULL) return(TRUE);
@@ -132,8 +133,6 @@ encodeFunctionCall(functionCall)
 	int			 functionOrdinal;
 	symbolInContextType	*workingContext;
 	operandListType		*parameterList;
-
-	symbolInContextType	*getWorkingContext();
 
 	nullEncode(functionCall);
 	workingContext = getWorkingContext(functionCall->functionName);
