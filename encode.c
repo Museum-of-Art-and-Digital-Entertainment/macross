@@ -279,7 +279,7 @@ encodeOperand(operand)
 		case PRE_INDEXED_X_OPND:
 		case X_INDEXED_OPND:
 		case Y_INDEXED_OPND:
-			return(encodeExpression(operand->theOperand));
+			return(encodeExpression(operand->theOperand.expressionUnion));
 
 		case A_REGISTER_OPND:
 		case X_REGISTER_OPND:
@@ -294,7 +294,7 @@ encodeOperand(operand)
 			return(FALSE);
 
 		case STRING_OPND:
-			return(encodeString(operand->theOperand));
+			return(encodeString(operand->theOperand.stringUnion));
 
 		case BLOCK_OPND:
 			error(BLOCK_OPERAND_IN_OBJECT_EXPRESSION_ERROR);
@@ -534,7 +534,7 @@ encodeMifStatement(mifStatement)
 		encodeByte(MIF_TAG) &&
 		encodeExpression(mifStatement->mifCondition) &&
 		encodeBlock(mifStatement->mifConsequence) &&
-		encodeBlock(mifStatement->mifContinuation)
+		encodeBlock(mifStatement->mifContinuation.mifBlockUnion)
 	);
 }
 
@@ -637,7 +637,7 @@ encodeStatement(statement)
 		return(encodeFreturnStatement(statement->statementBody.freturnUnion));
 
 	case GROUP_STATEMENT:
-		return(encodeBlock(statement->statementBody));
+		return(encodeBlock(statement->statementBody.groupUnion));
 
 	case MDEFINE_STATEMENT:
 		return(encodeMdefineStatement(statement->statementBody.defineUnion));

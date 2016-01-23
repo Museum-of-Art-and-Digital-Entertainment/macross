@@ -151,14 +151,14 @@ duplicateOperandForFixup(operand, isSpecialFunctionOperand)
 	case X_INDEXED_OPND:
 	case Y_INDEXED_OPND:
 		result->theOperand.expressionUnion =
-			duplicateExpressionForFixup(operand->theOperand,
+			duplicateExpressionForFixup(operand->theOperand.expressionUnion,
 			FALSE, isSpecialFunctionOperand);
 		break;
 	case X_SELECTED_OPND:
 	case Y_SELECTED_OPND:
 	case PRE_SELECTED_X_OPND:
 		result->theOperand.expressionUnion =
-			duplicateExpressionForFixup(operand->theOperand,
+			duplicateExpressionForFixup(operand->theOperand.xSelectedUnion,
 			FALSE, isSpecialFunctionOperand);
 		break;
 	case A_REGISTER_OPND:
@@ -195,7 +195,7 @@ freeOperand(operand)
 	case PRE_INDEXED_X_OPND:
 	case X_INDEXED_OPND:
 	case Y_INDEXED_OPND:
-		freeExpression(operand->theOperand);
+		freeExpression(operand->theOperand.expressionUnion);
 		break;
 
 	case A_REGISTER_OPND:
@@ -206,15 +206,15 @@ freeOperand(operand)
 	case X_SELECTED_OPND:
 	case Y_SELECTED_OPND:
 	case PRE_SELECTED_X_OPND:
-		freeSelectionList(operand->theOperand);
+		freeSelectionList(operand->theOperand.xSelectedUnion);
 		break;
 
 	case STRING_OPND:
-		freeString(operand->theOperand);
+		freeString(operand->theOperand.stringUnion);
 		break;
 
 	case BLOCK_OPND:
-		freeBlock(operand->theOperand);
+		freeBlock(operand->theOperand.blockUnion);
 		break;
 
 	default:
@@ -302,7 +302,7 @@ evaluateOperand(operand)
 	case PRE_INDEXED_X_OPND:
 	case X_INDEXED_OPND:
 	case Y_INDEXED_OPND:
-		result = evaluateExpression(operand->theOperand,
+		result = evaluateExpression(operand->theOperand.expressionUnion,
 			performingFixups ? NO_FIXUP : OPERAND_FIXUP);
 		if (operand->kindOfOperand != EXPRESSION_OPND) {
 			if (result->addressMode != EXPRESSION_OPND) {
@@ -324,7 +324,7 @@ evaluateOperand(operand)
 	case X_SELECTED_OPND:
 	case Y_SELECTED_OPND:
 	case PRE_SELECTED_X_OPND:
-		result = evaluateSelectionList(operand->theOperand);
+		result = evaluateSelectionList(operand->theOperand.xSelectedUnion);
 		if (result->addressMode != EXPRESSION_OPND) {
 			error(BAD_ADDRESS_MODE_ERROR);
 			result->kindOfValue = FAIL;
@@ -334,7 +334,7 @@ evaluateOperand(operand)
 		break;
 
 	case STRING_OPND:
-		result = newValue(STRING_VALUE, operand->theOperand,
+		result = newValue(STRING_VALUE, operand->theOperand.stringUnion,
 			STRING_OPND);
 		break;
 
@@ -342,7 +342,7 @@ evaluateOperand(operand)
 		if (standaloneExpansionFlag)
 			forceExpansion();
 		sideEffectFlag = TRUE;
-		assembleBlock(operand->theOperand);
+		assembleBlock(operand->theOperand.blockUnion);
 		expansionOn();
 		result = newValue(FAIL, 0, BLOCK_OPND);
 		break;

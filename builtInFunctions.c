@@ -948,9 +948,9 @@ symbolDefineBIF(parameterList, kindOfFixup)
 		return(makeFailureValue());
 	} else {
 		syntheticDefineStatement = buildDefineStatement(stringValue->
-			value, parameterList->theOperand);
+			value, parameterList->theOperand.expressionUnion);
 	}
-	assembleDefineStatement(syntheticDefineStatement->statementBody);
+	assembleDefineStatement(syntheticDefineStatement->statementBody.defineUnion);
 	freeStatement(syntheticDefineStatement);
 	return(makeBooleanValue(TRUE));
 }
