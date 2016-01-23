@@ -424,7 +424,7 @@ printExpression(expression)
 		break;
 
 	case CONDITION_CODE_EXPR:
-		printCondition(expression->expressionTerm);
+		printCondition(expression->expressionTerm.conditionTypeUnion);
 		break;
 
 	case FUNCTION_CALL_EXPR:
