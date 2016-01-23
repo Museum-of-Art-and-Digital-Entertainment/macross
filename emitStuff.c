@@ -329,7 +329,7 @@ emitString(stringType *string)
    nuls in strings, so to speak.  We assume that the character 0xFF is not
    likely to be needed since ASCII (and ATASCII) is a seven bit character
    code. */
-	while (*string != NULL)
+	while (*string != 0)
 		if ((*string & 0xFF) == 0xFF) {
 			emitByte('\0');
 			string++;
