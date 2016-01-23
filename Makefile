@@ -19,7 +19,9 @@ lookups.c macrossTables_$(PROC).c main.c malloc.c object.c\
 operandStuffSD_$(PROC).c parserMisc.c semanticMisc.c statementSemantics.c\
 structSemantics.c tokenStrings_$(PROC).c lexerTables.h macrossGlobals.h\
 macrossTypes.h operandDefs_$(PROC).h operandBody_$(PROC).h\
-conditionDefs_$(PROC).h driver.c slinkyExpressions.h
+conditionDefs_$(PROC).h driver.c slinkyExpressions.h\
+operandStuff.h statementSemantics.h listing.h parserMisc.h\
+emitBranch.h semanticMisc.h expressionSemantics.h
 
 HEADERS = macrossTypes.h macrossGlobals.h
 
@@ -90,7 +92,7 @@ buildStuff2.o: buildStuff2.c $(HEADERS)
 
 buildStuff3.o: buildStuff3.c $(HEADERS)
 
-builtInFunctions.o: builtInFunctions.c $(HEADERS)
+builtInFunctions.o: builtInFunctions.c $(HEADERS) expressionSemantics.h operandStuff.h semanticMisc.h
 
 builtInFunsSD.o: builtInFunsSD_$(PROC).c $(HEADERS)
 	cc $(CFLAGS) -c -g -DTARGET_CPU=CPU_$(PROC) builtInFunsSD_$(PROC).c
@@ -109,11 +111,11 @@ emitBranch.o: emitBranch_$(PROC).c $(HEADERS)
 emitStuff.o: emitStuff.c $(HEADERS)
 	cc $(CFLAGS) -c -g -DTARGET_CPU=CPU_$(PROC) emitStuff.c
 
-encode.o: encode.c $(HEADERS)
+encode.o: encode.c $(HEADERS) y.tab.h semanticMisc.h slinkyExpressions.h
 
 errorStuff.o: errorStuff.c $(HEADERS)
 
-expressionSemantics.o: expressionSemantics.c y.tab.h $(HEADERS)
+expressionSemantics.o: expressionSemantics.c y.tab.h $(HEADERS) expressionSemantics.h semanticMisc.h
 
 fixups.o: fixups.c $(HEADERS)
 
@@ -121,9 +123,9 @@ garbage.o: garbage.c y.tab.h $(HEADERS)
 
 initialize.o: initialize.c $(HEADERS)
 
-lexer.o: lexer.c lexerTables.h y.tab.h $(HEADERS)
+lexer.o: lexer.c lexerTables.h y.tab.h $(HEADERS) parserMisc.h
 
-listing.o: listing.c $(HEADERS)
+listing.o: listing.c $(HEADERS) listing.h
 
 lookups.o: lookups.c $(HEADERS)
 
@@ -141,11 +143,11 @@ operandStuffSD.o: operandStuffSD_$(PROC).c $(HEADERS)
 	cc $(CFLAGS) -c -g -DTARGET_CPU=CPU_$(PROC) operandStuffSD_$(PROC).c
 	mv operandStuffSD_$(PROC).o operandStuffSD.o
 
-parserMisc.o: parserMisc.c y.tab.h $(HEADERS)
+parserMisc.o: parserMisc.c y.tab.h $(HEADERS) parserMisc.h
 
-semanticMisc.o: semanticMisc.c $(HEADERS)
+semanticMisc.o: semanticMisc.c $(HEADERS) semanticMisc.h expressionSemantics.h
 
-statementSemantics.o: statementSemantics.c $(HEADERS)
+statementSemantics.o: statementSemantics.c $(HEADERS) emitBranch.h expressionSemantics.h operandStuff.h parserMisc.h semanticMisc.h statementSemantics.h
 
 structSemantics.o: structSemantics.c $(HEADERS)
 
