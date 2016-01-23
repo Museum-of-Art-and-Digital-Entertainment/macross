@@ -125,7 +125,7 @@ buildOperand(operandKindType kindOfOperand, anyOldThing *arg)
 		break;
 
 	case BLOCK_OPND:
-		result->theOperand.blockUnion = (BlockOperandBodyType *) arg;
+		result->theOperand.blockUnion = (blockOperandBodyType *) arg;
 		break;
 
 	default:

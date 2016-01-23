@@ -69,14 +69,10 @@ typedef nullType		 uspRegisterOperandBodyType;
 
 typedef nullType		 controlRegisterOperandBodyType;
 
-#define BlockOperandBodyType	 anyOldThing /* kludge */
-/* doing above right confuses compiler as it is a forward reference inside
-	yon union: */
-
 typedef union {
 		expressionOperandBodyType	*expressionUnion;
 		stringOperandBodyType		*stringUnion;
-		BlockOperandBodyType		*blockUnion;
+		blockOperandBodyType		*blockUnion;
 		dRegisterOperandBodyType	*dRegisterUnion;
 		aRegisterOperandBodyType	*aRegisterUnion;
 		aRegisterIndirectOperandBodyType *aRegisterIndirectUnion;
