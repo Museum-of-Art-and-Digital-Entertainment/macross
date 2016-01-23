@@ -27,6 +27,7 @@
 	8-March-1985
 */
 
+#include <stdlib.h>
 #include <stdio.h>
 
 typedef	unsigned char	byte;

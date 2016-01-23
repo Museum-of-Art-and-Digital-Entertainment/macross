@@ -31,6 +31,7 @@
 #ifndef MACROSS_TYPES_H_
 #define MACROSS_TYPES_H_
 
+#include <stdlib.h>
 #include <stdio.h>
 
 /*
