@@ -77,7 +77,7 @@ move: .mark
 	date >/net/kessel/u0/chip/macross/prof/.mark
 	date >opt/.mark
 
-macrossTypes.h: macrossTypes.h operandDefs_$(PROC).h operandBody_$(PROC).h\
+macrossTypes.h: operandDefs_$(PROC).h operandBody_$(PROC).h\
 conditionDefs_$(PROC).h
 
 actions.o: actions_$(PROC).c $(HEADERS)
