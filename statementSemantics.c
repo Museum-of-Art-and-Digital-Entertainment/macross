@@ -1455,9 +1455,10 @@ assembleStatement(statement, insideIf, ongoingFixupList)
 				statement->statementBody, statement->
 				cumulativeLineNumber, insideIf &&
 				isLastStatementInBlock(statement), &result)) {
+			statementType *next = statement->nextStatement;
 			if (freeFlag && statementEvaluationDepth == 1)
 				freeStatement(statement);
-			statement = statement->nextStatement;
+			statement = next;
 		} else {
 			if (freeFlag && statementEvaluationDepth == 1)
 				freeStatement(statement);
