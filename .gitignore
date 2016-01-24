@@ -1,0 +1,6 @@
+*.o
+*~
+y.tab.c
+y.tab.h
+macross
+slinky/slinky
