@@ -2,7 +2,7 @@
 #define PARSER_MISC_H_
 #include "macrossTypes.h"
 
-statementType *addLabelToSatement(labelListType *labelList, statementType *statement);
+statementType *addLabelToStatement(labelListType *labelList, statementType *statement);
 void botch(char *message, ...);
 void checkDefineAssignmentOperator(assignmentKindType assignmentOperator);
 void convertDefineToMDefine(statementType *defineStatement);

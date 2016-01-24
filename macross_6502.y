@@ -31,6 +31,14 @@
 
 #include "macrossTypes.h"
 #include "macrossGlobals.h"
+#include "buildStuff.h"
+#include "errorStuff.h"
+#include "lexer.h"
+#include "lookups.h"
+#include "operandStuff.h"
+#include "parserMisc.h"
+#include "semanticMisc.h"
+#include "statementSemantics.h"
 
 %}
 
@@ -119,7 +127,8 @@ eolList:	EOL
 statementList:	statement
 {
 	if (statementListNestingDepth == 0) {
-		$$ = eatStatement($1);
+		eatStatement($1);
+		$$ = NULL;
 	} else {
 		$$ = buildStatementList($1, NULL);
 	}
@@ -127,7 +136,8 @@ statementList:	statement
  |		statementList EOL statement
 {
 	if (statementListNestingDepth == 0) {
-		$$ = eatStatement($3);
+		eatStatement($3);
+		$$ = NULL;
 	} else {
 		$$ = buildStatementList($3, $1);
 	}
@@ -223,15 +233,21 @@ labelableStatement:
 
 ifStatement:	IF _ ifHead
 {
-	$$ = buildIfStatement($3, NULL, NO_CONTINUATION);
+	ifContinuationType noCont;
+	noCont.blockUnion=NULL;
+	$$ = buildIfStatement($3, noCont, NO_CONTINUATION);
 }
  |		IF _ ifHead elsePart
 {
-	$$ = buildIfStatement($3, $4, ELSE_CONTINUATION);
+	ifContinuationType cont;
+	cont.blockUnion=$4;
+	$$ = buildIfStatement($3, cont, ELSE_CONTINUATION);
 }
  |		IF _ ifHead elseIf
 {
-	$$ = buildIfStatement($3, $4, ELSEIF_CONTINUATION);
+	ifContinuationType cont;
+	cont.blockUnion=$4;
+	$$ = buildIfStatement($3, cont, ELSEIF_CONTINUATION);
 }
  ;
 
@@ -271,15 +287,21 @@ elseIf:		ELSE _ ifStatement
 }
  |		ELSEIF _ ifHead
 {
-	$$ = extractIfBody(buildIfStatement($3, NULL, NO_CONTINUATION));
+	ifContinuationType noCont;
+	noCont.blockUnion = NULL;
+	$$ = extractIfBody(buildIfStatement($3, noCont, NO_CONTINUATION));
 }
  |		ELSEIF _ ifHead elsePart
 {
-	$$ = extractIfBody(buildIfStatement($3, $4, ELSE_CONTINUATION));
+	ifContinuationType cont;
+	cont.blockUnion = $4;
+	$$ = extractIfBody(buildIfStatement($3, cont, ELSE_CONTINUATION));
 }
  |		ELSEIF _ ifHead elseIf
 {
-	$$ = extractIfBody(buildIfStatement($3, $4, ELSEIF_CONTINUATION));
+	ifContinuationType cont;
+	cont.blockUnion = $4;
+	$$ = extractIfBody(buildIfStatement($3, cont, ELSEIF_CONTINUATION));
 }
  ;
 
@@ -657,15 +679,21 @@ macroDefineStatement:
 macroIfStatement:
 		MIF _ mIfHead
 {
-	$$ = buildMifStatement($3, NULL, NO_CONTINUATION);
+	mifContinuationType noCont;
+	noCont.mifBlockUnion = NULL;
+	$$ = buildMifStatement($3, noCont, NO_CONTINUATION);
 }
  |		MIF _ mIfHead mElsePart
 {
-	$$ = buildMifStatement($3, $4, ELSE_CONTINUATION);
+	mifContinuationType cont;
+	cont.mifBlockUnion = $4;
+	$$ = buildMifStatement($3, cont, ELSE_CONTINUATION);
 }
  |		MIF _ mIfHead mElseIf
 {
-	$$ = buildMifStatement($3, $4, ELSEIF_CONTINUATION);
+	mifContinuationType cont;
+	cont.mifBlockUnion = $4;
+	$$ = buildMifStatement($3, cont, ELSEIF_CONTINUATION);
 }
  ;
 
@@ -693,15 +721,21 @@ mElseIf:	MELSE _ macroIfStatement
 }
  |		MELSEIF _ mIfHead
 {
-	$$ = extractMifBody(buildMifStatement($3, NULL, NO_CONTINUATION));
+	mifContinuationType noCont;
+	noCont.mifBlockUnion = NULL;
+	$$ = extractMifBody(buildMifStatement($3, noCont, NO_CONTINUATION));
 }
  |		MELSEIF _ mIfHead mElsePart
 {
-	$$ = extractMifBody(buildMifStatement($3, $4, ELSE_CONTINUATION));
+	mifContinuationType cont;
+	cont.mifBlockUnion = $4;
+	$$ = extractMifBody(buildMifStatement($3, cont, ELSE_CONTINUATION));
 }
  |		MELSEIF _ mIfHead mElseIf
 {
-	$$ = extractMifBody(buildMifStatement($3, $4, ELSEIF_CONTINUATION));
+	mifContinuationType cont;
+	cont.mifBlockUnion = $4;
+	$$ = extractMifBody(buildMifStatement($3, cont, ELSEIF_CONTINUATION));
 }
  ;
 
@@ -943,18 +977,18 @@ selectionList:	SELECT _ Identifier
 
 array:		variable '[' _ expression _ ']'
 {
-	$$ = buildExpressionTerm(ARRAY_EXPR, $1, $4);
+	$$ = buildExpressionTerm(ARRAY_EXPR, $1, $4, NULL);
 }
  |		array '[' _ expression _ ']'
 {
-	$$ = buildExpressionTerm(ARRAY_EXPR, $1, $4);
+	$$ = buildExpressionTerm(ARRAY_EXPR, $1, $4, NULL);
 }
  ;
 
 variable:	Identifier
 {
 	$$ = buildExpressionTerm(IDENTIFIER_EXPR, lookupOrEnterSymbol($1,
-			unknownSymbolTag));
+			unknownSymbolTag), NULL, NULL);
 }
  ;
 
@@ -968,47 +1002,47 @@ expression:	lvalue
 }
  |		functionCall
 {
-	$$ = buildExpressionTerm(FUNCTION_CALL_EXPR, $1);
+	$$ = buildExpressionTerm(FUNCTION_CALL_EXPR, $1, NULL, NULL);
 }
  |		Number
 {
-	$$ = buildExpressionTerm(NUMBER_EXPR, $1);
+	$$ = buildExpressionTerm(NUMBER_EXPR, $1, NULL, NULL);
 }
  |		ConditionCode
 {
-	$$ = buildExpressionTerm(CONDITION_CODE_EXPR, $1);
+	$$ = buildExpressionTerm(CONDITION_CODE_EXPR, $1, NULL, NULL);
 }
  |		HERE
 {
-	$$ = buildExpressionTerm(HERE_EXPR);
+	$$ = buildExpressionTerm(HERE_EXPR, NULL, NULL, NULL);
 }
  |		TextString
 {
-	$$ = buildExpressionTerm(STRING_EXPR, $1);
+	$$ = buildExpressionTerm(STRING_EXPR, $1, NULL, NULL);
 }
  |		'(' _ expression _ ')'
 {
-	$$ = buildExpressionTerm(SUBEXPRESSION_EXPR, $3);
+	$$ = buildExpressionTerm(SUBEXPRESSION_EXPR, $3, NULL, NULL);
 }
  |		SUB _ expression	%prec UNARY_MINUS
 {
-	$$ = buildExpressionTerm(UNOP_EXPR, UNARY_MINUS, $3);
+	$$ = buildExpressionTerm(UNOP_EXPR, UNARY_MINUS, $3, NULL);
 }
  |		LOGICAL_NOT _ expression
 {
-	$$ = buildExpressionTerm(UNOP_EXPR, LOGICAL_NOT, $3);
+	$$ = buildExpressionTerm(UNOP_EXPR, LOGICAL_NOT, $3, NULL);
 }
  |		BITWISE_NOT _ expression
 {
-	$$ = buildExpressionTerm(UNOP_EXPR, BITWISE_NOT, $3);
+	$$ = buildExpressionTerm(UNOP_EXPR, BITWISE_NOT, $3, NULL);
 }
  |		DIV _ expression	%prec LO_BYTE
 {
-	$$ = buildExpressionTerm(UNOP_EXPR, LO_BYTE, $3);
+	$$ = buildExpressionTerm(UNOP_EXPR, LO_BYTE, $3, NULL);
 }
  |		HI_BYTE _ expression
 {
-	$$ = buildExpressionTerm(UNOP_EXPR, HI_BYTE, $3);
+	$$ = buildExpressionTerm(UNOP_EXPR, HI_BYTE, $3, NULL);
 }
  |		expression MUL _ expression
 {
@@ -1052,7 +1086,7 @@ expression:	lvalue
 }
  |		expression GREATER_THAN_OR_EQUAL_TO _ expression
 {
-	$$ = buildExpressionTerm(BINOP_EXPR, GREATER_THAN_OR_EQUAL_TO, $1,$4);
+	$$ = buildExpressionTerm(BINOP_EXPR, GREATER_THAN_OR_EQUAL_TO, $1, $4);
 }
  |		expression EQUAL_TO _ expression
 {
@@ -1097,19 +1131,19 @@ expression:	lvalue
 }
  |		lvalue INCREMENT
 {
-	$$ = buildExpressionTerm(POSTOP_EXPR, INCREMENT, $1);
+	$$ = buildExpressionTerm(POSTOP_EXPR, INCREMENT, $1, NULL);
 }
  |		lvalue DECREMENT
 {
-	$$ = buildExpressionTerm(POSTOP_EXPR, DECREMENT, $1);
+	$$ = buildExpressionTerm(POSTOP_EXPR, DECREMENT, $1, NULL);
 }
  |		INCREMENT _ lvalue
 {
-	$$ = buildExpressionTerm(PREOP_EXPR, INCREMENT, $3);
+	$$ = buildExpressionTerm(PREOP_EXPR, INCREMENT, $3, NULL);
 }
  |		DECREMENT _ lvalue
 {
-	$$ = buildExpressionTerm(PREOP_EXPR, DECREMENT, $3);
+	$$ = buildExpressionTerm(PREOP_EXPR, DECREMENT, $3, NULL);
 }
  ;
 
