@@ -725,7 +725,7 @@ subValueKind(valueType *leftOperand, valueType *rightOperand)
 }
 
   int
-swab(int i)
+swabInt(int i)
 {
 	return(((i & 0xFF) << 8)  |  ((i & 0xFF00) >> 8));
 }
@@ -733,7 +733,7 @@ swab(int i)
   valueType *
 swabValue(valueType *value)
 {
-	return(newValue(value->kindOfValue, swab(value->value), value->
+	return(newValue(value->kindOfValue, swabInt(value->value), value->
 								addressMode));
 }
 

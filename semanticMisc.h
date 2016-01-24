@@ -36,7 +36,7 @@ valueKindType opValueKind(valueType *leftOperand, valueType *rightOperand);
 bool relocatableValue(valueType *address);
 valueKindType selectValueKind(valueType *leftOperand, valueType *rightOperand);
 valueKindType subValueKind(valueType *leftOperand, valueType *rightOperand);
-int swab(int i);
+int swabInt(int i);
 valueType *swabValue(valueType *value);
 valueKindType unopValueKind(valueType *operand);
 void valueField(symbolTableEntryType *symbol, valueType *value);
