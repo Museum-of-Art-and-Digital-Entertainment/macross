@@ -39,7 +39,7 @@
 #define isUndefined(symbol) (((symbol)->symbolClass & ~SYMBOL_EXTERNAL) == 0)
 
   void
-removeZeroPageFromFreeList()
+removeZeroPageFromFreeList(void)
 {
 	while (freeSegmentList->segmentEndAddress <= 0x100)
 		freeSegmentList = freeSegmentList->nextFreeSegment;
@@ -48,9 +48,7 @@ removeZeroPageFromFreeList()
 }
 
   addressType
-align(address, alignment)
-  addressType	address;
-  int		alignment;
+align(addressType address, int alignment)
 {
 	if (alignment == 0)
 		return(address);
@@ -59,10 +57,7 @@ align(address, alignment)
 }
 
   addressType
-constrain(address, size, constraint)
-  addressType	address;
-  int		size;
-  addressType	constraint;
+constrain(addressType address, int size, addressType constraint)
 {
 	if (constraint == 0)
 		return(address);
@@ -72,8 +67,7 @@ constrain(address, size, constraint)
 		return(address);
 }
   void
-moveRelocationBase(newBase)
-  addressType	newBase;
+moveRelocationBase(addressType newBase)
 {
 	freeSegmentEntryType	*freePtr;
 	freeSegmentEntryType	*newFreePtr;
@@ -95,8 +89,7 @@ moveRelocationBase(newBase)
 }
 
   addressType
-allocateRelocatable(codeSegment)
-  codeSegmentHeaderType	*codeSegment;
+allocateRelocatable(codeSegmentHeaderType *codeSegment)
 {
 	freeSegmentEntryType	*freePtr;
 	freeSegmentEntryType	*previousPtr;
@@ -151,9 +144,7 @@ allocateRelocatable(codeSegment)
 }
 
   void
-relocateOneCodeSegment(codeSegment, targetLocation)
-  codeSegmentHeaderType	*codeSegment;
-  addressType		 targetLocation;
+relocateOneCodeSegment(codeSegmentHeaderType *codeSegment, addressType targetLocation)
 {
 	int	relocationOffset;
 
@@ -175,7 +166,7 @@ relocateOneCodeSegment(codeSegment, targetLocation)
 }
 
   void
-relocatem()
+relocatem(void)
 {
 	objectFileListType	*inputFileList;
 	addressType		 targetLocation;
@@ -210,9 +201,7 @@ relocatem()
 }
 
   codeSegmentHeaderType *
-matchModes(symbol, codeSegment)
-  symbolType		*symbol;
-  codeSegmentHeaderType	*codeSegment;
+matchModes(symbolType *symbol, codeSegmentHeaderType *codeSegment)
 {
 	while (codeSegment!=NULL && ((codeSegment->segmentMode==MODE_ABSOLUTE
 			&& !(symbol->symbolClass & SYMBOL_ABSOLUTE)) ||
@@ -224,9 +213,7 @@ matchModes(symbol, codeSegment)
 }
 
   bool
-matchedModes(symbol, codeSegment)
-  symbolType		*symbol;
-  codeSegmentHeaderType	*codeSegment;
+matchedModes(symbolType *symbol, codeSegmentHeaderType *codeSegment)
 {
 	return(((symbol->symbolClass & SYMBOL_ABSOLUTE) && codeSegment->
 		segmentMode == MODE_ABSOLUTE) || ((symbol->symbolClass &
@@ -235,9 +222,7 @@ matchedModes(symbol, codeSegment)
 }
 
   codeSegmentHeaderType	*
-synchronizeCodeSegment(symbol, codeSegment)
-  symbolType		*symbol;
-  codeSegmentHeaderType	*codeSegment;
+synchronizeCodeSegment(symbolType *symbol, codeSegmentHeaderType *codeSegment)
 {
 	codeSegment = matchModes(symbol, codeSegment);
 	while (codeSegment != NULL && codeSegment->nextSegment != NULL &&
@@ -250,15 +235,12 @@ synchronizeCodeSegment(symbol, codeSegment)
 }
 
   void
-handleGlobalSymbol(symbol)
-  symbolType	*symbol;
+handleGlobalSymbol(symbolType *symbol)
 {
 }
 
   void
-valueSymbol(symbol, codeSegment)
-  symbolType		*symbol;
-  codeSegmentHeaderType	*codeSegment;
+valueSymbol(symbolType *symbol, codeSegmentHeaderType *codeSegment)
 {
 	if (symbol->symbolClass & SYMBOL_ABSOLUTE) {
 		return;
@@ -270,8 +252,7 @@ valueSymbol(symbol, codeSegment)
 }
 
   symbolType *
-lookupGlobalSymbol(symbolName)
-  char	*symbolName;
+lookupGlobalSymbol(char *symbolName)
 {
 	int	guess;
 	int	top;
@@ -300,8 +281,7 @@ lookupGlobalSymbol(symbolName)
 }
 
   void
-valueUndefinedSymbol(symbol)
-  symbolType	*symbol;
+valueUndefinedSymbol(symbolType *symbol)
 {
 	symbolType	*globalSymbol;
 
@@ -314,7 +294,7 @@ valueUndefinedSymbol(symbol)
 }
 
   void
-valuem()
+valuem(void)
 {
 	objectFileListType	*inputFileList;
 	codeSegmentHeaderType	*codeSegmentPtr;

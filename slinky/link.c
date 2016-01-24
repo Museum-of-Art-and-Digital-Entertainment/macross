@@ -103,8 +103,7 @@
  */
 
   bool
-internalizeOneObjectFile(objectFile)
-  objectFileListType	*objectFile;
+internalizeOneObjectFile(objectFileListType *objectFile)
 {
 	FILE		*objectFildes;
 	int		 magic;
@@ -160,9 +159,7 @@ internalizeOneObjectFile(objectFile)
 #define toLowerCase(c) (('A'<=(c)&&(c)<='Z')?((c)-'A'+'a'):(c));
 
   bool
-strcmplc(s1, s2)
-  char	*s1;
-  char	*s2;
+strcmplc(char *s1, char *s2)
 {
 	register char	c1;
 	register char	c2;
@@ -184,9 +181,7 @@ strcmplc(s1, s2)
 }
 
   bool
-compareSymbols(symbol1, symbol2)
-  symbolType	**symbol1;
-  symbolType	**symbol2;
+compareSymbols(symbolType **symbol1, symbolType **symbol2)
 {
 	bool	result;
 
@@ -201,8 +196,7 @@ compareSymbols(symbol1, symbol2)
 }
 
   void
-buildGlobalSymbolTable(inputFileList)
-  objectFileListType	*inputFileList;
+buildGlobalSymbolTable(objectFileListType *inputFileList)
 {
 	int		  symbolCount;
 	symbolType	**symbol;
@@ -234,7 +228,7 @@ buildGlobalSymbolTable(inputFileList)
 }
 
   bool
-readem()
+readem(void)
 {
 	objectFileListType	*inputFileList;
 
@@ -254,8 +248,7 @@ readem()
 }
 
   codeSegmentHeaderType	*
-locateConflictingSegment(codeSegment)
-  codeSegmentHeaderType	*codeSegment;
+locateConflictingSegment(codeSegmentHeaderType *codeSegment)
 {
 	segmentListType		*segmentPtr;
 	int			 segmentListOffset;
@@ -291,9 +284,7 @@ locateConflictingSegment(codeSegment)
 }
 
   void
-reserveSegment(start, end)
-  addressType	start;
-  addressType	end;
+reserveSegment(addressType start, addressType end)
 {
 	freeSegmentEntryType	*freeSegmentPtr;
 	freeSegmentEntryType	*previousSegmentPtr;
@@ -346,8 +337,7 @@ reserveSegment(start, end)
 }
 
   codeSegmentHeaderType	*
-allocateAbsolute(codeSegment)
-  codeSegmentHeaderType	*codeSegment;
+allocateAbsolute(codeSegmentHeaderType *codeSegment)
 {
 	freeSegmentEntryType	*freeSegmentPtr;
 	freeSegmentEntryType	*previousSegmentPtr;
@@ -397,7 +387,7 @@ allocateAbsolute(codeSegment)
 }
 
   void
-reserveReservations()
+reserveReservations(void)
 {
 	while (reservationList != NULL) {
 		reserveSegment(reservationList->startAddress,
@@ -408,8 +398,7 @@ reserveReservations()
 }
 
   void
-installSegment(codeSegment)
-  codeSegmentHeaderType	*codeSegment;
+installSegment(codeSegmentHeaderType *codeSegment)
 {
     segmentListType	*previousSegment;
     segmentListType	*installSegmentList;
@@ -444,8 +433,7 @@ installSegment(codeSegment)
 }
 
   void
-installAbsoluteCodeSegment(codeSegment)
-  codeSegmentHeaderType	*codeSegment;
+installAbsoluteCodeSegment(codeSegmentHeaderType *codeSegment)
 {
     codeSegmentHeaderType	*conflictingSegment;
 
@@ -460,7 +448,7 @@ installAbsoluteCodeSegment(codeSegment)
 }
 
   void
-linkem()
+linkem(void)
 {
 	if (!readem())
 		return;

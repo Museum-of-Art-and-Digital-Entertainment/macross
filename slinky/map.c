@@ -35,9 +35,7 @@
 #include "link.h"
 
   int
-compareLoadMapEntries(entry1, entry2)
-  loadMapTableEntryType	*entry1;
-  loadMapTableEntryType	*entry2;
+compareLoadMapEntries(loadMapTableEntryType *entry1, loadMapTableEntryType *entry2)
 {
 	int	result;
 
@@ -53,7 +51,7 @@ compareLoadMapEntries(entry1, entry2)
 }
 
   void
-outputLoadMap()
+outputLoadMap(void)
 {
 	loadMapTableEntryType	*loadMapTable;
 	loadMapTableEntryType	*loadMapPtr;

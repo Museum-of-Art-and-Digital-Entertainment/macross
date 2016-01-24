@@ -40,9 +40,7 @@
 #define getSymbol() ((symbolType *)getNumber())
 
   void
-tooFewArgs(argCount, name)
-  int		 argCount;
-  stringType	*name;
+tooFewArgs(int argCount, stringType *name)
 {
 	error(TOO_FEW_ARGUMENTS_TO_BIF_ERROR, name);
 	while (argCount-- > 0)
@@ -50,9 +48,7 @@ tooFewArgs(argCount, name)
 }
 
   void
-tooManyArgs(argCount, name)
-  int		 argCount;
-  stringType	*name;
+tooManyArgs(int argCount, stringType *name)
 {
 	error(TOO_MANY_ARGUMENTS_TO_BIF_ERROR, name);
 	while (argCount-- > 0)
@@ -89,8 +85,7 @@ static char	 atasciiTable[] = { /* 0xFFs will become 0x00s on output */
 
 /* Convert a string to ATASCII */
    stringType *
-atasciiBIF(argCount)
-  int	argCount;
+atasciiBIF(int argCount)
 {
 	stringType	*string;
 	stringType	*newString;
@@ -113,8 +108,7 @@ atasciiBIF(argCount)
 
 /* Convert a string to ATASCII while setting high-order color bits */
   stringType *
-atasciiColorBIF(argCount)
-  int	argCount;
+atasciiColorBIF(int argCount)
 {
 	stringType	*string;
 	stringType	*newString;
@@ -149,8 +143,7 @@ atasciiColorBIF(argCount)
 
 /* Check if an operand is absolute (as opposed to relocatable) */
   bool
-isAbsoluteValueBIF(argCount)
-  int	argCount;
+isAbsoluteValueBIF(int argCount)
 {
 	if (argCount > 1)
 		tooManyArgs(argCount, "isAbsoluteValue");
@@ -159,8 +152,7 @@ isAbsoluteValueBIF(argCount)
 
 /* Check if operand is a condition code */
   bool
-isConditionCodeBIF(argCount)
-  int	argCount;
+isConditionCodeBIF(int argCount)
 {
 	bool	result;
 
@@ -177,8 +169,7 @@ isConditionCodeBIF(argCount)
 
 /* Check if a symbol is defined */
   bool
-isDefinedBIF(argCount)
-  int	argCount;
+isDefinedBIF(int argCount)
 {
 	symbolType	*symbol;
 
@@ -199,8 +190,7 @@ isDefinedBIF(argCount)
 
 /* Check if a symbol is externally visible */
   bool
-isExternalBIF(argCount)
-  int	argCount;
+isExternalBIF(int argCount)
 {
 	symbolType	*symbol;
 
@@ -221,8 +211,7 @@ isExternalBIF(argCount)
 
 /* Return the Nth character of a string (as an integer) */
   int
-nthCharBIF(argCount)
-  int	argCount;
+nthCharBIF(int argCount)
 {
 	stringType	*string;
 	int		 position;
@@ -245,8 +234,7 @@ nthCharBIF(argCount)
 
 /* Pass stuff through to stdio's 'printf' function */
   int
-printfBIF(argCount)
-  int	argCount;
+printfBIF(int argCount)
 {
 	stringType	*formatString;
 	int		 argument[20];
@@ -274,8 +262,7 @@ printfBIF(argCount)
 
 /* Concatenate two strings */
   stringType *
-strcatBIF(argCount)
-  int	argCount;
+strcatBIF(int argCount)
 {
 	stringType	*string1;
 	stringType	*string2;
@@ -299,8 +286,7 @@ strcatBIF(argCount)
 
 /* Compare two strings */
   int
-strcmpBIF(argCount)
-  int	argCount;
+strcmpBIF(int argCount)
 {
 	stringType	*string1;
 	stringType	*string2;
@@ -319,9 +305,7 @@ strcmpBIF(argCount)
 
 /* Compare two strings in a case-independent fashion */
   int
-strcmplcBIF(argCount)
-  int	argCount;
-
+strcmplcBIF(int argCount)
 {
 	stringType	*string1;
 	stringType	*string2;
@@ -340,8 +324,7 @@ strcmplcBIF(argCount)
 
 /* Return the length of a string */
   int
-strlenBIF(argCount)
-  int	argCount;
+strlenBIF(int argCount)
 {
 	if (argCount < 1)
 		return(0);
@@ -354,8 +337,7 @@ strlenBIF(argCount)
 
 /* Return a substring of a string */
   char *
-substrBIF(argCount)
-  int	argCount;
+substrBIF(int argCount)
 {
 	stringType	*string;
 	int		 start;
@@ -409,8 +391,7 @@ substrBIF(argCount)
 
 /* Turn a string into a symbol and return its value */
   addressType
-symbolLookupBIF(argCount)
-  int	argCount;
+symbolLookupBIF(int argCount)
 {
 	symbolType	*symbol;
 	stringType	*symbolName;
@@ -433,8 +414,7 @@ symbolLookupBIF(argCount)
 
 /* Turn a symbol into a string */
   stringType *
-symbolNameBIF(argCount)
-  int	argCount;
+symbolNameBIF(int argCount)
 {
 	symbolType	*symbol;
 

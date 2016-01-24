@@ -64,18 +64,14 @@ static char *symbolStrings[6] = {
 		};
 
   void
-printCode(startAddress, endAddress, mode)
-  int	startAddress;
-  int	endAddress;
-  int	mode;
+printCode(int startAddress, int endAddress, int mode)
 {
 	printf("    Code: 0x%04x:0x%04x %s\n", startAddress, endAddress,
 		modeStrings[mode]);
 }
 
   void
-printReference(reference)
-  expressionReferenceType	*reference;
+printReference(expressionReferenceType *reference)
 {
 	printf("    Ref : 0x%04x (%s %s %s %s) expression #%d\n", reference->
 		referenceAddress, modeStrings[reference->referenceMode],
@@ -85,8 +81,7 @@ printReference(reference)
 }
 
   void
-printReferenceFixup(reference)
-  expressionReferenceType	*reference;
+printReferenceFixup(expressionReferenceType *reference)
 {
 	printf("    Ref : 0x%04x (%s %s %s %s) expression=0x%x\n",
 		reference->referenceAddress, modeStrings[reference->
@@ -97,9 +92,7 @@ printReferenceFixup(reference)
 }
 
   void
-printSymbol(symbolTag, symbol)
-  int		 symbolTag;
-  symbolType	*symbol;
+printSymbol(int symbolTag, symbolType *symbol)
 {
 	printf("    Symb: %3d %s 0x%04x \"%s\"\n", symbolTag, symbolStrings[
 		symbol->symbolClass], symbol->symbolValue,
@@ -107,15 +100,14 @@ printSymbol(symbolTag, symbol)
 }
 
   void
-printLoadMapSymbol(symbol)
-  symbolType	*symbol;
+printLoadMapSymbol(symbolType *symbol)
 {
 	fprintf(mapFileOutput, "%-20s 0x%04x %s  ", symbol->symbolName,
 		symbol->symbolValue, symbolStrings[symbol->symbolClass]);
 }
 
   void
-printGlobalSymbols()
+printGlobalSymbols(void)
 {
 	int	symbolCount;
 
@@ -128,9 +120,7 @@ printGlobalSymbols()
 }
 
   void
-printExpression(expression, length)
-  expressionPCType	expression;
-  int			length;
+printExpression(expressionPCType expression, int length)
 {
 	int	line;
 	int	i;

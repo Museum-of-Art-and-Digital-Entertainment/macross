@@ -39,16 +39,14 @@
 static char	*outputFileName;
 
   void
-chokePukeAndDie()
+chokePukeAndDie(void)
 {
 	unlink(outputFileName);
 	exit(1);
 }
 
   void
-initializeStuff(argc, argv)
-  int	 argc;
-  char	*argv[];
+initializeStuff(int argc, char **argv)
 {
 	int	 i;
 	int	 j;
@@ -177,8 +175,7 @@ initializeStuff(argc, argv)
 
 
   void
-queueInputFile(name)
-  char	*name;
+queueInputFile(char *name)
 {
 	objectFileListType	*newObjectFile;
 
@@ -197,8 +194,7 @@ queueInputFile(name)
 }
 
   void
-queueLoadAddress(addressString)
-  char	*addressString;
+queueLoadAddress(char *addressString)
 {
 	int			 loadAddress;
 	objectFileListType	*newObjectFile;

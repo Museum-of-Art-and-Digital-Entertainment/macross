@@ -34,9 +34,7 @@
 #include "link.h"
 
 int
-main(argc, argv)
-  int	argc;
-  char *argv[];
+main(int argc, char **argv)
 {
 	initializeStuff(argc, argv);
 	linkem();
@@ -46,7 +44,7 @@ main(argc, argv)
 }
 
   void
-printVersion()
+printVersion(void)
 {
 	printf("Slinky version 1.16.\n");
 }

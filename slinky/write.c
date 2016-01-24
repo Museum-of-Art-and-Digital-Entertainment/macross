@@ -37,7 +37,7 @@
 #define writeByte(aByte) putc(aByte & 0xFF, loadFileOutput)
 
   void
-writeEntryPoint()
+writeEntryPoint(void)
 {
 	writeWord(entryPointAddress);
 	writeWord(entryPointAddress);
@@ -45,8 +45,7 @@ writeEntryPoint()
 }
 
   void
-writeCodeSegment(codeSegment)
-  codeSegmentHeaderType	*codeSegment;
+writeCodeSegment(codeSegmentHeaderType *codeSegment)
 {
 	int	length;
 	int	i;
@@ -60,7 +59,7 @@ writeCodeSegment(codeSegment)
 }
 
   void
-writem()
+writem(void)
 {
 	int		 	 regionNumber;
 	codeSegmentHeaderType	*lastSegment;

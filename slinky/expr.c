@@ -48,7 +48,7 @@ static bool		hitFreturn = FALSE;
 static addressType	functionResult;
 
   int
-getNumber()
+getNumber(void)
 {
 	register int	result;
 	register int	i;
@@ -61,7 +61,7 @@ getNumber()
 }
 
   addressType
-evaluateArray()
+evaluateArray(void)
 {
 	error(ARRAY_TERM_IN_OBJECT_ERROR);
 	skipArray();
@@ -69,7 +69,7 @@ evaluateArray()
 }
 
   addressType
-evaluateAssert()
+evaluateAssert(void)
 {
 	if (!evaluateExpression())
 		error(ASSERT_FAILED_ERROR, pc);
@@ -77,7 +77,7 @@ evaluateAssert()
 }
 
   addressType
-evaluateBinop()
+evaluateBinop(void)
 {
 	int		op;
 	symbolType     *leftSymbol;
@@ -156,7 +156,7 @@ evaluateBinop()
 }
 
   addressType
-evaluateBlock()
+evaluateBlock(void)
 {
 	while (*pc != END_TAG) {
 		evaluateExpression();
@@ -169,7 +169,7 @@ evaluateBlock()
 }
 
   addressType
-evaluateConditionCode()
+evaluateConditionCode(void)
 {
 	overByte();
 	error(CONDITION_CODE_EXPRESSION_ENCOUNTERED_ERROR);
@@ -177,9 +177,7 @@ evaluateConditionCode()
 }
 
   void
-pushSymbol(symbol, value)
-  symbolType	*symbol;
-  addressType	 value;
+pushSymbol(symbolType *symbol, addressType value)
 {
 	bindingListType		*newBinding;
 
@@ -194,9 +192,7 @@ pushSymbol(symbol, value)
 }
 
   void
-bindFunctionArguments(theFunction, argCount)
-  functionType	*theFunction;
-  int		 argCount;
+bindFunctionArguments(functionType *theFunction, int argCount)
 {
 	argumentListType	*argList;
 
@@ -220,7 +216,7 @@ bindFunctionArguments(theFunction, argCount)
 }
 
   void
-undoBindings()
+undoBindings(void)
 {
 	bindingListType	*deadBinding;
 
@@ -236,7 +232,7 @@ undoBindings()
 }
 
   addressType
-evaluateFreturn()
+evaluateFreturn(void)
 {
 	hitFreturn = TRUE;
 	functionResult = evaluateExpression();
@@ -244,7 +240,7 @@ evaluateFreturn()
 }
 
   addressType
-evaluateBuiltinFunctionCall()
+evaluateBuiltinFunctionCall(void)
 {
 	int	theFunction;
 	int	argCount;
@@ -259,7 +255,7 @@ evaluateBuiltinFunctionCall()
 }
 
   addressType
-evaluateFunctionCall()
+evaluateFunctionCall(void)
 {
 	expressionPCType	savePoint;
 	functionType	       *theFunction;
@@ -285,13 +281,13 @@ evaluateFunctionCall()
 }
 
   addressType
-evaluateHere()
+evaluateHere(void)
 {
 	return(here);
 }
 
   addressType
-evaluateMdefine()
+evaluateMdefine(void)
 {
 	symbolType	*symbol;
 
@@ -300,7 +296,7 @@ evaluateMdefine()
 }
 
   addressType
-evaluateMdoUntil()
+evaluateMdoUntil(void)
 {
 	expressionPCType	testPoint;
 	expressionPCType	endPoint;
@@ -317,7 +313,7 @@ evaluateMdoUntil()
 }
 
   addressType
-evaluateMdoWhile()
+evaluateMdoWhile(void)
 {
 	expressionPCType	testPoint;
 	expressionPCType	endPoint;
@@ -334,7 +330,7 @@ evaluateMdoWhile()
 }
 
   addressType
-evaluateMfor()
+evaluateMfor(void)
 {
 	expressionPCType	testPoint;
 	expressionPCType	incrPoint;
@@ -364,7 +360,7 @@ evaluateMfor()
 }
 
   addressType
-evaluateMif()
+evaluateMif(void)
 {
 	if (evaluateExpression()) {
 		evaluateExpression();
@@ -377,8 +373,7 @@ evaluateMif()
 }
 
   bool
-evaluateClause(pattern)
-  addressType	pattern;
+evaluateClause(addressType pattern)
 {
 	bool	match;
 
@@ -396,7 +391,7 @@ evaluateClause(pattern)
 }
 
   addressType
-evaluateMswitch()
+evaluateMswitch(void)
 {
 	addressType	pattern;
 
@@ -411,7 +406,7 @@ evaluateMswitch()
 }
 
   addressType
-evaluateMwhile()
+evaluateMwhile(void)
 {
 	expressionPCType	testPoint;
 	expressionPCType	endPoint;
@@ -430,7 +425,7 @@ evaluateMwhile()
 }
 
   addressType
-evaluateMvariable()
+evaluateMvariable(void)
 {
 	symbolType	*symbol;
 
@@ -439,7 +434,7 @@ evaluateMvariable()
 }
 
   addressType
-evaluateNumber()
+evaluateNumber(void)
 {
 	addressType	result;
 	int		i;
@@ -452,20 +447,20 @@ evaluateNumber()
 }
 
   addressType
-evaluateRelocatableNumber()
+evaluateRelocatableNumber(void)
 {
 	return(evaluateNumber() + relocationOffset);
 }
 
   addressType
-evaluatePerform()
+evaluatePerform(void)
 {
 	evaluateExpression();
 	return(0);
 }
 
   addressType
-evaluatePostop()
+evaluatePostop(void)
 {
 	int		op;
 	symbolType     *target;
@@ -482,7 +477,7 @@ evaluatePostop()
 }
 
   addressType
-evaluatePreop()
+evaluatePreop(void)
 {
 	int		op;
 	symbolType     *target;
@@ -499,7 +494,7 @@ evaluatePreop()
 }
 
   addressType
-evaluateString()
+evaluateString(void)
 {
 	addressType	result;
 
@@ -510,7 +505,7 @@ evaluateString()
 }
 
   addressType
-evaluateSymbol()
+evaluateSymbol(void)
 {
 	symbolType     *target;
 
@@ -519,7 +514,7 @@ evaluateSymbol()
 }
 
   addressType
-evaluateUnop()
+evaluateUnop(void)
 {
 	int		op;
 	addressType	arg;
@@ -545,7 +540,7 @@ evaluateUnop()
 }
 
   addressType
-evaluateExpression()
+evaluateExpression(void)
 {
 	if (pc == NULL)
 		return(0);
@@ -647,21 +642,21 @@ evaluateExpression()
 }
 
   void
-skipArray()
+skipArray(void)
 {
 	overSymbol();
 	skipExpression();
 }
 
   void
-skipAssert()
+skipAssert(void)
 {
 	skipExpression();
 	skipString();
 }
 
   void
-skipBinop()
+skipBinop(void)
 {
 	overByte();
 	skipExpression();
@@ -669,7 +664,7 @@ skipBinop()
 }
 
   void
-skipBlock()
+skipBlock(void)
 {
 	while (*pc != END_TAG)
 		skipExpression();
@@ -677,7 +672,7 @@ skipBlock()
 }
 
   void
-skipFunctionCall()
+skipFunctionCall(void)
 {
 	int	argCount;
 
@@ -688,28 +683,28 @@ skipFunctionCall()
 }
 
   void
-skipMdefine()
+skipMdefine(void)
 {
 	overSymbol();
 	skipExpression();
 }
 
   void
-skipMdoUntil()
+skipMdoUntil(void)
 {
 	skipExpression();
 	skipExpression();
 }
 
   void
-skipMdoWhile()
+skipMdoWhile(void)
 {
 	skipExpression();
 	skipExpression();
 }
 
   void
-skipMfor()
+skipMfor(void)
 {
 	skipExpression();
 	skipExpression();
@@ -718,7 +713,7 @@ skipMfor()
 }
 
   void
-skipMif()
+skipMif(void)
 {
 	skipExpression();
 	skipExpression();
@@ -726,7 +721,7 @@ skipMif()
 }
 
   void
-skipClause()
+skipClause(void)
 {
 	while (*pc != BLOCK_TAG)
 		skipExpression;
@@ -734,7 +729,7 @@ skipClause()
 }
 
   void
-skipMswitch()
+skipMswitch(void)
 {
 	skipExpression();
 	while (*pc != END_TAG)
@@ -743,49 +738,49 @@ skipMswitch()
 }
 
   void
-skipMvariable()
+skipMvariable(void)
 {
 	overSymbol();
 	skipExpression();
 }
 
   void
-skipMwhile()
+skipMwhile(void)
 {
 	skipExpression();
 	skipExpression();
 }
 
   void
-skipPostop()
-{
-	overByte();
-	skipExpression();
-}
-
-  void
-skipPreop()
+skipPostop(void)
 {
 	overByte();
 	skipExpression();
 }
 
   void
-skipString()
+skipPreop(void)
+{
+	overByte();
+	skipExpression();
+}
+
+  void
+skipString(void)
 {
 	while (*pc++ != '\0')
 		;
 }
 
   void
-skipUnop()
+skipUnop(void)
 {
 	overByte();
 	skipExpression();
 }
 
   void
-skipExpression()
+skipExpression(void)
 {
 	if (pc == NULL)
 		return;
