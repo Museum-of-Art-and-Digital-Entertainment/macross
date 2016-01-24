@@ -25,11 +25,16 @@ emitBranch.h semanticMisc.h expressionSemantics.h
 
 HEADERS = macrossTypes.h macrossGlobals.h
 
-CFLAGS=-m32 # macross is not 64 bit clean
+# Macross is not 64-bit clean and it does a lot of silent downcasting
+# to simulate subclasses and uses int and void * interchangably a
+# bunch.
+CFLAGS=-m32 -Wno-int-conversion -Wno-incompatible-pointer-types
+
 # If yacc is notionally present on a system, it's usually actually
 # bison in a compatibility mode. bison is available by name more often
-# than bison itself is.
-YACC=bison -o y.tab.c
+# than yacc itself is.
+YACC=bison -y
+#YACC=yacc
 
 .c.o:
 	cc $(CFLAGS) -c -g -DTARGET_CPU=CPU_$(PROC) $*.c
