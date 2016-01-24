@@ -31,7 +31,7 @@
 
 #include "slinkyTypes.h"
 #include "slinkyGlobals.h"
-
+#include "debugPrint.h"
 
 static char *modeStrings[2] = {
 		"abs",

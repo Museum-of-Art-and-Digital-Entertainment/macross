@@ -31,6 +31,10 @@
 
 #include "slinkyTypes.h"
 #include "slinkyGlobals.h"
+#include "poke.h"
+#include "debugPrint.h"
+#include "errorStuff.h"
+#include "expr.h"
 
   bool
 isWordSized(value)

@@ -31,6 +31,12 @@
 
 #include "slinkyTypes.h"
 #include "slinkyGlobals.h"
+#include "read.h"
+#include "debugPrint.h"
+#include "errorStuff.h"
+#include "initialize.h"
+#include "instantiate.h"
+#include "link.h"
 
 #define isAbsolute(symbol) (((symbol)->symbolClass & SYMBOL_ABSOLUTE) != 0)
 #define isRelocatable(symbol) (((symbol)->symbolClass &SYMBOL_RELOCATABLE)!=0)
@@ -520,7 +526,6 @@ readReservations(objectFile, objectFildes)
   FILE			*objectFildes;
 {
 	addressType		 startAddress;
-	reservationListType	*buildReservation();
 
 	if (debug)
 		printf("	reservations\n");

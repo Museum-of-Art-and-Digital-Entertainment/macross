@@ -30,6 +30,11 @@
 #include "slinkyTypes.h"
 #include "slinkyGlobals.h"
 #include "slinkyExpressions.h"
+#include "builtins.h"
+#include "errorStuff.h"
+#include "expr.h"
+#include "link.h"
+#include "relocate.h"
 #include <string.h>
 
 #define getSymbol() ((symbolType *)getNumber())
@@ -409,7 +414,6 @@ symbolLookupBIF(argCount)
 {
 	symbolType	*symbol;
 	stringType	*symbolName;
-	symbolType	*lookupGlobalSymbol();
 
 	if (argCount < 1) {
 		tooFewArgs(argCount, "symbolLookup");

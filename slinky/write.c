@@ -30,6 +30,7 @@
 
 #include "slinkyTypes.h"
 #include "slinkyGlobals.h"
+#include "write.h"
 
 #define writeWord(aWord) putc(aWord & 0xFF, loadFileOutput);\
 			putc((aWord >> 8) & 0xFF, loadFileOutput)

@@ -29,6 +29,15 @@
 
 #include "slinkyTypes.h"
 #include "slinkyGlobals.h"
+#include "link.h"
+#include "debugPrint.h"
+#include "errorStuff.h"
+#include "instantiate.h"
+#include "poke.h"
+#include "read.h"
+#include "relocate.h"
+#include "write.h"
+
 /*#define readWord(f,fn) ((getc(f) & 0xFF) | ((getc(f) & 0xFF)<<8))*/
 
 /*
@@ -102,7 +111,6 @@ internalizeOneObjectFile(objectFile)
 	int		 mode;
 	addressType	 startAddress;
 	addressType	 endAddress;
-	bool		 compareSymbolValues();
 
 	currentFileName = objectFile->name;
 	if ((objectFildes = fopen(objectFile->name, "r")) == NULL) {

@@ -29,6 +29,12 @@
 
 #include "slinkyTypes.h"
 #include "slinkyGlobals.h"
+#include "initialize.h"
+#include "errorStuff.h"
+#include "main.h"
+
+#include <string.h>
+#include <unistd.h>
 
 static char	*outputFileName;
 
@@ -51,9 +57,6 @@ initializeStuff(argc, argv)
 	int	 outputFilesFound;
 	int	 mapFilesFound;
 	char	*mapFileName;
-
-	void	 queueInputFile();
-	void	 queueLoadAddress();
 
 	currentFileName = "<command line>";
 	errorFlag = FALSE;

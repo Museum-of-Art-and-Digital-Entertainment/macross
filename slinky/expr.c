@@ -30,6 +30,9 @@
 #include "slinkyTypes.h"
 #include "slinkyGlobals.h"
 #include "slinkyExpressions.h"
+#include "expr.h"
+#include "errorStuff.h"
+#include "initialize.h"
 #include "y.tab.h"
 
 #define overSymbol() (pc+=sizeof(symbolType *))
@@ -40,12 +43,6 @@
 #define overByte() pc++
 #define nextByte(byt) (byt = *pc++)
 #define intOp(byt) (byt+256)
-
-addressType evaluateExpression();
-void skipArray();
-void skipClause();
-void skipString();
-void skipExpression();
 
 static bool		hitFreturn = FALSE;
 static addressType	functionResult;

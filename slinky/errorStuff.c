@@ -29,6 +29,7 @@
 
 #include "slinkyTypes.h"
 #include "slinkyGlobals.h"
+#include "errorStuff.h"
 
 #include <stdarg.h>
 

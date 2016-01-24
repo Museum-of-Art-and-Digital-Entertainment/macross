@@ -31,16 +31,15 @@
 #include "slinkyTypes.h"
 #include "slinkyGlobals.h"
 #include "slinkyExpressions.h"
+#include "errorStuff.h"
+#include "expr.h"
+#include "instantiate.h"
 #include "y.tab.h"
 
 #define overFunction() (pc+=sizeof(functionType *))
 #define overNumber() (pc+=sizeof(addressType))
 #define overByte() pc++
 #define nextByte(byt) (byt = *pc++)
-
-void putSymbolPointersIntoArray();
-void putSymbolPointersIntoClause();
-void putSymbolPointersIntoExpression();
 
   void
 putNumber(number)

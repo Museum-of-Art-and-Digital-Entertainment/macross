@@ -30,6 +30,11 @@
 
 #include "slinkyTypes.h"
 #include "slinkyGlobals.h"
+#include "relocate.h"
+#include "debugPrint.h"
+#include "errorStuff.h"
+#include "link.h"
+#include "map.h"
 
 #define isUndefined(symbol) (((symbol)->symbolClass & ~SYMBOL_EXTERNAL) == 0)
 

@@ -30,11 +30,9 @@
 
 #include "slinkyTypes.h"
 #include "slinkyGlobals.h"
-
-typedef struct {
-	symbolType	*symbol;
-	stringType	*fileName;
-		      } loadMapTableEntryType;
+#include "map.h"
+#include "debugPrint.h"
+#include "link.h"
 
   int
 compareLoadMapEntries(entry1, entry2)

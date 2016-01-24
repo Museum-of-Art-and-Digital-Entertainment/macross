@@ -29,7 +29,11 @@
 
 #include "slinkyTypes.h"
 #include "slinkyGlobals.h"
+#include "main.h"
+#include "initialize.h"
+#include "link.h"
 
+int
 main(argc, argv)
   int	argc;
   char *argv[];
@@ -38,8 +42,7 @@ main(argc, argv)
 	linkem();
 	if (errorFlag)
 		chokePukeAndDie();
-	else
-		exit(0);
+	return 0;
 }
 
   void
