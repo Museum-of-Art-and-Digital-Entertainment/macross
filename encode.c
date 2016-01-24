@@ -31,6 +31,10 @@
 #include "macrossTypes.h"
 #include "macrossGlobals.h"
 #include "y.tab.h"
+#include "encode.h"
+#include "debugPrint.h"
+#include "errorStuff.h"
+#include "parserMisc.h"
 #include "semanticMisc.h"
 #include "slinkyExpressions.h"
 
@@ -38,18 +42,6 @@
 #define byteOp(op) ((op)-256)
 
 bool	encodingFunction;
-
-  
-extern void error (errorType theError, ...);
-bool encodeIdentifier (symbolTableEntryType *identifier);
-bool encodeExpression (expressionType *expression);
-bool encodeValue (valueType *value);
-bool encodeOperand (operandType *operand);
-bool encodeString (stringType *string);
-extern char *valueKindString (valueKindType valueKind);
-extern void botch (char *message, ...);
-bool encodeBlock (blockType *block);
-extern stringType *statementKindString (statementKindType kind);
 
 bool
 encodeByte(byte aByte)
@@ -94,8 +86,6 @@ encodeAssignmentTerm(binopTermType *assignmentTerm)
   bool
 encodeBinopTerm(binopTermType *binopTerm)
 {
-	bool	encodeExpression(expressionType *expression);
-
 	nullEncode(binopTerm);
 	return (
 		encodeByte(BINOP_TAG) &&

@@ -29,22 +29,15 @@
 
 #include "macrossTypes.h"
 #include "macrossGlobals.h"
+#include "emitStuff.h"
+#include "errorStuff.h"
+#include "listing.h"
+#include "parserMisc.h"
+#include "semanticMisc.h"
+#include "statementSemantics.h"
+#include "structSemantics.h"
 
-  
-extern void botch (char *message, ...);
-extern void error (errorType theError, ...);
-extern void moreText (char *format, ...);
-extern void endLine (void);
-extern void emitByte (byte byteValue);
-extern bool listableStatement (statementKindType kind);
-extern void startLine (void);
-extern void assembleLabelList (labelListType *labelList);
-extern void expandLabel (void);
-extern void tabIndent (void);
-extern bool assembleStatementBody (statementKindType kind, statementBodyType body, int cumulativeLineNumber, bool worryAboutIf, simpleFixupListType **ifFixupList);
-extern void startLineMarked (void);
-
-void
+  void
 putStructFixups(int base, fixupListType *fixups)
 {
 	fixupListType	*newFixup;
@@ -95,8 +88,6 @@ instantiateStruct(structStatementBodyType *structStatement)
 	int			 i;
 	int			 base;
 	symbolInContextType	*context;
-
-	symbolInContextType	*getWorkingContext(symbolTableEntryType *identifier);
 
 #define structInstance	((structInstanceType *)	context->value->value)
 
@@ -156,8 +147,6 @@ assembleStructDefinition(structStatementBodyType *structStatement)
 {
 	symbolTableEntryType	*name;
 	symbolInContextType	*context;
-
-	symbolTableEntryType	*effectiveSymbol(symbolTableEntryType *symbol, symbolInContextType **assignmentTargetContext);
 
 	name = effectiveSymbol(structStatement->structName, &context);
 	if (context == NULL)

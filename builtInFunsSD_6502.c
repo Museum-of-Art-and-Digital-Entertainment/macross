@@ -32,23 +32,14 @@
 
 #include "macrossTypes.h"
 #include "macrossGlobals.h"
-
-/* Helper functions, defined in builtInFunctions.c */
-valueType	*makeBooleanValue(int test);
-valueType	*makeFailureValue(void);
-valueType	*makeIntegerValue(int integer);
-valueType	*makeOperandValue(operandType *operand);
-valueType	*makeStringValue(stringType *string);
-valueType	*makeUndefinedValue(void);
-
+#include "builtInFunctions.h"
+#include "operandStuff.h"
 
 /* Check if operand is the accumulator */
   valueType *
 isARegisterBIF(operandListType *parameterList, fixupKindType kindOfFixup)
 {
 	valueType	*evaluatedParameter;
-
-	valueType	*evaluateOperand(operandType *operand);
 
 	if (parameterList != NULL) {
 		evaluatedParameter = evaluateOperand(parameterList);
@@ -65,8 +56,6 @@ isDirectModeBIF(operandListType *parameterList, fixupKindType kindOfFixup)
 {
 	valueType	*evaluatedParameter;
 
-	valueType	*evaluateOperand(operandType *operand);
-
 	if (parameterList != NULL) {
 		evaluatedParameter = evaluateOperand(parameterList);
 		return(makeBooleanValue(evaluatedParameter->addressMode ==
@@ -82,8 +71,6 @@ isImmediateModeBIF(operandListType *parameterList, fixupKindType kindOfFixup)
 {
 	valueType	*evaluatedParameter;
 
-	valueType	*evaluateOperand(operandType *operand);
-
 	if (parameterList != NULL) {
 		evaluatedParameter = evaluateOperand(parameterList);
 		return(makeBooleanValue(evaluatedParameter->addressMode ==
@@ -98,8 +85,6 @@ isImmediateModeBIF(operandListType *parameterList, fixupKindType kindOfFixup)
 isIndexedModeBIF(operandListType *parameterList, fixupKindType kindOfFixup)
 {
 	valueType	*evaluatedParameter;
-
-	valueType	*evaluateOperand(operandType *operand);
 
 	if (parameterList != NULL) {
 		evaluatedParameter = evaluateOperand(parameterList);
@@ -119,8 +104,6 @@ isIndirectModeBIF(operandListType *parameterList, fixupKindType kindOfFixup)
 {
 	valueType	*evaluatedParameter;
 
-	valueType	*evaluateOperand(operandType *operand);
-
 	if (parameterList != NULL) {
 		evaluatedParameter = evaluateOperand(parameterList);
 		return(makeBooleanValue(evaluatedParameter->addressMode ==
@@ -136,8 +119,6 @@ isPostIndexedModeBIF(operandListType *parameterList, fixupKindType kindOfFixup)
 {
 	valueType	*evaluatedParameter;
 
-	valueType	*evaluateOperand(operandType *operand);
-
 	if (parameterList != NULL) {
 		evaluatedParameter = evaluateOperand(parameterList);
 		return(makeBooleanValue(evaluatedParameter->addressMode ==
@@ -152,8 +133,6 @@ isPostIndexedModeBIF(operandListType *parameterList, fixupKindType kindOfFixup)
 isPreIndexedModeBIF(operandListType *parameterList, fixupKindType kindOfFixup)
 {
 	valueType	*evaluatedParameter;
-
-	valueType	*evaluateOperand(operandType *operand);
 
 	if (parameterList != NULL) {
 		evaluatedParameter = evaluateOperand(parameterList);
@@ -171,8 +150,6 @@ isXIndexedModeBIF(operandListType *parameterList, fixupKindType kindOfFixup)
 {
 	valueType	*evaluatedParameter;
 
-	valueType	*evaluateOperand(operandType *operand);
-
 	if (parameterList != NULL) {
 		evaluatedParameter = evaluateOperand(parameterList);
 		return(makeBooleanValue(evaluatedParameter->addressMode ==
@@ -189,8 +166,6 @@ isXRegisterBIF(operandListType *parameterList, fixupKindType kindOfFixup)
 {
 	valueType	*evaluatedParameter;
 
-	valueType	*evaluateOperand(operandType *operand);
-
 	if (parameterList != NULL) {
 		evaluatedParameter = evaluateOperand(parameterList);
 		return(makeBooleanValue(evaluatedParameter->addressMode ==
@@ -205,8 +180,6 @@ isXRegisterBIF(operandListType *parameterList, fixupKindType kindOfFixup)
 isYIndexedModeBIF(operandListType *parameterList, fixupKindType kindOfFixup)
 {
 	valueType	*evaluatedParameter;
-
-	valueType	*evaluateOperand(operandType *operand);
 
 	if (parameterList != NULL) {
 		evaluatedParameter = evaluateOperand(parameterList);
@@ -223,8 +196,6 @@ isYIndexedModeBIF(operandListType *parameterList, fixupKindType kindOfFixup)
 isYRegisterBIF(operandListType *parameterList, fixupKindType kindOfFixup)
 {
 	valueType	*evaluatedParameter;
-
-	valueType	*evaluateOperand(operandType *operand);
 
 	if (parameterList != NULL) {
 		evaluatedParameter = evaluateOperand(parameterList);

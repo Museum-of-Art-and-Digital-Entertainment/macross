@@ -29,12 +29,11 @@
 
 #include "macrossTypes.h"
 #include "macrossGlobals.h"
+#include "initialize.h"
+#include "semanticMisc.h"
+#include "y.tab.h"
 
-
-extern void initializeStuff (int argc, char **argv);
-extern int yyparse (void);
-extern void finishUp (void);
-extern void chokePukeAndDie (void);
+#include <unistd.h>
 
 int
 main(int argc, char **argv)
@@ -44,15 +43,14 @@ main(int argc, char **argv)
 #else
 	extern char	 end;
 #endif
-	char		*sbrk(int);
 
 	fflush(stdout);
 	initializeStuff(argc, argv);
 	yyparse();
 	finishUp();
 	if (emitPrint)
-		printf("storage high water mark 0x%x == %d\n", sbrk(0) - &end,
-			sbrk(0) - &end);
+		printf("storage high water mark 0x%x == %d\n", sbrk(0) - (void *)(&end),
+			sbrk(0) - (void *)(&end));
 	if (errorFlag)
 		chokePukeAndDie();
 	return 0;

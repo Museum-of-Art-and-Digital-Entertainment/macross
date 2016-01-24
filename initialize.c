@@ -29,8 +29,14 @@
 
 #include "macrossTypes.h"
 #include "macrossGlobals.h"
+#include "initialize.h"
+#include "errorStuff.h"
+#include "lexer.h"
+#include "lookups.h"
+#include "semanticMisc.h"
 
 #include <string.h>
+#include <unistd.h>
 
 #define isAlphaNumeric(c)	(alphaNumericCharacterTable[c])
 
@@ -39,19 +45,7 @@ extern int yydebug;
 static fileNameListType		*bottomOfInputFileStack;
 static char			 *outputFileName;
 
-  
-extern int unlink (const char *);
-bool isDotMName (stringType *fileName);
-extern void fatalError (errorType theError, ...);
-extern void printVersion (void);
-extern void warning (errorType theError, ...);
-extern void fatalSystemError (errorType theError, ...);
-extern void initializeLexDispatchTable (void);
-extern genericTableEntryType *hashStringEnter (genericTableEntryType *entry, genericTableEntryType **table);
-extern int fancyAtoI (char *buffer, int base);
-extern void error (errorType theError, ...);
-
-void
+  void
 chokePukeAndDie(void)
 {
 	unlink(outputFileName);
@@ -71,14 +65,6 @@ initializeStuff(int argc, char **argv)
 	char	 *listFileName;
 	char	 *symbolDumpFileName;
 	bool	  dontUnlinkTempFiles;
-
-	void	  createHashTables(void);
-	void	  installBuiltInFunctions(void);
-	void	  installPredefinedSymbols(void);
-	void	  installCommandLineDefineSymbols(void);
-	void	  openFirstInputFile(void);
-	void	  queueInputFile(char *name);
-	void	  noteCommandLineDefine(char *arg);
 
 	for (i=0; i<128; i++) {
 		lowerCaseCharacterTable[i] = i;
@@ -396,9 +382,6 @@ installBuiltInFunctions(void)
 	int				 i;
 	symbolTableEntryType		*newFunction;
 
-	symbolTableEntryType		*lookupOrEnterSymbol(stringType *s, symbolUsageKindType kind);
-	valueType			*newValue(valueKindType kindOfValue, int value, operandKindType addressMode);
-
 	for (i=0; builtInFunctionTable[i].functionName!=NULL; i++) {
 		newFunction = lookupOrEnterSymbol(builtInFunctionTable[i].
 			functionName, BUILT_IN_FUNCTION_SYMBOL);
@@ -416,9 +399,6 @@ installPredefinedSymbols(void)
 	int				 i;
 	symbolTableEntryType		*newSymbol;
 
-	symbolTableEntryType		*lookupOrEnterSymbol(stringType *s, symbolUsageKindType kind);
-	valueType			*newValue(valueKindType kindOfValue, int value, operandKindType addressMode);
-
 	for (i=0; predefinedSymbolTable[i].symbolName!=NULL; i++) {
 		newSymbol = lookupOrEnterSymbol(predefinedSymbolTable[i].
 			symbolName, DEFINE_SYMBOL);
@@ -434,9 +414,6 @@ installCommandLineDefineSymbols(void)
 {
 	int				 i;
 	symbolTableEntryType		*newSymbol;
-
-	symbolTableEntryType		*lookupOrEnterSymbol(stringType *s, symbolUsageKindType kind);
-	valueType			*newValue(valueKindType kindOfValue, int value, operandKindType addressMode);
 
 	while (commandLineDefines != NULL) {
 		newSymbol = lookupOrEnterSymbol(commandLineDefines->name,
@@ -571,8 +548,6 @@ noteCommandLineDefine(char *arg)
 	char			*name;
 	int			 value;
 	commandLineDefineType	*newCommandLineDefine;
-
-	bool	 parseCommandLineDefine(char *arg, char **name, int *value);
 
 	if (parseCommandLineDefine(arg, &name, &value)) {
 		newCommandLineDefine = typeAlloc(commandLineDefineType);

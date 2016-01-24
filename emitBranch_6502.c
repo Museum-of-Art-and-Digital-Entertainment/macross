@@ -32,18 +32,14 @@
 
 #include "macrossTypes.h"
 #include "macrossGlobals.h"
+#include "buildStuff.h"
+#include "emitStuff.h"
+#include "parserMisc.h"
+#include "semanticMisc.h"
 
 /* emitRelativeBranch emits a relative branch instruction for the 6502,
    branching from the current location given a condition to branch upon and a
    target address. */
-
-  
-extern void emitByte (byte byteValue);
-extern void emitRelativeByteOffset (valueType *target);
-extern void botch (char *message, ...);
-extern void emitWord (wordType wordValue);
-extern void noteAnonymousReference (void);
-extern void emitWordValue (valueType *wordValue);
 
 void
 emitRelativeBranch(conditionType condition, valueType *target, valueType *fixupLocation)
@@ -148,8 +144,6 @@ emitJump(valueType *target, simpleFixupListType *previousFixups)
 {
 	simpleFixupListType	*result;
 	valueType		 picFixup[COMPOUND_BRANCH_MAX];
-
-	simpleFixupListType	*buildSimpleFixupList(valueType locationToFixup, simpleFixupListType *previousList);
 
 #define JUMP_OPCODE	0x4C
 

@@ -29,6 +29,8 @@
 
 #include "macrossTypes.h"
 #include "macrossGlobals.h"
+#include "errorStuff.h"
+#include "initialize.h"
 
 #include <stdarg.h>
 
@@ -39,12 +41,7 @@ bool			 nullStatementFlag;
    input up to the end of the line, in a (probably futile) effort to recover
    from the booboo. */
 
-  
-void verror (errorType theError, va_list ap);
-void fatalError (errorType theError, ...);
-extern void chokePukeAndDie (void);
-
-void
+  void
 puntOnError(errorType theError, ...)
 {
 	va_list ap;

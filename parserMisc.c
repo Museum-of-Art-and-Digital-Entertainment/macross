@@ -32,20 +32,18 @@
 #include "macrossTypes.h"
 #include "macrossGlobals.h"
 #include "y.tab.h"
+#include "buildStuff.h"
+#include "fixups.h"
+#include "initialize.h"
+#include "errorStuff.h"
 #include "parserMisc.h"
 
 #include <stdarg.h>
 #include <string.h>
 
-  
-extern void chokePukeAndDie (void);
-extern void puntOnError (errorType theError, ...);
-
-statementType *
+  statementType *
 addLabelToStatement(labelListType *labelList, statementType *statement)
 {
-	statementType	*newStatement(statementKindType kind, statementBodyType body);
-
 	if (statement == NULL)
 		statement = newStatement(NULL_STATEMENT, (statementBodyType){ NULL });
 	statement->labels = labelList;

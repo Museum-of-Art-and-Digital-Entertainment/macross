@@ -29,19 +29,16 @@
 
 #include "macrossTypes.h"
 #include "macrossGlobals.h"
+#include "garbage.h"
+#include "operandStuff.h"
+#include "parserMisc.h"
 #include "y.tab.h"
 
 #define nullFree(thing) if (thing == NULL) return;
 
-  
-extern void botch (char *message, ...);
-extern void freeOperand (operandType *operand);
-
 void
 freeArrayTerm(arrayTermType *arrayTerm)
 {
-	void	freeExpression(expressionType *expression);
-
 	nullFree(arrayTerm);
 	freeExpression(arrayTerm->arrayName);
 	freeExpression(arrayTerm->arrayIndex);
@@ -51,8 +48,6 @@ freeArrayTerm(arrayTermType *arrayTerm)
   void
 freeAssignmentTerm(binopTermType *assignmentTerm)
 {
-	void	freeExpression(expressionType *expression);
-
 	nullFree(assignmentTerm);
 	freeExpression(assignmentTerm->rightArgument);
 	free(assignmentTerm);
@@ -61,8 +56,6 @@ freeAssignmentTerm(binopTermType *assignmentTerm)
   void
 freeBinopTerm(binopTermType *binopTerm)
 {
-	void	freeExpression(expressionType *expression);
-
 	nullFree(binopTerm);
 	freeExpression(binopTerm->leftArgument);
 	if (binopTerm->binop != SELECT)
@@ -73,8 +66,6 @@ freeBinopTerm(binopTermType *binopTerm)
   void
 freeFunctionCall(functionCallTermType *functionCall)
 {
-	void	freeOperandList(operandListType *operandList);
-
 	nullFree(functionCall);
 	freeOperandList(functionCall->parameters);
 	free(functionCall);
@@ -104,8 +95,6 @@ freeString(stringType *string)
   void
 freeUnopTerm(unopTermType *unopTerm)
 {
-	void	freeExpression(expressionType *expression);
-
 	nullFree(unopTerm);
 	freeExpression(unopTerm->unopArgument);
 	free(unopTerm);
@@ -774,7 +763,6 @@ freeStatement(statementType *statement)
 freeArray(arrayType *array)
 {
 	int	i;
-	void	freeValue(valueType *value);
 
 	if (array->arraySize > 0) {
 		for (i=0; i<array->arraySize; i++)

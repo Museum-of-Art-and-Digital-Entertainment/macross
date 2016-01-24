@@ -31,6 +31,7 @@
 
 #include "macrossTypes.h"
 #include "macrossGlobals.h"
+#include "lookups.h"
 
 /*
    These routines all build list-type structures.  Since yacc likes to build
@@ -47,7 +48,6 @@ buildArgumentList(stringType *new, argumentListHeadType *rest, bool arrayTag)
 {
 	argumentListHeadType		*newListHead;
 	argumentDefinitionListType	*newArgument;
-	symbolTableEntryType		*lookupOrEnterSymbol(stringType *s, symbolUsageKindType kind);
 
 	if (rest == NULL) {
 		newListHead = typeAlloc(argumentListHeadType);
@@ -127,8 +127,6 @@ buildIdentifierList(stringType *new, identifierListHeadType *rest, symbolUsageKi
 {
 	identifierListType	*newListEntry;
 	identifierListHeadType	*newListHead;
-
-	symbolTableEntryType	*lookupOrEnterSymbol(stringType *s, symbolUsageKindType kind);
 
 	if (rest == NULL) {
 		newListHead = typeAlloc(identifierListHeadType);

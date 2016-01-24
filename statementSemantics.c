@@ -30,12 +30,23 @@
 
 #include "macrossTypes.h"
 #include "macrossGlobals.h"
+#include "actions.h"
+#include "debugPrint.h"
 #include "emitBranch.h"
+#include "emitStuff.h"
+#include "errorStuff.h"
 #include "expressionSemantics.h"
+#include "fixups.h"
+#include "garbage.h"
+#include "lexer.h"
+#include "listing.h"
+#include "lookups.h"
 #include "operandStuff.h"
 #include "parserMisc.h"
 #include "semanticMisc.h"
 #include "statementSemantics.h"
+#include "structSemantics.h"
+#include "tokenStrings.h"
 
 operandType		*dbOperand;	/* safe temps for dbx hacking */
 expressionType		*dbExpression;
@@ -54,48 +65,7 @@ bool			 nullStatementFlag = FALSE;
 #define expansionOff() {saveExpansion=expandMacros; expandMacros=FALSE;}
 #define expansionOn()	expandMacros=saveExpansion;
 
-  
-extern void error (errorType theError, ...);
-extern void moreText (char *format, ...);
-extern void expandOperands (int op);
-extern void endLine (void);
-extern int bindMacroArguments (argumentDefinitionListType *argumentList, operandListType *parameterList, stringType *macroName);
-extern void unbindArguments (argumentDefinitionListType *argumentList, int numberToUnbind);
-extern void unbindLocalVariables (identifierListType *identifierList);
-extern void expandExpression (char *toBuffer, char **toBufferPtr);
-extern void emitByte (byte byteValue);
-extern void emitString (stringType *string);
-extern void emitByteValue (valueType *byteValue);
-extern void startLineMarked (void);
-extern void tabIndent (void);
-extern void emitWordValue (valueType *wordValue);
-extern void reincarnateSymbol (symbolInContextType *context, symbolUsageKindType newUsage);
-extern char *conditionString (conditionType condition);
-extern char *usageString (symbolUsageKindType usageKind);
-extern symbolTableEntryType *lookupOrEnterSymbol (stringType *s, symbolUsageKindType kind);
-extern bool isDefined (valueType *value);
-extern void fixupBranch (valueType *location, valueType target);
-extern void fixupJump (simpleFixupListType *locations, valueType target);
-extern void pushInputFileStack (stringType *fileName);
-extern void saveIndexForListing (statementKindType kindOfStatement, int cumulativeLineNumber);
-extern void startLine (void);
-extern void expandLabel (void);
-extern void emitLongValue (valueType *longValue);
-extern void pushBinding (symbolTableEntryType *symbol, valueType *newBinding, symbolUsageKindType newUsage);
-extern void saveEndMifForListing (int cumulativeLineNumber);
-extern char *valueKindString (valueKindType valueKind);
-extern bool strcmplc (char *s1, char *s2);
-extern void warning (errorType theError, ...);
-extern expressionType *generateFixupExpression (expressionType *expression);
-extern void instantiateStruct (structStatementBodyType *structStatement);
-extern void assembleStructDefinition (structStatementBodyType *structStatement);
-extern void purgeSymbol (symbolTableEntryType *symbol);
-extern bool labeledLine (void);
-extern void flushExpressionString (void);
-extern void freeStatement (statementType *statement);
-extern void printStatement (statementType *statement);
-
-void
+  void
 assembleBlock(blockType *block)
 {
 	nullAssemble(block);
@@ -1185,13 +1155,7 @@ assembleWordStatement(wordStatementBodyType *wordStatement)
 }
 
   bool
-assembleStatementBody(kind, body, cumulativeLineNumber, worryAboutIf,
-								ifFixupList)
-  statementKindType	  kind;
-  statementBodyType	  body;
-  int			  cumulativeLineNumber;
-  bool			  worryAboutIf;
-  simpleFixupListType	**ifFixupList;
+assembleStatementBody(statementKindType kind, statementBodyType body, int cumulativeLineNumber, bool worryAboutIf, simpleFixupListType **ifFixupList)
 {
 	bool	result;
 

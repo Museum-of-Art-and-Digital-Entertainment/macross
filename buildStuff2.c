@@ -32,6 +32,8 @@
 
 #include "macrossTypes.h"
 #include "macrossGlobals.h"
+#include "lookups.h"
+#include "parserMisc.h"
 
 /* 
    These are all the miscellaneous routines for building pieces of parse-tree
@@ -40,11 +42,7 @@
 
 
 /* Fragments of statement structures */
-
-  
-extern void botch (char *message, ...);
-
-caseType *
+  caseType *
 buildCase(expressionListType *caseTags, blockType *caseBody)
 {
 	caseType	*result;
@@ -142,7 +140,6 @@ buildBinopTerm(binopKindType binop, expressionType *leftArgument, expressionType
 buildFunctionCall(stringType *functionName, operandListType *arguments)
 {
 	functionCallTermType	*result;
-	symbolTableEntryType	*lookupOrEnterSymbol(stringType *s, symbolUsageKindType kind);
 
 	result = typeAlloc(functionCallTermType);
 	result->functionName = lookupOrEnterSymbol(functionName,
@@ -188,8 +185,6 @@ buildUnopTerm(unopKindType unop, expressionType *unopArgument)
 buildExpressionTerm(expressionTermKindType kindOfExpressionTerm, anyOldThing *arg1, anyOldThing *arg2, anyOldThing *arg3)
 {
 	expressionType		*result;
-
-	symbolTableEntryType	*lookupOrEnterSymbol(stringType *s, symbolUsageKindType kind);
 
 	result = typeAlloc(expressionType);
 	result->kindOfTerm = kindOfExpressionTerm;
@@ -274,7 +269,6 @@ buildExpressionTerm(expressionTermKindType kindOfExpressionTerm, anyOldThing *ar
 buildMacroTableEntry(stringType *name)
 {
 	macroTableEntryType	*result;
-	char			*saveString(char *s);
 
 	result = typeAlloc(macroTableEntryType);
 	result->macroName = saveString(name);
@@ -288,7 +282,6 @@ buildMacroTableEntry(stringType *name)
 buildSymbolTableEntry(stringType *name, symbolUsageKindType usage)
 {
 	symbolTableEntryType	*result;
-	char			*saveString(char *s);
 
 	result = typeAlloc(symbolTableEntryType);
 	result->symbolName = saveString(name);

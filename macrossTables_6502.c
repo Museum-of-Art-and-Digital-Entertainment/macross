@@ -29,6 +29,8 @@
 */
 
 #include "macrossTypes.h"
+#include "actions.h"
+#include "builtInFunctions.h"
 #include "y.tab.h"
 
 /* All those NULLs are used to string together lists after this all gets
@@ -205,21 +207,6 @@ int operandClassTable[] = {	/* indexed by operandKindType */
 	BLOCK_OPND_BIT,
 };
 
-int	actionsRelative(opcodeTableEntryType *opcode, int numberOfOperands, valueType **evaluatedOperands);
-int	actionsDir1(opcodeTableEntryType *opcode, int numberOfOperands, valueType **evaluatedOperands);
-int	actionsDir2(opcodeTableEntryType *opcode, int numberOfOperands, valueType **evaluatedOperands);
-int	actionsDirIndir(opcodeTableEntryType *opcode, int numberOfOperands, valueType **evaluatedOperands);
-int	actionsDirX1(opcodeTableEntryType *opcode, int numberOfOperands, valueType **evaluatedOperands);
-int	actionsDirX2(opcodeTableEntryType *opcode, int numberOfOperands, valueType **evaluatedOperands);
-int	actionsDirX3(opcodeTableEntryType *opcode, int numberOfOperands, valueType **evaluatedOperands);
-int	actionsDirY(opcodeTableEntryType *opcode, int numberOfOperands, valueType **evaluatedOperands);
-int	actionsImmDir(opcodeTableEntryType *opcode, int numberOfOperands, valueType **evaluatedOperands);
-int	actionsImmDirX(opcodeTableEntryType *opcode, int numberOfOperands, valueType **evaluatedOperands);
-int	actionsImmDirY(opcodeTableEntryType *opcode, int numberOfOperands, valueType **evaluatedOperands);
-int	actionsNone(opcodeTableEntryType *opcode, int numberOfOperands, valueType **evaluatedOperands);
-int	actionsIndex(opcodeTableEntryType *opcode, int numberOfOperands, valueType **evaluatedOperands);
-int	actionsImmIndex(opcodeTableEntryType *opcode, int numberOfOperands, valueType **evaluatedOperands);
-
 /* indexed by opcodeClass */
 int		       (*instructionActionTable[])() = {
 	actionsRelative,
@@ -302,54 +289,6 @@ codeRegionType		*codeRegions[2] = {
 valueType		 undefinedValueValue = { UNDEFINED_VALUE, 0,
 					EXPRESSION_OPND };
 valueType		*UndefinedValue = &undefinedValueValue;
-
-valueType	*addressModeBIF(operandListType *parameterList, fixupKindType kindOfFixup);
-valueType	*applyBIF(operandListType *parameterList, fixupKindType kindOfFixup);
-valueType	*arrayLengthBIF(operandListType *parameterList, fixupKindType kindOfFixup);
-valueType	*atasciiBIF(operandListType *parameterList, fixupKindType kindOfFixup);
-valueType	*atasciiColorBIF(operandListType *parameterList, fixupKindType kindOfFixup);
-valueType	*debugModeOffBIF(operandListType *parameterList, fixupKindType kindOfFixup);
-valueType	*debugModeOnBIF(operandListType *parameterList, fixupKindType kindOfFixup);
-valueType	*emitModeOffBIF(operandListType *parameterList, fixupKindType kindOfFixup);
-valueType	*emitModeOnBIF(operandListType *parameterList, fixupKindType kindOfFixup);
-valueType	*isAbsoluteValueBIF(operandListType *parameterList, fixupKindType kindOfFixup);
-valueType	*isARegisterBIF(operandListType *parameterList, fixupKindType kindOfFixup);
-valueType	*isBlockBIF(operandListType *parameterList, fixupKindType kindOfFixup);
-valueType	*isBuiltInFunctionBIF(operandListType *parameterList, fixupKindType kindOfFixup);
-valueType	*isConditionCodeBIF(operandListType *parameterList, fixupKindType kindOfFixup);
-valueType	*isDefinedBIF(operandListType *parameterList, fixupKindType kindOfFixup);
-valueType	*isDirectModeBIF(operandListType *parameterList, fixupKindType kindOfFixup);
-valueType	*isExternalBIF(operandListType *parameterList, fixupKindType kindOfFixup);
-valueType	*isFieldBIF(operandListType *parameterList, fixupKindType kindOfFixup);
-valueType	*isFunctionBIF(operandListType *parameterList, fixupKindType kindOfFixup);
-valueType	*isImmediateModeBIF(operandListType *parameterList, fixupKindType kindOfFixup);
-valueType	*isIndexedModeBIF(operandListType *parameterList, fixupKindType kindOfFixup);
-valueType	*isIndirectModeBIF(operandListType *parameterList, fixupKindType kindOfFixup);
-valueType	*isPostIndexedModeBIF(operandListType *parameterList, fixupKindType kindOfFixup);
-valueType	*isPreIndexedModeBIF(operandListType *parameterList, fixupKindType kindOfFixup);
-valueType	*isRelocatableValueBIF(operandListType *parameterList, fixupKindType kindOfFixup);
-valueType	*isStringBIF(operandListType *parameterList, fixupKindType kindOfFixup);
-valueType	*isStructBIF(operandListType *parameterList, fixupKindType kindOfFixup);
-valueType	*isSymbolBIF(operandListType *parameterList, fixupKindType kindOfFixup);
-valueType	*isXIndexedModeBIF(operandListType *parameterList, fixupKindType kindOfFixup);
-valueType	*isXRegisterBIF(operandListType *parameterList, fixupKindType kindOfFixup);
-valueType	*isYIndexedModeBIF(operandListType *parameterList, fixupKindType kindOfFixup);
-valueType	*isYRegisterBIF(operandListType *parameterList, fixupKindType kindOfFixup);
-valueType	*listingOffBIF(operandListType *parameterList, fixupKindType kindOfFixup);
-valueType	*listingOnBIF(operandListType *parameterList, fixupKindType kindOfFixup);
-valueType	*makeArrayBIF(operandListType *parameterList, fixupKindType kindOfFixup);
-valueType	*nthCharBIF(operandListType *parameterList, fixupKindType kindOfFixup);
-valueType	*printfBIF(operandListType *parameterList, fixupKindType kindOfFixup);
-valueType	*strcatBIF(operandListType *parameterList, fixupKindType kindOfFixup);
-valueType	*strcmpBIF(operandListType *parameterList, fixupKindType kindOfFixup);
-valueType	*strcmplcBIF(operandListType *parameterList, fixupKindType kindOfFixup);
-valueType	*strlenBIF(operandListType *parameterList, fixupKindType kindOfFixup);
-valueType	*substrBIF(operandListType *parameterList, fixupKindType kindOfFixup);
-valueType	*symbolDefineBIF(operandListType *parameterList, fixupKindType kindOfFixup);
-valueType	*symbolLookupBIF(operandListType *parameterList, fixupKindType kindOfFixup);
-valueType	*symbolNameBIF(operandListType *parameterList, fixupKindType kindOfFixup);
-valueType	*symbolUsageBIF(operandListType *parameterList, fixupKindType kindOfFixup);
-valueType	*valueTypeBIF(operandListType *parameterList, fixupKindType kindOfFixup);
 
 /* Used to initialize symbols representing built-in functions */
 struct {

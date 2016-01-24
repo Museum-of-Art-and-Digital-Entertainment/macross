@@ -29,6 +29,14 @@
 
 #include "macrossTypes.h"
 #include "macrossGlobals.h"
+#include "buildStuff.h"
+#include "errorStuff.h"
+#include "garbage.h"
+#include "listing.h"
+#include "lookups.h"
+#include "operandStuff.h"
+#include "parserMisc.h"
+#include "semanticMisc.h"
 
 /*
    These routines all do basically the same thing.  Various kinds of keywords
@@ -36,24 +44,10 @@
    lists that are sorted alphabetically.
  */
 
-  
-extern void botch (char *message, ...);
-extern void freeValue (valueType *value);
-extern void error (errorType theError, ...);
-bool strcmplc (char *s1, char *s2);
-int hashString (char *s);
-extern int countParameters (operandListType *parameterList);
-extern arrayType *allocArray (int size, valueType ***contentsPtr);
-extern bool isUsable (valueType *value);
-extern void moreExpression (char *format, ...);
-extern bool isUndefined (valueType *value);
-
-conditionType
+  conditionType
 lookupConditionCode(char *s, int hashValue)
 {
 	conditionTableEntryType	*result;
-
-	genericTableEntryType	*prehashedStringLookup(char *s, genericTableEntryType **table, int hashValue);
 
 	result = (conditionTableEntryType *) prehashedStringLookup(s,
 		conditionTable, hashValue);
@@ -68,8 +62,6 @@ lookupKeyword(char *s, int hashValue)
 {
 	keywordTableEntryType	*result;
 
-	genericTableEntryType	*prehashedStringLookup(char *s, genericTableEntryType **table, int hashValue);
-
 	result = (keywordTableEntryType *) prehashedStringLookup(s,
 		keywordTable, hashValue);
 	if (result != NULL)
@@ -81,8 +73,6 @@ lookupKeyword(char *s, int hashValue)
   macroTableEntryType *
 lookupMacroName(char *s, int hashValue)
 {
-	genericTableEntryType	*prehashedStringLookup(char *s, genericTableEntryType **table, int hashValue);
-
 	return((macroTableEntryType *) prehashedStringLookup(s, macroTable,
 		hashValue));
 }
@@ -90,8 +80,6 @@ lookupMacroName(char *s, int hashValue)
   opcodeTableEntryType *
 lookupOpcode(char *s, int hashValue)
 {
-	genericTableEntryType	*prehashedStringLookup(char *s, genericTableEntryType **table, int hashValue);
-
 	return((opcodeTableEntryType *) prehashedStringLookup(s,
 		opcodeTable, hashValue));
 }
@@ -104,9 +92,6 @@ lookupOpcode(char *s, int hashValue)
 lookupOrEnterSymbol(stringType *s, symbolUsageKindType kind)
 {
 	symbolTableEntryType	*result;
-	genericTableEntryType	*hashStringLookup(char *s, genericTableEntryType **table);
-	genericTableEntryType	*hashStringEnter(genericTableEntryType *entry, genericTableEntryType **table);
-	symbolTableEntryType	*buildSymbolTableEntry(stringType *name, symbolUsageKindType usage);
 
 	if (result = (symbolTableEntryType *)hashStringLookup(s,symbolTable)){
 /*		result->referenceCount++;*/
@@ -150,11 +135,6 @@ createMacro(stringType *macroName)
 {
 	macroTableEntryType		*result;
 	symbolTableEntryType		*testSymbol;
-
-	genericTableEntryType		*hashStringLookup(char *s, genericTableEntryType **table);
-	genericTableEntryType		*hashStringEnter(genericTableEntryType *entry, genericTableEntryType **table);
-	macroTableEntryType		*buildMacroTableEntry(stringType *name);
-	symbolTableEntryType		*lookupOrEnterSymbol(stringType *s, symbolUsageKindType kind);
 
 	testSymbol = lookupOrEnterSymbol(macroName, MACRO_SYMBOL);
 	if (testSymbol->context->usage != MACRO_SYMBOL) {
@@ -297,8 +277,6 @@ purgeSymbol(symbolTableEntryType *symbol)
 {
 	symbolInContextType	*context;
 
-	symbolInContextType	*getWorkingContext(symbolTableEntryType *identifier);
-
 	if ((context = getWorkingContext(symbol)) != NULL)
 		context->usage = DEAD_SYMBOL;
 }
@@ -319,8 +297,6 @@ reincarnateSymbol(symbolInContextType *context, symbolUsageKindType newUsage)
   void
 pushBinding(symbolTableEntryType *symbol, valueType *newBinding, symbolUsageKindType newUsage)
 {
-	valueType	*newValue(valueKindType kindOfValue, int value, operandKindType addressMode);
-
 	pushSymbol(symbol);
 	if (newBinding == NULL)
 		newBinding = newValue(FAIL, 0, EXPRESSION_OPND);
@@ -345,8 +321,6 @@ bindMacroArguments(argumentDefinitionListType *argumentList, operandListType *pa
 	int			 arrayLength;
 	valueType	       **arrayContents;
 	int			 i;
-
-	valueType		*newValue(valueKindType kindOfValue, int value, operandKindType addressMode);
 
 	if (argumentList == NULL)
 		arrayTag = FALSE;
@@ -408,9 +382,6 @@ bindFunctionArguments(argumentDefinitionListType *argumentList, operandListType 
 	int		 numberBound;
 	valueType	*firstArgument;
 	environmentType	*saveEnvironment;
-
-	valueType	*evaluateOperand(operandType *operand);
-	valueType	*newValue(valueKindType kindOfValue, int value, operandKindType addressMode);
 
 	if (argumentList == NULL)
 		arrayTag = FALSE;

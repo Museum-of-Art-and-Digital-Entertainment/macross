@@ -31,8 +31,17 @@
 #include "macrossTypes.h"
 #include "macrossGlobals.h"
 #include "y.tab.h"
+#include "builtInFunctions.h"
+#include "errorStuff.h"
 #include "expressionSemantics.h"
+#include "fixups.h"
+#include "listing.h"
+#include "lookups.h"
+#include "operandStuff.h"
+#include "parserMisc.h"
 #include "semanticMisc.h"
+#include "statementSemantics.h"
+#include "tokenStrings.h"
 
 #include <string.h>
 
@@ -63,30 +72,6 @@ stringType		*dbString;
 
 #define moreStuff(f) (generatingFixup ? moreExpression(f) : moreText(f))
 #define moreStuff1(f,x) (generatingFixup? moreExpression(f,x) : moreText(f,x))
-
-  
-extern void error (errorType theError, ...);
-extern char *valueKindString (valueKindType valueKind);
-extern void moreExpression (char *format, ...);
-extern valueType *evaluateOperand (operandType *operand);
-extern char *tokenString (int token);
-extern char *assignmentString (assignmentKindType assignment);
-extern char *usageString (symbolUsageKindType usageKind);
-extern valueType *makeUndefinedValue (void);
-extern void botch (char *message, ...);
-extern char *conditionString (conditionType condition);
-extern int bindFunctionArguments (argumentDefinitionListType *argumentList, operandListType *parameterList, stringType *functionName);
-extern void assembleBlock (blockType *block);
-extern void unbindArguments (argumentDefinitionListType *argumentList, int numberToUnbind);
-extern void unbindLocalVariables (identifierListType *identifierList);
-extern void reincarnateSymbol (symbolInContextType *context, symbolUsageKindType newUsage);
-extern bool shouldParenthesize (operandType *operand);
-extern void moreText (char *format, ...);
-extern void endLine (void);
-extern void tabIndent (void);
-extern void flushExpressionString (void);
-extern operandType *buildOperand (operandKindType kindOfOperand, anyOldThing *arg);
-extern expressionType *generateFixupExpression (expressionType *expression);
 
 anyOldThing *
 arrayLookup(arrayTermType *arrayTerm, valueKindType *kindOfThing)

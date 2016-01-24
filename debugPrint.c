@@ -30,9 +30,8 @@
 
 #include "macrossTypes.h"
 #include "macrossGlobals.h"
+#include "debugPrint.h"
 #include "y.tab.h"
-
-void printExpression(expressionType *expression);
 
 /*
    Print out the parse-tree.
@@ -44,11 +43,6 @@ int	tablevel = 0;
 #define nullPrint(thing)   if (thing==NULL) { tab(); printf("()\n"); return; }
 
 /* For keeping nested structures looking pretty */
-  
-extern void printOperandKind (operandKindType kind);
-extern void printToken (int token);
-extern void printCondition (conditionType condition);
-extern void printOperand (operandType *operand);
 
 void
 tab(void)
@@ -259,8 +253,6 @@ printArgumentDefinitionList(argumentDefinitionListType *list)
   void
 printBlock(blockType *block)
 {
-	void	printStatement(statementType *statement);
-
 	nullPrint(block);
 	tab(); printf("(block:\n");
 	tablevel++;
@@ -272,8 +264,6 @@ printBlock(blockType *block)
   void
 printArrayTerm(arrayTermType *arrayTerm)
 {
-	void	printIdentifier(symbolTableEntryType *identifier);
-
 	nullPrint(arrayTerm);
 	tab(); printf("(array\n");
 	tablevel++;
@@ -301,8 +291,6 @@ printAssignmentTerm(binopTermType *assignmentTerm)
   void
 printBinopTerm(binopTermType *binopTerm)
 {
-	void	printIdentifier(symbolTableEntryType *identifier);
-
 	nullPrint(binopTerm);
 	tab(); printf("(binop [");
 	printToken(binopTerm->binop);
@@ -320,8 +308,6 @@ printBinopTerm(binopTermType *binopTerm)
   void
 printFunctionCall(functionCallTermType *functionCall)
 {
-	void	printOperandList(operandListType *operandList);
-
 	nullPrint(functionCall);
 	tab(); printf("(function call %s\n", functionCall->functionName->
 			symbolName);

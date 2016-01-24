@@ -29,6 +29,14 @@
 
 #include "macrossTypes.h"
 #include "macrossGlobals.h"
+#include "debugPrint.h"
+#include "encode.h"
+#include "expressionSemantics.h"
+#include "fixups.h"
+#include "garbage.h"
+#include "lookups.h"
+#include "object.h"
+#include "semanticMisc.h"
 
 #include <string.h>
 
@@ -36,29 +44,9 @@ static int	symbolTableSize;
 static int	symbolTableStringSize;
 bool		encodingFunction;
 
-  
-extern void printCodeBuffers (void);
-extern bool isExternal (symbolTableEntryType *symbol);
-extern bool strcmplc (char *s1, char *s2);
-bool hackableSymbol (symbolTableEntryType *symbol);
-extern void printExpressionBuffer (void);
-extern bool encodeRelocatableNumber (numberTermType number);
-extern void freeExpression (expressionType *expression);
-
-void
+  void
 outputObjectFile(void)
 {
-	void	outputPartition(void);
-	void	outputReferenceInfo(void);
-	void	outputSymbolTableInfo(void);
-	void	outputAbsoluteCode(void);
-	void	outputRelocatableCode(void);
-	void	outputReservations(void);
-	void	outputExpressions(void);
-	void	outputFunctions(void);
-	void	dumpSymbolTable(void);
-	void	enumerateAndCountSymbols(void);
-
 	if (debug || emitPrint)
 		printCodeBuffers();
 	outputPartition();
@@ -138,9 +126,6 @@ outputRelocatableCode(void)
 	addressType	 codeStartAddress;
 	addressType	 codeEndAddress;
 
-	void		 outputPseudoSegment(addressType codeStartAddress, addressType codeEndAddress);
-	void		 outputBreak(codeBreakType *codeBreak);
-
 	if (haveUserStartAddress && !fixupStartAddress && startAddress->
 			kindOfValue == RELOCATABLE_VALUE)
 		outputStartAddress(startAddress->value);
@@ -194,7 +179,6 @@ outputAbsoluteCode(void)
 	int		 startSegment;
 	int		 endSegment;
 	int		 nextSegment;
-	void		 outputOneCodeBuffer(codeSegmentType *segment);
 
 	if (haveUserStartAddress && !fixupStartAddress && startAddress->
 			kindOfValue==ABSOLUTE_VALUE)
@@ -251,9 +235,6 @@ outputPseudoSegment(addressType codeStartAddress, addressType codeEndAddress)
 	int		 position;
 	int		 segment;
 	codeSegmentType	*segmentPtr;
-
-	void		 outputWord(int aWord);
-	void		 outputByte(byte aByte);
 
 	outputWord(codeStartAddress);
 	outputWord(codeEndAddress);
@@ -365,7 +346,6 @@ outputOneSymbol(symbolTableEntryType *symbol)
 {
 	byte			 symbolClass;
 	valueType		*symbolValue;
-	valueType		*evaluateIdentifier(symbolTableEntryType *identifier, bool isTopLevel, fixupKindType kindOfFixup);
 
 	if (symbol->context->usage == DEFINE_SYMBOL)
 		symbolValue = evaluateIdentifier(symbol, FALSE, NO_FIXUP_OK);
@@ -430,9 +410,6 @@ dumpSymbolTable(void)
 	int			 numberOfSymbols;
 	int			 symbolPtr;
 	valueType		*value;
-
-	valueType		*evaluateIdentifier(symbolTableEntryType *identifier, bool isTopLevel, fixupKindType kindOfFixup);
-	void			 printValueTersely(valueType *value);
 
 	numberOfSymbols = 0;
 	for (i=0; i<HASH_TABLE_SIZE; i++)
@@ -560,9 +537,6 @@ outputOneExpression(expressionType *expression)
 {
 	expressionType	*newExpression;
 
-	expressionType	*generateFixupExpression(expressionType *expression);
-	bool		 encodeExpression(expressionType *expression);
-
 	expressionBufferSize = 0;
 	if (expression == NULL) {
 		encodeRelocatableNumber(0);
@@ -598,8 +572,6 @@ outputExpressions(void)
 outputOneFunction(functionDefinitionType *function)
 {
 	argumentDefinitionListType	*argumentList;
-	bool				 encodeBlock(blockType *block);
-	int				 countArguments(functionDefinitionType *function);
 
 	outputByte((byte)countArguments(function));
 	argumentList = function->arguments;

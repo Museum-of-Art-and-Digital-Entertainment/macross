@@ -30,6 +30,10 @@
 
 #include "macrossTypes.h"
 #include "macrossGlobals.h"
+#include "actions.h"
+#include "debugPrint.h"
+#include "errorStuff.h"
+#include "semanticMisc.h"
 
 /*
    Emitted code is stored in places that are allocated dynamically as they
@@ -61,17 +65,6 @@
 
 
 /* incarnateCodeBuffer causes code buffer space to actually be allocated */
-
-  
-extern void fatalError (errorType theError, ...);
-extern bool byteCheck (int value);
-extern void printValue (valueType *value);
-extern void error (errorType theError, ...);
-extern char *valueKindString (valueKindType valueKind);
-extern bool wordCheck (int value);
-extern bool isByteOffset (int value);
-extern bool isWordOffset (int value);
-extern void noteAnonymousReference (void);
 
 void
 incarnateCodeBuffer(int bufferNum, codeBufferKindType bufferKind)

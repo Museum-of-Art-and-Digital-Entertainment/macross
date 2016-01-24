@@ -30,6 +30,10 @@
 
 #include "macrossTypes.h"
 #include "macrossGlobals.h"
+#include "actions.h"
+#include "emitStuff.h"
+#include "errorStuff.h"
+#include "semanticMisc.h"
 
 #define operand (evaluatedOperands[0])
 #define address	(evaluatedOperands[0])->value
@@ -44,17 +48,6 @@
    grabs the operand, checks the address mode, and emits the binary opcode
    and operand.
  */
-
-  
-bool isByteAddress (valueType *value);
-bool isDefined (valueType *value);
-extern void emitByte (byte byteValue);
-bool wordCheck (int value);
-extern void putFixupsHere (fixupKindType kindOfFixupsToPut, int whichFixup);
-extern void emitWord (wordType wordValue);
-bool byteCheck (int value);
-bool isByteOffset (int value);
-extern void error (errorType theError, ...);
 
 void
 actionsDir1(opcodeTableEntryType *opcode, int numberOfOperands, valueType **evaluatedOperands)

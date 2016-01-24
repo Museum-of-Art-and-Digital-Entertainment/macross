@@ -30,9 +30,15 @@
 
 #include "macrossTypes.h"
 #include "macrossGlobals.h"
+#include "buildStuff.h"
+#include "errorStuff.h"
 #include "expressionSemantics.h"
+#include "garbage.h"
+#include "lexer.h"
+#include "lookups.h"
 #include "operandStuff.h"
 #include "semanticMisc.h"
+#include "statementSemantics.h"
 
 #include <string.h>
 
@@ -41,17 +47,6 @@
    Helper routines to return values into the Macross expression evaluation
    environment
  */
-
-  
-extern void error (errorType theError, ...);
-extern int hashString (char *s);
-extern void assembleMacro (macroTableEntryType *macroInstruction, operandListType *operands);
-extern void saveListingOff (void);
-extern void saveListingOn (void);
-extern bool strcmplc (char *s1, char *s2);
-extern symbolTableEntryType *lookupOrEnterSymbol (stringType *s, symbolUsageKindType kind);
-extern void assembleDefineStatement (defineStatementBodyType *defineStatement);
-extern void freeStatement (statementType *statement);
 
 valueType *
 makeBooleanValue(int test)
@@ -125,8 +120,6 @@ applyBIF(operandListType *parameterList, fixupKindType kindOfFixup)
 	valueType		*stringValue;
 	stringType		*macroToLookup;
 	macroTableEntryType	*macroToCall;
-
-	macroTableEntryType	*lookupMacroName(char *s, int hashValue);
 
 	if (parameterList == NULL) {
 		error(NO_ARGUMENTS_TO_BIF_ERROR, "apply");
@@ -362,9 +355,6 @@ isDefinedBIF(operandListType *parameterList, fixupKindType kindOfFixup)
 	expressionType		*expression;
 	symbolInContextType	*context;
 
-	symbolInContextType	*getWorkingContext(symbolTableEntryType *identifier);
-	symbolTableEntryType	*effectiveSymbol(symbolTableEntryType *symbol, symbolInContextType **assignmentTargetContext);
-
 	if (parameterList != NULL) {
 		if (parameterList->kindOfOperand == EXPRESSION_OPND &&
 				(expression = parameterList->theOperand.
@@ -394,8 +384,6 @@ isExternalBIF(operandListType *parameterList, fixupKindType kindOfFixup)
 {
 	expressionType		*expression;
 	symbolInContextType	*context;
-
-	symbolInContextType	*getWorkingContext(symbolTableEntryType *identifier);
 
 	if (parameterList != NULL && parameterList->kindOfOperand ==
 			EXPRESSION_OPND) {
@@ -847,10 +835,6 @@ symbolLookupBIF(operandListType *parameterList, fixupKindType kindOfFixup)
 	valueType		*stringValue;
 	stringType		*identifierToLookup;
 
-	expressionTermType	*buildExpressionTerm(expressionTermKindType kindOfExpressionTerm, anyOldThing *arg1, anyOldThing *arg2, anyOldThing *arg3);
-	operandType		*buildOperand(operandKindType kindOfOperand, anyOldThing *arg);
-	valueType		*evaluateIdentifier(symbolTableEntryType *identifier, bool isTopLevel, fixupKindType kindOfFixup);
-
 	if (parameterList == NULL) {
 		error(NO_ARGUMENTS_TO_BIF_ERROR, "symbolLookup");
 		return(makeFailureValue());
@@ -871,7 +855,6 @@ symbolDefineBIF(operandListType *parameterList, fixupKindType kindOfFixup)
 {
 	valueType		*stringValue;
 	statementType		*syntheticDefineStatement;
-	statementType		*buildDefineStatement(stringType *name, expressionType *value);
 
 	if (parameterList == NULL) {
 		error(NO_ARGUMENTS_TO_BIF_ERROR, "symbolDefine");
@@ -905,8 +888,6 @@ symbolNameBIF(operandListType *parameterList, fixupKindType kindOfFixup)
 	expressionType		*expression;
 	symbolInContextType	*context;
 	environmentType		*saveEnvironment;
-
-	symbolInContextType	*getWorkingContext(symbolTableEntryType *identifier);
 
 	saveEnvironment = currentEnvironment;
 	while (parameterList != NULL && parameterList->kindOfOperand ==
@@ -942,8 +923,6 @@ symbolUsageBIF(operandListType *parameterList, fixupKindType kindOfFixup)
 	expressionType		*expression;
 	symbolInContextType	*context;
 
-	symbolInContextType	*getWorkingContext(symbolTableEntryType *identifier);
-
 	if (parameterList != NULL && parameterList->kindOfOperand ==
 			EXPRESSION_OPND) {
 		expression = parameterList->theOperand.expressionUnion;
@@ -960,7 +939,6 @@ symbolUsageBIF(operandListType *parameterList, fixupKindType kindOfFixup)
 valueTypeBIF(operandListType *parameterList, fixupKindType kindOfFixup)
 {
 	valueType	*evaluatedParameter;
-
 
 	if (parameterList != NULL) {
 		evaluatedParameter = evaluateOperand(parameterList);

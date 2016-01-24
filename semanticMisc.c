@@ -33,7 +33,17 @@
 #include "y.tab.h"
 
 #include "semanticMisc.h"
+#include "buildStuff.h"
+#include "debugPrint.h"
+#include "emitStuff.h"
+#include "errorStuff.h"
 #include "expressionSemantics.h"
+#include "fixups.h"
+#include "listing.h"
+#include "lookups.h"
+#include "object.h"
+#include "operandStuff.h"
+#include "parserMisc.h"
 
 #include <string.h>
 
@@ -44,26 +54,7 @@
    These are miscellaneous routines called by the primary semantics routines.
  */
 
-  
-extern void error (errorType theError, ...);
-extern char *valueKindString (valueKindType valueKind);
-extern void moreLabel (char *format, int arg1);
-extern void reincarnateSymbol (symbolInContextType *context, symbolUsageKindType newUsage);
-extern void printCreateFixup (expressionType *expression, addressType location, fixupKindType kindOfFixup);
-extern void flushExpressionString (void);
-extern void expandOperand (operandKindType addressMode, char *buffer);
-extern void terminateListingFiles (void);
-extern void outputObjectFile (void);
-extern void outputListing (void);
-extern void botch (char *message, ...);
-extern void pokeByteValue (addressType location, valueType *value);
-extern void pokeWordValue (addressType location, valueType *value);
-extern void pokeLongValue (addressType location, valueType *value);
-extern void pokeRelativeByteValue (addressType location, valueType *value);
-extern void pokeRelativeWordValue (addressType location, valueType *value);
-extern void pushBinding (symbolTableEntryType *symbol, valueType *newBinding, symbolUsageKindType newUsage);
-
-bool
+  bool
 absoluteValue(valueType *address)
 {
 	return(address->kindOfValue == ABSOLUTE_VALUE);
@@ -305,8 +296,6 @@ createArray(expressionType *dimension, expressionListType *initializers)
 	arrayType	*result;
 	int		 i;
 
-	valueType	*newValue(valueKindType kindOfValue, int value, operandKindType addressMode);
-	
 	initCount = expressionListLength(initializers);
 	if ((int)dimension == -1) {
 		arraySize = initCount;
@@ -378,7 +367,6 @@ expressionListLength(expressionListType *expressionList)
 fieldValue(symbolTableEntryType *symbol)
 {
 	valueType	*value;
-	valueType	*evaluateIdentifier(symbolTableEntryType *identifier, bool isTopLevel, fixupKindType kindOfFixup);
 
 	value = evaluateIdentifier(symbol, FALSE, NO_FIXUP);
 	if (value->kindOfValue != FIELD_VALUE) {
@@ -457,8 +445,6 @@ isDefinable(symbolInContextType *context)
 isExternal(symbolTableEntryType *symbol)
 {
 	symbolInContextType	*context;
-
-	symbolInContextType	*getBaseContext(symbolTableEntryType *identifier);
 
 	context = getBaseContext(symbol);
 	return (context!=NULL && (context->attributes & GLOBAL_ATT)!=0 &&
@@ -747,8 +733,6 @@ swab(int i)
   valueType *
 swabValue(valueType *value)
 {
-	valueType	*newValue(valueKindType kindOfValue, int value, operandKindType addressMode);
-
 	return(newValue(value->kindOfValue, swab(value->value), value->
 								addressMode));
 }
@@ -765,9 +749,6 @@ unopValueKind(valueType *operand)
 valueField(symbolTableEntryType *symbol, valueType *value)
 {
 	symbolInContextType	*workingContext;
-
-	symbolInContextType	*getWorkingContext(symbolTableEntryType *identifier);
-	symbolTableEntryType	*effectiveSymbol(symbolTableEntryType *symbol, symbolInContextType **assignmentTargetContext);
 
 	symbol = effectiveSymbol(symbol, &workingContext);
 	expand(moreLabel("%s:", symbol->symbolName));
@@ -790,10 +771,6 @@ valueField(symbolTableEntryType *symbol, valueType *value)
 valueLabel(symbolTableEntryType *symbol, valueType *value)
 {
 	symbolInContextType	*workingContext;
-
-	symbolTableEntryType	*generateLocalLabel(symbolTableEntryType *symbol);
-	symbolInContextType	*getBaseContext(symbolTableEntryType *identifier);
-	symbolTableEntryType	*effectiveSymbol(symbolTableEntryType *symbol, symbolInContextType **assignmentTargetContext);
 
 	symbol = effectiveSymbol(symbol, &workingContext);
 	expand(moreLabel("%s:", symbol->symbolName));
@@ -838,8 +815,6 @@ createFixup(expressionType *expression, addressType location, fixupKindType kind
 {
 	fixupListType	*newFixup;
 
-	expressionType	*generateFixupExpression(expressionType *expression);
-
 	if (debug || emitPrint)
 		printCreateFixup(expression, location, kindOfFixup);
 	newFixup = typeAlloc(fixupListType);
@@ -869,9 +844,6 @@ createFixup(expressionType *expression, addressType location, fixupKindType kind
   void
 finishUp(void)
 {
-	void	performFixups(fixupListType *fixups);
-	void	performStartAddressFixup(void);
-
 	if (listingOn)
 		terminateListingFiles();
 	performFixups(fixupList);
@@ -1036,8 +1008,6 @@ performStartAddressFixup(void)
 {
 	expressionType	*startAddressExpression;
 
-	expressionType	*generateFixupExpression(expressionType *expression);
-
 	startAddressExpression = (expressionType *)startAddress;
 	startAddress = evaluateExpression(startAddressExpression,NO_FIXUP_OK);
 	if (startAddress->kindOfValue == UNDEFINED_VALUE &&
@@ -1163,8 +1133,6 @@ effectiveSymbol(symbolTableEntryType *symbol, symbolInContextType **assignmentTa
 	expressionType		*expression;
 	environmentType		*saveEnvironment;
 
-	symbolInContextType	*getWorkingContext(symbolTableEntryType *identifier);
-
 	context = getWorkingContext(symbol);
 	saveEnvironment = currentEnvironment;
 	while (context != NULL && context->usage == ARGUMENT_SYMBOL &&
@@ -1193,9 +1161,6 @@ effectiveSymbol(symbolTableEntryType *symbol, symbolInContextType **assignmentTa
   symbolTableEntryType *
 generateLocalLabel(symbolTableEntryType *symbol)
 {
-	stringType		*localLabelString(symbolTableEntryType *symbol);
-	symbolTableEntryType	*lookupOrEnterSymbol(stringType *s, symbolUsageKindType kind);
-
 	return(lookupOrEnterSymbol(localLabelString(symbol), LABEL_SYMBOL));
 }
 
@@ -1231,8 +1196,6 @@ localLabelString(symbolTableEntryType *symbol)
 #define TEMP_SYMBOL_SIZE_LIMIT 200
 	char		 nameUnderConstruction[TEMP_SYMBOL_SIZE_LIMIT];
 
-	stringType	*saveString(char *s);
-
 	sprintf(nameUnderConstruction, "_%d_", localLabelTagValue(symbol));
 	strncat(nameUnderConstruction, &(symbName(symbol)[1]),
 		TEMP_SYMBOL_SIZE_LIMIT);
@@ -1243,9 +1206,6 @@ localLabelString(symbolTableEntryType *symbol)
 localLabelTagValue(symbolTableEntryType *symbol)
 {
 	symbolInContextType	*context;
-
-	symbolInContextType	*getWorkingContext(symbolTableEntryType *identifier);
-	void			 addNewLocalVariable(symbolTableEntryType *symbol);
 
 	context = getWorkingContext(symbol);
 	if (context == NULL)
@@ -1264,7 +1224,6 @@ localLabelTagValue(symbolTableEntryType *symbol)
 addBreak(codeBreakKindType kind, int data)
 {
 	codeBreakType	*newBreak;
-	codeBreakType	*buildCodeBreak(codeBreakKindType kind, addressType address, int data);
 
 	newBreak = buildCodeBreak(kind, currentLocationCounter.value, data);
 	if (codeBreakList == NULL) {
@@ -1278,8 +1237,6 @@ addBreak(codeBreakKindType kind, int data)
   void
 reserveAbsolute(addressType startAddress, int blockSize)
 {
-	reservationListType	*buildReservation(addressType startAddress, int blockSize, reservationListType *nextReservation);
-
 	if (reservationList != NULL && reservationList->startAddress +
 			reservationList->blockSize == startAddress)
 		reservationList->blockSize += blockSize;

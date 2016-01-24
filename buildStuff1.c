@@ -32,15 +32,12 @@
 
 #include "macrossTypes.h"
 #include "macrossGlobals.h"
-
-symbolTableEntryType		*lookupOrEnterSymbol(stringType *s, symbolUsageKindType kind);
-char				*saveString(char *s);
+#include "errorStuff.h"
+#include "lookups.h"
+#include "parserMisc.h"
 
 /* Generic routine to create statement nodes */
   
-extern void botch (char *message, ...);
-extern void error (errorType theError, ...);
-
 statementType *
 newStatement(statementKindType kind, statementBodyType body)
 {

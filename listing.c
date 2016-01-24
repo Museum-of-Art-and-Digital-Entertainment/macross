@@ -29,7 +29,10 @@
 
 #include "macrossTypes.h"
 #include "macrossGlobals.h"
+#include "emitStuff.h"
+#include "lexer.h"
 #include "listing.h"
+#include "semanticMisc.h"
 
 #include <stdarg.h>
 #include <string.h>
@@ -44,15 +47,7 @@ static int	 nextMacroAddress;
 static int	 macroDepth;
 static int	 nextMacroDepth;
 
-  
-extern void saveLineForListing (stringType *line);
-extern void saveIndexForListing (statementKindType kindOfStatement, int cumulativeLineNumber);
-extern char *myfgets (char *buffer, int length, FILE *stream);
-bool isBlankStatement (statementKindType statementKind);
-extern byte getByte (addressType address);
-extern bool listableStatement (statementKindType kind);
-
-void
+  void
 outputListing(void)
 {
 	rewind(saveFileForPass2);

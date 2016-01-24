@@ -30,6 +30,14 @@
 
 #include "macrossTypes.h"
 #include "macrossGlobals.h"
+#include "errorStuff.h"
+#include "expressionSemantics.h"
+#include "fixups.h"
+#include "listing.h"
+#include "operandStuff.h"
+#include "parserMisc.h"
+#include "semanticMisc.h"
+#include "tokenStrings.h"
 
 operandType		*dbOperand;	/* safe temps for dbx hacking */
 expressionType		*dbExpression;
@@ -57,19 +65,10 @@ stringType		*dbString = "graphics2.m";
    The routines below collectively duplicate expressions for later evaluation.
  */
 
-  
-extern void moreExpression (char *format, ...);
-extern bool isUndefined (valueType *value);
-extern char *tokenString (int token);
-extern void error (errorType theError, ...);
-extern char *conditionString (conditionType condition);
-extern void botch (char *message, ...);
-
 expressionType *
 generateFixupExpression(expressionType *expression)
 {
 	expressionType	*result;
-	expressionType	*duplicateExpressionForFixup(expressionType *expression, bool isTopLevel, bool isSpecialFunctionOperand);
 
 	generatingFixup = TRUE;
 	result = duplicateExpressionForFixup(expression, TRUE, FALSE);
@@ -88,16 +87,6 @@ duplicateExpressionForFixup(expressionType *expression, bool isTopLevel, bool is
 	operandType		*newOperand;
 	environmentType		*saveEnvironment;
 	bool			 saveExpansion;
-
-	operandType		*duplicateOperandForFixup(operandListType *operand, bool isSpecialFunctionOperand);
-	symbolInContextType	*getWorkingContext(symbolTableEntryType *identifier);
-	functionCallTermType	*duplicateFunctionCall(functionCallTermType *functionCall);
-	expressionType		*duplicateArrayReference(arrayTermType *arrayTerm);
-	valueType		*evaluateIdentifier(symbolTableEntryType *identifier, bool isTopLevel, fixupKindType kindOfFixup);
-	valueType		*evaluateHere(void);
-	valueType		*newValue(valueKindType kindOfValue, int value, operandKindType addressMode);
-	symbolTableEntryType	*generateLocalLabel(symbolTableEntryType *symbol);
-	stringType		*saveString(char *s);
 
     nullDup(expression);
     result = originalResult = typeAlloc(expressionType);
@@ -290,8 +279,6 @@ duplicateFunctionCall(functionCallTermType *functionCall)
 	operandListType        **argument;
 	operandListType		*parameterList;
 
-	operandListType		*duplicateOperandForFixup(operandListType *operand, bool isSpecialFunctionOperand);
-
 	result = typeAlloc(functionCallTermType);
 	result->functionName = functionCall->functionName;
 	expand(moreExpression("%s(", symbName(functionCall->functionName)));
@@ -323,10 +310,6 @@ duplicateArrayReference(arrayTermType *arrayTerm)
 	environmentType	*saveEnvironment;
 	bool		 saveExpansion;
 	operandType	*newOperand;
-
-	valueType	*newValue(valueKindType kindOfValue, int value, operandKindType addressMode);
-	operandType	*duplicateOperandForFixup(operandListType *operand, bool isSpecialFunctionOperand);
-	anyOldThing	*arrayLookup(arrayTermType *arrayTerm, valueKindType *kindOfThing);
 
 	expansionOff();
 	resultThing = arrayLookup(arrayTerm, &kindOfResult);

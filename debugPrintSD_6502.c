@@ -31,6 +31,7 @@
 
 #include "macrossTypes.h"
 #include "macrossGlobals.h"
+#include "debugPrint.h"
 #include "y.tab.h"
 
 
@@ -38,12 +39,6 @@ int	tablevel;
 
 /* Fundamental nop print operation */
 #define nullPrint(thing)   if (thing==NULL) { tab(); printf("()\n"); return; }
-
-  
-extern void tab (void);
-extern void printExpression (expressionType *expression);
-extern void printIdentifierList (identifierListType *identifierList);
-extern void printBlock (blockType *block);
 
 void
 printCondition(conditionType condition)

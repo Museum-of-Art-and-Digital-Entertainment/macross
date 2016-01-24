@@ -30,7 +30,12 @@
 #include "macrossTypes.h"
 #include "macrossGlobals.h"
 #include "y.tab.h"
+#include "debugPrint.h"
+#include "errorStuff.h"
+#include "lexer.h"
 #include "lexerTables.h"
+#include "listing.h"
+#include "lookups.h"
 #include "parserMisc.h"
 
 extern int yylval;
@@ -52,24 +57,6 @@ static int	lineBufferPtr = 0;
 #define isNumeric(c)		(numericCharacterTable[c])
 #define isAlphaNumeric(c)	(alphaNumericCharacterTable[c])
 
-  
-int lexer (void);
-extern void printToken (int token);
-int lexLiteral (char c);
-bool isMacrossLiteralCharacter (char c);
-int readAnotherLine (void);
-extern int hashString (char *s);
-extern opcodeTableEntryType *lookupOpcode (char *s, int hashValue);
-extern int lookupKeyword (char *s, int hashValue);
-extern conditionType lookupConditionCode (char *s, int hashValue);
-extern macroTableEntryType *lookupMacroName (char *s, int hashValue);
-int fancyAtoI (char *buffer, int base);
-int digitValue (char c);
-extern void error (errorType theError, ...);
-int getStringCharacter (FILE *input);
-extern void fatalSystemError (errorType theError, ...);
-extern bool notListable (statementKindType statementKind);
-
 int
 yylex(void)
 {
@@ -89,8 +76,6 @@ lexer(void)
 {
 	char	c;
 
-	char	skipWhitespaceAndComments(void);
-
 	if ((c = skipWhitespaceAndComments()) == EOF)
 		return(lexLiteral(c));
 	else
@@ -101,12 +86,6 @@ lexer(void)
 initializeLexDispatchTable(void)
 {
 	int	c;
-	int	lexIdentifier(char c);
-	int	lexNumber(char c);
-	int	lexLiteral(char c);
-	int	lexCharacterConstant(void);
-	int	lexStringConstant(void);
-	int	lexOperator(char firstC);
 
 	for (c = 0; c < LEX_DISPATCH_TABLE_SIZE; c++) {
 		if (isAlphabetic(c) || c=='$')
@@ -152,7 +131,6 @@ char	nameBuffer[MAX_NAME_SIZE+1];
   int
 lexIdentifier(char c)
 {
-	char	*saveString(char *s);
 	int	 hashValue;
 
 	snarfAlphanumericString(c, nameBuffer);
@@ -270,7 +248,6 @@ getStringCharacter(FILE *input)
 	char	 c;
 	char	*numberPtr;
 	int	 result;
-	char	 controlCharacter(char c);
 
 	escaped = FALSE;
 	c = getNextChar();

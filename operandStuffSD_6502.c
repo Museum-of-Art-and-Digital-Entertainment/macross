@@ -30,21 +30,19 @@
 
 #include "macrossTypes.h"
 #include "macrossGlobals.h"
+#include "errorStuff.h"
+#include "expressionSemantics.h"
+#include "fixups.h"
+#include "garbage.h"
+#include "listing.h"
+#include "operandStuff.h"
+#include "parserMisc.h"
+#include "semanticMisc.h"
+#include "statementSemantics.h"
 
 /* corresponds to routines in buildStuff2.c */
 
-  
-extern void botch (char *message, ...);
-extern void error (errorType theError, ...);
-extern void freeExpression (expressionType *expression);
-extern void freeSelectionList (selectionListType *selectionList);
-extern void freeString (stringType *string);
-extern void freeBlock (blockType *block);
-extern void moreText (char *format, ...);
-extern void expandExpression (char *toBuffer, char **toBufferPtr);
-extern void assembleBlock (blockType *block);
-
-operandType *
+  operandType *
 buildOperand(operandKindType kindOfOperand, anyOldThing *arg)
 {
 	operandType	*result;
@@ -141,8 +139,6 @@ buildOperand(operandKindType kindOfOperand, anyOldThing *arg)
 duplicateOperandForFixup(operandListType *operand, bool isSpecialFunctionOperand)
 {
 	operandListType	*result;
-
-	expressionType	*duplicateExpressionForFixup(expressionType *expression, bool isTopLevel, bool isSpecialFunctionOperand);
 
 	result = typeAlloc(operandListType);
 	result->kindOfOperand = operand->kindOfOperand;
@@ -288,10 +284,6 @@ evaluateOperand(operandType *operand)
 	valueType		*result;
 	bool			 saveExpansion;
 	expressionType		*expression;
-
-	valueType		*evaluateExpression(expressionType *expression, fixupKindType kindOfFixup);
-	valueType		*evaluateSelectionList(selectionListType *selectionList);
-	valueType		*newValue(valueKindType kindOfValue, int value, operandKindType addressMode);
 
 	nullEvaluate(operand);
 	if (operand->kindOfOperand != EXPRESSION_OPND)
