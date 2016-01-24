@@ -30,15 +30,10 @@
 #include "slinkyTypes.h"
 #include "slinkyGlobals.h"
 
-  void
-error(theError, arg1, arg2, arg3, arg4, arg5, arg6)
-  errorType	theError;
-  anyOldThing	*arg1;
-  anyOldThing	*arg2; 
-  anyOldThing	*arg3;
-  anyOldThing	*arg4;
-  anyOldThing	*arg5;
-  anyOldThing	*arg6;
+#include <stdarg.h>
+
+  static void
+verror(errorType theError, va_list ap)
 {
 /* This table MUST be maintained congruently with the definition of the
    enumerated type 'errorType'. */
@@ -79,8 +74,16 @@ error(theError, arg1, arg2, arg3, arg4, arg5, arg6)
 	};
 
 	printf("\"%s\": ", currentFileName);
-	printf(errorMessageStrings[(int)theError], arg1, arg2, arg3, arg4,
-		arg5, arg6);
+	vprintf(errorMessageStrings[(int)theError], ap);
 	printf("\n");
 	errorFlag = TRUE;
+}
+
+  void
+error(errorType theError, ...)
+{
+	va_list ap;
+	va_start(ap, theError);
+	verror(theError, ap);
+	va_end(ap);
 }
