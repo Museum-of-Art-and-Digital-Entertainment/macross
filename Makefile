@@ -167,7 +167,7 @@ y.tab.c y.tab.h: macross_$(PROC).y
 y.output: macross_$(PROC).y
 	$(YACC) -vd macross_$(PROC).y
 
-cleanup:
+clean:
 	/bin/rm -f *.o y.output y.tab.c y.tab.h macross
 
 love:
