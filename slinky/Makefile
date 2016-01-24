@@ -8,7 +8,7 @@ SOURCES = builtins.c debugPrint.c errorStuff.c expr.c initialize.c\
 instantiate.c link.c main.c map.c poke.c read.c relocate.c slinkyTables.c\
 write.c slinkyExpressions.h slinkyGlobals.h slinkyTypes.h y.tab.h
 
-CFLAGS=-m32 # slinky is not 64 bit clean
+CFLAGS=-m32 -Wno-int-conversion -Wno-incompatible-pointer-types # slinky is not 64 bit clean
 
 .c.o:
 	cc $(CFLAGS) -c -g $*.c
@@ -71,7 +71,7 @@ slinkyTables.o: slinkyTables.c slinkyTypes.h
 
 write.o: write.c slinkyGlobals.h slinkyTypes.h
 
-cleanup:
+clean:
 	/bin/rm -f *.o slinky
 
 love:
