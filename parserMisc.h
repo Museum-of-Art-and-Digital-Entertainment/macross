@@ -1,11 +1,12 @@
 #ifndef PARSER_MISC_H_
 #define PARSER_MISC_H_
+
 #include "macrossTypes.h"
 
 statementType *addLabelToStatement(labelListType *labelList, statementType *statement);
 void botch(char *message, ...);
 void checkDefineAssignmentOperator(assignmentKindType assignmentOperator);
-void convertDefineToMDefine(statementType *defineStatement);
+statementType *convertDefineToMdefine(statementType *defineStatement);
 ifStatementBodyType *extractIfBody(statementType *ifStatement);
 mifStatementBodyType *extractMifBody(statementType *mifStatement);
 stringType *extractString(operandType *textExpression);

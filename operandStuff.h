@@ -12,10 +12,10 @@ operandType *buildOperand(operandKindType kindOfOperand, int arg1, int arg2, int
 #endif
 
 operandListType *duplicateOperandForFixup(operandListType *operand, bool isSpecialFunctionOperand);
-void expandOperand(operandKindType addressMode, char *buffer);
 void freeOperand(operandType *operand);
+void expandOperand(operandKindType addressMode, char *buffer);
 valueType *evaluateOperand(operandType *operand);
 conditionType invertConditionCode(conditionType conditionCode);
-bool shouldParethesize(operandType *operand);
+bool shouldParenthesize(operandType *operand);
 
 #endif
