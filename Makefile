@@ -7,14 +7,14 @@ PROC =6502
 OBJECTS = y.tab.o actions.o buildStuff1.o buildStuff2.o\
 buildStuff3.o builtInFunctions.o builtInFunsSD.o debugPrint.o debugPrintSD.o\
 emitBranch.o emitStuff.o encode.o errorStuff.o expressionSemantics.o fixups.o\
-garbage.o initialize.o lexer.o listing.o lookups.o macrossTables.o main.o\
+garbage.o globals.o initialize.o lexer.o listing.o lookups.o macrossTables.o main.o\
 object.o operandStuffSD.o parserMisc.o semanticMisc.o\
 statementSemantics.o structSemantics.o tokenStrings.o
 
 SOURCES = macross_$(PROC).y actions_$(PROC).c buildStuff1.c buildStuff2.c\
 buildStuff3.c builtInFunctions.c builtInFunsSD_$(PROC).c debugPrint.c\
 debugPrintSD_$(PROC).c emitBranch_$(PROC).c emitStuff.c encode.c errorStuff.c\
-expressionSemantics.c fixups.c garbage.c initialize.c lexer.c listing.c\
+expressionSemantics.c fixups.c garbage.c globals.c initialize.c lexer.c listing.c\
 lookups.c macrossTables_$(PROC).c main.c object.c\
 operandStuffSD_$(PROC).c parserMisc.c semanticMisc.c statementSemantics.c\
 structSemantics.c tokenStrings_$(PROC).c lexerTables.h macrossGlobals.h\

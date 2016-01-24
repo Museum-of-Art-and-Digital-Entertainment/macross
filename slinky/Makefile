@@ -1,17 +1,17 @@
 .SUFFIXES: .o .c .h .run
 
-OBJECTS = builtins.o debugPrint.o errorStuff.o expr.o initialize.o\
+OBJECTS = builtins.o debugPrint.o errorStuff.o expr.o globals.o initialize.o\
 instantiate.o link.o main.o map.o poke.o read.o relocate.o slinkyTables.o\
 write.o
 
-SOURCES = builtins.c debugPrint.c errorStuff.c expr.c initialize.c\
+SOURCES = builtins.c debugPrint.c errorStuff.c expr.c globals.c initialize.c\
 instantiate.c link.c main.c map.c poke.c read.c relocate.c slinkyTables.c\
 write.c slinkyExpressions.h slinkyGlobals.h slinkyTypes.h y.tab.h
 
-CFLAGS=-m32 -Wno-int-conversion -Wno-incompatible-pointer-types # slinky is not 64 bit clean
+CFLAGS=-O2 -m32 -Wno-int-conversion -Wno-incompatible-pointer-types # slinky is not 64 bit clean
 
 .c.o:
-	cc $(CFLAGS) -c -g $*.c
+	cc $(CFLAGS) -c $*.c
 
 .c.run:
 	cc $(CFLAGS) -o $* $*.c

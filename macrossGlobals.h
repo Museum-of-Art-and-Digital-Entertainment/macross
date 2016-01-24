@@ -29,84 +29,84 @@
 
 */
 
-bool			 backwardsCompatibleIfFlag;
-bool			 beneathFunction;
-commandLineDefineType	*commandLineDefines;
-int			 cumulativeLineNumber;
-environmentType		*currentEnvironment;
-int			 currentFieldOffset;
-char			*currentFileName;
-char			*lastErrorFile;
-stringType		*currentFunctionName;
-int			 currentLabelTagNumber;
-int			 currentLineNumber;
-int			 lastErrorLine;
-identifierListType	*currentLocalVariableList;
-valueType		 currentLocationCounter;
-int			 currentOperandNumber;
-int			 currentReferenceDepth;
-bool			 debug;
-bool			 emitPrint;
-bool			 expandMacros;
-bool			 errorFlag;
-bool			 expressionFailed;
-bool			 finishOperand;
-operandKindType		 fixupAddressMode[MAX_NUMBER_OF_OPERANDS];
-operandKindType		 newFixupAddressMode;
-fixupListType		*fixupList;
-bool			 freeFlag;
-bool			 freturnExit;
-bool			 generatingFixup;
-environmentType		 globalEnvironment;
-int			 hackFlag;
-bool			 haveUserStartAddress;
-bool			 fixupStartAddress;
-int			 includeNestingDepth;
-FILE			*indexFileForPass2;
-FILE			*input;
-fileNameListType	*inputFileStack;
-FILE			*listFileOutput;
-int			 listingControlCounter;
-bool			 listingOn;
-int			 macroCallDepth;
-FILE			*macroFileForPass2;
-int			 macroOrFunctionNestingDepth;
-structInstanceType	*newStruct;
-int			 nextEnvironmentNumber;
-int			 nextLabelTagNumber;
-FILE			*objectFileOutput;
-char			 operandBuffer[MAX_NUMBER_OF_OPERANDS][LINE_BUFFER_SIZE];
-extern char		 pass2IndexFileName[];
-extern char		 pass2SourceFileName[];
-extern char		 pass2MacroExpansionFileName[];
-expressionType		*pendingFixup[MAX_NUMBER_OF_OPERANDS];
-bool			 performingFixups;
-bool			 positionIndependentCodeMode;
-bool			 produceLinkableObject;
-addressType		 relocatableHighWaterMark;
-reservationListType	*reservationList;
-valueType		*resultOfLastFunctionCall;
-valueType		 savedRelocatableCurrentLocationCounter;
-FILE			*saveFileForPass2;
-bool			 showAllSymbolsFlag;
-bool			 sideEffectFlag;
-bool			 standaloneExpansionFlag;
-valueType		*startAddress;
-int			 statementEvaluationDepth;
-int			 statementListNestingDepth;
-int			 structNestingDepth;
-FILE			*symbolDumpFileOutput;
-bool			 symbolTableDumpOn;
-int			 tabCount;
-addressType		 targetOffset;
-bool			 terseErrorMessages;
-valueType		*UndefinedValue;
-symbolUsageKindType	 unknownSymbolTag;
+extern bool			 backwardsCompatibleIfFlag;
+extern bool			 beneathFunction;
+extern commandLineDefineType	*commandLineDefines;
+extern int			 cumulativeLineNumber;
+extern environmentType		*currentEnvironment;
+extern int			 currentFieldOffset;
+extern char			*currentFileName;
+extern char			*lastErrorFile;
+extern stringType		*currentFunctionName;
+extern int			 currentLabelTagNumber;
+extern int			 currentLineNumber;
+extern int			 lastErrorLine;
+extern identifierListType	*currentLocalVariableList;
+extern valueType		 currentLocationCounter;
+extern int			 currentOperandNumber;
+extern int			 currentReferenceDepth;
+extern bool			 debug;
+extern bool			 emitPrint;
+extern bool			 expandMacros;
+extern bool			 errorFlag;
+extern bool			 expressionFailed;
+extern bool			 finishOperand;
+extern operandKindType		 fixupAddressMode[MAX_NUMBER_OF_OPERANDS];
+extern operandKindType		 newFixupAddressMode;
+extern fixupListType		*fixupList;
+extern bool			 freeFlag;
+extern bool			 freturnExit;
+extern bool			 generatingFixup;
+extern environmentType		 globalEnvironment;
+extern int			 hackFlag;
+extern bool			 haveUserStartAddress;
+extern bool			 fixupStartAddress;
+extern int			 includeNestingDepth;
+extern FILE			*indexFileForPass2;
+extern FILE			*input;
+extern fileNameListType	*inputFileStack;
+extern FILE			*listFileOutput;
+extern int			 listingControlCounter;
+extern bool			 listingOn;
+extern int			 macroCallDepth;
+extern FILE			*macroFileForPass2;
+extern int			 macroOrFunctionNestingDepth;
+extern structInstanceType	*newStruct;
+extern int			 nextEnvironmentNumber;
+extern int			 nextLabelTagNumber;
+extern FILE			*objectFileOutput;
+extern char			 operandBuffer[MAX_NUMBER_OF_OPERANDS][LINE_BUFFER_SIZE];
+extern char			 pass2IndexFileName[];
+extern char			 pass2SourceFileName[];
+extern char			 pass2MacroExpansionFileName[];
+extern expressionType		*pendingFixup[MAX_NUMBER_OF_OPERANDS];
+extern bool			 performingFixups;
+extern bool			 positionIndependentCodeMode;
+extern bool			 produceLinkableObject;
+extern addressType		 relocatableHighWaterMark;
+extern reservationListType	*reservationList;
+extern valueType		*resultOfLastFunctionCall;
+extern valueType		 savedRelocatableCurrentLocationCounter;
+extern FILE			*saveFileForPass2;
+extern bool			 showAllSymbolsFlag;
+extern bool			 sideEffectFlag;
+extern bool			 standaloneExpansionFlag;
+extern valueType		*startAddress;
+extern int			 statementEvaluationDepth;
+extern int			 statementListNestingDepth;
+extern int			 structNestingDepth;
+extern FILE			*symbolDumpFileOutput;
+extern bool			 symbolTableDumpOn;
+extern int			 tabCount;
+extern addressType		 targetOffset;
+extern bool			 terseErrorMessages;
+extern valueType		*UndefinedValue;
+extern symbolUsageKindType	 unknownSymbolTag;
 
 #define DEFAULT_OBJECT_FILE_NAME	"m.out"
 
 #define	LEX_DISPATCH_TABLE_SIZE	128
-int			(*lexDispatchTable[128])();
+extern int			(*lexDispatchTable[128])();
 
 #define HASH_TABLE_SIZE	512
 #define HASH_TABLE_MASK 0x1FF
@@ -123,50 +123,50 @@ extern struct {
 	int		 symbolValue;
 		} predefinedSymbolTable[];
 
-macroTableEntryType	*macroTable[HASH_TABLE_SIZE];
+extern macroTableEntryType	*macroTable[HASH_TABLE_SIZE];
 
-opcodeTableEntryType	*opcodeTable[HASH_TABLE_SIZE];
+extern opcodeTableEntryType	*opcodeTable[HASH_TABLE_SIZE];
 
 extern opcodeTableEntryType	 theOpcodes[];
 
-keywordTableEntryType	*keywordTable[HASH_TABLE_SIZE];
+extern keywordTableEntryType	*keywordTable[HASH_TABLE_SIZE];
 
 extern keywordTableEntryType	 theKeywords[];
 
-conditionTableEntryType	*conditionTable[HASH_TABLE_SIZE];
+extern conditionTableEntryType	*conditionTable[HASH_TABLE_SIZE];
 
 extern conditionTableEntryType	 theConditions[];
 
-symbolTableEntryType	*symbolTable[HASH_TABLE_SIZE];
+extern symbolTableEntryType	*symbolTable[HASH_TABLE_SIZE];
 
 extern int		 operandClassTable[];
 
 extern void	       (*instructionActionTable[])();
 
-int			 validSymbolValues[NUM_OF_SYM_USAGES];
+extern int			 validSymbolValues[NUM_OF_SYM_USAGES];
 
-byte			 structScratchBuffer[MAXIMUM_ALLOWED_STRUCT_SIZE];
+extern byte			 structScratchBuffer[MAXIMUM_ALLOWED_STRUCT_SIZE];
 
-codeRegionType		 absoluteCodeRegion;
-codeRegionType		 relocatableCodeRegion;
-codeRegionType		*codeRegions[2];
-codeBufferKindType	 currentCodeMode;
-codeBufferType		*emptyBuffer; /* ??? */
-codeBreakType		*codeBreakList;
-codeBreakType		*lastCodeBreak;
+extern codeRegionType		 absoluteCodeRegion;
+extern codeRegionType		 relocatableCodeRegion;
+extern codeRegionType		*codeRegions[2];
+extern codeBufferKindType	 currentCodeMode;
+extern codeBufferType		*emptyBuffer; /* ??? */
+extern codeBreakType		*codeBreakList;
+extern codeBreakType		*lastCodeBreak;
 
-expressionReferenceListType	*expressionReferenceList[3];
-expressionReferenceListType	*referencesToNote[MAX_NUMBER_OF_OPERANDS];
-int			 numberOfReferencesInList[3];
-functionDefinitionType		*externalFunctionList;
-functionDefinitionType		*endOfExternalFunctionList;
-int				 externalFunctionCount;
+extern expressionReferenceListType	*expressionReferenceList[3];
+extern expressionReferenceListType	*referencesToNote[MAX_NUMBER_OF_OPERANDS];
+extern int			 numberOfReferencesInList[3];
+extern functionDefinitionType		*externalFunctionList;
+extern functionDefinitionType		*endOfExternalFunctionList;
+extern int				 externalFunctionCount;
 
-char			 alphabeticCharacterTable[128];
-char			 alphaNumericCharacterTable[128];
-char			 lowerCaseCharacterTable[128];
-char			 numericCharacterTable[128];
+extern char			 alphabeticCharacterTable[128];
+extern char			 alphaNumericCharacterTable[128];
+extern char			 lowerCaseCharacterTable[128];
+extern char			 numericCharacterTable[128];
 
-int		expressionBufferSize;
+extern int		expressionBufferSize;
 #define EXPRESSION_BUFFER_LIMIT	500
-byte		expressionBuffer[EXPRESSION_BUFFER_LIMIT];
+extern byte		expressionBuffer[EXPRESSION_BUFFER_LIMIT];
