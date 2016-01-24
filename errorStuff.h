@@ -3,6 +3,8 @@
 
 #include "macrossTypes.h"
 
+#include <stdarg.h>
+
 void puntOnError(errorType theError, ...);
 void printErrorMessage(errorType theError, va_list ap);
 void error(errorType theError, ...);

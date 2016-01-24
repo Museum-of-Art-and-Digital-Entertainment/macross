@@ -48,9 +48,14 @@ main(int argc, char **argv)
 	initializeStuff(argc, argv);
 	yyparse();
 	finishUp();
+	/* sbrk() ends up having different signatures depending on compiler
+         * flags and system. We cast here out of an abundance of caution.
+         * This, and the "end" variable above, are both just for this one
+         * diagnostic, so if they're causing your build trouble, they can
+         * be safely deleted. --mcm */
 	if (emitPrint)
-		printf("storage high water mark 0x%x == %d\n", sbrk(0) - (void *)(&end),
-			sbrk(0) - (void *)(&end));
+		printf("storage high water mark 0x%x == %d\n", (void *)sbrk(0) - (void *)(&end),
+			(void *)sbrk(0) - (void *)(&end));
 	if (errorFlag)
 		chokePukeAndDie();
 	return 0;

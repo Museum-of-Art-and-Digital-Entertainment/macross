@@ -3,6 +3,8 @@
 
 #include "macrossTypes.h"
 
+#include <stdarg.h>
+
 void outputListing(void);
 void terminateListingFiles(void);
 void generateListing(void);
