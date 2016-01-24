@@ -8,7 +8,7 @@ SOURCES = builtins.c debugPrint.c errorStuff.c expr.c globals.c initialize.c\
 instantiate.c link.c main.c map.c poke.c read.c relocate.c slinkyTables.c\
 write.c slinkyExpressions.h slinkyGlobals.h slinkyTypes.h y.tab.h
 
-CFLAGS=-O2 -m32 -Wno-int-conversion -Wno-incompatible-pointer-types # slinky is not 64 bit clean
+CFLAGS= -m32 # slinky is not 64 bit clean
 
 .c.o:
 	cc $(CFLAGS) -c $*.c
@@ -18,30 +18,6 @@ CFLAGS=-O2 -m32 -Wno-int-conversion -Wno-incompatible-pointer-types # slinky is 
 
 slinky: $(OBJECTS)
 	cc $(CFLAGS) -g -o slinky $(OBJECTS)
-
-update: .mark
-	kessel "(cd /u0/chip/macross/slinky; make slinky >&errorfyle)" &
-
-move: .mark
-
-.mark: $(SOURCES)
-#	cp $? /net/kessel/u0/chip/macross/slinky
-	cp $? /net/kessel/u0/chip/macross/slinky
-#	cp $? /net/kessel/u0/chip/macross/slinky/prof
-	cp $? /net/kessel/u0/chip/macross/slinky/prof
-	cp $? opt
-	date >.mark
-#	date >/net/kessel/u0/chip/macross/slinky/.mark
-	date >/net/kessel/u0/chip/macross/slinky/.mark
-#	date >/net/kessel/u0/chip/macross/slinky/prof/.mark
-	date >/net/kessel/u0/chip/macross/slinky/prof/.mark
-	date >opt/.mark
-
-install: slinky
-	cp slinky /u1/gg/bin/slinky_tmp
-	strip /u1/gg/bin/slinky_tmp
-	mv /u1/gg/bin/slinky /u1/gg/bin/sliny.old
-	mv /u1/gg/bin/slinky_tmp /u1/gg/bin/slinky
 
 builtins.o: builtins.c slinkyGlobals.h slinkyTypes.h slinkyExpressions.h
 

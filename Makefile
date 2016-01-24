@@ -27,8 +27,9 @@ HEADERS = macrossTypes.h macrossGlobals.h
 
 # Macross is not 64-bit clean and it does a lot of silent downcasting
 # to simulate subclasses and uses int and void * interchangably a
-# bunch.
-CFLAGS=-m32 -Wno-int-conversion -Wno-incompatible-pointer-types
+# bunch. gcc calls these the int-conversion and
+# incompatible-pointer-types warnings.
+CFLAGS=-m32
 
 # If yacc is notionally present on a system, it's usually actually
 # bison in a compatibility mode. bison is available by name more often
@@ -47,42 +48,6 @@ macross: $(OBJECTS)
 
 driver: driver.c
 	cc $(CFLAGS) -o driver driver.c
-
-update: .mark
-	kessel "(cd /u0/chip/macross; make macross >&errorfyle)" &
-
-install: macross
-	cp macross /u1/gg/bin/macross_tmp
-	strip /u1/gg/bin/macross_tmp
-	mv /u1/gg/bin/macross_$(PROC) /u1/gg/bin/macross_$(PROC).old
-	mv /u1/gg/bin/macross_tmp /u1/gg/bin/macross_$(PROC)
-	cp /u1/gg/bin/macross_$(PROC) /net/mycroft/u1/gg/bin
-	cp /u1/gg/bin/macross_$(PROC) /net/shem/u1/gg/bin
-	cp /u1/gg/bin/macross_$(PROC) /net/weyr/u1/gg/bin
-
-dinstall: driver
-	cp driver /u1/gg/bin/driver_tmp
-	strip /u1/gg/bin/driver_tmp
-	mv /u1/gg/bin/driver_tmp /u1/gg/bin/driver/macross
-	cp /u1/gg/bin/driver /net/mycroft/u1/gg/bin/macross
-	cp /u1/gg/bin/driver /net/shem/u1/gg/bin/macross
-	cp /u1/gg/bin/driver /net/weyr/u1/gg/bin/macross
-
-change:
-	rm *.o
-	rm *.tab.*
-	cp Makefile_68000 Makefile
-
-move: .mark
-
-.mark: $(SOURCES)
-	cp $? /net/kessel/u0/chip/macross
-	cp $? /net/kessel/u0/chip/macross/prof
-	cp $? opt
-	date >.mark
-	date >/net/kessel/u0/chip/macross/.mark
-	date >/net/kessel/u0/chip/macross/prof/.mark
-	date >opt/.mark
 
 macrossTypes.h: operandDefs_$(PROC).h operandBody_$(PROC).h\
 conditionDefs_$(PROC).h
