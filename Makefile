@@ -33,9 +33,6 @@ CC=gcc
 macross: $(MACROSS_OBJECTS)
 	$(CC) $(LDFLAGS) -o macross $(MACROSS_OBJECTS)
 
-slinky/slinky: $(SLINKY_OBJECTS)
-	$(CC) $(LDFLAGS) -o slinky/slinky $(SLINKY_OBJECTS)
-
 # This is a switcher program between multiple versions of Macross, not
 # really a build product
 # driver: driver.c
