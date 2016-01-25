@@ -1,35 +1,25 @@
-.SUFFIXES: .o .c .h .run
-
 # to make for another target CPU, redefine PROC to the name of the target
 # processor, e.g., 68000
 PROC =6502
 
-OBJECTS = y.tab.o actions.o buildStuff1.o buildStuff2.o\
-buildStuff3.o builtInFunctions.o builtInFunsSD.o debugPrint.o debugPrintSD.o\
-emitBranch.o emitStuff.o encode.o errorStuff.o expressionSemantics.o fixups.o\
-garbage.o globals.o initialize.o lexer.o listing.o lookups.o macrossTables.o main.o\
-object.o operandStuffSD.o parserMisc.o semanticMisc.o\
-statementSemantics.o structSemantics.o tokenStrings.o
-
-SOURCES = macross_$(PROC).y actions_$(PROC).c buildStuff1.c buildStuff2.c\
-buildStuff3.c builtInFunctions.c builtInFunsSD_$(PROC).c debugPrint.c\
-debugPrintSD_$(PROC).c emitBranch_$(PROC).c emitStuff.c encode.c errorStuff.c\
-expressionSemantics.c fixups.c garbage.c globals.c initialize.c lexer.c listing.c\
-lookups.c macrossTables_$(PROC).c main.c object.c\
-operandStuffSD_$(PROC).c parserMisc.c semanticMisc.c statementSemantics.c\
-structSemantics.c tokenStrings_$(PROC).c lexerTables.h macrossGlobals.h\
-macrossTypes.h operandDefs_$(PROC).h operandBody_$(PROC).h\
-conditionDefs_$(PROC).h driver.c slinkyExpressions.h\
-operandStuff.h statementSemantics.h listing.h parserMisc.h\
-emitBranch.h semanticMisc.h expressionSemantics.h
-
-HEADERS = macrossTypes.h macrossGlobals.h
+MACROSS_OBJECTS = actions_$(PROC).o buildStuff1.o buildStuff2.o		\
+                  buildStuff3.o builtInFunctions.o			\
+                  builtInFunsSD_$(PROC).o debugPrint.o			\
+                  debugPrintSD_$(PROC).o emitBranch_$(PROC).o		\
+                  emitStuff.o encode.o errorStuff.o			\
+                  expressionSemantics.o fixups.o garbage.o globals.o	\
+                  initialize.o lexer.o listing.o lookups.o		\
+                  macrossTables_$(PROC).o main.o object.o		\
+                  operandStuffSD_$(PROC).o parserMisc.o			\
+                  semanticMisc.o statementSemantics.o			\
+                  structSemantics.o tokenStrings_$(PROC).o y.tab.o
 
 # Macross is not 64-bit clean and it does a lot of silent downcasting
 # to simulate subclasses and uses int and void * interchangably a
 # bunch. gcc calls these the int-conversion and
 # incompatible-pointer-types warnings.
-CFLAGS=-m32
+CFLAGS=-m32 -g -ansi -DYYDEBUG -DTARGET_CPU=CPU_$(PROC)
+LDFLAGS=-m32
 
 # If yacc is notionally present on a system, it's usually actually
 # bison in a compatibility mode. bison is available by name more often
@@ -37,104 +27,108 @@ CFLAGS=-m32
 YACC=bison -y
 #YACC=yacc
 
-.c.o:
-	cc $(CFLAGS) -c -g -DTARGET_CPU=CPU_$(PROC) $*.c
+CC=gcc
+#CC=clang
 
-.c.run:
-	cc $(CFLAGS) -o $* $*.c
+macross: $(MACROSS_OBJECTS)
+	$(CC) $(LDFLAGS) -o macross $(MACROSS_OBJECTS)
 
-macross: $(OBJECTS)
-	cc $(CFLAGS) -g -o macross $(OBJECTS)
+slinky/slinky: $(SLINKY_OBJECTS)
+	$(CC) $(LDFLAGS) -o slinky/slinky $(SLINKY_OBJECTS)
 
-driver: driver.c
-	cc $(CFLAGS) -o driver driver.c
-
-macrossTypes.h: operandDefs_$(PROC).h operandBody_$(PROC).h\
-conditionDefs_$(PROC).h
-
-actions.o: actions_$(PROC).c $(HEADERS)
-	cc $(CFLAGS) -c -g -DTARGET_CPU=CPU_$(PROC) actions_$(PROC).c
-	mv actions_$(PROC).o actions.o
-
-buildStuff1.o: buildStuff1.c $(HEADERS)
-
-buildStuff2.o: buildStuff2.c $(HEADERS)
-
-buildStuff3.o: buildStuff3.c $(HEADERS)
-
-builtInFunctions.o: builtInFunctions.c $(HEADERS) expressionSemantics.h operandStuff.h semanticMisc.h
-
-builtInFunsSD.o: builtInFunsSD_$(PROC).c $(HEADERS)
-	cc $(CFLAGS) -c -g -DTARGET_CPU=CPU_$(PROC) builtInFunsSD_$(PROC).c
-	mv builtInFunsSD_$(PROC).o builtInFunsSD.o
-
-debugPrint.o: debugPrint.c y.tab.h $(HEADERS)
-
-debugPrintSD.o: debugPrintSD_$(PROC).c y.tab.h $(HEADERS)
-	cc $(CFLAGS) -c -g -DTARGET_CPU=CPU_$(PROC) debugPrintSD_$(PROC).c
-	mv debugPrintSD_$(PROC).o debugPrintSD.o
-
-emitBranch.o: emitBranch_$(PROC).c $(HEADERS)
-	cc $(CFLAGS) -c -g -DTARGET_CPU=CPU_$(PROC) emitBranch_$(PROC).c
-	mv emitBranch_$(PROC).o emitBranch.o
-
-emitStuff.o: emitStuff.c $(HEADERS)
-	cc $(CFLAGS) -c -g -DTARGET_CPU=CPU_$(PROC) emitStuff.c
-
-encode.o: encode.c $(HEADERS) y.tab.h semanticMisc.h slinkyExpressions.h
-
-errorStuff.o: errorStuff.c $(HEADERS)
-
-expressionSemantics.o: expressionSemantics.c y.tab.h $(HEADERS) expressionSemantics.h semanticMisc.h
-
-fixups.o: fixups.c $(HEADERS)
-
-garbage.o: garbage.c y.tab.h $(HEADERS)
-
-initialize.o: initialize.c $(HEADERS)
-
-lexer.o: lexer.c lexerTables.h y.tab.h $(HEADERS) parserMisc.h
-
-listing.o: listing.c $(HEADERS) listing.h
-
-lookups.o: lookups.c $(HEADERS)
-
-macrossTables.o: macrossTables_$(PROC).c y.tab.h macrossTypes.h
-	cc $(CFLAGS) -c -g -DTARGET_CPU=CPU_$(PROC) macrossTables_$(PROC).c
-	mv macrossTables_$(PROC).o macrossTables.o
-
-main.o: main.c $(HEADERS)
-
-object.o: object.c $(HEADERS)
-
-operandStuffSD.o: operandStuffSD_$(PROC).c $(HEADERS)
-	cc $(CFLAGS) -c -g -DTARGET_CPU=CPU_$(PROC) operandStuffSD_$(PROC).c
-	mv operandStuffSD_$(PROC).o operandStuffSD.o
-
-parserMisc.o: parserMisc.c y.tab.h $(HEADERS) parserMisc.h
-
-semanticMisc.o: semanticMisc.c $(HEADERS) semanticMisc.h expressionSemantics.h
-
-statementSemantics.o: statementSemantics.c $(HEADERS) emitBranch.h expressionSemantics.h operandStuff.h parserMisc.h semanticMisc.h statementSemantics.h
-
-structSemantics.o: structSemantics.c $(HEADERS)
-
-tokenStrings.o: tokenStrings_$(PROC).c $(HEADERS)
-	cc $(CFLAGS) -c -g -DTARGET_CPU=CPU_$(PROC) tokenStrings_$(PROC).c
-	mv tokenStrings_$(PROC).o tokenStrings.o
-
-y.tab.o: y.tab.c $(HEADERS)
-	cc $(CFLAGS) -c -g -DYYDEBUG -DTARGET_CPU=CPU_$(PROC) y.tab.c
+# This is a switcher program between multiple versions of Macross, not
+# really a build product
+# driver: driver.c
+#	cc $(CFLAGS) -o driver driver.c
 
 y.tab.c y.tab.h: macross_$(PROC).y
 	$(YACC) -d macross_$(PROC).y
 
-y.output: macross_$(PROC).y
-	$(YACC) -vd macross_$(PROC).y
-
 clean:
-	/bin/rm -f *.o y.output y.tab.c y.tab.h macross
+	rm -f *.o y.tab.c y.tab.h macross
 
 love:
 	@echo "Not war?"
 
+.c.o:
+	$(CC) $(CFLAGS) -c $<
+
+# Dependencies below created with makedepend -Y -DTARGET_CPU=CPU_6502 *.c
+# DO NOT DELETE
+
+actions_6502.o: macrossTypes.h operandDefs_6502.h conditionDefs_6502.h
+actions_6502.o: macrossGlobals.h actions.h macrossTypes.h emitStuff.h
+actions_6502.o: errorStuff.h semanticMisc.h
+actions_68000.o: macrossTypes.h macrossGlobals.h
+buildStuff1.o: macrossTypes.h macrossGlobals.h errorStuff.h lookups.h
+buildStuff1.o: parserMisc.h
+buildStuff2.o: macrossTypes.h macrossGlobals.h lookups.h parserMisc.h
+buildStuff3.o: macrossTypes.h macrossGlobals.h lookups.h
+builtInFunctions.o: macrossTypes.h macrossGlobals.h buildStuff.h errorStuff.h
+builtInFunctions.o: expressionSemantics.h garbage.h lexer.h lookups.h
+builtInFunctions.o: operandStuff.h semanticMisc.h statementSemantics.h
+builtInFunsSD_6502.o: macrossTypes.h macrossGlobals.h builtInFunctions.h
+builtInFunsSD_6502.o: operandStuff.h
+builtInFunsSD_68000.o: macrossTypes.h macrossGlobals.h
+debugPrint.o: macrossTypes.h macrossGlobals.h debugPrint.h y.tab.h
+debugPrintSD_6502.o: macrossTypes.h macrossGlobals.h debugPrint.h y.tab.h
+debugPrintSD_68000.o: macrossTypes.h macrossGlobals.h y.tab.h
+emitBranch_6502.o: macrossTypes.h macrossGlobals.h buildStuff.h emitStuff.h
+emitBranch_6502.o: parserMisc.h semanticMisc.h
+emitBranch_68000.o: macrossTypes.h macrossGlobals.h
+emitStuff.o: macrossTypes.h macrossGlobals.h actions.h debugPrint.h
+emitStuff.o: errorStuff.h semanticMisc.h
+encode.o: macrossTypes.h macrossGlobals.h y.tab.h encode.h debugPrint.h
+encode.o: errorStuff.h parserMisc.h semanticMisc.h slinkyExpressions.h
+errorStuff.o: macrossTypes.h macrossGlobals.h errorStuff.h initialize.h
+expressionSemantics.o: macrossTypes.h macrossGlobals.h y.tab.h
+expressionSemantics.o: builtInFunctions.h errorStuff.h expressionSemantics.h
+expressionSemantics.o: fixups.h listing.h lookups.h operandStuff.h
+expressionSemantics.o: parserMisc.h semanticMisc.h statementSemantics.h
+expressionSemantics.o: tokenStrings.h
+fixups.o: macrossTypes.h macrossGlobals.h errorStuff.h expressionSemantics.h
+fixups.o: fixups.h listing.h operandStuff.h parserMisc.h semanticMisc.h
+fixups.o: tokenStrings.h
+garbage.o: macrossTypes.h macrossGlobals.h garbage.h operandStuff.h
+garbage.o: parserMisc.h y.tab.h
+globals.o: macrossTypes.h macrossGlobals.h
+initialize.o: macrossTypes.h macrossGlobals.h initialize.h errorStuff.h
+initialize.o: lexer.h lookups.h semanticMisc.h
+lexer.o: macrossTypes.h macrossGlobals.h y.tab.h debugPrint.h errorStuff.h
+lexer.o: lexer.h lexerTables.h listing.h lookups.h parserMisc.h
+listing.o: macrossTypes.h macrossGlobals.h emitStuff.h lexer.h listing.h
+listing.o: semanticMisc.h
+lookups.o: macrossTypes.h macrossGlobals.h buildStuff.h errorStuff.h
+lookups.o: garbage.h listing.h lookups.h operandStuff.h parserMisc.h
+lookups.o: semanticMisc.h
+macrossTables_6502.o: macrossTypes.h actions.h builtInFunctions.h y.tab.h
+macrossTables_68000.o: macrossTypes.h y.tab.h
+main.o: macrossTypes.h macrossGlobals.h initialize.h semanticMisc.h y.tab.h
+object.o: macrossTypes.h macrossGlobals.h debugPrint.h encode.h
+object.o: expressionSemantics.h fixups.h garbage.h lookups.h object.h
+object.o: semanticMisc.h
+operandStuffSD_6502.o: macrossTypes.h macrossGlobals.h errorStuff.h
+operandStuffSD_6502.o: expressionSemantics.h fixups.h garbage.h listing.h
+operandStuffSD_6502.o: operandStuff.h parserMisc.h semanticMisc.h
+operandStuffSD_6502.o: statementSemantics.h
+operandStuffSD_68000.o: macrossTypes.h macrossGlobals.h
+parserMisc.o: macrossTypes.h macrossGlobals.h y.tab.h buildStuff.h fixups.h
+parserMisc.o: initialize.h errorStuff.h parserMisc.h
+semanticMisc.o: macrossTypes.h macrossGlobals.h y.tab.h semanticMisc.h
+semanticMisc.o: buildStuff.h debugPrint.h emitStuff.h errorStuff.h
+semanticMisc.o: expressionSemantics.h fixups.h listing.h lookups.h object.h
+semanticMisc.o: operandStuff.h parserMisc.h
+statementSemantics.o: macrossTypes.h macrossGlobals.h actions.h debugPrint.h
+statementSemantics.o: emitBranch.h emitStuff.h errorStuff.h
+statementSemantics.o: expressionSemantics.h fixups.h garbage.h lexer.h
+statementSemantics.o: listing.h lookups.h operandStuff.h parserMisc.h
+statementSemantics.o: semanticMisc.h statementSemantics.h structSemantics.h
+statementSemantics.o: tokenStrings.h
+structSemantics.o: macrossTypes.h macrossGlobals.h emitStuff.h errorStuff.h
+structSemantics.o: listing.h parserMisc.h semanticMisc.h statementSemantics.h
+structSemantics.o: structSemantics.h
+tokenStrings_6502.o: macrossTypes.h macrossGlobals.h
+tokenStrings_68000.o: macrossTypes.h macrossGlobals.h
+y.tab.o: macrossTypes.h macrossGlobals.h buildStuff.h errorStuff.h lexer.h
+y.tab.o: lookups.h operandStuff.h parserMisc.h semanticMisc.h
+y.tab.o: statementSemantics.h

@@ -1,51 +1,26 @@
-.SUFFIXES: .o .c .h .run
+# to make for another target CPU, redefine PROC to the name of the target
+# processor, e.g., 68000
+PROC =6502
 
-OBJECTS = builtins.o debugPrint.o errorStuff.o expr.o globals.o initialize.o\
-instantiate.o link.o main.o map.o poke.o read.o relocate.o slinkyTables.o\
-write.o
+SLINKY_OBJECTS = builtins.o debugPrint.o errorStuff.o expr.o		\
+                 globals.o initialize.o instantiate.o link.o main.o	\
+                 map.o poke.o read.o relocate.o slinkyTables.o		\
+                 write.o
 
-SOURCES = builtins.c debugPrint.c errorStuff.c expr.c globals.c initialize.c\
-instantiate.c link.c main.c map.c poke.c read.c relocate.c slinkyTables.c\
-write.c slinkyExpressions.h slinkyGlobals.h slinkyTypes.h y.tab.h
+CFLAGS=-m32 -g -ansi -DYYDEBUG -DTARGET_CPU=CPU_$(PROC)
+LDFLAGS=-m32
 
-CFLAGS= -m32 # slinky is not 64 bit clean
+# If yacc is notionally present on a system, it's usually actually
+# bison in a compatibility mode. bison is available by name more often
+# than yacc itself is.
+YACC=bison -y
+#YACC=yacc
 
-.c.o:
-	cc $(CFLAGS) -c $*.c
+CC=gcc
+#CC=clang
 
-.c.run:
-	cc $(CFLAGS) -o $* $*.c
-
-slinky: $(OBJECTS)
-	cc $(CFLAGS) -g -o slinky $(OBJECTS)
-
-builtins.o: builtins.c slinkyGlobals.h slinkyTypes.h slinkyExpressions.h
-
-debugPrint.o: debugPrint.c slinkyGlobals.h slinkyTypes.h
-
-errorStuff.o: errorStuff.c slinkyGlobals.h slinkyTypes.h
-
-expr.o: expr.c slinkyExpressions.h slinkyGlobals.h slinkyTypes.h y.tab.h
-
-initialize.o: initialize.c slinkyGlobals.h slinkyTypes.h
-
-instantiate.o: instantiate.c slinkyGlobals.h slinkyTypes.h slinkyExpressions.h
-
-link.o: link.c slinkyGlobals.h slinkyTypes.h
-
-main.o: main.c slinkyGlobals.h slinkyTypes.h
-
-map.o: map.c slinkyGlobals.h slinkyTypes.h
-
-poke.o: poke.c slinkyGlobals.h slinkyTypes.h
-
-read.o: read.c slinkyGlobals.h slinkyTypes.h
-
-relocate.o: relocate.c slinkyGlobals.h slinkyTypes.h
-
-slinkyTables.o: slinkyTables.c slinkyTypes.h
-
-write.o: write.c slinkyGlobals.h slinkyTypes.h
+slinky: $(SLINKY_OBJECTS)
+	$(CC) $(LDFLAGS) -o slinky $(SLINKY_OBJECTS)
 
 clean:
 	/bin/rm -f *.o slinky
@@ -53,3 +28,35 @@ clean:
 love:
 	@echo "Not war?"
 
+# Slinky needs to use the parser headers created by Macross. If they
+# aren't available, we dip down and make them ourselves.
+../y.tab.h: ../macross_$(PROC).y
+	cd .. && $(YACC) -d macross_$(PROC).y && cd slinky
+
+.c.o:
+	$(CC) $(CFLAGS) -c $<
+
+# Dependencies below created with makedepend -Y *.c
+# DO NOT DELETE
+
+builtins.o: slinkyTypes.h slinkyGlobals.h slinkyExpressions.h builtins.h
+builtins.o: errorStuff.h expr.h link.h relocate.h
+debugPrint.o: slinkyTypes.h slinkyGlobals.h debugPrint.h
+errorStuff.o: slinkyTypes.h slinkyGlobals.h errorStuff.h
+expr.o: slinkyTypes.h slinkyGlobals.h slinkyExpressions.h expr.h errorStuff.h
+expr.o: initialize.h ../y.tab.h
+globals.o: slinkyTypes.h slinkyGlobals.h
+initialize.o: slinkyTypes.h slinkyGlobals.h initialize.h errorStuff.h main.h
+instantiate.o: slinkyTypes.h slinkyGlobals.h slinkyExpressions.h errorStuff.h
+instantiate.o: expr.h instantiate.h ../y.tab.h
+link.o: slinkyTypes.h slinkyGlobals.h link.h debugPrint.h errorStuff.h
+link.o: instantiate.h poke.h read.h relocate.h write.h
+main.o: slinkyTypes.h slinkyGlobals.h main.h initialize.h link.h
+map.o: slinkyTypes.h slinkyGlobals.h map.h debugPrint.h link.h
+poke.o: slinkyTypes.h slinkyGlobals.h poke.h debugPrint.h errorStuff.h expr.h
+read.o: slinkyTypes.h slinkyGlobals.h read.h debugPrint.h errorStuff.h
+read.o: initialize.h instantiate.h link.h
+relocate.o: slinkyTypes.h slinkyGlobals.h relocate.h debugPrint.h
+relocate.o: errorStuff.h link.h map.h
+slinkyTables.o: slinkyTypes.h builtins.h
+write.o: slinkyTypes.h slinkyGlobals.h write.h

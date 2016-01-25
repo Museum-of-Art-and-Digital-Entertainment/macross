@@ -33,7 +33,7 @@
 #include "expr.h"
 #include "errorStuff.h"
 #include "initialize.h"
-#include "y.tab.h"
+#include "../y.tab.h"
 
 #define overSymbol() (pc+=sizeof(symbolType *))
 #define getSymbol() ((symbolType *)getNumber())
