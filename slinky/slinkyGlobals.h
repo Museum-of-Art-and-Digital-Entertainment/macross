@@ -27,43 +27,43 @@
 	9-March-1985
 */
 
-bool	 debug;		/* TRUE iff we should print debug diagnostics */
-bool	 errorFlag;	/* TRUE iff an error occured during linking */
-bool	 verbose;
-bool	 packFlag;
+extern bool	 debug;		/* TRUE iff we should print debug diagnostics */
+extern bool	 errorFlag;	/* TRUE iff an error occured during linking */
+extern bool	 verbose;
+extern bool	 packFlag;
 #define	DEFAULT_LOAD_FILE_NAME	"s.out"
-FILE			*loadFileOutput;	/* where to put the results */
-FILE			*mapFileOutput;
-objectFileListType	*objectFileList;
-objectFileListType	*endOfObjectFileList;
-char			*currentFileName;
-freeSegmentEntryType	*freeSegmentList;
-freeSegmentEntryType	*effectiveFreeSegmentList;
-addressType		 relocationOffset;
-addressType		 entryPointAddress;
-int			 entryPointMode;
-expressionPCType	 entryPointExpression;
-bool			 produceLoadMap;
-bool			 leaveOffLoadFiles;
-bool			 haveEntryPoint;
-bool			 haveExpressionEntryPoint;
-bool			 readExpressionEntryPoint;
-symbolType	       **globalSymbolTable;
-int			 globalSymbolCount;
-symbolType	       **currentSymbolTable;
-functionType	        *currentFunctionTable;
-reservationListType	*reservationList;
-int			 totalSymbolCount;
-expressionPCType	 pc;
-addressType		 here;
-bindingListType		*localBindings;
+extern FILE			*loadFileOutput;	/* where to put the results */
+extern FILE			*mapFileOutput;
+extern objectFileListType	*objectFileList;
+extern objectFileListType	*endOfObjectFileList;
+extern char			*currentFileName;
+extern freeSegmentEntryType	*freeSegmentList;
+extern freeSegmentEntryType	*effectiveFreeSegmentList;
+extern addressType		 relocationOffset;
+extern addressType		 entryPointAddress;
+extern int			 entryPointMode;
+extern expressionPCType	 entryPointExpression;
+extern bool			 produceLoadMap;
+extern bool			 leaveOffLoadFiles;
+extern bool			 haveEntryPoint;
+extern bool			 haveExpressionEntryPoint;
+extern bool			 readExpressionEntryPoint;
+extern symbolType	       **globalSymbolTable;
+extern int			 globalSymbolCount;
+extern symbolType	       **currentSymbolTable;
+extern functionType	        *currentFunctionTable;
+extern reservationListType	*reservationList;
+extern int			 totalSymbolCount;
+extern expressionPCType	 pc;
+extern addressType		 here;
+extern bindingListType		*localBindings;
 
 #define CODE_REGIONS_IN_ADDRESS_SPACE	256
 #define CODE_REGION_SIZE		0x100
-segmentListType		*generatedLoadImage[CODE_REGIONS_IN_ADDRESS_SPACE];
+extern segmentListType		*generatedLoadImage[CODE_REGIONS_IN_ADDRESS_SPACE];
 #define	regionOf(addr)	(addr / CODE_REGION_SIZE)
 
-struct {
+extern struct {
 	stringType	*functionName;
 	addressType	 (*functionEntry)();
 		} builtInFunctionTable[];

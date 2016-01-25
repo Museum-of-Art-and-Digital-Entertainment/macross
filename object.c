@@ -29,25 +29,24 @@
 
 #include "macrossTypes.h"
 #include "macrossGlobals.h"
+#include "debugPrint.h"
+#include "encode.h"
+#include "expressionSemantics.h"
+#include "fixups.h"
+#include "garbage.h"
+#include "lookups.h"
+#include "object.h"
+#include "semanticMisc.h"
+
+#include <string.h>
 
 static int	symbolTableSize;
 static int	symbolTableStringSize;
 bool		encodingFunction;
 
   void
-outputObjectFile()
+outputObjectFile(void)
 {
-	void	outputPartition();
-	void	outputReferenceInfo();
-	void	outputSymbolTableInfo();
-	void	outputAbsoluteCode();
-	void	outputRelocatableCode();
-	void	outputReservations();
-	void	outputExpressions();
-	void	outputFunctions();
-	void	dumpSymbolTable();
-	void	enumerateAndCountSymbols();
-
 	if (debug || emitPrint)
 		printCodeBuffers();
 	outputPartition();
@@ -70,22 +69,20 @@ outputObjectFile()
 }
 
   void
-outputWord(aWord)
- int	aWord;
+outputWord(int aWord)
 {
 	putc(aWord & 0xFF, objectFileOutput);
 	putc((aWord >> 8) & 0xFF, objectFileOutput);
 }
 
   void
-outputPartition()
+outputPartition(void)
 {
 	outputWord(0xFFFF);
 }
 
   void
-outputBigword(bigword)
-  unsigned long	bigword;
+outputBigword(long unsigned int bigword)
 {
 	int	i;
 
@@ -96,15 +93,13 @@ outputBigword(bigword)
 }
 
   void
-outputByte(aByte)
- byte	aByte;
+outputByte(byte aByte)
 {
 	putc(aByte, objectFileOutput);
 }
 
   void
-outputString(string)
-  stringType	*string;
+outputString(stringType *string)
 {
 	do {
 		putc(*string, objectFileOutput);
@@ -112,8 +107,7 @@ outputString(string)
 }
 
   void
-outputStartAddress(startAddress)
-  addressType	startAddress;
+outputStartAddress(addressType startAddress)
 {
 	outputWord(startAddress);
 	if (produceLinkableObject) {
@@ -126,14 +120,11 @@ outputStartAddress(startAddress)
 }
 
   void
-outputRelocatableCode()
+outputRelocatableCode(void)
 {
 	int		 i;
 	addressType	 codeStartAddress;
 	addressType	 codeEndAddress;
-
-	void		 outputPseudoSegment();
-	void		 outputBreak();
 
 	if (haveUserStartAddress && !fixupStartAddress && startAddress->
 			kindOfValue == RELOCATABLE_VALUE)
@@ -159,8 +150,7 @@ outputRelocatableCode()
 }
 
   void
-outputBreak(codeBreak)
-  codeBreakType	*codeBreak;
+outputBreak(codeBreakType *codeBreak)
 {
 	switch (codeBreak->kindOfBreak) {
 	case BREAK_BREAK:
@@ -183,13 +173,12 @@ outputBreak(codeBreak)
 }
 
   void
-outputAbsoluteCode()
+outputAbsoluteCode(void)
 {
 	int		 i;
 	int		 startSegment;
 	int		 endSegment;
 	int		 nextSegment;
-	void		 outputOneCodeBuffer();
 
 	if (haveUserStartAddress && !fixupStartAddress && startAddress->
 			kindOfValue==ABSOLUTE_VALUE)
@@ -221,8 +210,7 @@ outputAbsoluteCode()
 }
 
   void
-outputOneCodeBuffer(segment)
-  codeSegmentType	*segment;
+outputOneCodeBuffer(codeSegmentType *segment)
 {
 	int	i;
 
@@ -236,9 +224,7 @@ outputOneCodeBuffer(segment)
 }
 
   void
-outputPseudoSegment(codeStartAddress, codeEndAddress)
-  addressType	codeStartAddress;
-  addressType	codeEndAddress;
+outputPseudoSegment(addressType codeStartAddress, addressType codeEndAddress)
 {
 	int		 startSegment;
 	int		 endSegment;
@@ -249,9 +235,6 @@ outputPseudoSegment(codeStartAddress, codeEndAddress)
 	int		 position;
 	int		 segment;
 	codeSegmentType	*segmentPtr;
-
-	void		 outputWord();
-	void		 outputByte();
 
 	outputWord(codeStartAddress);
 	outputWord(codeEndAddress);
@@ -271,8 +254,7 @@ outputPseudoSegment(codeStartAddress, codeEndAddress)
 }
 
   bool
-isObjectSymbol(symbol)
-  symbolTableEntryType	*symbol;
+isObjectSymbol(symbolTableEntryType *symbol)
 {
 	return(symbol != NULL && symbol->context->value != NULL &&
 		symbol->context->value->kindOfValue != FUNCTION_VALUE &&
@@ -287,7 +269,7 @@ isObjectSymbol(symbol)
 }
 
   void
-enumerateAndCountSymbols()
+enumerateAndCountSymbols(void)
 {
 	int			 i;
 	symbolTableEntryType	*symb;
@@ -303,7 +285,7 @@ enumerateAndCountSymbols()
 }
 
   int
-enumerateAndCountReferences()
+enumerateAndCountReferences(void)
 {
     int				 result;
     int				 codeMode;
@@ -321,8 +303,7 @@ enumerateAndCountReferences()
 }
 
   void
-outputReference(reference)
-  expressionReferenceType	*reference;
+outputReference(expressionReferenceType *reference)
 {
 	byte	funnyByte;
 	bigWord	funnyWord;
@@ -344,7 +325,7 @@ outputReference(reference)
 static int	referenceCount;
 
   void
-outputReferenceInfo()
+outputReferenceInfo(void)
 {
 	expressionReferenceListType	*theReferences;
 	int				 codeMode;
@@ -361,12 +342,10 @@ outputReferenceInfo()
 }
 
   void
-outputOneSymbol(symbol)
-  symbolTableEntryType	*symbol;
+outputOneSymbol(symbolTableEntryType *symbol)
 {
 	byte			 symbolClass;
 	valueType		*symbolValue;
-	valueType		*evaluateIdentifier();
 
 	if (symbol->context->usage == DEFINE_SYMBOL)
 		symbolValue = evaluateIdentifier(symbol, FALSE, NO_FIXUP_OK);
@@ -388,7 +367,7 @@ outputOneSymbol(symbol)
 }
 
   void
-outputSymbolTableInfo()
+outputSymbolTableInfo(void)
 {
 	int			 i;
 	symbolTableEntryType	*symb;
@@ -402,16 +381,13 @@ outputSymbolTableInfo()
 }
 
   int
-symbolCompare(symbol1, symbol2)
-  symbolTableEntryType	**symbol1;
-  symbolTableEntryType	**symbol2;
+symbolCompare(symbolTableEntryType **symbol1, symbolTableEntryType **symbol2)
 {
 	return(strcmplc((*symbol1)->symbolName, (*symbol2)->symbolName));
 }
 
   bool
-shouldDumpSymbol(symbol)
-  symbolTableEntryType	*symbol;
+shouldDumpSymbol(symbolTableEntryType *symbol)
 {
 	return(symbolTableDumpOn == 2
 		|| (symbol->context->usage != BUILT_IN_FUNCTION_SYMBOL
@@ -426,7 +402,7 @@ shouldDumpSymbol(symbol)
 }
 
   void
-dumpSymbolTable()
+dumpSymbolTable(void)
 {
 	int			 i;
 	symbolTableEntryType	*symb;
@@ -434,9 +410,6 @@ dumpSymbolTable()
 	int			 numberOfSymbols;
 	int			 symbolPtr;
 	valueType		*value;
-
-	valueType		*evaluateIdentifier();
-	void			 printValueTersely();
 
 	numberOfSymbols = 0;
 	for (i=0; i<HASH_TABLE_SIZE; i++)
@@ -503,16 +476,14 @@ dumpSymbolTable()
 }
 
   bool
-hackableSymbol(symbol)
-  symbolTableEntryType	*symbol;
+hackableSymbol(symbolTableEntryType *symbol)
 {
 	return(symbol->context->usage == DEFINE_SYMBOL || symbol->context->
 		usage == LABEL_SYMBOL);
 }
 
   void
-printValueTersely(value)
-  valueType	*value;
+printValueTersely(valueType *value)
 {
 	static char *valueKindTable[NUM_OF_VALUE_KINDS] = {
 		"ABS",
@@ -540,7 +511,7 @@ printValueTersely(value)
 }
 
   void
-outputReservations()
+outputReservations(void)
 {
 	while (reservationList != NULL) {
 		outputWord(reservationList->startAddress);
@@ -550,7 +521,7 @@ outputReservations()
 }
 
   void
-outputExpressionBuffer()
+outputExpressionBuffer(void)
 {
 	int	i;
 
@@ -562,13 +533,9 @@ outputExpressionBuffer()
 }
 
   void
-outputOneExpression(expression)
-  expressionType	*expression;
+outputOneExpression(expressionType *expression)
 {
 	expressionType	*newExpression;
-
-	expressionType	*generateFixupExpression();
-	bool		 encodeExpression();
 
 	expressionBufferSize = 0;
 	if (expression == NULL) {
@@ -583,7 +550,7 @@ outputOneExpression(expression)
 }
 
   void
-outputExpressions()
+outputExpressions(void)
 {
     int				 codeMode;
     expressionReferenceListType	*theReferences;
@@ -602,12 +569,9 @@ outputExpressions()
 }
 
   void
-outputOneFunction(function)
-  functionDefinitionType	*function;
+outputOneFunction(functionDefinitionType *function)
 {
 	argumentDefinitionListType	*argumentList;
-	bool				 encodeBlock();
-	int				 countArguments();
 
 	outputByte((byte)countArguments(function));
 	argumentList = function->arguments;
@@ -621,7 +585,7 @@ outputOneFunction(function)
 }
 
   void
-outputFunctions()
+outputFunctions(void)
 {
 	outputBigword(externalFunctionCount);
 	encodingFunction = TRUE;

@@ -34,8 +34,7 @@
 
 /* conditionString similarly deals with condition codes */
   char *
-conditionString(condition)
-  conditionType	condition;
+conditionString(conditionType condition)
 {
 /* This table MUST be maintained congruently with the definition of the
 	enumerated type 'conditionType' */
@@ -67,8 +66,7 @@ conditionString(condition)
 /* tokenString similarly deals with parser tokens */
 
   char *
-tokenString(token)
-  int	token;
+tokenString(int token)
 {
 /* This table MUST be maintained congruently with the token definitions in
    the file 'y.tab.h' as output by yacc. */

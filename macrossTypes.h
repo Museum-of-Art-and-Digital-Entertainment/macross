@@ -28,6 +28,10 @@
 
 */
 
+#ifndef MACROSS_TYPES_H_
+#define MACROSS_TYPES_H_
+
+#include <stdlib.h>
 #include <stdio.h>
 
 /*
@@ -440,7 +444,7 @@ typedef union expressionTermBodyUnion {
 		valueType		*valueUnion;
 		symbolTableEntryType	*symbolTableUnion;
 		conditionType		 conditionTypeUnion;
-		void			*expressionUnion; // this should be expressionTermType, but there's a cycle
+		void			*expressionUnion; /* this should be expressionTermType, but there's a cycle */
 			       } expressionTermBodyType;
 
 typedef struct expressionTermStruct {
@@ -1093,3 +1097,5 @@ typedef enum {/* horrible kludge due to C compiler bug on Sun */
 /* Boy, is this macro useful! */
 
 #define typeAlloc(type)	(type *)malloc(sizeof(type))
+
+#endif

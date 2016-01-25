@@ -57,10 +57,6 @@ typedef selectionListType	 ySelectedOperandBodyType;
 
 typedef selectionListType	 preSelectedOperandBodyType;
 
-#define BlockOperandBodyType	 anyOldThing /* kludge */
-/* doing above right confuses compiler as it is a forward reference inside
-	yon union: */
-
 typedef union {
 		expressionOperandBodyType	*expressionUnion;
 		immediateOperandBodyType	*immediateUnion;
@@ -76,5 +72,5 @@ typedef union {
 		ySelectedOperandBodyType	*ySelectedUnion;
 		preSelectedOperandBodyType	*preSelectedUnion;
 		stringOperandBodyType		*stringUnion;
-		BlockOperandBodyType		*blockUnion;
+		blockOperandBodyType		*blockUnion;
 			       } operandBodyType;

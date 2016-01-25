@@ -31,14 +31,18 @@
 
 #include "slinkyTypes.h"
 #include "slinkyGlobals.h"
+#include "read.h"
+#include "debugPrint.h"
+#include "errorStuff.h"
+#include "initialize.h"
+#include "instantiate.h"
+#include "link.h"
 
 #define isAbsolute(symbol) (((symbol)->symbolClass & SYMBOL_ABSOLUTE) != 0)
 #define isRelocatable(symbol) (((symbol)->symbolClass &SYMBOL_RELOCATABLE)!=0)
 
   void
-fileCheck(fildes, fileName)
-  FILE	*fildes;
-  char	*fileName;
+fileCheck(FILE *fildes, char *fileName)
 {
 	if (feof(fildes)) {
 		error(PREMATURE_EOF_ERROR, fileName);
@@ -51,9 +55,7 @@ fileCheck(fildes, fileName)
 }
 
   wordType
-readWord(file, fileName)
-  FILE	*file;
-  char	*fileName;
+readWord(FILE *file, char *fileName)
 {
 	wordType	result;
 	register char	loByte;
@@ -67,9 +69,7 @@ readWord(file, fileName)
 }
 
   byte
-readByte(file, fileName)
-  FILE	*file;
-  char	*fileName;
+readByte(FILE *file, char *fileName)
 {
 	int	result;
 
@@ -80,9 +80,7 @@ readByte(file, fileName)
 }
 
   bigWord
-readBigword(file, fileName)
-  FILE	*file;
-  char	*fileName;
+readBigword(FILE *file, char *fileName)
 {
 	register bigWord	result;
 
@@ -95,9 +93,7 @@ readBigword(file, fileName)
 }
 
   bigWord
-read3ByteWord(file, fileName)
-  FILE	*file;
-  char	*fileName;
+read3ByteWord(FILE *file, char *fileName)
 {
 	register bigWord	result;
 
@@ -109,10 +105,7 @@ read3ByteWord(file, fileName)
 }
 
   int
-readString(buffer, fildes, fileName)
-  char	*buffer;
-  FILE	*fildes;
-  char	*fileName;
+readString(char *buffer, FILE *fildes, char *fileName)
 {
 	register char	 c;
 	register char	*scratchBuffer;
@@ -126,11 +119,7 @@ readString(buffer, fildes, fileName)
 }
 
   void
-readChunk(buffer, numberOfBytes, fildes, fileName)
-  byte	*buffer;
-  int	 numberOfBytes;
-  FILE	*fildes;
-  char	*fileName;
+readChunk(byte *buffer, int numberOfBytes, FILE *fildes, char *fileName)
 {
 	do {
 		*buffer++ = getc(fildes);
@@ -139,12 +128,7 @@ readChunk(buffer, numberOfBytes, fildes, fileName)
 }
 
   void
-readCode(startAddress, endAddress, mode, objectFile, objectFildes)
-  addressType		 startAddress;
-  addressType		 endAddress;
-  int			 mode;
-  objectFileListType	*objectFile;
-  FILE			*objectFildes;
+readCode(addressType startAddress, addressType endAddress, int mode, objectFileListType *objectFile, FILE *objectFildes)
 {
 	int			 size;
 	byte			*codeBuffer;
@@ -193,9 +177,7 @@ readCode(startAddress, endAddress, mode, objectFile, objectFildes)
 }
 
   bool
-compareReferences(reference1, reference2)
-  expressionReferenceType	*reference1;
-  expressionReferenceType	*reference2;
+compareReferences(expressionReferenceType *reference1, expressionReferenceType *reference2)
 {
 	if (reference1->referenceMode == MODE_ABSOLUTE && reference2->
 			referenceMode == MODE_RELOCATABLE)
@@ -212,19 +194,14 @@ compareReferences(reference1, reference2)
 }
 
   void
-sortReferences(theReferences, numberOfReferences)
-  expressionReferenceType	*theReferences;
-  int				 numberOfReferences;
+sortReferences(expressionReferenceType *theReferences, int numberOfReferences)
 {
 	qsort(theReferences, numberOfReferences,
 			sizeof(expressionReferenceType), compareReferences);
 }
 
   void
-readReference(reference, fildes, fileName)
-  expressionReferenceType	*reference;
-  FILE				*fildes;
-  char				*fileName;
+readReference(expressionReferenceType *reference, FILE *fildes, char *fileName)
 {
 	register byte	funnyByte;
 
@@ -241,9 +218,7 @@ readReference(reference, fildes, fileName)
 }
 
   void
-readReferences(objectFile, objectFildes)
-  objectFileListType	*objectFile;
-  FILE			*objectFildes;
+readReferences(objectFileListType *objectFile, FILE *objectFildes)
 {
 	int			 count;
 	int			 readCount;
@@ -292,9 +267,7 @@ readReferences(objectFile, objectFildes)
 }
 
   bool
-compareSymbolValues(symbol1, symbol2)
-  symbolType	**symbol1;
-  symbolType	**symbol2;
+compareSymbolValues(symbolType **symbol1, symbolType **symbol2)
 {
 	if ((isAbsolute(*symbol1) && !isAbsolute(*symbol2)) ||
 			(isRelocatable(*symbol1) && !isRelocatable(*symbol2)
@@ -315,9 +288,7 @@ compareSymbolValues(symbol1, symbol2)
 }
 
   void
-readSymbols(objectFile, objectFildes)
-  objectFileListType	*objectFile;
-  FILE			*objectFildes;
+readSymbols(objectFileListType *objectFile, FILE *objectFildes)
 {
 	symbolType	*symbolTable;
 	symbolType     **symbolTableIndir;
@@ -359,9 +330,7 @@ readSymbols(objectFile, objectFildes)
 }
 
   expressionPCType
-readOneExpression(objectFile, objectFildes)
-  objectFileListType	*objectFile;
-  FILE			*objectFildes;
+readOneExpression(objectFileListType *objectFile, FILE *objectFildes)
 {
 	char			*fileName;
 	int			 expressionSize;
@@ -386,9 +355,7 @@ readOneExpression(objectFile, objectFildes)
 }
 
   void
-readExpressions(objectFile, objectFildes)
-  objectFileListType	*objectFile;
-  FILE			*objectFildes;
+readExpressions(objectFileListType *objectFile, FILE *objectFildes)
 {
 	expressionPCType	*expressions;
 	int		         expressionCount;
@@ -420,9 +387,7 @@ readExpressions(objectFile, objectFildes)
 }
 
   argumentListType *
-readArgumentList(objectFile, objectFildes)
-  objectFileListType	*objectFile;
-  FILE			*objectFildes;
+readArgumentList(objectFileListType *objectFile, FILE *objectFildes)
 {
 	int			 argumentCount;
 	char			*fileName;
@@ -447,9 +412,7 @@ readArgumentList(objectFile, objectFildes)
 }
 
   void
-readFunctions(objectFile, objectFildes)
-  objectFileListType	*objectFile;
-  FILE			*objectFildes;
+readFunctions(objectFileListType *objectFile, FILE *objectFildes)
 {
 	functionType	*functions;
 	int	         functionCount;
@@ -483,8 +446,7 @@ readFunctions(objectFile, objectFildes)
 }
 
   void
-instantiateExpressionAndSymbolPointers(objectFile)
-  objectFileListType	*objectFile;
+instantiateExpressionAndSymbolPointers(objectFileListType *objectFile)
 {
     symbolType		       	       **symbolTable;
     expressionPCType			*expressions;
@@ -515,12 +477,9 @@ instantiateExpressionAndSymbolPointers(objectFile)
 }
 
   void
-readReservations(objectFile, objectFildes)
-  objectFileListType	*objectFile;
-  FILE			*objectFildes;
+readReservations(objectFileListType *objectFile, FILE *objectFildes)
 {
 	addressType		 startAddress;
-	reservationListType	*buildReservation();
 
 	if (debug)
 		printf("	reservations\n");
@@ -532,10 +491,7 @@ readReservations(objectFile, objectFildes)
 }
 
   reservationListType *
-buildReservation(startAddress, blockSize, nextReservation)
-  addressType		 startAddress;
-  int			 blockSize;
-  reservationListType	*nextReservation;
+buildReservation(addressType startAddress, int blockSize, reservationListType *nextReservation)
 {
 	reservationListType	*result;
 

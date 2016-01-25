@@ -29,21 +29,22 @@
 
 #include "slinkyTypes.h"
 #include "slinkyGlobals.h"
+#include "main.h"
+#include "initialize.h"
+#include "link.h"
 
-main(argc, argv)
-  int	argc;
-  char *argv[];
+int
+main(int argc, char **argv)
 {
 	initializeStuff(argc, argv);
 	linkem();
 	if (errorFlag)
 		chokePukeAndDie();
-	else
-		exit(0);
+	return 0;
 }
 
   void
-printVersion()
+printVersion(void)
 {
 	printf("Slinky version 1.16.\n");
 }

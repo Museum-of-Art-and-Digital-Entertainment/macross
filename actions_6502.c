@@ -30,6 +30,10 @@
 
 #include "macrossTypes.h"
 #include "macrossGlobals.h"
+#include "actions.h"
+#include "emitStuff.h"
+#include "errorStuff.h"
+#include "semanticMisc.h"
 
 #define operand (evaluatedOperands[0])
 #define address	(evaluatedOperands[0])->value
@@ -45,11 +49,8 @@
    and operand.
  */
 
-  void
-actionsDir1(opcode, numberOfOperands, evaluatedOperands)
-  opcodeTableEntryType	*opcode;
-  int			 numberOfOperands;
-  valueType		*evaluatedOperands[];
+void
+actionsDir1(opcodeTableEntryType *opcode, int numberOfOperands, valueType **evaluatedOperands)
 {
 #define	ZERO_PAGE_ADDRESS_BIT		0x00
 #define NON_ZERO_PAGE_ADDRESS_BIT	0x08
@@ -66,10 +67,7 @@ actionsDir1(opcode, numberOfOperands, evaluatedOperands)
 }
 
   void
-actionsDir2(opcode, numberOfOperands, evaluatedOperands)
-  opcodeTableEntryType	*opcode;
-  int			 numberOfOperands;
-  valueType		*evaluatedOperands[];
+actionsDir2(opcodeTableEntryType *opcode, int numberOfOperands, valueType **evaluatedOperands)
 {
 	if (wordCheck(address)) {
 		emitByte(binary);
@@ -79,10 +77,7 @@ actionsDir2(opcode, numberOfOperands, evaluatedOperands)
 }
 
   void
-actionsDirIndir(opcode, numberOfOperands, evaluatedOperands)
-  opcodeTableEntryType	*opcode;
-  int			 numberOfOperands;
-  valueType		*evaluatedOperands[];
+actionsDirIndir(opcodeTableEntryType *opcode, int numberOfOperands, valueType **evaluatedOperands)
 {
 #define DIRECT_ADDRESS_BIT	0x00
 #define INDIRECT_ADDRESS_BIT	0x20
@@ -98,10 +93,7 @@ actionsDirIndir(opcode, numberOfOperands, evaluatedOperands)
 }
 
   void
-actionsDirX1(opcode, numberOfOperands, evaluatedOperands)
-  opcodeTableEntryType	*opcode;
-  int			 numberOfOperands;
-  valueType		*evaluatedOperands[];
+actionsDirX1(opcodeTableEntryType *opcode, int numberOfOperands, valueType **evaluatedOperands)
 {
 #define DIRECT_ADDRESS_ZERO_PAGE_BITS_X1	0x04
 #define A_REGISTER_BITS_X1			0x08
@@ -133,10 +125,7 @@ actionsDirX1(opcode, numberOfOperands, evaluatedOperands)
 }
 
   void
-actionsDirX2(opcode, numberOfOperands, evaluatedOperands)
-  opcodeTableEntryType	*opcode;
-  int			 numberOfOperands;
-  valueType		*evaluatedOperands[];
+actionsDirX2(opcodeTableEntryType *opcode, int numberOfOperands, valueType **evaluatedOperands)
 {
 #define DIRECT_ADDRESS_ZERO_PAGE_BITS_X2	0x00
 #define DIRECT_ADDRESS_NON_ZERO_PAGE_BITS_X2	0x08
@@ -165,10 +154,7 @@ actionsDirX2(opcode, numberOfOperands, evaluatedOperands)
 }
 
   void
-actionsDirX3(opcode, numberOfOperands, evaluatedOperands)
-  opcodeTableEntryType	*opcode;
-  int			 numberOfOperands;
-  valueType		*evaluatedOperands[];
+actionsDirX3(opcodeTableEntryType *opcode, int numberOfOperands, valueType **evaluatedOperands)
 {
 	if (class == EXPRESSION_OPND) {
 		if (isByteAddress(operand) && isDefined(operand)) {
@@ -189,10 +175,7 @@ actionsDirX3(opcode, numberOfOperands, evaluatedOperands)
 }
 
   void
-actionsDirY(opcode, numberOfOperands, evaluatedOperands)
-  opcodeTableEntryType	*opcode;
-  int			 numberOfOperands;
-  valueType		*evaluatedOperands[];
+actionsDirY(opcodeTableEntryType *opcode, int numberOfOperands, valueType **evaluatedOperands)
 {
 #define DIRECT_ADDRESS_ZERO_PAGE_BITS_Y		0x00
 #define DIRECT_ADDRESS_NON_ZERO_PAGE_BITS_Y	0x08
@@ -217,10 +200,7 @@ actionsDirY(opcode, numberOfOperands, evaluatedOperands)
 }
 
   void
-actionsImmDir(opcode, numberOfOperands, evaluatedOperands)
-  opcodeTableEntryType	*opcode;
-  int			 numberOfOperands;
-  valueType		*evaluatedOperands[];
+actionsImmDir(opcodeTableEntryType *opcode, int numberOfOperands, valueType **evaluatedOperands)
 {
 #define IMMEDIATE_DATA_BITS_ID			0x00
 #define DIRECT_ADDRESS_ZERO_PAGE_BITS_ID	0x04
@@ -245,10 +225,7 @@ actionsImmDir(opcode, numberOfOperands, evaluatedOperands)
 }
 
   void
-actionsImmDirX(opcode, numberOfOperands, evaluatedOperands)
-  opcodeTableEntryType	*opcode;
-  int			 numberOfOperands;
-  valueType		*evaluatedOperands[];
+actionsImmDirX(opcodeTableEntryType *opcode, int numberOfOperands, valueType **evaluatedOperands)
 {
 #define IMMEDIATE_DATA_BITS_IX			0x00
 #define DIRECT_ADDRESS_ZERO_PAGE_BITS_IX	0x04
@@ -284,10 +261,7 @@ actionsImmDirX(opcode, numberOfOperands, evaluatedOperands)
 }
 
   void
-actionsImmDirY(opcode, numberOfOperands, evaluatedOperands)
-  opcodeTableEntryType	*opcode;
-  int			 numberOfOperands;
-  valueType		*evaluatedOperands[];
+actionsImmDirY(opcodeTableEntryType *opcode, int numberOfOperands, valueType **evaluatedOperands)
 {
 #define IMMEDIATE_DATA_BITS_IY			0x00
 #define DIRECT_ADDRESS_ZERO_PAGE_BITS_IY	0x04
@@ -323,10 +297,7 @@ actionsImmDirY(opcode, numberOfOperands, evaluatedOperands)
 }
 
   void
-actionsImmIndex(opcode, numberOfOperands, evaluatedOperands)
-  opcodeTableEntryType	*opcode;
-  int			 numberOfOperands;
-  valueType		*evaluatedOperands[];
+actionsImmIndex(opcodeTableEntryType *opcode, int numberOfOperands, valueType **evaluatedOperands)
 {
 #define PRE_INDEXED_BITS_A			0x00
 #define DIRECT_ADDRESS_ZERO_PAGE_BITS_A		0x04
@@ -383,10 +354,7 @@ actionsImmIndex(opcode, numberOfOperands, evaluatedOperands)
 }
 
   void
-actionsIndex(opcode, numberOfOperands, evaluatedOperands)
-  opcodeTableEntryType	*opcode;
-  int			 numberOfOperands;
-  valueType		*evaluatedOperands[];
+actionsIndex(opcodeTableEntryType *opcode, int numberOfOperands, valueType **evaluatedOperands)
 {
 	if (class == EXPRESSION_OPND) {
 		if (isByteAddress(operand) && isDefined(operand)) {
@@ -428,19 +396,13 @@ actionsIndex(opcode, numberOfOperands, evaluatedOperands)
 }
 
   void
-actionsNone(opcode, numberOfOperands, evaluatedOperands)
-  opcodeTableEntryType	*opcode;
-  int			 numberOfOperands;
-  valueType		*evaluatedOperands[];
+actionsNone(opcodeTableEntryType *opcode, int numberOfOperands, valueType **evaluatedOperands)
 {
 	emitByte(binary);
 }
 
   void
-actionsRelative(opcode, numberOfOperands, evaluatedOperands)
-  opcodeTableEntryType	*opcode;
-  int			 numberOfOperands;
-  valueType		*evaluatedOperands[];
+actionsRelative(opcodeTableEntryType *opcode, int numberOfOperands, valueType **evaluatedOperands)
 {
 	int	offset;
 
@@ -465,43 +427,37 @@ actionsRelative(opcode, numberOfOperands, evaluatedOperands)
  */
 
   bool
-isByte(value)
-  int	value;
+isByte(int value)
 {
 	return (-129<value && value<256);
 }
 
   bool
-isByteOffset(value)
-  int	value;
+isByteOffset(int value)
 {
 	return (-129<value && value<128);
 }
 
   bool
-isWordOffset(value)
-  int	value;
+isWordOffset(int value)
 {
 	return (-32769<value && value<32768);
 }
 
   bool
-isByteAddress(value)
-  valueType	*value;
+isByteAddress(valueType *value)
 {
 	return(value->kindOfValue==ABSOLUTE_VALUE && isByte(value->value));
 }
 
   bool
-isWord(value)
-  int	value;
+isWord(int value)
 {
 	return (-32769<value && value<65536);
 }
 
   bool
-byteCheck(value)
-  int	value;
+byteCheck(int value)
 {
 	if (isByte(value)) {
 		return(TRUE);
@@ -512,8 +468,7 @@ byteCheck(value)
 }
 
   bool
-wordCheck(value)
-  int	value;
+wordCheck(int value)
 {
 	if (isWord(value)) {
 		return(TRUE);
@@ -525,8 +480,7 @@ wordCheck(value)
 }
 
   bool
-isDefined(value)
-  valueType	*value;
+isDefined(valueType *value)
 {
 	return(value!=NULL && value->kindOfValue!=UNDEFINED_VALUE);
 }

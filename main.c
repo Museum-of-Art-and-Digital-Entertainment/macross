@@ -29,33 +29,40 @@
 
 #include "macrossTypes.h"
 #include "macrossGlobals.h"
+#include "initialize.h"
+#include "semanticMisc.h"
+#include "y.tab.h"
 
-main(argc, argv)
-  int	argc;
-  char *argv[];
+#include <unistd.h>
+
+int
+main(int argc, char **argv)
 {
 #ifdef __APPLE__
 	char end = get_end();
 #else
 	extern char	 end;
 #endif
-	char		*sbrk();
 
 	fflush(stdout);
 	initializeStuff(argc, argv);
 	yyparse();
 	finishUp();
+	/* sbrk() ends up having different signatures depending on compiler
+         * flags and system. We cast here out of an abundance of caution.
+         * This, and the "end" variable above, are both just for this one
+         * diagnostic, so if they're causing your build trouble, they can
+         * be safely deleted. --mcm */
 	if (emitPrint)
-		printf("storage high water mark 0x%x == %d\n", sbrk(0) - &end,
-			sbrk(0) - &end);
+		printf("storage high water mark 0x%x == %d\n", (void *)sbrk(0) - (void *)(&end),
+			(void *)sbrk(0) - (void *)(&end));
 	if (errorFlag)
 		chokePukeAndDie();
-	else
-		exit(0);
+	return 0;
 }
 
   void
-printVersion()
+printVersion(void)
 {
 	printf("Macross %s version 4.20.\n", TARGET_CPU_STRING);
 }

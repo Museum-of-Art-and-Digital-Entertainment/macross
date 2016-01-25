@@ -32,114 +32,115 @@
 #include "macrossTypes.h"
 #include "macrossGlobals.h"
 #include "y.tab.h"
+#include "buildStuff.h"
+#include "fixups.h"
+#include "initialize.h"
+#include "errorStuff.h"
+#include "parserMisc.h"
+
+#include <stdarg.h>
+#include <string.h>
 
   statementType *
-addLabelToStatement(labelList, statement)
-  labelListType	*labelList;
-  statementType	*statement;
+addLabelToStatement(labelListType *labelList, statementType *statement)
 {
-	statementType	*newStatement();
-
 	if (statement == NULL)
-		statement = newStatement(NULL_STATEMENT, NULL);
+		statement = newStatement(NULL_STATEMENT, (statementBodyType){ NULL });
 	statement->labels = labelList;
 	return(statement);
 }
 
+/* TODO: This should be a varargs function. In 1984 it probably wasn't
+ * standardized, but here in Glorious Future Year 1989 the vprintf
+ * function does almost exactly what we want. */
+
   void
-botch(message, arg1, arg2, arg3)
-  char		*message;
-  anyOldThing	*arg1;
-  anyOldThing	*arg2;
-  anyOldThing	*arg3;
+botch(char *message, ...)
 {
+	va_list ap;
 	printf("Macross horrible terrible internal botch: ");
-	printf(message, arg1, arg2, arg3);
+	va_start(ap, message);
+	vprintf(message, ap);
+	va_end(ap);
 	chokePukeAndDie();
 }
 
   void
-checkDefineAssignmentOperator(assignmentOperator)
-  assignmentKindType	assignmentOperator;
+checkDefineAssignmentOperator(assignmentKindType assignmentOperator)
 {
 	if (assignmentOperator != ASSIGN_ASSIGN)
 		puntOnError(DEFINE_ASSIGNMENT_WRONG_ERROR);
 }
 
   statementType *
-convertDefineToMdefine(defineStatement)
-  statementType	*defineStatement;
+convertDefineToMdefine(statementType *defineStatement)
 {
 	if (defineStatement->kindOfStatement != DEFINE_STATEMENT)
 		botch("convertDefineToMdefine got statement kind: %d\n",
-			defineStatement->kindOfStatement);
+			defineStatement->kindOfStatement, 0, 0);
 	defineStatement->kindOfStatement = MDEFINE_STATEMENT;
 	return(defineStatement);
 }
 
   ifStatementBodyType *
-extractIfBody(ifStatement)
-  statementType	*ifStatement;
+extractIfBody(statementType *ifStatement)
 {
 	ifStatementBodyType	*result;
 
 	result = ifStatement->statementBody.ifUnion;
 	if (ifStatement->labels != NULL)
-		botch("extract if body with non-null labels\n");
+		botch("extract if body with non-null labels\n", 0, 0, 0);
 	else if (ifStatement->nextStatement != NULL)
-		botch("extract if body with non-null next\n");
+		botch("extract if body with non-null next\n", 0, 0, 0);
 	else
 		qfree(ifStatement);
 	return(result);
 }
 
   mifStatementBodyType *
-extractMifBody(mifStatement)
-  statementType	*mifStatement;
+extractMifBody(statementType *mifStatement)
 {
 	mifStatementBodyType	*result;
 
 	result = mifStatement->statementBody.mifUnion;
 	if (mifStatement->labels != NULL)
-		botch("extract mif body with non-null labels\n");
+		botch("extract mif body with non-null labels\n", 0, 0, 0);
 	else if (mifStatement->nextStatement != NULL)
-		botch("extract mif body with non-null next\n");
+		botch("extract mif body with non-null next\n", 0, 0, 0);
 	else
 		qfree(mifStatement);
 	return(result);
 }
 
   stringType *
-extractString(textExpression)
-  operandType	*textExpression;
+extractString(operandType *textExpression)
 {
 	stringType	*result;
 
 	if (textExpression->kindOfOperand != STRING_OPND)
 		botch("extract string got handed an opnd kind: %d\n",
-			textExpression->kindOfOperand);
+			textExpression->kindOfOperand, 0, 0);
 	result = textExpression->theOperand.stringUnion;
 	qfree(textExpression);
 	return(result);
 }
 
   void
-popMacroOrFunctionNestingDepth()
+popMacroOrFunctionNestingDepth(void)
 {
 	if (--macroOrFunctionNestingDepth == 0)
 		unknownSymbolTag = UNKNOWN_SYMBOL;
 }
 
   void
-pushMacroOrFunctionNestingDepth()
+pushMacroOrFunctionNestingDepth(void)
 {
 	macroOrFunctionNestingDepth++;
 	unknownSymbolTag = NESTED_UNKNOWN_SYMBOL;
 }
 
   char *
-saveString(s)
-  char	*s;
+saveString(char *s)
 {
 	char	*result;
 

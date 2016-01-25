@@ -30,13 +30,20 @@
 
 #include "macrossTypes.h"
 #include "macrossGlobals.h"
+#include "errorStuff.h"
+#include "expressionSemantics.h"
+#include "fixups.h"
+#include "garbage.h"
+#include "listing.h"
+#include "operandStuff.h"
+#include "parserMisc.h"
+#include "semanticMisc.h"
+#include "statementSemantics.h"
 
 /* corresponds to routines in buildStuff2.c */
 
   operandType *
-buildOperand(kindOfOperand, arg)
-  operandKindType	 kindOfOperand;
-  anyOldThing		*arg;
+buildOperand(operandKindType kindOfOperand, anyOldThing *arg)
 {
 	operandType	*result;
 
@@ -116,7 +123,7 @@ buildOperand(kindOfOperand, arg)
 		break;
 
 	case BLOCK_OPND:
-		result->theOperand.blockUnion = (BlockOperandBodyType *) arg;
+		result->theOperand.blockUnion = (blockOperandBodyType *) arg;
 		break;
 
 	default:
@@ -129,13 +136,9 @@ buildOperand(kindOfOperand, arg)
 /* corresponds to routines in fixups.c */
 
   operandListType *
-duplicateOperandForFixup(operand, isSpecialFunctionOperand)
-  operandListType	*operand;
-  bool			 isSpecialFunctionOperand;
+duplicateOperandForFixup(operandListType *operand, bool isSpecialFunctionOperand)
 {
 	operandListType	*result;
-
-	expressionType	*duplicateExpressionForFixup();
 
 	result = typeAlloc(operandListType);
 	result->kindOfOperand = operand->kindOfOperand;
@@ -151,14 +154,14 @@ duplicateOperandForFixup(operand, isSpecialFunctionOperand)
 	case X_INDEXED_OPND:
 	case Y_INDEXED_OPND:
 		result->theOperand.expressionUnion =
-			duplicateExpressionForFixup(operand->theOperand,
+			duplicateExpressionForFixup(operand->theOperand.expressionUnion,
 			FALSE, isSpecialFunctionOperand);
 		break;
 	case X_SELECTED_OPND:
 	case Y_SELECTED_OPND:
 	case PRE_SELECTED_X_OPND:
 		result->theOperand.expressionUnion =
-			duplicateExpressionForFixup(operand->theOperand,
+			duplicateExpressionForFixup(operand->theOperand.xSelectedUnion,
 			FALSE, isSpecialFunctionOperand);
 		break;
 	case A_REGISTER_OPND:
@@ -182,8 +185,7 @@ duplicateOperandForFixup(operand, isSpecialFunctionOperand)
 #define nullFree(thing) if (thing == NULL) return;
 
   void
-freeOperand(operand)
-  operandType	*operand;
+freeOperand(operandType *operand)
 {
 	nullFree(operand);
 	switch (operand->kindOfOperand) {
@@ -195,7 +197,7 @@ freeOperand(operand)
 	case PRE_INDEXED_X_OPND:
 	case X_INDEXED_OPND:
 	case Y_INDEXED_OPND:
-		freeExpression(operand->theOperand);
+		freeExpression(operand->theOperand.expressionUnion);
 		break;
 
 	case A_REGISTER_OPND:
@@ -206,15 +208,15 @@ freeOperand(operand)
 	case X_SELECTED_OPND:
 	case Y_SELECTED_OPND:
 	case PRE_SELECTED_X_OPND:
-		freeSelectionList(operand->theOperand);
+		freeSelectionList(operand->theOperand.xSelectedUnion);
 		break;
 
 	case STRING_OPND:
-		freeString(operand->theOperand);
+		freeString(operand->theOperand.stringUnion);
 		break;
 
 	case BLOCK_OPND:
-		freeBlock(operand->theOperand);
+		freeBlock(operand->theOperand.blockUnion);
 		break;
 
 	default:
@@ -229,8 +231,7 @@ freeOperand(operand)
 /* corresponds to routines in listing.c */
 
   void
-expandOperand(addressMode)
-  operandKindType	addressMode;
+expandOperand(operandKindType addressMode, char *buffer)
 {
 	switch (addressMode) {
 	case IMMEDIATE_OPND:		moreText("#"); break;
@@ -247,7 +248,7 @@ expandOperand(addressMode)
 	case PRE_SELECTED_X_OPND:	moreText("@x"); break;
 	default:			break;
 	}
-	expandExpression(NULL);
+	expandExpression(NULL, NULL);
 	if (addressMode == POST_INDEXED_Y_OPND ||
 	    addressMode == PRE_INDEXED_X_OPND ||
 	    addressMode == X_INDEXED_OPND ||
@@ -278,16 +279,11 @@ expandOperand(addressMode)
 #define expansionOn()	expandMacros=saveExpansion;
 
   valueType *
-evaluateOperand(operand)
-  operandType	*operand;
+evaluateOperand(operandType *operand)
 {
 	valueType		*result;
 	bool			 saveExpansion;
 	expressionType		*expression;
-
-	valueType		*evaluateExpression();
-	valueType		*evaluateSelectionList();
-	valueType		*newValue();
 
 	nullEvaluate(operand);
 	if (operand->kindOfOperand != EXPRESSION_OPND)
@@ -301,7 +297,7 @@ evaluateOperand(operand)
 	case PRE_INDEXED_X_OPND:
 	case X_INDEXED_OPND:
 	case Y_INDEXED_OPND:
-		result = evaluateExpression(operand->theOperand,
+		result = evaluateExpression(operand->theOperand.expressionUnion,
 			performingFixups ? NO_FIXUP : OPERAND_FIXUP);
 		if (operand->kindOfOperand != EXPRESSION_OPND) {
 			if (result->addressMode != EXPRESSION_OPND) {
@@ -323,7 +319,7 @@ evaluateOperand(operand)
 	case X_SELECTED_OPND:
 	case Y_SELECTED_OPND:
 	case PRE_SELECTED_X_OPND:
-		result = evaluateSelectionList(operand->theOperand);
+		result = evaluateSelectionList(operand->theOperand.xSelectedUnion);
 		if (result->addressMode != EXPRESSION_OPND) {
 			error(BAD_ADDRESS_MODE_ERROR);
 			result->kindOfValue = FAIL;
@@ -333,7 +329,7 @@ evaluateOperand(operand)
 		break;
 
 	case STRING_OPND:
-		result = newValue(STRING_VALUE, operand->theOperand,
+		result = newValue(STRING_VALUE, operand->theOperand.stringUnion,
 			STRING_OPND);
 		break;
 
@@ -341,7 +337,7 @@ evaluateOperand(operand)
 		if (standaloneExpansionFlag)
 			forceExpansion();
 		sideEffectFlag = TRUE;
-		assembleBlock(operand->theOperand);
+		assembleBlock(operand->theOperand.blockUnion);
 		expansionOn();
 		result = newValue(FAIL, 0, BLOCK_OPND);
 		break;
@@ -357,8 +353,7 @@ evaluateOperand(operand)
 /* from parserMisc.c */
 
   conditionType
-invertConditionCode(conditionCode)
-  conditionType	conditionCode;
+invertConditionCode(conditionType conditionCode)
 {
 #define cc (int)conditionCode
 
@@ -375,8 +370,7 @@ invertConditionCode(conditionCode)
 /* from semanticMisc.c */
 
   bool
-shouldParenthesize(operand)
-  operandType	*operand;
+shouldParenthesize(operandType *operand)
 {
 	expressionTermKindType	 kind;
 

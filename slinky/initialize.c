@@ -29,20 +29,24 @@
 
 #include "slinkyTypes.h"
 #include "slinkyGlobals.h"
+#include "initialize.h"
+#include "errorStuff.h"
+#include "main.h"
+
+#include <string.h>
+#include <unistd.h>
 
 static char	*outputFileName;
 
   void
-chokePukeAndDie()
+chokePukeAndDie(void)
 {
 	unlink(outputFileName);
 	exit(1);
 }
 
   void
-initializeStuff(argc, argv)
-  int	 argc;
-  char	*argv[];
+initializeStuff(int argc, char **argv)
 {
 	int	 i;
 	int	 j;
@@ -51,9 +55,6 @@ initializeStuff(argc, argv)
 	int	 outputFilesFound;
 	int	 mapFilesFound;
 	char	*mapFileName;
-
-	void	 queueInputFile();
-	void	 queueLoadAddress();
 
 	currentFileName = "<command line>";
 	errorFlag = FALSE;
@@ -174,8 +175,7 @@ initializeStuff(argc, argv)
 
 
   void
-queueInputFile(name)
-  char	*name;
+queueInputFile(char *name)
 {
 	objectFileListType	*newObjectFile;
 
@@ -194,8 +194,7 @@ queueInputFile(name)
 }
 
   void
-queueLoadAddress(addressString)
-  char	*addressString;
+queueLoadAddress(char *addressString)
 {
 	int			 loadAddress;
 	objectFileListType	*newObjectFile;

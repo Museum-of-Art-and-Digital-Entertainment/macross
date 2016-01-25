@@ -30,13 +30,14 @@
 
 #include "slinkyTypes.h"
 #include "slinkyGlobals.h"
+#include "write.h"
 
 #define writeWord(aWord) putc(aWord & 0xFF, loadFileOutput);\
 			putc((aWord >> 8) & 0xFF, loadFileOutput)
 #define writeByte(aByte) putc(aByte & 0xFF, loadFileOutput)
 
   void
-writeEntryPoint()
+writeEntryPoint(void)
 {
 	writeWord(entryPointAddress);
 	writeWord(entryPointAddress);
@@ -44,8 +45,7 @@ writeEntryPoint()
 }
 
   void
-writeCodeSegment(codeSegment)
-  codeSegmentHeaderType	*codeSegment;
+writeCodeSegment(codeSegmentHeaderType *codeSegment)
 {
 	int	length;
 	int	i;
@@ -59,7 +59,7 @@ writeCodeSegment(codeSegment)
 }
 
   void
-writem()
+writem(void)
 {
 	int		 	 regionNumber;
 	codeSegmentHeaderType	*lastSegment;

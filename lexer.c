@@ -30,7 +30,13 @@
 #include "macrossTypes.h"
 #include "macrossGlobals.h"
 #include "y.tab.h"
+#include "debugPrint.h"
+#include "errorStuff.h"
+#include "lexer.h"
 #include "lexerTables.h"
+#include "listing.h"
+#include "lookups.h"
+#include "parserMisc.h"
 
 extern int yylval;
 extern int yydebug;
@@ -51,8 +57,8 @@ static int	lineBufferPtr = 0;
 #define isNumeric(c)		(numericCharacterTable[c])
 #define isAlphaNumeric(c)	(alphaNumericCharacterTable[c])
 
-  int
-yylex()
+int
+yylex(void)
 {
 	int	result;
 
@@ -66,11 +72,9 @@ yylex()
 }
 
   int
-lexer()
+lexer(void)
 {
 	char	c;
-
-	char	skipWhitespaceAndComments();
 
 	if ((c = skipWhitespaceAndComments()) == EOF)
 		return(lexLiteral(c));
@@ -79,15 +83,9 @@ lexer()
 }
 
   void
-initializeLexDispatchTable()
+initializeLexDispatchTable(void)
 {
 	int	c;
-	int	lexIdentifier();
-	int	lexNumber();
-	int	lexLiteral();
-	int	lexCharacterConstant();
-	int	lexStringConstant();
-	int	lexOperator();
 
 	for (c = 0; c < LEX_DISPATCH_TABLE_SIZE; c++) {
 		if (isAlphabetic(c) || c=='$')
@@ -106,8 +104,7 @@ initializeLexDispatchTable()
 }
 
   bool
-isMacrossLiteralCharacter(c)
-  char	c;
+isMacrossLiteralCharacter(char c)
 {
 	return(c==':' || c==',' || c=='@' || c=='#' ||
 	       c=='(' || c==')' || c=='{' || c=='}' || c=='[' || c==']' ||
@@ -115,9 +112,7 @@ isMacrossLiteralCharacter(c)
 }
 
   void
-snarfAlphanumericString(c, buffer)
-  char	 c;
-  char	*buffer;
+snarfAlphanumericString(char c, char *buffer)
 {
 	char	*bufferPtr;
 
@@ -134,10 +129,8 @@ snarfAlphanumericString(c, buffer)
 char	nameBuffer[MAX_NAME_SIZE+1];
 
   int
-lexIdentifier(c)
-  char	c;
+lexIdentifier(char c)
 {
-	char	*saveString();
 	int	 hashValue;
 
 	snarfAlphanumericString(c, nameBuffer);
@@ -160,8 +153,7 @@ lexIdentifier(c)
 char	numberBuffer[MAX_NAME_SIZE+1];
 
   int
-lexNumber(c)
-  char	c;
+lexNumber(char c)
 {
 	int	base;
 	int	start;
@@ -188,9 +180,7 @@ lexNumber(c)
 }
 
   int
-fancyAtoI(buffer, base)
-  char	*buffer;
-  int	 base;
+fancyAtoI(char *buffer, int base)
 {
 	int	value;
 	int	digit;
@@ -208,8 +198,7 @@ fancyAtoI(buffer, base)
 }
 
   int
-digitValue(c)
-  char	c;
+digitValue(char c)
 {
 	if (isNumeric(c))
 		return(c - '0');
@@ -218,8 +207,7 @@ digitValue(c)
 }
 
   int
-lexLiteral(c)
-  char	c;
+lexLiteral(char c)
 {
 	static bool	passedEnd = FALSE;
 
@@ -239,7 +227,7 @@ lexLiteral(c)
 }
 
   int
-lexCharacterConstant()
+lexCharacterConstant(void)
 {
 	char	c;
 
@@ -255,13 +243,11 @@ lexCharacterConstant()
 bool	escaped;	/* true if last string character read was an escape
 					     code. */
   int
-getStringCharacter(input)
-  FILE	*input;
+getStringCharacter(FILE *input)
 {
 	char	 c;
 	char	*numberPtr;
 	int	 result;
-	char	 controlCharacter();
 
 	escaped = FALSE;
 	c = getNextChar();
@@ -291,7 +277,7 @@ getStringCharacter(input)
 char	stringBuffer[MAX_NAME_SIZE + 1];
 
   int
-lexStringConstant()
+lexStringConstant(void)
 {
 	char	*stringPtr;
 	char	 c;
@@ -308,8 +294,7 @@ lexStringConstant()
 }
 
   int
-lexOperator(firstC)
-  char	firstC;
+lexOperator(char firstC)
 {
 	char	secondC;
 	char	thirdC;
@@ -346,8 +331,7 @@ lexOperator(firstC)
 }
 
   char
-controlCharacter(c)
-  char	c;
+controlCharacter(char c)
 {
 #define CONTROL_CHARACTER_MASK (~0100)
 
@@ -355,7 +339,7 @@ controlCharacter(c)
 }
 
   char
-skipWhitespaceAndComments()
+skipWhitespaceAndComments(void)
 {
 	char	c;
 
@@ -393,7 +377,7 @@ skipWhitespaceAndComments()
 }
 
   int
-popInputFileStack()
+popInputFileStack(void)
 {
 	fileNameListType	*oldFile;
 
@@ -424,8 +408,7 @@ popInputFileStack()
 }
 
   void
-pushInputFileStack(fileName)
-  stringType	*fileName;
+pushInputFileStack(stringType *fileName)
 {
 	fileNameListType	*newFileName;
 
@@ -445,7 +428,7 @@ pushInputFileStack(fileName)
 }
 
   void
-resynchronizeInput()
+resynchronizeInput(void)
 {
 	char	c;
 	while ((c = getNextChar())!='\n' && c!=EOF)
@@ -457,8 +440,7 @@ resynchronizeInput()
 static bool	previousLongLineFlag = FALSE;
 
   void
-saveLineForListing(line)
-  stringType	*line;
+saveLineForListing(stringType *line)
 {
 	if (!previousLongLineFlag) {
 		putw(currentLocationCounter.value, saveFileForPass2);
@@ -469,7 +451,7 @@ saveLineForListing(line)
 }
 
   void
-saveEOLForListing()
+saveEOLForListing(void)
 {
 	putw(-1, saveFileForPass2);
 	putw(includeNestingDepth, saveFileForPass2);
@@ -477,9 +459,7 @@ saveEOLForListing()
 }
 
   void
-saveIndexForListing(kindOfStatement, cumulativeLineNumber)
-  statementKindType	kindOfStatement;
-  int			cumulativeLineNumber;
+saveIndexForListing(statementKindType kindOfStatement, int cumulativeLineNumber)
 {
 	if (!amExpanding() || !notListable(kindOfStatement)) {
 		putw(kindOfStatement, indexFileForPass2);
@@ -492,8 +472,7 @@ saveIndexForListing(kindOfStatement, cumulativeLineNumber)
 }
 
   void
-saveEndMifForListing(cumulativeLineNumber)
-  int	cumulativeLineNumber;
+saveEndMifForListing(int cumulativeLineNumber)
 {
 	putw(MIF_STATEMENT, indexFileForPass2);
 	putw(-1, indexFileForPass2);
@@ -504,13 +483,13 @@ saveEndMifForListing(cumulativeLineNumber)
 }
 
   void
-saveListingOff()
+saveListingOff(void)
 {
 	saveIndexForListing(-1, cumulativeLineNumber);
 }
 
   void
-saveListingOn()
+saveListingOn(void)
 {
 	if (currentCodeMode == ABSOLUTE_BUFFER)
 		saveIndexForListing(-1, cumulativeLineNumber);
@@ -519,10 +498,7 @@ saveListingOn()
 }
 
   char *
-myfgets(buffer, length, stream)
-  char	*buffer;
-  int	 length;
-  FILE	*stream;
+myfgets(char *buffer, int length, FILE *stream)
 {
 	char	*result;
 	char	 c;
@@ -545,7 +521,7 @@ myfgets(buffer, length, stream)
 }
 
   int
-readAnotherLine()
+readAnotherLine(void)
 {
 	int	result;
 

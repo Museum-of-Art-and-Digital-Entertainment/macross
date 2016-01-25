@@ -1,47 +1,23 @@
 .SUFFIXES: .o .c .h .run
 
-OBJECTS = builtins.o debugPrint.o errorStuff.o expr.o initialize.o\
+OBJECTS = builtins.o debugPrint.o errorStuff.o expr.o globals.o initialize.o\
 instantiate.o link.o main.o map.o poke.o read.o relocate.o slinkyTables.o\
 write.o
 
-SOURCES = builtins.c debugPrint.c errorStuff.c expr.c initialize.c\
+SOURCES = builtins.c debugPrint.c errorStuff.c expr.c globals.c initialize.c\
 instantiate.c link.c main.c map.c poke.c read.c relocate.c slinkyTables.c\
 write.c slinkyExpressions.h slinkyGlobals.h slinkyTypes.h y.tab.h
 
-CFLAGS=-m32 # slinky is not 64 bit clean
+CFLAGS= -m32 # slinky is not 64 bit clean
 
 .c.o:
-	cc $(CFLAGS) -c -g $*.c
+	cc $(CFLAGS) -c $*.c
 
 .c.run:
 	cc $(CFLAGS) -o $* $*.c
 
 slinky: $(OBJECTS)
 	cc $(CFLAGS) -g -o slinky $(OBJECTS)
-
-update: .mark
-	kessel "(cd /u0/chip/macross/slinky; make slinky >&errorfyle)" &
-
-move: .mark
-
-.mark: $(SOURCES)
-#	cp $? /net/kessel/u0/chip/macross/slinky
-	cp $? /net/kessel/u0/chip/macross/slinky
-#	cp $? /net/kessel/u0/chip/macross/slinky/prof
-	cp $? /net/kessel/u0/chip/macross/slinky/prof
-	cp $? opt
-	date >.mark
-#	date >/net/kessel/u0/chip/macross/slinky/.mark
-	date >/net/kessel/u0/chip/macross/slinky/.mark
-#	date >/net/kessel/u0/chip/macross/slinky/prof/.mark
-	date >/net/kessel/u0/chip/macross/slinky/prof/.mark
-	date >opt/.mark
-
-install: slinky
-	cp slinky /u1/gg/bin/slinky_tmp
-	strip /u1/gg/bin/slinky_tmp
-	mv /u1/gg/bin/slinky /u1/gg/bin/sliny.old
-	mv /u1/gg/bin/slinky_tmp /u1/gg/bin/slinky
 
 builtins.o: builtins.c slinkyGlobals.h slinkyTypes.h slinkyExpressions.h
 
@@ -71,7 +47,7 @@ slinkyTables.o: slinkyTables.c slinkyTypes.h
 
 write.o: write.c slinkyGlobals.h slinkyTypes.h
 
-cleanup:
+clean:
 	/bin/rm -f *.o slinky
 
 love:

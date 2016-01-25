@@ -26,7 +26,10 @@
 
 	8-March-1985
 */
+#ifndef SLINKY_TYPES_H_
+#define SLINKY_TYPES_H_
 
+#include <stdlib.h>
 #include <stdio.h>
 
 typedef	unsigned char	byte;
@@ -187,3 +190,5 @@ typedef enum {
 
 #define typeAlloc(type) 		(type *)malloc(sizeof(type))
 #define typeAllocBlock(type, size)	(type *)malloc(sizeof(type) * (size))
+
+#endif

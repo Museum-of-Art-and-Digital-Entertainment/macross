@@ -30,6 +30,10 @@
 
 #include "macrossTypes.h"
 #include "macrossGlobals.h"
+#include "actions.h"
+#include "debugPrint.h"
+#include "errorStuff.h"
+#include "semanticMisc.h"
 
 /*
    Emitted code is stored in places that are allocated dynamically as they
@@ -62,10 +66,8 @@
 
 /* incarnateCodeBuffer causes code buffer space to actually be allocated */
 
-  void
-incarnateCodeBuffer(bufferNum, bufferKind)
-  int			bufferNum;
-  codeBufferKindType	bufferKind;
+void
+incarnateCodeBuffer(int bufferNum, codeBufferKindType bufferKind)
 {
 	codeSegmentType	*newCodeSegment;
 	codeBufferType	*newCodeBuffer;
@@ -88,9 +90,7 @@ incarnateCodeBuffer(bufferNum, bufferKind)
    care to make sure said buffer actually exists before using it. */
 
   void
-putByte(address, byteValue)
-  addressType	address;
-  byte		byteValue;
+putByte(addressType address, byte byteValue)
 {
 	int		 bufferNum;
 	int		 bufferPos;
@@ -131,9 +131,7 @@ putByte(address, byteValue)
    buffer */
 
   void
-mapByte(address, byteValue)
-  int		address;
-  byte		byteValue;
+mapByte(int address, byte byteValue)
 {
 	if (address < MAXIMUM_ALLOWED_STRUCT_SIZE)
 		structScratchBuffer[address] = byteValue;
@@ -144,8 +142,7 @@ mapByte(address, byteValue)
    code buffer or the current struct assembly buffer */
 
   void
-emitByte(byteValue)
-  byte	byteValue;
+emitByte(byte byteValue)
 {
 	if (debug || emitPrint)
 		if (structNestingDepth == 0)
@@ -165,8 +162,7 @@ emitByte(byteValue)
 /* emitWord similarly emits a word */
 
   void
-emitWord(wordValue)
-  wordType	wordValue;
+emitWord(wordType wordValue)
 {
 	byteToWordType	convert;
 	int		loByte, hiByte;
@@ -216,8 +212,7 @@ emitWord(wordValue)
 /* emitLong similarly emits a long */
 
   void
-emitLong(longValue)
-  longType	longValue;
+emitLong(longType longValue)
 {
 	byteToLongType	convert;
 	int		loByte, secondByte, thirdByte, hiByte;
@@ -286,8 +281,7 @@ emitLong(longValue)
 /* emitByteValue takes the byte to be emitted out of a 'valueType' */
 
   void
-emitByteValue(byteValue)
-  valueType	*byteValue;
+emitByteValue(valueType *byteValue)
 {
     if (byteValue->kindOfValue == ABSOLUTE_VALUE || byteValue->kindOfValue ==
 	    RELOCATABLE_VALUE || byteValue->kindOfValue == UNDEFINED_VALUE) {
@@ -313,8 +307,7 @@ emitByteValue(byteValue)
 /* emitString similarly spits out a string of bytes */
 
   void
-emitString(string)
-  stringType	*string;
+emitString(stringType *string)
 {
 	if (debug || emitPrint)
 		if (structNestingDepth == 0)
@@ -329,7 +322,7 @@ emitString(string)
    nuls in strings, so to speak.  We assume that the character 0xFF is not
    likely to be needed since ASCII (and ATASCII) is a seven bit character
    code. */
-	while (*string != NULL)
+	while (*string != 0)
 		if ((*string & 0xFF) == 0xFF) {
 			emitByte('\0');
 			string++;
@@ -342,8 +335,7 @@ emitString(string)
 /* emitWordValue emits a word out of a 'valueType' */
 
   void
-emitWordValue(wordValue)
-  valueType	*wordValue;
+emitWordValue(valueType *wordValue)
 {
     if (wordValue->kindOfValue == ABSOLUTE_VALUE || wordValue->kindOfValue ==
 	    RELOCATABLE_VALUE || wordValue->kindOfValue == UNDEFINED_VALUE) {
@@ -369,8 +361,7 @@ emitWordValue(wordValue)
 /* emitLongValue emits a long out of a 'valueType' */
 
   void
-emitLongValue(longValue)
-  valueType	*longValue;
+emitLongValue(valueType *longValue)
 {
     if (longValue->kindOfValue == ABSOLUTE_VALUE || longValue->kindOfValue ==
 	    RELOCATABLE_VALUE || longValue->kindOfValue == UNDEFINED_VALUE) {
@@ -396,9 +387,7 @@ emitLongValue(longValue)
 /* pokeByteValue is like 'emitByte' but it's random access */
 
   void
-pokeByteValue(location, value)
-  addressType	 location;
-  valueType	*value;
+pokeByteValue(addressType location, valueType *value)
 {
 	currentLocationCounter.value = location;
 	emitByteValue(value);
@@ -408,9 +397,7 @@ pokeByteValue(location, value)
 /* ditto pokeWordValue */
 
   void
-pokeWordValue(location, value)
-  addressType	 location;
-  valueType	*value;
+pokeWordValue(addressType location, valueType *value)
 {
 	currentLocationCounter.value = location;
 	emitWordValue(value);
@@ -420,9 +407,7 @@ pokeWordValue(location, value)
 /* ditto pokeLongValue */
 
   void
-pokeLongValue(location, value)
-  addressType	 location;
-  valueType	*value;
+pokeLongValue(addressType location, valueType *value)
 {
 	currentLocationCounter.value = location;
 	emitLongValue(value);
@@ -433,9 +418,7 @@ pokeLongValue(location, value)
    relative branches */
 
   void
-pokeRelativeByteValue(location, value)
-  addressType	 location;
-  valueType	*value;
+pokeRelativeByteValue(addressType location, valueType *value)
 {
 	int	offset;
 
@@ -456,9 +439,7 @@ pokeRelativeByteValue(location, value)
    relative branches */
 
   void
-pokeRelativeWordValue(location, value)
-  addressType	 location;
-  valueType	*value;
+pokeRelativeWordValue(addressType location, valueType *value)
 {
 	int	offset;
 
@@ -475,8 +456,7 @@ pokeRelativeWordValue(location, value)
 /* getByte fetches a byte back out of the labyrinth of code buffers */
 
   byte
-getByte(address)
-  addressType	address;
+getByte(addressType address)
 {
 	int		 bufferNum;
 	int		 bufferPos;
@@ -494,8 +474,7 @@ getByte(address)
 }
 
   void
-emitRelativeByteOffset(target)
-  valueType	*target;
+emitRelativeByteOffset(valueType *target)
 {
 	int	saveTargetOffset;
 
@@ -512,8 +491,7 @@ emitRelativeByteOffset(target)
 }
 
   void
-emitRelativeWordOffset(target)
-  valueType	*target;
+emitRelativeWordOffset(valueType *target)
 {
 	int	saveTargetOffset;
 
@@ -531,9 +509,7 @@ emitRelativeWordOffset(target)
    has become known. */
 
   void
-fixupBranch(location, target)
-  valueType	 location[COMPOUND_BRANCH_MAX];
-  valueType	 target;
+fixupBranch(valueType *location, valueType target)
 {
 	valueType	saveCurrentLocation;
 	int		saveTargetOffset;
@@ -554,9 +530,7 @@ fixupBranch(location, target)
 /* fixupJump similarly repairs a jump */
 
   void
-fixupJump(locations, target)
-  simpleFixupListType	*locations;
-  valueType		 target;
+fixupJump(simpleFixupListType *locations, valueType target)
 {
 	valueType		 saveCurrentLocation;
 	simpleFixupListType	*oldLocation;

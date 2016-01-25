@@ -31,6 +31,7 @@
 
 #include "macrossTypes.h"
 #include "macrossGlobals.h"
+#include "debugPrint.h"
 #include "y.tab.h"
 
 
@@ -39,9 +40,8 @@ int	tablevel;
 /* Fundamental nop print operation */
 #define nullPrint(thing)   if (thing==NULL) { tab(); printf("()\n"); return; }
 
-  void
-printCondition(condition)
-  conditionType	condition;
+void
+printCondition(conditionType condition)
 {
 /* This table MUST be maintained congruently with the definition of the
    enumerated type 'conditionType'. */
@@ -70,8 +70,7 @@ printCondition(condition)
 }
 
   void
-printOperandKind(kind)
-  operandKindType	kind;
+printOperandKind(operandKindType kind)
 {
 /* This table MUST be maintained congruently with the definition of the
    enumerated type 'operandKindType'. */
@@ -97,8 +96,7 @@ printOperandKind(kind)
 }
 
   void
-printToken(token)
-  int	token;
+printToken(int token)
 {
 /* This table MUST be maintained congruently with the set of '#define's in
    the file 'y.tab.h' as produced by yacc. */
@@ -193,8 +191,7 @@ printToken(token)
 }
 
   void
-printOperand(operand)
-  operandType	*operand;
+printOperand(operandType *operand)
 {
 	nullPrint(operand);
 	tab(); printf("(operand: [");
@@ -204,15 +201,15 @@ printOperand(operand)
 	switch (operand->kindOfOperand) {
 
 	case EXPRESSION_OPND:
-		printExpression(operand->theOperand);
+		printExpression(operand->theOperand.expressionUnion);
 		break;
 
 	case IMMEDIATE_OPND:
-		printExpression(operand->theOperand);
+		printExpression(operand->theOperand.immediateUnion);
 		break;
 
 	case INDIRECT_OPND:
-		printExpression(operand->theOperand);
+		printExpression(operand->theOperand.indirectUnion);
 		break;
 
 	case A_REGISTER_OPND:
@@ -225,39 +222,39 @@ printOperand(operand)
 		break;
 
 	case POST_INDEXED_Y_OPND:
-		printExpression(operand->theOperand);
+		printExpression(operand->theOperand.postIndexedYUnion);
 		break;
 
 	case PRE_INDEXED_X_OPND:
-		printExpression(operand->theOperand);
+		printExpression(operand->theOperand.preIndexedXUnion);
 		break;
 
 	case X_INDEXED_OPND:
-		printExpression(operand->theOperand);
+		printExpression(operand->theOperand.xIndexedUnion);
 		break;
 
 	case Y_INDEXED_OPND:
-		printExpression(operand->theOperand);
+		printExpression(operand->theOperand.yIndexedUnion);
 		break;
 
 	case X_SELECTED_OPND:
-		printIdentifierList(operand->theOperand);
+		printIdentifierList(operand->theOperand.xSelectedUnion);
 		break;
 
 	case Y_SELECTED_OPND:
-		printIdentifierList(operand->theOperand);
+		printIdentifierList(operand->theOperand.ySelectedUnion);
 		break;
 
 	case PRE_SELECTED_X_OPND:
-		printIdentifierList(operand->theOperand);
+		printIdentifierList(operand->theOperand.preSelectedUnion);
 		break;
 
 	case STRING_OPND:
-		tab(); printf("(string: \"%s\")\n", operand->theOperand);
+		tab(); printf("(string: \"%s\")\n", operand->theOperand.stringUnion);
 		break;
 
 	case BLOCK_OPND:
-		printBlock(operand->theOperand);
+		printBlock(operand->theOperand.blockUnion);
 		break;
 
 	default:

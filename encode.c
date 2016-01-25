@@ -31,6 +31,11 @@
 #include "macrossTypes.h"
 #include "macrossGlobals.h"
 #include "y.tab.h"
+#include "encode.h"
+#include "debugPrint.h"
+#include "errorStuff.h"
+#include "parserMisc.h"
+#include "semanticMisc.h"
 #include "slinkyExpressions.h"
 
 #define nullEncode(thing)   if (thing==NULL) return(TRUE);
@@ -38,9 +43,8 @@
 
 bool	encodingFunction;
 
-  bool
-encodeByte(aByte)
-  byte	aByte;
+bool
+encodeByte(byte aByte)
 {
 	if (expressionBufferSize < EXPRESSION_BUFFER_LIMIT) {
 		expressionBuffer[expressionBufferSize++] = aByte;
@@ -52,8 +56,7 @@ encodeByte(aByte)
 }
 
   bool
-encodeBigword(bigword)
-  int	bigword;
+encodeBigword(int bigword)
 {
 	int	i;
 	for (i=0; i<sizeof(int); ++i) {
@@ -65,8 +68,7 @@ encodeBigword(bigword)
 }
 
   bool
-encodeAssignmentTerm(assignmentTerm)
-  binopTermType	*assignmentTerm;
+encodeAssignmentTerm(binopTermType *assignmentTerm)
 {
 	nullEncode(assignmentTerm);
 	if ((assignmentKindType)assignmentTerm->binop != ASSIGN_ASSIGN) {
@@ -82,11 +84,8 @@ encodeAssignmentTerm(assignmentTerm)
 }
 
   bool
-encodeBinopTerm(binopTerm)
-  binopTermType	*binopTerm;
+encodeBinopTerm(binopTermType *binopTerm)
 {
-	bool	encodeExpression();
-
 	nullEncode(binopTerm);
 	return (
 		encodeByte(BINOP_TAG) &&
@@ -97,8 +96,7 @@ encodeBinopTerm(binopTerm)
 }
 
   bool
-encodeCondition(condition)
-  conditionType	condition;
+encodeCondition(conditionType condition)
 {
 	return(
 		encodeByte(CONDITION_CODE_TAG) &&
@@ -107,8 +105,7 @@ encodeCondition(condition)
 }
 
   int
-functionNumber(function)
-  functionDefinitionType	*function;
+functionNumber(functionDefinitionType *function)
 {
 	if (function->ordinal == -1) {
 		function->ordinal = externalFunctionCount++;
@@ -125,15 +122,12 @@ functionNumber(function)
 }
 
   bool
-encodeFunctionCall(functionCall)
-  functionCallTermType	*functionCall;
+encodeFunctionCall(functionCallTermType *functionCall)
 {
 	functionDefinitionType	*theFunction;
 	int			 functionOrdinal;
 	symbolInContextType	*workingContext;
 	operandListType		*parameterList;
-
-	symbolInContextType	*getWorkingContext();
 
 	nullEncode(functionCall);
 	workingContext = getWorkingContext(functionCall->functionName);
@@ -178,14 +172,13 @@ encodeFunctionCall(functionCall)
 }
 
   bool
-encodeHere()
+encodeHere(void)
 {
 	return(encodeByte(HERE_TAG));
 }
 
   bool
-encodeIdentifier(identifier)
-  symbolTableEntryType	*identifier;
+encodeIdentifier(symbolTableEntryType *identifier)
 {
 	symbolInContextType	*workingContext;
 	environmentType		*saveEnvironment;
@@ -249,8 +242,7 @@ encodeIdentifier(identifier)
 }
 
   bool
-encodeNumber(number)
-  numberTermType	number;
+encodeNumber(numberTermType number)
 {
 	return(
 		encodeByte(NUMBER_TAG) &&
@@ -259,8 +251,7 @@ encodeNumber(number)
 }
 
   bool
-encodeRelocatableNumber(number)
-  numberTermType	number;
+encodeRelocatableNumber(numberTermType number)
 {
 	return(
 		encodeByte(RELOCATABLE_TAG) &&
@@ -269,8 +260,7 @@ encodeRelocatableNumber(number)
 }
 
   bool
-encodeOperand(operand)
-  operandType	*operand;
+encodeOperand(operandType *operand)
 {
 	switch (operand->kindOfOperand) {
 		case EXPRESSION_OPND:
@@ -280,7 +270,7 @@ encodeOperand(operand)
 		case PRE_INDEXED_X_OPND:
 		case X_INDEXED_OPND:
 		case Y_INDEXED_OPND:
-			return(encodeExpression(operand->theOperand));
+			return(encodeExpression(operand->theOperand.expressionUnion));
 
 		case A_REGISTER_OPND:
 		case X_REGISTER_OPND:
@@ -295,7 +285,7 @@ encodeOperand(operand)
 			return(FALSE);
 
 		case STRING_OPND:
-			return(encodeString(operand->theOperand));
+			return(encodeString(operand->theOperand.stringUnion));
 
 		case BLOCK_OPND:
 			error(BLOCK_OPERAND_IN_OBJECT_EXPRESSION_ERROR);
@@ -304,8 +294,7 @@ encodeOperand(operand)
 }
 
   bool
-encodePostopTerm(postopTerm)
-  postOpTermType	*postopTerm;
+encodePostopTerm(postOpTermType *postopTerm)
 {
 	nullEncode(postopTerm);
 	return(
@@ -316,8 +305,7 @@ encodePostopTerm(postopTerm)
 }
 
   bool
-encodePreopTerm(preopTerm)
-  preOpTermType	*preopTerm;
+encodePreopTerm(preOpTermType *preopTerm)
 {
 	nullEncode(preopTerm);
 	return(
@@ -328,8 +316,7 @@ encodePreopTerm(preopTerm)
 }
 
   bool
-encodeString(string)
-  stringType	*string;
+encodeString(stringType *string)
 {
 	if (!encodeByte(STRING_TAG))
 		return(FALSE);
@@ -341,8 +328,7 @@ encodeString(string)
 }
 
   bool
-encodeUnopTerm(unopTerm)
-  unopTermType	*unopTerm;
+encodeUnopTerm(unopTermType *unopTerm)
 {
 	nullEncode(unopTerm);
 	return(
@@ -353,8 +339,7 @@ encodeUnopTerm(unopTerm)
 }
 
   bool
-encodeValue(value)
-  valueType	*value;
+encodeValue(valueType *value)
 {
 	switch (value->kindOfValue) {
 		case ABSOLUTE_VALUE:
@@ -390,8 +375,7 @@ encodeValue(value)
 }
 
   bool
-encodeExpression(expression)
-  expressionType	*expression;
+encodeExpression(expressionType *expression)
 {
 	nullEncode(expression);
 	switch (expression->kindOfTerm) {
@@ -461,8 +445,7 @@ encodeExpression(expression)
 }
 
   bool
-encodeAssertStatement(assertStatement)
-  assertStatementBodyType	*assertStatement;
+encodeAssertStatement(assertStatementBodyType *assertStatement)
 {
 	return(
 		encodeByte(ASSERT_TAG) &&
@@ -472,8 +455,7 @@ encodeAssertStatement(assertStatement)
 }
 
   bool
-encodeFreturnStatement(freturnStatement)
-  freturnStatementBodyType	*freturnStatement;
+encodeFreturnStatement(freturnStatementBodyType *freturnStatement)
 {
 	return(
 		encodeByte(FRETURN_TAG) &&
@@ -482,8 +464,7 @@ encodeFreturnStatement(freturnStatement)
 }
 
   bool
-encodeMdefineStatement(mdefineStatement)
-  defineStatementBodyType	*mdefineStatement;
+encodeMdefineStatement(defineStatementBodyType *mdefineStatement)
 {
 	return(
 		encodeByte(MDEFINE_TAG) &&
@@ -493,8 +474,7 @@ encodeMdefineStatement(mdefineStatement)
 }
 
   bool
-encodeMdoUntilStatement(mdoUntilStatement)
-  mdoUntilStatementBodyType	*mdoUntilStatement;
+encodeMdoUntilStatement(mdoUntilStatementBodyType *mdoUntilStatement)
 {
 	return(
 		encodeByte(MDOUNTIL_TAG) &&
@@ -504,8 +484,7 @@ encodeMdoUntilStatement(mdoUntilStatement)
 }
 
   bool
-encodeMdoWhileStatement(mdoWhileStatement)
-  mdoWhileStatementBodyType	*mdoWhileStatement;
+encodeMdoWhileStatement(mdoWhileStatementBodyType *mdoWhileStatement)
 {
 	return(
 		encodeByte(MDOWHILE_TAG) &&
@@ -515,8 +494,7 @@ encodeMdoWhileStatement(mdoWhileStatement)
 }
 
   bool
-encodeMforStatement(mforStatement)
-  mforStatementBodyType	*mforStatement;
+encodeMforStatement(mforStatementBodyType *mforStatement)
 {
 	return(
 		encodeByte(MFOR_TAG) &&
@@ -528,20 +506,18 @@ encodeMforStatement(mforStatement)
 }
 
   bool
-encodeMifStatement(mifStatement)
-  mifStatementBodyType	*mifStatement;
+encodeMifStatement(mifStatementBodyType *mifStatement)
 {
 	return(
 		encodeByte(MIF_TAG) &&
 		encodeExpression(mifStatement->mifCondition) &&
 		encodeBlock(mifStatement->mifConsequence) &&
-		encodeBlock(mifStatement->mifContinuation)
+		encodeBlock(mifStatement->mifContinuation.mifBlockUnion)
 	);
 }
 
   bool
-encodeMswitchStatement(mswitchStatement)
-  mswitchStatementBodyType	*mswitchStatement;
+encodeMswitchStatement(mswitchStatementBodyType *mswitchStatement)
 {
     caseListType	*caseList;
     caseType		*theCase;
@@ -565,8 +541,7 @@ encodeMswitchStatement(mswitchStatement)
 }
 
   bool
-encodeMvariableStatement(mvariableStatement)
-  mvariableStatementBodyType	*mvariableStatement;
+encodeMvariableStatement(mvariableStatementBodyType *mvariableStatement)
 {
 	int	length;	
 
@@ -586,8 +561,7 @@ encodeMvariableStatement(mvariableStatement)
 }
 
   bool
-encodeMwhileStatement(mwhileStatement)
-  mwhileStatementBodyType	*mwhileStatement;
+encodeMwhileStatement(mwhileStatementBodyType *mwhileStatement)
 {
 	return(
 		encodeByte(MWHILE_TAG) &&
@@ -597,8 +571,7 @@ encodeMwhileStatement(mwhileStatement)
 }
 
   bool
-encodeStatement(statement)
-  statementType	*statement;
+encodeStatement(statementType *statement)
 {
 	switch(statement->kindOfStatement) {
 
@@ -638,7 +611,7 @@ encodeStatement(statement)
 		return(encodeFreturnStatement(statement->statementBody.freturnUnion));
 
 	case GROUP_STATEMENT:
-		return(encodeBlock(statement->statementBody));
+		return(encodeBlock(statement->statementBody.groupUnion));
 
 	case MDEFINE_STATEMENT:
 		return(encodeMdefineStatement(statement->statementBody.defineUnion));
@@ -678,8 +651,7 @@ encodeStatement(statement)
 }
 
   bool
-encodeBlock(block)
-  blockType	*block;
+encodeBlock(blockType *block)
 {
 	if (!encodeByte(BLOCK_TAG))
 		return(FALSE);

@@ -32,15 +32,14 @@
 
 #include "macrossTypes.h"
 #include "macrossGlobals.h"
-
-symbolTableEntryType		*lookupOrEnterSymbol();
-char				*saveString();
+#include "errorStuff.h"
+#include "lookups.h"
+#include "parserMisc.h"
 
 /* Generic routine to create statement nodes */
-  statementType *
-newStatement(kind, body)
-  statementKindType	 kind;
-  statementBodyType	 body;
+  
+statementType *
+newStatement(statementKindType kind, statementBodyType body)
 {
 	statementType	*result;
 
@@ -62,17 +61,14 @@ newStatement(kind, body)
  */
 
   statementType *
-buildAlignStatement(expression)
-  expressionType *expression;
+buildAlignStatement(expressionType *expression)
 {
 	return(newStatement(ALIGN_STATEMENT,
 	       (statementBodyType) expression));
 }
 
   statementType *
-buildAssertStatement(condition, message)
-  expressionType	*condition;
-  expressionType	*message;
+buildAssertStatement(expressionType *condition, expressionType *message)
 {
 	assertStatementBodyType	*result;
 
@@ -84,25 +80,21 @@ buildAssertStatement(condition, message)
 }
 
   statementType *
-buildBlockStatement(expressionList)
-  expressionListType *expressionList;
+buildBlockStatement(expressionListType *expressionList)
 {
 	return(newStatement(BLOCK_STATEMENT,
 	       (statementBodyType) expressionList));
 }
 
   statementType *
-buildByteStatement(expressionList)
-  expressionListType *expressionList;
+buildByteStatement(expressionListType *expressionList)
 {
 	return(newStatement(BYTE_STATEMENT,
 	       (statementBodyType) expressionList));
 }
 
   statementType *
-buildConstrainStatement(expression, block)
-  expressionType	*expression;
-  blockType		*block;
+buildConstrainStatement(expressionType *expression, blockType *block)
 {
 	constrainStatementBodyType	*result;
 
@@ -114,17 +106,14 @@ buildConstrainStatement(expression, block)
 }
 
   statementType *
-buildDbyteStatement(expressionList)
-  expressionListType *expressionList;
+buildDbyteStatement(expressionListType *expressionList)
 {
 	return(newStatement(DBYTE_STATEMENT,
 	       (statementBodyType) expressionList));
 }
 
   statementType *
-buildDefineStatement(name, value)
-  stringType		*name;
-  expressionType	*value;
+buildDefineStatement(stringType *name, expressionType *value)
 {
 	defineStatementBodyType	*result;
 
@@ -135,9 +124,7 @@ buildDefineStatement(name, value)
 }
 
   statementType *
-buildDoUntilStatement(body, condition)
-  blockType	*body;
-  conditionType	 condition;
+buildDoUntilStatement(blockType *body, conditionType condition)
 {
 	doUntilStatementBodyType	*result;
 
@@ -148,9 +135,7 @@ buildDoUntilStatement(body, condition)
 }
 
   statementType *
-buildDoWhileStatement(body, condition)
-  blockType	*body;
-  conditionType	 condition;
+buildDoWhileStatement(blockType *body, conditionType condition)
 {
 	doWhileStatementBodyType	*result;
 
@@ -161,9 +146,7 @@ buildDoWhileStatement(body, condition)
 }
 
   statementType *
-buildDoStatement(body, end)
-  blockType	*body;
-  doEndType	*end;
+buildDoStatement(blockType *body, doEndType *end)
 {
 	statementType	*result;
 
@@ -178,26 +161,21 @@ buildDoStatement(body, end)
 }
 
   statementType *
-buildExternStatement(identifierList)
-  identifierListType	*identifierList;
+buildExternStatement(identifierListType *identifierList)
 {
 	return(newStatement(EXTERN_STATEMENT,
 	       (statementBodyType) identifierList));
 }
 
   statementType *
-buildFreturnStatement(expression)
-  expressionType	*expression;
+buildFreturnStatement(expressionType *expression)
 {
 	return(newStatement(FRETURN_STATEMENT,
 	       (statementBodyType) expression));
 }
 
   statementType *
-buildFunctionStatement(name, arguments, body)
-  stringType			*name;
-  argumentDefinitionListType	*arguments;
-  blockType			*body;
+buildFunctionStatement(stringType *name, argumentDefinitionListType *arguments, blockType *body)
 {
 	functionStatementBodyType	*result;
 	symbolTableEntryType		*testSymbol;
@@ -216,18 +194,14 @@ buildFunctionStatement(name, arguments, body)
 }
 
   statementType *
-buildGroupStatement(block)
-  blockType		*block;
+buildGroupStatement(blockType *block)
 {
 	return(newStatement(GROUP_STATEMENT,
 		(statementBodyType) block));
 }
 
   statementType *
-buildIfStatement(head, continuation, continuationKind)
-  ifHeadType			*head;
-  ifContinuationType		 continuation;
-  ifContinuationKindType	 continuationKind;
+buildIfStatement(ifHeadType *head, ifContinuationType continuation, ifContinuationKindType continuationKind)
 {
 	ifStatementBodyType	*result;
 
@@ -255,17 +229,14 @@ buildIfStatement(head, continuation, continuationKind)
 }
 
   statementType *
-buildIncludeStatement(filename)
-  expressionType	*filename;
+buildIncludeStatement(expressionType *filename)
 {
 	return(newStatement(INCLUDE_STATEMENT,
 	       (statementBodyType) filename));
 }
 
   statementType *
-buildInstructionStatement(opcode, operands)
-  opcodeTableEntryType	*opcode;
-  operandListType	*operands;
+buildInstructionStatement(opcodeTableEntryType *opcode, operandListType *operands)
 {
 	instructionStatementBodyType	*result;
 
@@ -277,18 +248,14 @@ buildInstructionStatement(opcode, operands)
 }
 
   statementType *
-buildLongStatement(expressionList)
-  expressionListType	*expressionList;
+buildLongStatement(expressionListType *expressionList)
 {
 	return(newStatement(LONG_STATEMENT,
 	       (statementBodyType)  expressionList));
 }
 
   statementType *
-buildMacroStatement(macro, arguments, body)
-  macroTableEntryType		*macro;
-  argumentDefinitionListType	*arguments;
-  blockType			*body;
+buildMacroStatement(macroTableEntryType *macro, argumentDefinitionListType *arguments, blockType *body)
 {
 	macroStatementBodyType		*result;
 
@@ -300,9 +267,7 @@ buildMacroStatement(macro, arguments, body)
 }
 
   statementType *
-buildMacroInstructionStatement(macro, operands)
-  macroTableEntryType	*macro;
-  operandListType	*operands;
+buildMacroInstructionStatement(macroTableEntryType *macro, operandListType *operands)
 {
 	instructionStatementBodyType	*result;
 
@@ -314,9 +279,7 @@ buildMacroInstructionStatement(macro, operands)
 }
 
   statementType *
-buildMdefineStatement(name, value)
-  stringType		*name;
-  expressionType	*value;
+buildMdefineStatement(stringType *name, expressionType *value)
 {
 	mdefineStatementBodyType	*result;
 
@@ -327,9 +290,7 @@ buildMdefineStatement(name, value)
 }
 
   statementType *
-buildMdoUntilStatement(body, condition)
-  blockType		*body;
-  ExpressionType	*condition;
+buildMdoUntilStatement(blockType *body, struct expressionTermStruct *condition)
 {
 	mdoUntilStatementBodyType	*result;
 
@@ -340,9 +301,7 @@ buildMdoUntilStatement(body, condition)
 }
 
   statementType *
-buildMdoWhileStatement(body, condition)
-  blockType		*body;
-  expressionType	*condition;
+buildMdoWhileStatement(blockType *body, expressionType *condition)
 {
 	mdoWhileStatementBodyType	*result;
 
@@ -353,26 +312,22 @@ buildMdoWhileStatement(body, condition)
 }
 
   statementType *
-buildMdoStatement(body, end)
-  blockType	*body;
-  doEndType	*end;
+buildMdoStatement(blockType *body, mdoEndType *end)
 {
 	statementType	*result;
 
-	if (end->doEndKind == UNTIL_END)
-		result = buildMdoUntilStatement(body, end->doEndCondition);
-	else if (end->doEndKind == WHILE_END)
-		result = buildMdoWhileStatement(body, end->doEndCondition);
+	if (end->mdoEndKind == UNTIL_END)
+		result = buildMdoUntilStatement(body, end->mdoEndCondition);
+	else if (end->mdoEndKind == WHILE_END)
+		result = buildMdoWhileStatement(body, end->mdoEndCondition);
 	else
-		botch("bad mdo-end kind: %d\n", end->doEndCondition);
+		botch("bad mdo-end kind: %d\n", end->mdoEndCondition);
 	qfree(end);
 	return(result);
 }
 
   statementType *
-buildMforStatement(forExpressions, body)
-  forExpressionsType	*forExpressions;
-  blockType		*body;
+buildMforStatement(forExpressionsType *forExpressions, blockType *body)
 {
 	mforStatementBodyType	*result;
 
@@ -386,10 +341,7 @@ buildMforStatement(forExpressions, body)
 }
 
   statementType *
-buildMifStatement(head, continuation, continuationKind)
-  mifHeadType			*head;
-  mifContinuationType		 continuation;
-  ifContinuationKindType	 continuationKind;
+buildMifStatement(mifHeadType *head, mifContinuationType continuation, ifContinuationKindType continuationKind)
 {
 	mifStatementBodyType	*result;
 
@@ -417,9 +369,7 @@ buildMifStatement(head, continuation, continuationKind)
 }
 
   statementType *
-buildMswitchStatement(switchExpression, cases)
-  expressionType	*switchExpression;
-  caseListType		*cases;
+buildMswitchStatement(expressionType *switchExpression, caseListType *cases)
 {
 	mswitchStatementBodyType	*result;
 
@@ -430,10 +380,7 @@ buildMswitchStatement(switchExpression, cases)
 }
 
   statementType *
-buildMvariableStatement(name, value, dimension)
-  stringType		*name;
-  expressionListType	*value;
-  expressionType	*dimension;
+buildMvariableStatement(stringType *name, expressionListType *value, expressionType *dimension)
 {
 	mvariableStatementBodyType	*result;
 
@@ -445,9 +392,7 @@ buildMvariableStatement(name, value, dimension)
 }
 
   statementType *
-buildMwhileStatement(condition, body)
-  expressionType	*condition;
-  blockType		*body;
+buildMwhileStatement(expressionType *condition, blockType *body)
 {
 	mwhileStatementBodyType	*result;
 
@@ -458,53 +403,47 @@ buildMwhileStatement(condition, body)
 }
 
   statementType *
-buildNullStatement()
+buildNullStatement(void)
 {
 	return(newStatement(NULL_STATEMENT, (statementBodyType){ .ifUnion = NULL }));
 }
 
   statementType *
-buildOrgStatement(expression)
-  expressionType	*expression;
+buildOrgStatement(expressionType *expression)
 {
 	return(newStatement(ORG_STATEMENT,
 	       (statementBodyType) expression));
 }
 
   statementType *
-buildPerformStatement(expression)
-  expressionType	*expression;
+buildPerformStatement(expressionType *expression)
 {
 	return(newStatement(PERFORM_STATEMENT,
 		(statementBodyType) expression));
 }
 
   statementType *
-buildRelStatement()
+buildRelStatement(void)
 {
 	return(newStatement(REL_STATEMENT, (statementBodyType){ .ifUnion = NULL }));
 }
 
   statementType *
-buildStartStatement(expression)
-  expressionType	*expression;
+buildStartStatement(expressionType *expression)
 {
 	return(newStatement(START_STATEMENT,
 	       (statementBodyType) expression));
 }
 
   statementType *
-buildStringStatement(expressionList)
-  expressionListType	*expressionList;
+buildStringStatement(expressionListType *expressionList)
 {
 	return(newStatement(STRING_STATEMENT,
 	       (statementBodyType) expressionList));
 }
 
   statementType *
-buildStructStatement(name, body)
-  symbolTableEntryType	*name;
-  blockType		*body;
+buildStructStatement(symbolTableEntryType *name, blockType *body)
 {
 	structStatementBodyType		*result;
 
@@ -515,26 +454,21 @@ buildStructStatement(name, body)
 }
 
   statementType *
-buildTargetStatement(expression)
-  expressionType	*expression;
+buildTargetStatement(expressionType *expression)
 {
 	return(newStatement(TARGET_STATEMENT,
 	       (statementBodyType) expression));
 }
 
   statementType *
-buildUndefineStatement(identifierList)
-  identifierListType	*identifierList;
+buildUndefineStatement(identifierListType *identifierList)
 {
 	return(newStatement(UNDEFINE_STATEMENT,
 	       (statementBodyType) identifierList));
 }
 
   statementType *
-buildVariableStatement(name, value, dimension)
-  stringType		*name;
-  expressionListType	*value;
-  expressionType	*dimension;
+buildVariableStatement(stringType *name, expressionListType *value, expressionType *dimension)
 {
 	variableStatementBodyType	*result;
 
@@ -546,9 +480,7 @@ buildVariableStatement(name, value, dimension)
 }
 
   statementType *
-buildWhileStatement(condition, body)
-  conditionType		 condition;
-  blockType		*body;
+buildWhileStatement(conditionType condition, blockType *body)
 {
 	whileStatementBodyType	*result;
 
@@ -559,8 +491,7 @@ buildWhileStatement(condition, body)
 }
 
   statementType *
-buildWordStatement(expressionList)
-  expressionListType	*expressionList;
+buildWordStatement(expressionListType *expressionList)
 {
 	return(newStatement(WORD_STATEMENT,
 	       (statementBodyType) expressionList));

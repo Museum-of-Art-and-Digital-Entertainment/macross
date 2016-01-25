@@ -31,6 +31,9 @@
 #include "slinkyTypes.h"
 #include "slinkyGlobals.h"
 #include "slinkyExpressions.h"
+#include "errorStuff.h"
+#include "expr.h"
+#include "instantiate.h"
 #include "y.tab.h"
 
 #define overFunction() (pc+=sizeof(functionType *))
@@ -38,13 +41,8 @@
 #define overByte() pc++
 #define nextByte(byt) (byt = *pc++)
 
-void putSymbolPointersIntoArray();
-void putSymbolPointersIntoClause();
-void putSymbolPointersIntoExpression();
-
   void
-putNumber(number)
-  int	number;
+putNumber(int number)
 {
 	int	i;
 	for (i=0; i<sizeof(int); ++i) {
@@ -54,7 +52,7 @@ putNumber(number)
 }
 
   void
-instantiateSymbol()
+instantiateSymbol(void)
 {
 	int	index;
 
@@ -64,7 +62,7 @@ instantiateSymbol()
 }
 
   void
-instantiateFunction()
+instantiateFunction(void)
 {
 	int	index;
 
@@ -74,21 +72,21 @@ instantiateFunction()
 }
 
   void
-putSymbolPointersIntoArray()
+putSymbolPointersIntoArray(void)
 {
 	instantiateSymbol();
 	putSymbolPointersIntoExpression();
 }
 
   void
-putSymbolPointersIntoAssert()
+putSymbolPointersIntoAssert(void)
 {
 	putSymbolPointersIntoExpression();
 	skipString();
 }
 
   void
-putSymbolPointersIntoBinop()
+putSymbolPointersIntoBinop(void)
 {
 	overByte();
 	putSymbolPointersIntoExpression();
@@ -96,7 +94,7 @@ putSymbolPointersIntoBinop()
 }
 
   void
-putSymbolPointersIntoBlock()
+putSymbolPointersIntoBlock(void)
 {
 	while (*pc != END_TAG)
 		putSymbolPointersIntoExpression();
@@ -104,7 +102,7 @@ putSymbolPointersIntoBlock()
 }
 
   void
-putSymbolPointersIntoBuiltinFunctionCall()
+putSymbolPointersIntoBuiltinFunctionCall(void)
 {
 	int	argCount;
 
@@ -115,7 +113,7 @@ putSymbolPointersIntoBuiltinFunctionCall()
 }
 
   void
-putSymbolPointersIntoFunctionCall()
+putSymbolPointersIntoFunctionCall(void)
 {
 	int	argCount;
 
@@ -126,28 +124,28 @@ putSymbolPointersIntoFunctionCall()
 }
 
   void
-putSymbolPointersIntoMdefine()
+putSymbolPointersIntoMdefine(void)
 {
 	instantiateSymbol();
 	putSymbolPointersIntoExpression();
 }
 
   void
-putSymbolPointersIntoMdoUntil()
+putSymbolPointersIntoMdoUntil(void)
 {
 	putSymbolPointersIntoExpression();
 	putSymbolPointersIntoExpression();
 }
 
   void
-putSymbolPointersIntoMdoWhile()
+putSymbolPointersIntoMdoWhile(void)
 {
 	putSymbolPointersIntoExpression();
 	putSymbolPointersIntoExpression();
 }
 
   void
-putSymbolPointersIntoMfor()
+putSymbolPointersIntoMfor(void)
 {
 	putSymbolPointersIntoExpression();
 	putSymbolPointersIntoExpression();
@@ -156,7 +154,7 @@ putSymbolPointersIntoMfor()
 }
 
   void
-putSymbolPointersIntoMif()
+putSymbolPointersIntoMif(void)
 {
 	putSymbolPointersIntoExpression();
 	putSymbolPointersIntoExpression();
@@ -164,7 +162,7 @@ putSymbolPointersIntoMif()
 }
 
   void
-putSymbolPointersIntoClause()
+putSymbolPointersIntoClause(void)
 {
 	while (*pc != BLOCK_TAG)
 		putSymbolPointersIntoExpression();
@@ -172,7 +170,7 @@ putSymbolPointersIntoClause()
 }
 
   void
-putSymbolPointersIntoMswitch()
+putSymbolPointersIntoMswitch(void)
 {
 	putSymbolPointersIntoExpression();
 	while (*pc != END_TAG)
@@ -181,42 +179,42 @@ putSymbolPointersIntoMswitch()
 }
 
   void
-putSymbolPointersIntoMvariable()
+putSymbolPointersIntoMvariable(void)
 {
 	instantiateSymbol();
 	putSymbolPointersIntoExpression();
 }
 
   void
-putSymbolPointersIntoMwhile()
+putSymbolPointersIntoMwhile(void)
 {
 	putSymbolPointersIntoExpression();
 	putSymbolPointersIntoExpression();
 }
 
   void
-putSymbolPointersIntoPostop()
-{
-	overByte();
-	putSymbolPointersIntoExpression();
-}
-
-  void
-putSymbolPointersIntoPreop()
+putSymbolPointersIntoPostop(void)
 {
 	overByte();
 	putSymbolPointersIntoExpression();
 }
 
   void
-putSymbolPointersIntoUnop()
+putSymbolPointersIntoPreop(void)
 {
 	overByte();
 	putSymbolPointersIntoExpression();
 }
 
   void
-putSymbolPointersIntoExpression()
+putSymbolPointersIntoUnop(void)
+{
+	overByte();
+	putSymbolPointersIntoExpression();
+}
+
+  void
+putSymbolPointersIntoExpression(void)
 {
 	if (pc == NULL)
 		return;

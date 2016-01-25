@@ -29,6 +29,8 @@
 */
 
 #include "macrossTypes.h"
+#include "actions.h"
+#include "builtInFunctions.h"
 #include "y.tab.h"
 
 /* All those NULLs are used to string together lists after this all gets
@@ -205,21 +207,6 @@ int operandClassTable[] = {	/* indexed by operandKindType */
 	BLOCK_OPND_BIT,
 };
 
-int	actionsRelative();
-int	actionsDir1();
-int	actionsDir2();
-int	actionsDirIndir();
-int	actionsDirX1();
-int	actionsDirX2();
-int	actionsDirX3();
-int	actionsDirY();
-int	actionsImmDir();
-int	actionsImmDirX();
-int	actionsImmDirY();
-int	actionsNone();
-int	actionsIndex();
-int	actionsImmIndex();
-
 /* indexed by opcodeClass */
 int		       (*instructionActionTable[])() = {
 	actionsRelative,
@@ -302,54 +289,6 @@ codeRegionType		*codeRegions[2] = {
 valueType		 undefinedValueValue = { UNDEFINED_VALUE, 0,
 					EXPRESSION_OPND };
 valueType		*UndefinedValue = &undefinedValueValue;
-
-valueType	*addressModeBIF();
-valueType	*applyBIF();
-valueType	*arrayLengthBIF();
-valueType	*atasciiBIF();
-valueType	*atasciiColorBIF();
-valueType	*debugModeOffBIF();
-valueType	*debugModeOnBIF();
-valueType	*emitModeOffBIF();
-valueType	*emitModeOnBIF();
-valueType	*isAbsoluteValueBIF();
-valueType	*isARegisterBIF();
-valueType	*isBlockBIF();
-valueType	*isBuiltInFunctionBIF();
-valueType	*isConditionCodeBIF();
-valueType	*isDefinedBIF();
-valueType	*isDirectModeBIF();
-valueType	*isExternalBIF();
-valueType	*isFieldBIF();
-valueType	*isFunctionBIF();
-valueType	*isImmediateModeBIF();
-valueType	*isIndexedModeBIF();
-valueType	*isIndirectModeBIF();
-valueType	*isPostIndexedModeBIF();
-valueType	*isPreIndexedModeBIF();
-valueType	*isRelocatableValueBIF();
-valueType	*isStringBIF();
-valueType	*isStructBIF();
-valueType	*isSymbolBIF();
-valueType	*isXIndexedModeBIF();
-valueType	*isXRegisterBIF();
-valueType	*isYIndexedModeBIF();
-valueType	*isYRegisterBIF();
-valueType	*listingOffBIF();
-valueType	*listingOnBIF();
-valueType	*makeArrayBIF();
-valueType	*nthCharBIF();
-valueType	*printfBIF();
-valueType	*strcatBIF();
-valueType	*strcmpBIF();
-valueType	*strcmplcBIF();
-valueType	*strlenBIF();
-valueType	*substrBIF();
-valueType	*symbolDefineBIF();
-valueType	*symbolLookupBIF();
-valueType	*symbolNameBIF();
-valueType	*symbolUsageBIF();
-valueType	*valueTypeBIF();
 
 /* Used to initialize symbols representing built-in functions */
 struct {

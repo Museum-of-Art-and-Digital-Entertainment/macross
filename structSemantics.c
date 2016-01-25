@@ -29,11 +29,16 @@
 
 #include "macrossTypes.h"
 #include "macrossGlobals.h"
+#include "emitStuff.h"
+#include "errorStuff.h"
+#include "listing.h"
+#include "parserMisc.h"
+#include "semanticMisc.h"
+#include "statementSemantics.h"
+#include "structSemantics.h"
 
   void
-putStructFixups(base, fixups)
-  int		 base;
-  fixupListType	*fixups;
+putStructFixups(int base, fixupListType *fixups)
 {
 	fixupListType	*newFixup;
 
@@ -54,9 +59,7 @@ putStructFixups(base, fixups)
 }
 
   void
-putStructReferences(base, references)
-  int				 base;
-  expressionReferenceListType	*references;
+putStructReferences(int base, expressionReferenceListType *references)
 {
 	expressionReferenceListType	*newReference;
 	int				 currentMode;
@@ -80,14 +83,11 @@ putStructReferences(base, references)
 }
 
   void
-instantiateStruct(structStatement)
-  structStatementBodyType	*structStatement;
+instantiateStruct(structStatementBodyType *structStatement)
 {
 	int			 i;
 	int			 base;
 	symbolInContextType	*context;
-
-	symbolInContextType	*getWorkingContext();
 
 #define structInstance	((structInstanceType *)	context->value->value)
 
@@ -112,8 +112,7 @@ instantiateStruct(structStatement)
 }
 
   structInstanceType *
-assembleStructDefinitionBody(structBody)
-  structBodyType	*structBody;
+assembleStructDefinitionBody(structBodyType *structBody)
 {
 	int			 i;
 	simpleFixupListType	*dummy;
@@ -128,7 +127,7 @@ assembleStructDefinitionBody(structBody)
 		expand(listableStatement(structBody->kindOfStatement) ?
 			(expandLabel(), tabIndent()) : 0);
 		assembleStatementBody(structBody->kindOfStatement,
-				structBody->statementBody, FALSE, &dummy);
+				structBody->statementBody, 0 /* random guess */, FALSE, &dummy);
 		if (currentFieldOffset > MAXIMUM_ALLOWED_STRUCT_SIZE) {
 			error(STRUCT_TOO_BIG_ERROR);
 			return(NULL);
@@ -144,13 +143,10 @@ assembleStructDefinitionBody(structBody)
 }
 
   void
-assembleStructDefinition(structStatement)
-  structStatementBodyType	*structStatement;
+assembleStructDefinition(structStatementBodyType *structStatement)
 {
 	symbolTableEntryType	*name;
 	symbolInContextType	*context;
-
-	symbolTableEntryType	*effectiveSymbol();
 
 	name = effectiveSymbol(structStatement->structName, &context);
 	if (context == NULL)

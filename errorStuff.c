@@ -29,6 +29,10 @@
 
 #include "macrossTypes.h"
 #include "macrossGlobals.h"
+#include "errorStuff.h"
+#include "initialize.h"
+
+#include <stdarg.h>
 
 bool			 nullStatementFlag;
 
@@ -38,34 +42,28 @@ bool			 nullStatementFlag;
    from the booboo. */
 
   void
-puntOnError(theError, arg1, arg2, arg3)
-  errorType	theError;
-  anyOldThing	*arg1;
-  anyOldThing	*arg2;
-  anyOldThing	*arg3;
+puntOnError(errorType theError, ...)
 {
+	va_list ap;
 	char	c;
-	void	error();
 
 	while ((c = getc(input))!='\n' && c!=EOF)
 		;
 	ungetc(c, input);
-	error(theError, arg1, arg2, arg3);
+
+	va_start(ap, theError);
+	verror(theError, ap);
+	va_end(ap);
 }
 
 
 /* printErrorMessage is the general error message handler */
 
   void
-printErrorMessage(theError, arg1, arg2, arg3)
-  errorType	theError;
-  anyOldThing	*arg1;
-  anyOldThing	*arg2;
-  anyOldThing	*arg3;
+printErrorMessage(errorType theError, va_list ap)
 {
 /* This table MUST be maintained congruently with the definition of the
    enumerated type 'errorType'. */
-	void fatalError();
 	static bool dying = FALSE;
 
 	static char *errorMessageStrings[] = {
@@ -232,7 +230,7 @@ printErrorMessage(theError, arg1, arg2, arg3)
 		lastErrorLine = currentLineNumber;
 		printf("\"%s\", line %d: ", currentFileName, currentLineNumber
 			-1);
-		printf(errorMessageStrings[(int)theError], arg1, arg2, arg3);
+		vprintf(errorMessageStrings[(int)theError], ap);
 		printf("\n");
 		fflush(stdout);
 	}
@@ -243,45 +241,48 @@ printErrorMessage(theError, arg1, arg2, arg3)
 }
 
   void
-error(theError, arg1, arg2, arg3)
-  errorType	theError;
-  anyOldThing	*arg1;
-  anyOldThing	*arg2;
-  anyOldThing	*arg3;
+error(errorType theError, ...)
 {
-	printErrorMessage(theError, arg1, arg2, arg3);
+	va_list ap;
+	va_start(ap, theError);
+	printErrorMessage(theError, ap);
+	va_end(ap);
 	errorFlag = TRUE;
 }
 
   void
-warning(theError, arg1, arg2, arg3)
-  errorType	theError;
-  anyOldThing	*arg1;
-  anyOldThing	*arg2;
-  anyOldThing	*arg3;
+verror(errorType theError, va_list ap)
 {
-	printErrorMessage(theError, arg1, arg2, arg3);
+	printErrorMessage(theError, ap);
+	errorFlag = TRUE;
 }
 
   void
-fatalError(theError, arg1, arg2, arg3)
-  errorType	theError;
-  anyOldThing	*arg1;
-  anyOldThing	*arg2;
-  anyOldThing	*arg3;
+warning(errorType theError, ...)
 {
-	printErrorMessage(theError, arg1, arg2, arg3);
+	va_list ap;
+	va_start(ap, theError);
+	printErrorMessage(theError, ap);
+	va_end(ap);
+}
+
+  void
+fatalError(errorType theError, ...)
+{
+	va_list ap;
+	va_start(ap, theError);
+	printErrorMessage(theError, ap);
+	va_end(ap);
 	chokePukeAndDie();
 }
 
   void
-fatalSystemError(theError, arg1, arg2, arg3)
-  errorType	theError;
-  anyOldThing	*arg1;
-  anyOldThing	*arg2;
-  anyOldThing	*arg3;
+fatalSystemError(errorType theError, ...)
 {
-	printErrorMessage(theError, arg1, arg2, arg3);
+	va_list ap;
+	va_start(ap, theError);
+	printErrorMessage(theError, ap);
+	va_end(ap);
 	perror("Unix says");
 	chokePukeAndDie();
 }
@@ -290,8 +291,7 @@ fatalSystemError(theError, arg1, arg2, arg3)
    the error message as a string (this is almost always 'syntax error'). */
 
   void
-yyerror(s)
-  char	*s;
+yyerror(char *s)
 {
 	printf("\"%s\", line %d: %s\n", currentFileName, currentLineNumber,s);
 	fflush(stdout);
@@ -305,8 +305,7 @@ yyerror(s)
    in a sentence). */
 
   char *
-usageString(usageKind)
-  symbolUsageKindType	usageKind;
+usageString(symbolUsageKindType usageKind)
 {
 /* This table MUST be maintained congruently with the definition of the
    enumerated type 'symbolUsageKindType'. */
@@ -337,8 +336,7 @@ usageString(usageKind)
 /* valueKindString similarly deals with the different kinds of values. */
 
   char *
-valueKindString(valueKind)
-  valueKindType	valueKind;
+valueKindString(valueKindType valueKind)
 {
 /* This table MUST be maintained congruently with the definition of the
    enumerated type 'valueKindType'. */
@@ -367,8 +365,7 @@ valueKindString(valueKind)
 /* assignmentString similarly handles assignments */
 
   char *
-assignmentString(assignment)
-  assignmentKindType	assignment;
+assignmentString(assignmentKindType assignment)
 {
 /* This table MUST be maintained congruently with the definition of the
    enumerated type 'assignmentKindType'. */

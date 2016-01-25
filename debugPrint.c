@@ -30,6 +30,7 @@
 
 #include "macrossTypes.h"
 #include "macrossGlobals.h"
+#include "debugPrint.h"
 #include "y.tab.h"
 
 /*
@@ -42,8 +43,9 @@ int	tablevel = 0;
 #define nullPrint(thing)   if (thing==NULL) { tab(); printf("()\n"); return; }
 
 /* For keeping nested structures looking pretty */
-  void
-tab()
+
+void
+tab(void)
 {
 	int	n;
 
@@ -60,8 +62,7 @@ tab()
  */
 
   void
-printAssignmentKind(assignmentKind)
-  assignmentKindType	assignmentKind;
+printAssignmentKind(assignmentKindType assignmentKind)
 {
 /* This table MUST be maintained congruently with the definition of the
    enumerated type 'assignmentKindType'. */
@@ -84,8 +85,7 @@ printAssignmentKind(assignmentKind)
 }
 
   void
-printExpressionKind(kind)
-  expressionTermKindType	kind;
+printExpressionKind(expressionTermKindType kind)
 {
 /* This table MUST be maintained congruently with the definition of the
    enumerated type 'expressionTermKindType'. */
@@ -110,8 +110,7 @@ printExpressionKind(kind)
 }
 
   stringType *
-statementKindString(kind)
-  statementKindType	kind;
+statementKindString(statementKindType kind)
 {
 /* This table MUST be maintained congruently with the definition of
    the enumerated type 'statementKindType'. */
@@ -159,8 +158,7 @@ static char *statementKindTable[] = {
 }
 
   void
-printStatementKind(kind)
-  statementKindType	kind;
+printStatementKind(statementKindType kind)
 {
 	printf("%s", statementKindString(kind));
 }
@@ -171,8 +169,7 @@ printStatementKind(kind)
  */
 
   void
-printValue(value)
-  valueType	*value;
+printValue(valueType *value)
 {
 /* This table MUST be maintained congruently with the definition of the
    enumerated type 'valueKindType'. */
@@ -205,8 +202,7 @@ printValue(value)
 }
 
   void
-printSymbol(symbol)
-  symbolTableEntryType	*symbol;
+printSymbol(symbolTableEntryType *symbol)
 {
 /* This table MUST be maintained congruent with the definition of the
    enumerated type 'symbolUsageKindType'. */
@@ -241,8 +237,7 @@ printSymbol(symbol)
 }
 
   void
-printArgumentDefinitionList(list)
-  argumentDefinitionListType	*list;
+printArgumentDefinitionList(argumentDefinitionListType *list)
 {
 	nullPrint(list);
 	tab(); printf("(arguments:\n");
@@ -256,11 +251,8 @@ printArgumentDefinitionList(list)
 }
 
   void
-printBlock(block)
-  blockType	*block;
+printBlock(blockType *block)
 {
-	void	printStatement();
-
 	nullPrint(block);
 	tab(); printf("(block:\n");
 	tablevel++;
@@ -270,12 +262,8 @@ printBlock(block)
 }
 
   void
-printArrayTerm(arrayTerm)
-  arrayTermType	*arrayTerm;
+printArrayTerm(arrayTermType *arrayTerm)
 {
-	void	printIdentifier();
-	void	printExpression();
-
 	nullPrint(arrayTerm);
 	tab(); printf("(array\n");
 	tablevel++;
@@ -286,10 +274,8 @@ printArrayTerm(arrayTerm)
 }
 
   void
-printAssignmentTerm(assignmentTerm)
-  binopTermType	*assignmentTerm;
+printAssignmentTerm(binopTermType *assignmentTerm)
 {
-	void	printExpression();
 
 	nullPrint(assignmentTerm);
 	tab(); printf("(assignment [");
@@ -303,12 +289,8 @@ printAssignmentTerm(assignmentTerm)
 }
 
   void
-printBinopTerm(binopTerm)
-  binopTermType	*binopTerm;
+printBinopTerm(binopTermType *binopTerm)
 {
-	void	printIdentifier();
-	void	printExpression();
-
 	nullPrint(binopTerm);
 	tab(); printf("(binop [");
 	printToken(binopTerm->binop);
@@ -324,11 +306,8 @@ printBinopTerm(binopTerm)
 }
 
   void
-printFunctionCall(functionCall)
-  functionCallTermType	*functionCall;
+printFunctionCall(functionCallTermType *functionCall)
 {
-	void	printOperandList();
-
 	nullPrint(functionCall);
 	tab(); printf("(function call %s\n", functionCall->functionName->
 			symbolName);
@@ -339,29 +318,26 @@ printFunctionCall(functionCall)
 }
 
   void
-printHere()
+printHere(void)
 {
 	tab(); printf("(here)\n");
 }
 
   void
-printIdentifier(identifier)
-  symbolTableEntryType	*identifier;
+printIdentifier(symbolTableEntryType *identifier)
 {
 	nullPrint(identifier);
 	printSymbol(identifier);
 }
 
   void
-printNumber(number)
-  numberTermType	number;
+printNumber(numberTermType number)
 {
 	tab(); printf("(number: %d)\n", number);
 }
 
   void
-printPostopTerm(postopTerm)
-  postOpTermType	*postopTerm;
+printPostopTerm(postOpTermType *postopTerm)
 {
 	nullPrint(postopTerm);
 	tab(); printf("(postop [");
@@ -374,8 +350,7 @@ printPostopTerm(postopTerm)
 }
 
   void
-printPreopTerm(preopTerm)
-  preOpTermType	*preopTerm;
+printPreopTerm(preOpTermType *preopTerm)
 {
 	nullPrint(preopTerm);
 	tab(); printf("(preop [");
@@ -388,11 +363,8 @@ printPreopTerm(preopTerm)
 }
 
   void
-printUnopTerm(unopTerm)
-  unopTermType	*unopTerm;
+printUnopTerm(unopTermType *unopTerm)
 {
-	void	printExpression();
-
 	nullPrint(unopTerm);
 	tab(); printf("(unop [");
 	       printToken(unopTerm->unop);
@@ -404,8 +376,7 @@ printUnopTerm(unopTerm)
 }
 
   void
-printExpression(expression)
-  expressionType	*expression;
+printExpression(expressionType *expression)
 {
 	nullPrint(expression);
 	tab(); printf("(expression: [");
@@ -427,7 +398,7 @@ printExpression(expression)
 		break;
 
 	case CONDITION_CODE_EXPR:
-		printCondition(expression->expressionTerm);
+		printCondition(expression->expressionTerm.conditionTypeUnion);
 		break;
 
 	case FUNCTION_CALL_EXPR:
@@ -480,8 +451,7 @@ printExpression(expression)
 }
 
   void
-printExpressionList(expressionList)
-  expressionListType	*expressionList;
+printExpressionList(expressionListType *expressionList)
 {
 	while (expressionList != NULL) {
 		printExpression(expressionList->theExpression);
@@ -490,8 +460,7 @@ printExpressionList(expressionList)
 }
 
   void
-printIdentifierList(identifierList)
-  identifierListType	*identifierList;
+printIdentifierList(identifierListType *identifierList)
 {
 	nullPrint(identifierList);
 	printSymbol(identifierList->theSymbol);
@@ -505,8 +474,7 @@ printIdentifierList(identifierList)
  */
 
   void
-printCase(aCase)
-  caseType	*aCase;
+printCase(caseType *aCase)
 {
 	tab(); printf("(case:\n"); tablevel++;
 	if (aCase->caseTags == NULL) {
@@ -523,8 +491,7 @@ printCase(aCase)
 }
 
   void
-printCaseList(caseList)
-  caseListType	*caseList;
+printCaseList(caseListType *caseList)
 {
 	tab(); printf("(cases:\n");
 	tablevel++;
@@ -537,24 +504,21 @@ printCaseList(caseList)
 }
 
   void
-printMacro(macroInstruction)
-  macroTableEntryType	*macroInstruction;
+printMacro(macroTableEntryType *macroInstruction)
 {
 	nullPrint(macroInstruction);
 	tab(); printf("(macro: %s)\n", macroInstruction->macroName);
 }
 
   void
-printOpcode(opcode)
-  opcodeTableEntryType	*opcode;
+printOpcode(opcodeTableEntryType *opcode)
 {
 	nullPrint(opcode);
 	tab(); printf("(opcode: %s)\n", opcode->mnemonic);
 }
 
   void
-printOperandList(operandList)
-  operandListType	*operandList;
+printOperandList(operandListType *operandList)
 {
 	nullPrint(operandList);
 	printOperand(operandList);
@@ -563,16 +527,14 @@ printOperandList(operandList)
 }
 
   void
-printAlignStatement(alignStatement)
-  alignStatementBodyType	*alignStatement;
+printAlignStatement(alignStatementBodyType *alignStatement)
 {
 	nullPrint(alignStatement);
 	printExpression(alignStatement);
 }
 
   void
-printAssertStatement(assertStatement)
-  assertStatementBodyType	*assertStatement;
+printAssertStatement(assertStatementBodyType *assertStatement)
 {
 	nullPrint(assertStatement);
 	printExpression(assertStatement->condition);
@@ -580,24 +542,21 @@ printAssertStatement(assertStatement)
 }
 
   void
-printBlockStatement(blockStatement)
-  blockStatementBodyType	*blockStatement;
+printBlockStatement(blockStatementBodyType *blockStatement)
 {
 	nullPrint(blockStatement);
 	printExpressionList(blockStatement);
 }
 
   void
-printByteStatement(byteStatement)
-  byteStatementBodyType	*byteStatement;
+printByteStatement(byteStatementBodyType *byteStatement)
 {
 	nullPrint(byteStatement);
 	printExpressionList(byteStatement);
 }
 
   void
-printConstrainStatement(constrainStatement)
-  constrainStatementBodyType	*constrainStatement;
+printConstrainStatement(constrainStatementBodyType *constrainStatement)
 {
 	nullPrint(constrainStatement);
 	printExpression(constrainStatement->constraint);
@@ -605,16 +564,14 @@ printConstrainStatement(constrainStatement)
 }
 
   void
-printDbyteStatement(dbyteStatement)
-  dbyteStatementBodyType	*dbyteStatement;
+printDbyteStatement(dbyteStatementBodyType *dbyteStatement)
 {
 	nullPrint(dbyteStatement);
 	printExpressionList(dbyteStatement);
 }
 
   void
-printDefineStatement(defineStatement)
-  defineStatementBodyType	*defineStatement;
+printDefineStatement(defineStatementBodyType *defineStatement)
 {
 	nullPrint(defineStatement);
 	printSymbol(defineStatement->theSymbol);
@@ -622,8 +579,7 @@ printDefineStatement(defineStatement)
 }
 
   void
-printDoUntilStatement(doUntilStatement)
-  doUntilStatementBodyType	*doUntilStatement;
+printDoUntilStatement(doUntilStatementBodyType *doUntilStatement)
 {
 	nullPrint(doUntilStatement);
 	printBlock(doUntilStatement->doUntilLoop);
@@ -633,8 +589,7 @@ printDoUntilStatement(doUntilStatement)
 }
 
   void
-printDoWhileStatement(doWhileStatement)
-  doWhileStatementBodyType	*doWhileStatement;
+printDoWhileStatement(doWhileStatementBodyType *doWhileStatement)
 {
 	nullPrint(doWhileStatement);
 	printBlock(doWhileStatement->doWhileLoop);
@@ -644,24 +599,21 @@ printDoWhileStatement(doWhileStatement)
 }
 
   void
-printExternStatement(externStatement)
-  externStatementBodyType	*externStatement;
+printExternStatement(externStatementBodyType *externStatement)
 {
 	nullPrint(externStatement);
 	printIdentifierList(externStatement);
 }
 
   void
-printFreturnStatement(freturnStatement)
-  freturnStatementBodyType	*freturnStatement;
+printFreturnStatement(freturnStatementBodyType *freturnStatement)
 {
 	nullPrint(freturnStatement);
 	printExpression(freturnStatement);
 }
 
   void
-printFunctionStatement(functionStatement)
-  functionStatementBodyType	*functionStatement;
+printFunctionStatement(functionStatementBodyType *functionStatement)
 {
 	nullPrint(functionStatement);
 	tab();printf("(function name: %s)\n",functionStatement->functionName);
@@ -670,8 +622,7 @@ printFunctionStatement(functionStatement)
 }
 
   void
-printIfStatement(ifStatement)
-  ifStatementBodyType	*ifStatement;
+printIfStatement(ifStatementBodyType *ifStatement)
 {
 	nullPrint(ifStatement);
 	tab(); printf("(condition: ");
@@ -686,16 +637,14 @@ printIfStatement(ifStatement)
 }
 
   void
-printIncludeStatement(includeStatement)
-  includeStatementBodyType	*includeStatement;
+printIncludeStatement(includeStatementBodyType *includeStatement)
 {
 	nullPrint(includeStatement);
 	printExpression(includeStatement);
 }
 
   void
-printInstructionStatement(instructionStatement)
-  instructionStatementBodyType	*instructionStatement;
+printInstructionStatement(instructionStatementBodyType *instructionStatement)
 {
 	nullPrint(instructionStatement);
 	switch(instructionStatement->kindOfInstruction) {
@@ -716,16 +665,14 @@ printInstructionStatement(instructionStatement)
 }
 
   void
-printLongStatement(longStatement)
-  longStatementBodyType	*longStatement;
+printLongStatement(longStatementBodyType *longStatement)
 {
 	nullPrint(longStatement);
 	printExpressionList(longStatement);
 }
 
   void
-printMacroStatement(macroStatement)
-  macroStatementBodyType	*macroStatement;
+printMacroStatement(macroStatementBodyType *macroStatement)
 {
 	nullPrint(macroStatement);
 	tab(); printf("(macro name: %s)\n", macroStatement->theMacro);
@@ -734,8 +681,7 @@ printMacroStatement(macroStatement)
 }
 
   void
-printMdefineStatement(mdefineStatement)
-  defineStatementBodyType	*mdefineStatement;
+printMdefineStatement(defineStatementBodyType *mdefineStatement)
 {
 	nullPrint(mdefineStatement);
 	printSymbol(mdefineStatement->theSymbol);
@@ -743,8 +689,7 @@ printMdefineStatement(mdefineStatement)
 }
 
   void
-printMdoUntilStatement(mdoUntilStatement)
-  mdoUntilStatementBodyType	*mdoUntilStatement;
+printMdoUntilStatement(mdoUntilStatementBodyType *mdoUntilStatement)
 {
 	nullPrint(mdoUntilStatement);
 	printBlock(mdoUntilStatement->mdoUntilLoop);
@@ -752,8 +697,7 @@ printMdoUntilStatement(mdoUntilStatement)
 }
 
   void
-printMdoWhileStatement(mdoWhileStatement)
-  mdoWhileStatementBodyType	*mdoWhileStatement;
+printMdoWhileStatement(mdoWhileStatementBodyType *mdoWhileStatement)
 {
 	nullPrint(mdoWhileStatement);
 	printBlock(mdoWhileStatement->mdoWhileLoop);
@@ -761,8 +705,7 @@ printMdoWhileStatement(mdoWhileStatement)
 }
 
   void
-printMforStatement(mforStatement)
-  mforStatementBodyType	*mforStatement;
+printMforStatement(mforStatementBodyType *mforStatement)
 {
 	nullPrint(mforStatement);
 	printExpression(mforStatement->initExpression);
@@ -772,8 +715,7 @@ printMforStatement(mforStatement)
 }
 
   void
-printMifStatement(mifStatement)
-  mifStatementBodyType	*mifStatement;
+printMifStatement(mifStatementBodyType *mifStatement)
 {
 	nullPrint(mifStatement);
 	printExpression(mifStatement->mifCondition);
@@ -786,8 +728,7 @@ printMifStatement(mifStatement)
 }
 
   void
-printMswitchStatement(mswitchStatement)
-  mswitchStatementBodyType	*mswitchStatement;
+printMswitchStatement(mswitchStatementBodyType *mswitchStatement)
 {
 	nullPrint(mswitchStatement);
 	printExpression(mswitchStatement->switchExpression);
@@ -795,8 +736,7 @@ printMswitchStatement(mswitchStatement)
 }
 
   void
-printMvariableStatement(mvariableStatement)
-  mvariableStatementBodyType	*mvariableStatement;
+printMvariableStatement(mvariableStatementBodyType *mvariableStatement)
 {
 	nullPrint(mvariableStatement);
 	printSymbol(mvariableStatement->theSymbol);
@@ -804,8 +744,7 @@ printMvariableStatement(mvariableStatement)
 }
 
   void
-printMwhileStatement(mwhileStatement)
-  mwhileStatementBodyType	*mwhileStatement;
+printMwhileStatement(mwhileStatementBodyType *mwhileStatement)
 {
 	nullPrint(mwhileStatement);
 	printExpression(mwhileStatement->mwhileCondition);
@@ -813,47 +752,41 @@ printMwhileStatement(mwhileStatement)
 }
 
   void
-printOrgStatement(orgStatement)
-  orgStatementBodyType	*orgStatement;
+printOrgStatement(orgStatementBodyType *orgStatement)
 {
 	nullPrint(orgStatement);
 	printExpression(orgStatement);
 }
 
   void
-printPerformStatement(performStatement)
-  performStatementBodyType	*performStatement;
+printPerformStatement(performStatementBodyType *performStatement)
 {
 	nullPrint(performStatement);
 	printExpression(performStatement);
 }
 
   void
-printRelStatement(relStatement)
-  relStatementBodyType	*relStatement;
+printRelStatement(relStatementBodyType *relStatement)
 {
 	/* there's nothing here... */
 }
 
   void
-printStartStatement(startStatement)
-  startStatementBodyType	*startStatement;
+printStartStatement(startStatementBodyType *startStatement)
 {
 	nullPrint(startStatement);
 	printExpression(startStatement);
 }
 
   void
-printStringStatement(stringStatement)
-  stringStatementBodyType	*stringStatement;
+printStringStatement(stringStatementBodyType *stringStatement)
 {
 	nullPrint(stringStatement);
 	printExpressionList(stringStatement);
 }
 
   void
-printStructStatement(structStatement)
-  structStatementBodyType	*structStatement;
+printStructStatement(structStatementBodyType *structStatement)
 {
 	nullPrint(structStatement);
 	printSymbol(structStatement->structName);
@@ -861,24 +794,21 @@ printStructStatement(structStatement)
 }
 
   void
-printTargetStatement(targetStatement)
-  targetStatementBodyType	*targetStatement;
+printTargetStatement(targetStatementBodyType *targetStatement)
 {
 	nullPrint(targetStatement);
 	printExpression(targetStatement);
 }
 
   void
-printUndefineStatement(undefineStatement)
-  undefineStatementBodyType	*undefineStatement;
+printUndefineStatement(undefineStatementBodyType *undefineStatement)
 {
 	nullPrint(undefineStatement);
 	printIdentifierList(undefineStatement);
 }
 
   void
-printVariableStatement(variableStatement)
-  variableStatementBodyType	*variableStatement;
+printVariableStatement(variableStatementBodyType *variableStatement)
 {
 	nullPrint(variableStatement);
 	printSymbol(variableStatement->theSymbol);
@@ -886,8 +816,7 @@ printVariableStatement(variableStatement)
 }
 
   void
-printWhileStatement(whileStatement)
-  whileStatementBodyType	*whileStatement;
+printWhileStatement(whileStatementBodyType *whileStatement)
 {
 	nullPrint(whileStatement);
 	tab(); printf("(condition: ");
@@ -897,16 +826,14 @@ printWhileStatement(whileStatement)
 }
 
   void
-printWordStatement(wordStatement)
-  wordStatementBodyType	*wordStatement;
+printWordStatement(wordStatementBodyType *wordStatement)
 {
 	nullPrint(wordStatement);
 	printExpressionList(wordStatement);
 }
 
   void
-printLabelList(labelList)
-  labelListType	*labelList;
+printLabelList(labelListType *labelList)
 {
 	nullPrint(labelList);
 	tab(); printf("(\n");
@@ -920,9 +847,7 @@ printLabelList(labelList)
 }
 
   void
-printStatementBody(kind, body)
-  statementKindType	kind;
-  statementBodyType	body;
+printStatementBody(statementKindType kind, statementBodyType body)
 {
 	switch (kind) {
 
@@ -1085,8 +1010,7 @@ printStatementBody(kind, body)
 }
 
   void
-printStatement(statement)
-  statementType	*statement;
+printStatement(statementType *statement)
 {
 	nullPrint(statement);
 	tab(); printf("(statement[");
@@ -1107,8 +1031,7 @@ printStatement(statement)
  */
 
   void
-printPendingFixupList(fixupList)
-  fixupListType	*fixupList;
+printPendingFixupList(fixupListType *fixupList)
 {
 	printf("fixup list: (");
 	tablevel++;
@@ -1121,10 +1044,7 @@ printPendingFixupList(fixupList)
 }
 
   void
-printCreateFixup(expression, location, kindOfFixup)
-  expressionType	*expression;
-  addressType		 location;
-  fixupKindType		 kindOfFixup;
+printCreateFixup(expressionType *expression, addressType location, fixupKindType kindOfFixup)
 {
 	static char	*fixupStringTable[] = {
 		"BYTE FIXUP",
@@ -1148,7 +1068,7 @@ printCreateFixup(expression, location, kindOfFixup)
  */
 
   void
-printExpressionBuffer()
+printExpressionBuffer(void)
 {
 	int	line;
 	int	i;
@@ -1163,9 +1083,7 @@ printExpressionBuffer()
 }
 
   void
-printOneCodeBuffer(codeSegment, bufferNum)
-  codeSegmentType	*codeSegment;
-  int			 bufferNum;
+printOneCodeBuffer(codeSegmentType *codeSegment, int bufferNum)
 {
     int			 line;
     int			 i;
@@ -1193,8 +1111,7 @@ printOneCodeBuffer(codeSegment, bufferNum)
 }
 
   void
-printCodeBufferSection(codeBufferSection)
-  codeRegionType	*codeBufferSection;
+printCodeBufferSection(codeRegionType *codeBufferSection)
 {
 	bool	anyCodeThereFlag;
 	int	i;
@@ -1212,7 +1129,7 @@ printCodeBufferSection(codeBufferSection)
 }
 
   void
-printCodeBuffers()
+printCodeBuffers(void)
 {
 	printf("absolute code:\n");
 	printCodeBufferSection(&absoluteCodeRegion);

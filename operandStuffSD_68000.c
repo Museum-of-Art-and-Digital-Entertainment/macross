@@ -59,7 +59,7 @@ buildOperand(kindOfOperand, arg1, arg2, arg3, arg4)
 		break;
 
 	case BLOCK_OPND:
-		result->theOperand.blockUnion = (BlockOperandBodyType *) arg1;
+		result->theOperand.blockUnion = (blockOperandBodyType *) arg1;
 		break;
 
 	case D_REGISTER_OPND:

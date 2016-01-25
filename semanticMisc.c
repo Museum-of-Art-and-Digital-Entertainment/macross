@@ -32,6 +32,21 @@
 #include "macrossGlobals.h"
 #include "y.tab.h"
 
+#include "semanticMisc.h"
+#include "buildStuff.h"
+#include "debugPrint.h"
+#include "emitStuff.h"
+#include "errorStuff.h"
+#include "expressionSemantics.h"
+#include "fixups.h"
+#include "listing.h"
+#include "lookups.h"
+#include "object.h"
+#include "operandStuff.h"
+#include "parserMisc.h"
+
+#include <string.h>
+
 #define expansionOff() {saveExpansion=expandMacros; expandMacros=FALSE;}
 #define expansionOn()	expandMacros=saveExpansion;
 
@@ -40,20 +55,17 @@
  */
 
   bool
-absoluteValue(address)
-  valueType	*address;
+absoluteValue(valueType *address)
 {
 	return(address->kindOfValue == ABSOLUTE_VALUE);
 }
 
   void
-addAttributeToSymbol(symbol, attribute)
-  symbolTableEntryType	*symbol;
-  symbolAttributesType	 attribute;
+addAttributeToSymbol(symbolTableEntryType *symbol, symbolAttributesType attribute)
 {
 	symbolInContextType	*context;
 
-	symbolInContextType	*getBaseContext();
+	symbolInContextType	*getBaseContext(symbolTableEntryType *identifier);
 
 	context = getBaseContext(symbol);
 	if (context != NULL)
@@ -61,8 +73,7 @@ addAttributeToSymbol(symbol, attribute)
 }
 
   addressType
-addressValue(value)
-  valueType	*value;
+addressValue(valueType *value)
 {
 	if (value->kindOfValue==STRING_VALUE ||
 	    value->kindOfValue==CONDITION_VALUE ||
@@ -73,9 +84,7 @@ addressValue(value)
 }
 
   valueKindType
-addValueKind(leftOperand, rightOperand)
-  valueType	*leftOperand;
-  valueType	*rightOperand;
+addValueKind(valueType *leftOperand, valueType *rightOperand)
 {
 /* This table MUST be maintained congruently with the definition of the
    enumerated type 'valueKindType'. */
@@ -206,20 +215,17 @@ addValueKind(leftOperand, rightOperand)
 }
 
   bool
-alreadyDefined(context)
-  symbolInContextType	*context;
+alreadyDefined(symbolInContextType *context)
 {
 	return((context->attributes & DEFINED_VARIABLE_ATT) != 0);
 }
 
   bool
-booleanTest(expression)
-  expressionType	*expression;
+booleanTest(expressionType *expression)
 {
 	bool		 result;
 	valueType	*expressionResult;
 	bool		 saveExpansion;
-	valueType	*evaluateExpression();
 
 	expansionOff();
 	expressionResult = evaluateExpression(expression, NO_FIXUP);
@@ -238,8 +244,7 @@ booleanTest(expression)
 }
 
   int
-countArguments(function)
-  functionDefinitionType	*function;
+countArguments(functionDefinitionType *function)
 {
 	int				 result;
 	argumentDefinitionListType	*arguments;
@@ -254,8 +259,7 @@ countArguments(function)
 }
 
   int
-countParameters(parameterList)
-  operandListType	*parameterList;
+countParameters(operandListType *parameterList)
 {
 	int	result;
 
@@ -268,9 +272,7 @@ countParameters(parameterList)
 }
 
   arrayType *
-allocArray(size, contentsPtr)
-  int		   size;
-  valueType	***contentsPtr;
+allocArray(int size, valueType ***contentsPtr)
 {
 	arrayType	*result;
 	int		 i;
@@ -285,9 +287,7 @@ allocArray(size, contentsPtr)
 }
 
   valueType *
-createArray(dimension, initializers)
-  expressionType	*dimension;
-  expressionListType	*initializers;
+createArray(expressionType *dimension, expressionListType *initializers)
 {
 	int		 initCount;
 	valueType	*arraySizeValue;
@@ -296,8 +296,6 @@ createArray(dimension, initializers)
 	arrayType	*result;
 	int		 i;
 
-	valueType	*newValue();
-	
 	initCount = expressionListLength(initializers);
 	if ((int)dimension == -1) {
 		arraySize = initCount;
@@ -323,8 +321,7 @@ createArray(dimension, initializers)
 }
 
   bool
-decrementable(value)
-  valueType	*value;
+decrementable(valueType *value)
 {
 /* This table MUST be maintained congruently with the definition of the
    enumerated type 'valueKindType'. */
@@ -354,8 +351,7 @@ decrementable(value)
 }
 
   int
-expressionListLength(expressionList)
-  expressionListType	*expressionList;
+expressionListLength(expressionListType *expressionList)
 {
 	int	result;
 
@@ -368,11 +364,9 @@ expressionListLength(expressionList)
 }
 
   int
-fieldValue(symbol)
-  symbolTableEntryType		*symbol;
+fieldValue(symbolTableEntryType *symbol)
 {
 	valueType	*value;
-	valueType	*evaluateIdentifier();
 
 	value = evaluateIdentifier(symbol, FALSE, NO_FIXUP);
 	if (value->kindOfValue != FIELD_VALUE) {
@@ -384,8 +378,7 @@ fieldValue(symbol)
 }
 
   bool
-incrementable(value)
-  valueType	*value;
+incrementable(valueType *value)
 {
 /* This table MUST be maintained congruently with the definition of the
    enumerated type 'valueKindType'. */
@@ -415,8 +408,7 @@ incrementable(value)
 }
 
   int
-intValue(value)
-  valueType	*value;
+intValue(valueType *value)
 {
 	if (value->kindOfValue != ABSOLUTE_VALUE) {
 		error(VALUE_IS_NOT_AN_INT_ERROR);
@@ -427,8 +419,7 @@ intValue(value)
 }
 
   bool
-isAssignable(context)
-  symbolInContextType	*context;
+isAssignable(symbolInContextType *context)
 {
 	return( context->usage==ARGUMENT_SYMBOL         ||
 		context->usage==VARIABLE_SYMBOL  ||
@@ -436,15 +427,13 @@ isAssignable(context)
 }
 
   bool
-isBuiltInFunction(context)
-  symbolInContextType	*context;
+isBuiltInFunction(symbolInContextType *context)
 {
 	return(context!=NULL && context->usage==BUILT_IN_FUNCTION_SYMBOL);
 }
 
   bool
-isDefinable(context)
-  symbolInContextType	*context;
+isDefinable(symbolInContextType *context)
 {
 	return( context->usage==DEFINE_SYMBOL ||
 		context->usage==DEAD_SYMBOL ||
@@ -453,12 +442,9 @@ isDefinable(context)
 }
 
   bool
-isExternal(symbol)
-  symbolTableEntryType	*symbol;
+isExternal(symbolTableEntryType *symbol)
 {
 	symbolInContextType	*context;
-
-	symbolInContextType	*getBaseContext();
 
 	context = getBaseContext(symbol);
 	return (context!=NULL && (context->attributes & GLOBAL_ATT)!=0 &&
@@ -466,8 +452,7 @@ isExternal(symbol)
 }
 
   bool
-isFailure(value)
-  valueType	*value;
+isFailure(valueType *value)
 {
 	if (value == NULL)
 		return(FALSE);
@@ -476,15 +461,13 @@ isFailure(value)
 }
 
   bool
-isFunction(context)
-  symbolInContextType	*context;
+isFunction(symbolInContextType *context)
 {
 	return(context!=NULL && context->usage==FUNCTION_SYMBOL);
 }
 
   bool
-isLastStatementInBlock(statement)
-  statementType	*statement;
+isLastStatementInBlock(statementType *statement)
 {
 	statement = statement->nextStatement;
 	while (statement != NULL) {
@@ -517,8 +500,7 @@ isLastStatementInBlock(statement)
 }
 
   bool
-isLogicalOp(op)
-  int	op;
+isLogicalOp(int op)
 {
 	return (op==EQUAL_TO || op==GREATER_THAN || op==
 		GREATER_THAN_OR_EQUAL_TO || op==LESS_THAN || op==
@@ -527,8 +509,7 @@ isLogicalOp(op)
 }
 
   bool
-isPotentialVariable(context)
-  symbolInContextType	*context;
+isPotentialVariable(symbolInContextType *context)
 {
 	return( context->usage == VARIABLE_SYMBOL ||
 		context->usage == DEAD_SYMBOL ||
@@ -536,33 +517,26 @@ isPotentialVariable(context)
 }
 
   bool
-isUndefined(value)
-  valueType	*value;
+isUndefined(valueType *value)
 {
 	return(value==NULL || value->kindOfValue==UNDEFINED_VALUE);
 }
 
   bool
-isUsable(value)
-  valueType	*value;
+isUsable(valueType *value)
 {
 	return(value!=NULL && value->kindOfValue!=UNDEFINED_VALUE &&
 			value->kindOfValue!=FAIL);
 }
 
   bool
-logicalXOR(int1, int2)
-  int	int1;
-  int	int2;
+logicalXOR(int int1, int int2)
 {
 	return((int1 && !int2) || (int2 && !int1));
 }
 
   valueType *
-newValue(kindOfValue, value, addressMode)
-  valueKindType	 	kindOfValue;
-  int		 	value;
-  operandKindType	addressMode;
+newValue(valueKindType kindOfValue, int value, operandKindType addressMode)
 {
 	valueType	*result;
 
@@ -574,9 +548,7 @@ newValue(kindOfValue, value, addressMode)
 }
 
   valueKindType
-opValueKind(leftOperand, rightOperand)
-  valueType	*leftOperand;
-  valueType	*rightOperand;
+opValueKind(valueType *leftOperand, valueType *rightOperand)
 {
 	if (leftOperand->kindOfValue==ABSOLUTE_VALUE && rightOperand->
 						kindOfValue==ABSOLUTE_VALUE)
@@ -603,17 +575,14 @@ opValueKind(leftOperand, rightOperand)
 }
 
   bool
-relocatableValue(address)
-  valueType	*address;
+relocatableValue(valueType *address)
 {
 	return( address->kindOfValue==DATA_VALUE ||
 		address->kindOfValue==RELOCATABLE_VALUE );
 }
 
   valueKindType
-selectValueKind(leftOperand, rightOperand)
-  valueType	*leftOperand;
-  valueType	*rightOperand;
+selectValueKind(valueType *leftOperand, valueType *rightOperand)
 {
 	if (rightOperand->kindOfValue!=FIELD_VALUE ||
 	    (leftOperand->kindOfValue!=ABSOLUTE_VALUE &&
@@ -625,9 +594,7 @@ selectValueKind(leftOperand, rightOperand)
 }
 
   valueKindType
-subValueKind(leftOperand, rightOperand)
-  valueType	*leftOperand;
-  valueType	*rightOperand;
+subValueKind(valueType *leftOperand, valueType *rightOperand)
 {
 /* This table MUST be maintained congruently with the definition of the
    enumerated type 'valueKindType'. */
@@ -758,25 +725,20 @@ subValueKind(leftOperand, rightOperand)
 }
 
   int
-swab(i)
-  int	i;
+swabInt(int i)
 {
 	return(((i & 0xFF) << 8)  |  ((i & 0xFF00) >> 8));
 }
 
   valueType *
-swabValue(value)
-  valueType *value;
+swabValue(valueType *value)
 {
-	valueType	*newValue();
-
-	return(newValue(value->kindOfValue, swab(value->value), value->
+	return(newValue(value->kindOfValue, swabInt(value->value), value->
 								addressMode));
 }
 
   valueKindType
-unopValueKind(operand)
-  valueType	*operand;
+unopValueKind(valueType *operand)
 {
 	return(operand->kindOfValue==ABSOLUTE_VALUE || operand->kindOfValue==
 		UNDEFINED_VALUE || operand->kindOfValue==RELOCATABLE_VALUE ?
@@ -784,14 +746,9 @@ unopValueKind(operand)
 }
 
   void
-valueField(symbol, value)
-  symbolTableEntryType	*symbol;
-  valueType		*value;
+valueField(symbolTableEntryType *symbol, valueType *value)
 {
 	symbolInContextType	*workingContext;
-
-	symbolInContextType	*getWorkingContext();
-	symbolTableEntryType	*effectiveSymbol();
 
 	symbol = effectiveSymbol(symbol, &workingContext);
 	expand(moreLabel("%s:", symbol->symbolName));
@@ -811,15 +768,9 @@ valueField(symbol, value)
 }
 
   void
-valueLabel(symbol, value)
-  symbolTableEntryType	*symbol;
-  valueType		*value;
+valueLabel(symbolTableEntryType *symbol, valueType *value)
 {
 	symbolInContextType	*workingContext;
-
-	symbolTableEntryType	*generateLocalLabel();
-	symbolInContextType	*getBaseContext();
-	symbolTableEntryType	*effectiveSymbol();
 
 	symbol = effectiveSymbol(symbol, &workingContext);
 	expand(moreLabel("%s:", symbol->symbolName));
@@ -860,16 +811,9 @@ valueLabel(symbol, value)
  */
 
   void
-createFixup(expression, location, kindOfFixup, codeMode, whichFixup)
-  expressionType	*expression;
-  addressType		 location;
-  fixupKindType		 kindOfFixup;
-  codeBufferKindType	 codeMode;
-  int			 whichFixup;
+createFixup(expressionType *expression, addressType location, fixupKindType kindOfFixup, codeBufferKindType codeMode, int whichFixup)
 {
 	fixupListType	*newFixup;
-
-	expressionType	*generateFixupExpression();
 
 	if (debug || emitPrint)
 		printCreateFixup(expression, location, kindOfFixup);
@@ -898,11 +842,8 @@ createFixup(expression, location, kindOfFixup, codeMode, whichFixup)
 }
 
   void
-finishUp()
+finishUp(void)
 {
-	void	performFixups();
-	void	performStartAddressFixup();
-
 	if (listingOn)
 		terminateListingFiles();
 	performFixups(fixupList);
@@ -932,7 +873,7 @@ isReferenceToRemember(reference)
 }
 */
   void
-noteAnonymousReference()
+noteAnonymousReference(void)
 {
 	expressionReferenceListType	*newReference;
 
@@ -954,11 +895,7 @@ noteAnonymousReference()
 }
 
   void
-noteReference(expression, kindOfFixup, location, codeMode)
-  expressionType	*expression;
-  fixupKindType		 kindOfFixup;
-  addressType		 location;
-  codeBufferKindType	 codeMode;
+noteReference(expressionType *expression, fixupKindType kindOfFixup, addressType location, codeBufferKindType codeMode)
 {
 	expressionReferenceListType	*newReference;
 
@@ -1006,10 +943,8 @@ noteReference(expression, kindOfFixup, location, codeMode)
 }
 
   void
-performFixups(fixups)
-  fixupListType		*fixups;
+performFixups(fixupListType *fixups)
 {
-	valueType	*evaluateExpression();
 	valueType	*valueToPoke;
 
 	performingFixups = TRUE;
@@ -1069,11 +1004,9 @@ performFixups(fixups)
 }
 
   void
-performStartAddressFixup()
+performStartAddressFixup(void)
 {
 	expressionType	*startAddressExpression;
-
-	expressionType	*generateFixupExpression();
 
 	startAddressExpression = (expressionType *)startAddress;
 	startAddress = evaluateExpression(startAddressExpression,NO_FIXUP_OK);
@@ -1091,9 +1024,7 @@ performStartAddressFixup()
 }
 
   void
-putFixupsHere(kindOfFixupsToPut, whichFixup)
-  fixupKindType	kindOfFixupsToPut;
-  int		whichFixup;
+putFixupsHere(fixupKindType kindOfFixupsToPut, int whichFixup)
 {
 	int	location;
 
@@ -1184,8 +1115,7 @@ putReferencesHere(kindOfReferencesToPut, whichReference)
  */
 
   void
-addNewLocalVariable(symbol)
-  symbolTableEntryType	*symbol;
+addNewLocalVariable(symbolTableEntryType *symbol)
 {
 	identifierListType	*newLocalVariable;
 
@@ -1196,16 +1126,12 @@ addNewLocalVariable(symbol)
 }
 
   symbolTableEntryType *
-effectiveSymbol(symbol, assignmentTargetContext)
-  symbolTableEntryType	*symbol;
-  symbolInContextType  **assignmentTargetContext;
+effectiveSymbol(symbolTableEntryType *symbol, symbolInContextType **assignmentTargetContext)
 {
 	symbolInContextType	*context;
 	operandType		*operand;
 	expressionType		*expression;
 	environmentType		*saveEnvironment;
-
-	symbolInContextType	*getWorkingContext();
 
 	context = getWorkingContext(symbol);
 	saveEnvironment = currentEnvironment;
@@ -1233,18 +1159,13 @@ effectiveSymbol(symbol, assignmentTargetContext)
 }
 
   symbolTableEntryType *
-generateLocalLabel(symbol)
-  symbolTableEntryType	*symbol;
+generateLocalLabel(symbolTableEntryType *symbol)
 {
-	stringType		*localLabelString();
-	symbolTableEntryType	*lookupOrEnterSymbol();
-
 	return(lookupOrEnterSymbol(localLabelString(symbol), LABEL_SYMBOL));
 }
 
   symbolInContextType *
-getBaseContext(identifier)
-  symbolTableEntryType	*identifier;
+getBaseContext(symbolTableEntryType *identifier)
 {
 	symbolInContextType	*result;
 
@@ -1256,8 +1177,7 @@ getBaseContext(identifier)
 }
 
   symbolInContextType *
-getWorkingContext(identifier)
-  symbolTableEntryType	*identifier;
+getWorkingContext(symbolTableEntryType *identifier)
 {
 	symbolInContextType	*result;
 
@@ -1271,13 +1191,10 @@ getWorkingContext(identifier)
 }
 
   stringType *
-localLabelString(symbol)
-  symbolTableEntryType	*symbol;
+localLabelString(symbolTableEntryType *symbol)
 {
 #define TEMP_SYMBOL_SIZE_LIMIT 200
 	char		 nameUnderConstruction[TEMP_SYMBOL_SIZE_LIMIT];
-
-	stringType	*saveString();
 
 	sprintf(nameUnderConstruction, "_%d_", localLabelTagValue(symbol));
 	strncat(nameUnderConstruction, &(symbName(symbol)[1]),
@@ -1286,13 +1203,9 @@ localLabelString(symbol)
 }
 
   int
-localLabelTagValue(symbol)
-  symbolTableEntryType	*symbol;
+localLabelTagValue(symbolTableEntryType *symbol)
 {
 	symbolInContextType	*context;
-
-	symbolInContextType	*getWorkingContext();
-	void			 addNewLocalVariable();
 
 	context = getWorkingContext(symbol);
 	if (context == NULL)
@@ -1308,12 +1221,9 @@ localLabelTagValue(symbol)
 }
 
   void
-addBreak(kind, data)
-  codeBreakKindType	kind;
-  int			data;
+addBreak(codeBreakKindType kind, int data)
 {
 	codeBreakType	*newBreak;
-	codeBreakType	*buildCodeBreak();
 
 	newBreak = buildCodeBreak(kind, currentLocationCounter.value, data);
 	if (codeBreakList == NULL) {
@@ -1325,12 +1235,8 @@ addBreak(kind, data)
 }
 
   void
-reserveAbsolute(startAddress, blockSize)
-  addressType	startAddress;
-  int		blockSize;
+reserveAbsolute(addressType startAddress, int blockSize)
 {
-	reservationListType	*buildReservation();
-
 	if (reservationList != NULL && reservationList->startAddress +
 			reservationList->blockSize == startAddress)
 		reservationList->blockSize += blockSize;
@@ -1340,8 +1246,7 @@ reserveAbsolute(startAddress, blockSize)
 }
 
   bool
-listableStatement(kind)
-  statementKindType	kind;
+listableStatement(statementKindType kind)
 {
 	return( kind == ALIGN_STATEMENT || kind == BLOCK_STATEMENT ||
 		kind == BYTE_STATEMENT || kind == CONSTRAIN_STATEMENT ||

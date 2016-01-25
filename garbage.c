@@ -29,16 +29,16 @@
 
 #include "macrossTypes.h"
 #include "macrossGlobals.h"
+#include "garbage.h"
+#include "operandStuff.h"
+#include "parserMisc.h"
 #include "y.tab.h"
 
 #define nullFree(thing) if (thing == NULL) return;
 
-  void
-freeArrayTerm(arrayTerm)
-  arrayTermType	*arrayTerm;
+void
+freeArrayTerm(arrayTermType *arrayTerm)
 {
-	void	freeExpression();
-
 	nullFree(arrayTerm);
 	freeExpression(arrayTerm->arrayName);
 	freeExpression(arrayTerm->arrayIndex);
@@ -46,22 +46,16 @@ freeArrayTerm(arrayTerm)
 }
 
   void
-freeAssignmentTerm(assignmentTerm)
-  binopTermType	*assignmentTerm;
+freeAssignmentTerm(binopTermType *assignmentTerm)
 {
-	void	freeExpression();
-
 	nullFree(assignmentTerm);
 	freeExpression(assignmentTerm->rightArgument);
 	free(assignmentTerm);
 }
 
   void
-freeBinopTerm(binopTerm)
-  binopTermType	*binopTerm;
+freeBinopTerm(binopTermType *binopTerm)
 {
-	void	freeExpression();
-
 	nullFree(binopTerm);
 	freeExpression(binopTerm->leftArgument);
 	if (binopTerm->binop != SELECT)
@@ -70,54 +64,44 @@ freeBinopTerm(binopTerm)
 }
 
   void
-freeFunctionCall(functionCall)
-  functionCallTermType	*functionCall;
+freeFunctionCall(functionCallTermType *functionCall)
 {
-	void	freeOperandList();
-
 	nullFree(functionCall);
 	freeOperandList(functionCall->parameters);
 	free(functionCall);
 }
 
   void
-freePostopTerm(postopTerm)
-  postOpTermType	*postopTerm;
+freePostopTerm(postOpTermType *postopTerm)
 {
 	nullFree(postopTerm);
 	free(postopTerm);
 }
 
   void
-freePreopTerm(preopTerm)
-  preOpTermType	*preopTerm;
+freePreopTerm(preOpTermType *preopTerm)
 {
 	nullFree(preopTerm);
 	free(preopTerm);
 }
 
   void
-freeString(string)
-  stringType	*string;
+freeString(stringType *string)
 {
 	nullFree(string);
 	free(string);
 }
 
   void
-freeUnopTerm(unopTerm)
-  unopTermType	*unopTerm;
+freeUnopTerm(unopTermType *unopTerm)
 {
-	void	freeExpression();
-
 	nullFree(unopTerm);
 	freeExpression(unopTerm->unopArgument);
 	free(unopTerm);
 }
 
   void
-freeExpression(expression)
-  expressionType	*expression;
+freeExpression(expressionType *expression)
 {
 	nullFree(expression);
 	switch (expression->kindOfTerm) {
@@ -171,8 +155,7 @@ freeExpression(expression)
 }
 
   void
-freeExpressionList(expressionList)
-  expressionListType	*expressionList;
+freeExpressionList(expressionListType *expressionList)
 {
 	expressionListType	*newExpressionList;
 
@@ -185,8 +168,7 @@ freeExpressionList(expressionList)
 }
 
   void
-freeIdentifierList(identifierList)
-  identifierListType	*identifierList;
+freeIdentifierList(identifierListType *identifierList)
 {
 	identifierListType	*newIdentifierList;
 
@@ -198,25 +180,22 @@ freeIdentifierList(identifierList)
 }
 
   void
-freeSelectionList(selectionList)
-  selectionListType	*selectionList;
+freeSelectionList(selectionListType *selectionList)
 {
 	freeIdentifierList(selectionList);
 }
 
   void
-freeBlock(block)
-  blockType	*block;
+freeBlock(blockType *block)
 {
-	void	freeStatement();
+	void	freeStatement(statementType *statement);
 
 	nullFree(block);
 	freeStatement(block);
 }
 
   void
-freeCase(aCase)
-  caseType	*aCase;
+freeCase(caseType *aCase)
 {
 	freeExpressionList(aCase->caseTags);
 	freeBlock(aCase->caseBody);
@@ -224,8 +203,7 @@ freeCase(aCase)
 }
 
   void
-freeCaseList(caseList)
-  caseListType	*caseList;
+freeCaseList(caseListType *caseList)
 {
 	caseListType	*newCaseList;
 
@@ -238,37 +216,32 @@ freeCaseList(caseList)
 }
 
   void
-freeOperandList(operandList)
-  operandListType	*operandList;
+freeOperandList(operandListType *operandList)
 {
 	freeOperand(operandList);
 }
 
   void
-freeMacro(operands)
-  operandListType	*operands;
+freeMacro(operandListType *operands)
 {
 	freeOperandList(operands);
 }
 
   void
-freeMachineInstruction(operands)
-  operandListType	*operands;
+freeMachineInstruction(operandListType *operands)
 {
 	freeOperandList(operands);
 }
 
   void
-freeAlignStatement(alignStatement)
-  alignStatementBodyType	*alignStatement;
+freeAlignStatement(alignStatementBodyType *alignStatement)
 {
 	nullFree(alignStatement);
 	freeExpression(alignStatement);
 }
 
   void
-freeAssertStatement(assertStatement)
-  assertStatementBodyType	*assertStatement;
+freeAssertStatement(assertStatementBodyType *assertStatement)
 {
 	nullFree(assertStatement);
 	freeExpression(assertStatement->condition);
@@ -277,16 +250,14 @@ freeAssertStatement(assertStatement)
 }
 
   void
-freeBlockStatement(blockStatement)
-  blockStatementBodyType	*blockStatement;
+freeBlockStatement(blockStatementBodyType *blockStatement)
 {
 	nullFree(blockStatement);
 	freeExpressionList(blockStatement);
 }
 
   void
-freeByteStatement(byteStatement)
-  byteStatementBodyType	*byteStatement;
+freeByteStatement(byteStatementBodyType *byteStatement)
 {
 	byteStatementBodyType	*newByteStatement;
 
@@ -300,8 +271,7 @@ freeByteStatement(byteStatement)
 }
 
   void
-freeConstrainStatement(constrainStatement)
-  constrainStatementBodyType	*constrainStatement;
+freeConstrainStatement(constrainStatementBodyType *constrainStatement)
 {
 	nullFree(constrainStatement);
 	freeExpression(constrainStatement->constraint);
@@ -310,8 +280,7 @@ freeConstrainStatement(constrainStatement)
 }
 
   void
-freeDbyteStatement(dbyteStatement)
-  dbyteStatementBodyType	*dbyteStatement;
+freeDbyteStatement(dbyteStatementBodyType *dbyteStatement)
 {
 	dbyteStatementBodyType	*newDbyteStatement;
 
@@ -325,8 +294,7 @@ freeDbyteStatement(dbyteStatement)
 }
 
   void
-freeDefineStatement(defineStatement)
-  defineStatementBodyType	*defineStatement;
+freeDefineStatement(defineStatementBodyType *defineStatement)
 {
 	nullFree(defineStatement);
 	freeExpression(defineStatement->theValue);
@@ -334,8 +302,7 @@ freeDefineStatement(defineStatement)
 }
 
   void
-freeDoUntilStatement(doUntilStatement)
-  doUntilStatementBodyType	*doUntilStatement;
+freeDoUntilStatement(doUntilStatementBodyType *doUntilStatement)
 {
 	nullFree(doUntilStatement);
 	freeBlock(doUntilStatement->doUntilLoop);
@@ -343,8 +310,7 @@ freeDoUntilStatement(doUntilStatement)
 }
 
   void
-freeDoWhileStatement(doWhileStatement)
-  doWhileStatementBodyType	*doWhileStatement;
+freeDoWhileStatement(doWhileStatementBodyType *doWhileStatement)
 {
 	nullFree(doWhileStatement);
 	freeBlock(doWhileStatement->doWhileLoop);
@@ -352,23 +318,20 @@ freeDoWhileStatement(doWhileStatement)
 }
 
   void
-freeExternStatement(externStatement)
-  externStatementBodyType	*externStatement;
+freeExternStatement(externStatementBodyType *externStatement)
 {
 	freeIdentifierList(externStatement);
 }
 
   void
-freeFreturnStatement(freturnStatement)
-  freturnStatementBodyType	*freturnStatement;
+freeFreturnStatement(freturnStatementBodyType *freturnStatement)
 {
 	nullFree(freturnStatement);
 	freeExpression(freturnStatement);
 }
 
   void
-freeFunctionStatement(functionStatement)
-  functionStatementBodyType	*functionStatement;
+freeFunctionStatement(functionStatementBodyType *functionStatement)
 {
 	nullFree(functionStatement);
 	free(functionStatement->functionName);
@@ -376,8 +339,7 @@ freeFunctionStatement(functionStatement)
 }
 
   void
-freeIfStatement(ifStatement)
-  ifStatementBodyType	*ifStatement;
+freeIfStatement(ifStatementBodyType *ifStatement)
 {
 	nullFree(ifStatement);
 	if (ifStatement->consequence != NULL)
@@ -389,16 +351,14 @@ freeIfStatement(ifStatement)
 }
 
   void
-freeIncludeStatement(includeStatement)
-  includeStatementBodyType	*includeStatement;
+freeIncludeStatement(includeStatementBodyType *includeStatement)
 {
 	nullFree(includeStatement);
 	freeExpression(includeStatement);
 }
 
   void
-freeInstructionStatement(instructionStatement)
-  instructionStatementBodyType	*instructionStatement;
+freeInstructionStatement(instructionStatementBodyType *instructionStatement)
 {
 	nullFree(instructionStatement);
 	switch(instructionStatement->kindOfInstruction) {
@@ -419,8 +379,7 @@ freeInstructionStatement(instructionStatement)
 }
 
   void
-freeLongStatement(longStatement)
-  longStatementBodyType	*longStatement;
+freeLongStatement(longStatementBodyType *longStatement)
 {
 	longStatementBodyType	*newLongStatement;
 
@@ -434,16 +393,15 @@ freeLongStatement(longStatement)
 }
 
   void
-freeMacroStatement(macroStatement)
-  macroStatementBodyType	*macroStatement;
+freeMacroStatement(macroStatementBodyType *macroStatement)
 {
 	nullFree(macroStatement);
 	free(macroStatement);
 }
 
   void
-freeMdefineStatement(mdefineStatement)
-  defineStatementBodyType	*mdefineStatement; // MIST: shouldn't this be "mdefineStatementBodyType"?
+freeMdefineStatement(defineStatementBodyType *mdefineStatement)
+                              	                   /* MIST: shouldn't this be "mdefineStatementBodyType"? */
 {
 	valueType		*freeDefineExpression();
 
@@ -453,8 +411,7 @@ freeMdefineStatement(mdefineStatement)
 }
 
   void
-freeMdoUntilStatement(mdoUntilStatement)
-  mdoUntilStatementBodyType	*mdoUntilStatement;
+freeMdoUntilStatement(mdoUntilStatementBodyType *mdoUntilStatement)
 {
 	nullFree(mdoUntilStatement);
 	freeBlock(mdoUntilStatement->mdoUntilLoop);
@@ -462,8 +419,7 @@ freeMdoUntilStatement(mdoUntilStatement)
 }
 
   void
-freeMdoWhileStatement(mdoWhileStatement)
-  mdoWhileStatementBodyType	*mdoWhileStatement;
+freeMdoWhileStatement(mdoWhileStatementBodyType *mdoWhileStatement)
 {
 	nullFree(mdoWhileStatement);
 	freeBlock(mdoWhileStatement->mdoWhileLoop);
@@ -472,8 +428,7 @@ freeMdoWhileStatement(mdoWhileStatement)
 }
 
   void
-freeMifStatement(mifStatement)
-  mifStatementBodyType	*mifStatement;
+freeMifStatement(mifStatementBodyType *mifStatement)
 {
 	nullFree(mifStatement);
 	freeExpression(mifStatement->mifCondition);
@@ -484,8 +439,7 @@ freeMifStatement(mifStatement)
 }
 
   void
-freeMswitchStatement(mswitchStatement)
-  mswitchStatementBodyType	*mswitchStatement;
+freeMswitchStatement(mswitchStatementBodyType *mswitchStatement)
 {
 	freeExpression(mswitchStatement->switchExpression);
 	freeCaseList(mswitchStatement->cases);
@@ -493,8 +447,7 @@ freeMswitchStatement(mswitchStatement)
 }
 
   void
-freeMforStatement(mforStatement)
-  mforStatementBodyType	*mforStatement;
+freeMforStatement(mforStatementBodyType *mforStatement)
 {
 	nullFree(mforStatement);
 	freeExpression(mforStatement->initExpression);
@@ -505,8 +458,7 @@ freeMforStatement(mforStatement)
 }
 
   void
-freeMvariableStatement(mvariableStatement)
-  mvariableStatementBodyType	*mvariableStatement;
+freeMvariableStatement(mvariableStatementBodyType *mvariableStatement)
 {
 	nullFree(mvariableStatement);
 	if ((int)mvariableStatement->theDimension != -1)
@@ -516,8 +468,7 @@ freeMvariableStatement(mvariableStatement)
 }
 
   void
-freeMwhileStatement(mwhileStatement)
-  mwhileStatementBodyType	*mwhileStatement;
+freeMwhileStatement(mwhileStatementBodyType *mwhileStatement)
 {
 	nullFree(mwhileStatement);
 	freeExpression(mwhileStatement->mwhileCondition);
@@ -526,38 +477,33 @@ freeMwhileStatement(mwhileStatement)
 }
 
   void
-freeOrgStatement(orgStatement)
-  orgStatementBodyType	*orgStatement;
+freeOrgStatement(orgStatementBodyType *orgStatement)
 {
 	nullFree(orgStatement);
 	freeExpression(orgStatement);
 }
 
   void
-freePerformStatement(performStatement)
-  performStatementBodyType	*performStatement;
+freePerformStatement(performStatementBodyType *performStatement)
 {
 	nullFree(performStatement);
 	freeExpression(performStatement);
 }
 
   void
-freeRelStatement(relStatement)
-  relStatementBodyType	*relStatement;
+freeRelStatement(relStatementBodyType *relStatement)
 {
 }
 
   void
-freeStartStatement(startStatement)
-  startStatementBodyType	*startStatement;
+freeStartStatement(startStatementBodyType *startStatement)
 {
 	nullFree(startStatement);
 	freeExpression(startStatement);
 }
 
   void
-freeStringStatement(stringStatement)
-  stringStatementBodyType	*stringStatement;
+freeStringStatement(stringStatementBodyType *stringStatement)
 {
 	stringStatementBodyType	*newStringStatement;
 
@@ -571,8 +517,7 @@ freeStringStatement(stringStatement)
 }
 
   void
-freeStructStatement(structStatement)
-  structStatementBodyType	*structStatement;
+freeStructStatement(structStatementBodyType *structStatement)
 {
 	nullFree(structStatement);
 	freeBlock(structStatement->structBody);
@@ -580,23 +525,20 @@ freeStructStatement(structStatement)
 }
 
   void
-freeTargetStatement(targetStatement)
-  targetStatementBodyType	*targetStatement;
+freeTargetStatement(targetStatementBodyType *targetStatement)
 {
 	nullFree(targetStatement);
 	freeExpression(targetStatement);
 }
 
   void
-freeUndefineStatement(undefineStatement)
-  undefineStatementBodyType	*undefineStatement;
+freeUndefineStatement(undefineStatementBodyType *undefineStatement)
 {
 	freeIdentifierList(undefineStatement);
 }
 
   void
-freeVariableStatement(variableStatement)
-  variableStatementBodyType	*variableStatement;
+freeVariableStatement(variableStatementBodyType *variableStatement)
 {
 	nullFree(variableStatement);
 	if ((int)variableStatement->theDimension != -1)
@@ -606,8 +548,7 @@ freeVariableStatement(variableStatement)
 }
 
   void
-freeWhileStatement(whileStatement)
-  whileStatementBodyType	*whileStatement;
+freeWhileStatement(whileStatementBodyType *whileStatement)
 {
 	nullFree(whileStatement);
 	freeBlock(whileStatement->whileLoop);
@@ -615,8 +556,7 @@ freeWhileStatement(whileStatement)
 }
 
   void
-freeWordStatement(wordStatement)
-  wordStatementBodyType	*wordStatement;
+freeWordStatement(wordStatementBodyType *wordStatement)
 {
 	wordStatementBodyType	*newWordStatement;
 
@@ -630,9 +570,7 @@ freeWordStatement(wordStatement)
 }
 
   void
-freeStatementBody(kind, body)
-  statementKindType	kind;
-  statementBodyType	body;
+freeStatementBody(statementKindType kind, statementBodyType body)
 {
 	switch (kind) {
 
@@ -795,8 +733,7 @@ freeStatementBody(kind, body)
 }
 
   void
-freeLabelList(labelList)
-  labelListType	*labelList;
+freeLabelList(labelListType *labelList)
 {
 	labelListType	*nextLabel;
 
@@ -808,8 +745,7 @@ freeLabelList(labelList)
 }
 
   void
-freeStatement(statement)
-  statementType	*statement;
+freeStatement(statementType *statement)
 {
 	statementType	*newStatement;
 
@@ -824,11 +760,9 @@ freeStatement(statement)
 }
 
   void
-freeArray(array)
-  arrayType	*array;
+freeArray(arrayType *array)
 {
 	int	i;
-	void	freeValue();
 
 	if (array->arraySize > 0) {
 		for (i=0; i<array->arraySize; i++)
@@ -839,8 +773,7 @@ freeArray(array)
 }
 
   void
-freeValue(value)
-  valueType	*value;
+freeValue(valueType *value)
 {
 	if (value->kindOfValue == STRING_VALUE)
 		freeString(value->value);

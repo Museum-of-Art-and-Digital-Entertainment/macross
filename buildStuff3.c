@@ -31,6 +31,7 @@
 
 #include "macrossTypes.h"
 #include "macrossGlobals.h"
+#include "lookups.h"
 
 /*
    These routines all build list-type structures.  Since yacc likes to build
@@ -43,14 +44,10 @@
  */
 
   argumentListHeadType *
-buildArgumentList(new, rest, arrayTag)
-  stringType		*new;
-  argumentListHeadType	*rest;
-  bool			 arrayTag;
+buildArgumentList(stringType *new, argumentListHeadType *rest, bool arrayTag)
 {
 	argumentListHeadType		*newListHead;
 	argumentDefinitionListType	*newArgument;
-	symbolTableEntryType		*lookupOrEnterSymbol();
 
 	if (rest == NULL) {
 		newListHead = typeAlloc(argumentListHeadType);
@@ -76,9 +73,7 @@ buildArgumentList(new, rest, arrayTag)
 }
 
   caseListHeadType *
-buildCaseList(new, rest)
-  caseType		*new;
-  caseListHeadType	*rest;
+buildCaseList(caseType *new, caseListHeadType *rest)
 {
 	caseListHeadType		*newListHead;
 	caseListType			*newCase;
@@ -103,9 +98,7 @@ buildCaseList(new, rest)
 }
 
   expressionListHeadType *
-buildExpressionList(new, rest)
-  expressionType		*new;
-  expressionListHeadType	*rest;
+buildExpressionList(expressionType *new, expressionListHeadType *rest)
 {
 	expressionListHeadType	*newListHead;
 	expressionListType	*newListEntry;
@@ -130,15 +123,10 @@ buildExpressionList(new, rest)
 }
 
   identifierListHeadType *
-buildIdentifierList(new, rest, usage)
-  stringType			*new;
-  identifierListHeadType	*rest;
-  symbolUsageKindType		 usage;
+buildIdentifierList(stringType *new, identifierListHeadType *rest, symbolUsageKindType usage)
 {
 	identifierListType	*newListEntry;
 	identifierListHeadType	*newListHead;
-
-	symbolTableEntryType	*lookupOrEnterSymbol();
 
 	if (rest == NULL) {
 		newListHead = typeAlloc(identifierListHeadType);
@@ -160,9 +148,7 @@ buildIdentifierList(new, rest, usage)
 }
 
   labelListHeadType *
-buildLabelList(new, rest)
-  symbolTableEntryType	*new;
-  labelListHeadType	*rest;
+buildLabelList(symbolTableEntryType *new, labelListHeadType *rest)
 {
 	labelListHeadType	*newLabelHead;
 	labelListType		*newLabel;
@@ -187,9 +173,7 @@ buildLabelList(new, rest)
 }
 
   operandListHeadType *
-buildOperandList(new, rest)
-  operandType		*new;
-  operandListHeadType	*rest;
+buildOperandList(operandType *new, operandListHeadType *rest)
 {
 	operandListHeadType	*newListHead;
 
@@ -213,17 +197,13 @@ buildOperandList(new, rest)
 }
 
   selectionListHeadType *
-buildSelectionList(new, rest)
-  selectionListType	*new;
-  selectionListHeadType	*rest;
+buildSelectionList(selectionListType *new, selectionListHeadType *rest)
 {
-	return((selectionListHeadType *) buildIdentifierList(new, rest));
+	return((selectionListHeadType *) buildIdentifierList(new, rest, unknownSymbolTag /* random guess */));
 }
 
   statementListHeadType *
-buildStatementList(new, rest)
-  statementType		*new;
-  statementListHeadType	*rest;
+buildStatementList(statementType *new, statementListHeadType *rest)
 {
 	statementListHeadType	*newListHead;
 

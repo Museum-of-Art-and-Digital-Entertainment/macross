@@ -31,33 +31,31 @@
 
 #include "slinkyTypes.h"
 #include "slinkyGlobals.h"
+#include "poke.h"
+#include "debugPrint.h"
+#include "errorStuff.h"
+#include "expr.h"
 
   bool
-isWordSized(value)
-  int	value;
+isWordSized(int value)
 {
 	return (-32768<=value && value<=65535);
 }
 
   bool
-isByteSized(value)
-  int	value;
+isByteSized(int value)
 {
 	return (-128<=value && value<=255);
 }
 
   bool
-isByteOffset(value)
-  int	value;
+isByteOffset(int value)
 {
 	return (-128<=value && value<=127);
 }
 
   int
-computeRelativeValue(valueToPoke, codeSegment, offset)
-  int			 valueToPoke;
-  codeSegmentHeaderType	*codeSegment;
-  int			 offset;
+computeRelativeValue(int valueToPoke, codeSegmentHeaderType *codeSegment, int offset)
 {
 	int	fromLocation;
 	int	result;
@@ -77,10 +75,7 @@ computeRelativeValue(valueToPoke, codeSegment, offset)
 }
 
   int
-getBaseValue(codeBuffer, offset, referenceKind)
-  byte	codeBuffer[];
-  int	offset;
-  int	referenceKind;
+getBaseValue(byte *codeBuffer, int offset, int referenceKind)
 {
 	int	result;
 
@@ -101,12 +96,7 @@ getBaseValue(codeBuffer, offset, referenceKind)
 }
 
   void
-pokeValue(value, codeBuffer, offset, referenceKind, trueAddress)
-  int	value;
-  byte	codeBuffer[];
-  int	offset;
-  int	referenceKind;
-  int	trueAddress;
+pokeValue(int value, byte *codeBuffer, int offset, int referenceKind, int trueAddress)
 {
 	switch (referenceKind) {
 	case REF_BYTE:
@@ -150,9 +140,7 @@ pokeValue(value, codeBuffer, offset, referenceKind, trueAddress)
 }
 
   void
-fixupReference(reference, codeSegment)
-  expressionReferenceType	*reference;
-  codeSegmentHeaderType		*codeSegment;
+fixupReference(expressionReferenceType *reference, codeSegmentHeaderType *codeSegment)
 {
 	int		 offset;
 	addressType	 baseValue;
@@ -182,7 +170,7 @@ fixupReference(reference, codeSegment)
 }
 
   void
-pokem()
+pokem(void)
 {
 	objectFileListType	*inputFileList;
 	codeSegmentHeaderType	*codeSegment;

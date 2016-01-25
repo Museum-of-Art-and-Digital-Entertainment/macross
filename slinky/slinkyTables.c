@@ -28,23 +28,7 @@
 */
 
 #include "slinkyTypes.h"
-
-addressType	atasciiBIF();
-addressType	atasciiColorBIF();
-addressType	isAbsoluteValueBIF();
-addressType	isConditionCodeBIF();
-addressType	isDefinedBIF();
-addressType	isExternalBIF();
-addressType	nthCharBIF();
-addressType	printfBIF();
-addressType	strcatBIF();
-addressType	strcmpBIF();
-addressType	strcmplcBIF();
-addressType	strlenBIF();
-addressType	substrBIF();
-addressType	symbolDefineBIF();
-addressType	symbolLookupBIF();
-addressType	symbolNameBIF();
+#include "builtins.h"
 
 /* Used to initialize symbols representing built-in functions */
 struct {

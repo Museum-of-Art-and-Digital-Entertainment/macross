@@ -29,6 +29,14 @@
 
 #include "macrossTypes.h"
 #include "macrossGlobals.h"
+#include "initialize.h"
+#include "errorStuff.h"
+#include "lexer.h"
+#include "lookups.h"
+#include "semanticMisc.h"
+
+#include <string.h>
+#include <unistd.h>
 
 #define isAlphaNumeric(c)	(alphaNumericCharacterTable[c])
 
@@ -38,16 +46,14 @@ static fileNameListType		*bottomOfInputFileStack;
 static char			 *outputFileName;
 
   void
-chokePukeAndDie()
+chokePukeAndDie(void)
 {
 	unlink(outputFileName);
 	exit(1);
 }
 
   void
-initializeStuff(argc, argv)
-  int	argc;
-  char *argv[];
+initializeStuff(int argc, char **argv)
 {
 	int	  i;
 	int	  j;
@@ -59,14 +65,6 @@ initializeStuff(argc, argv)
 	char	 *listFileName;
 	char	 *symbolDumpFileName;
 	bool	  dontUnlinkTempFiles;
-
-	void	  createHashTables();
-	void	  installBuiltInFunctions();
-	void	  installPredefinedSymbols();
-	void	  installCommandLineDefineSymbols();
-	void	  openFirstInputFile();
-	void	  queueInputFile();
-	void	  noteCommandLineDefine();
 
 	for (i=0; i<128; i++) {
 		lowerCaseCharacterTable[i] = i;
@@ -339,7 +337,7 @@ initializeStuff(argc, argv)
 	installCommandLineDefineSymbols();
 
 	if (listingOn) {
-		if ((saveFileForPass2 = fopen(mktemp(pass2SourceFileName),
+		if ((saveFileForPass2 = fopen(mkstemp(pass2SourceFileName),
 				"w+")) == NULL) {
 			fatalSystemError(UNABLE_TO_OPEN_PASS_2_FILE_ERROR,
 					pass2SourceFileName);
@@ -348,7 +346,7 @@ initializeStuff(argc, argv)
 			unlink(pass2SourceFileName); /* will take effect on
 							program exit */
 
-		if ((indexFileForPass2 = fopen(mktemp(pass2IndexFileName),
+		if ((indexFileForPass2 = fopen(mkstemp(pass2IndexFileName),
 				"w+")) == NULL) {
 			fatalSystemError(UNABLE_TO_OPEN_PASS_2_FILE_ERROR,
 					pass2IndexFileName);
@@ -358,7 +356,7 @@ initializeStuff(argc, argv)
 							program exit */
 
 		if (expandMacros) {
-			if ((macroFileForPass2 = fopen(mktemp(
+			if ((macroFileForPass2 = fopen(mkstemp(
 				pass2MacroExpansionFileName),"w+")) == NULL) {
 				fatalSystemError(
 					UNABLE_TO_OPEN_PASS_2_FILE_ERROR,
@@ -379,13 +377,10 @@ initializeStuff(argc, argv)
 }
 
   void
-installBuiltInFunctions()
+installBuiltInFunctions(void)
 {
 	int				 i;
 	symbolTableEntryType		*newFunction;
-
-	symbolTableEntryType		*lookupOrEnterSymbol();
-	valueType			*newValue();
 
 	for (i=0; builtInFunctionTable[i].functionName!=NULL; i++) {
 		newFunction = lookupOrEnterSymbol(builtInFunctionTable[i].
@@ -399,13 +394,10 @@ installBuiltInFunctions()
 }
 
   void
-installPredefinedSymbols()
+installPredefinedSymbols(void)
 {
 	int				 i;
 	symbolTableEntryType		*newSymbol;
-
-	symbolTableEntryType		*lookupOrEnterSymbol();
-	valueType			*newValue();
 
 	for (i=0; predefinedSymbolTable[i].symbolName!=NULL; i++) {
 		newSymbol = lookupOrEnterSymbol(predefinedSymbolTable[i].
@@ -418,13 +410,10 @@ installPredefinedSymbols()
 }
 
   void
-installCommandLineDefineSymbols()
+installCommandLineDefineSymbols(void)
 {
 	int				 i;
 	symbolTableEntryType		*newSymbol;
-
-	symbolTableEntryType		*lookupOrEnterSymbol();
-	valueType			*newValue();
 
 	while (commandLineDefines != NULL) {
 		newSymbol = lookupOrEnterSymbol(commandLineDefines->name,
@@ -437,7 +426,7 @@ installCommandLineDefineSymbols()
 }
 
   void
-createHashTables()
+createHashTables(void)
 {
 	opcodeTableEntryType	*newOpcodeEntry;
 	keywordTableEntryType	*newKeywordEntry;
@@ -457,8 +446,7 @@ createHashTables()
 }
 
   void
-queueInputFile(name)
-  char	*name;
+queueInputFile(char *name)
 {
 	fileNameListType	*newFileName;
 
@@ -477,7 +465,7 @@ queueInputFile(name)
 }
 
   void
-openFirstInputFile()
+openFirstInputFile(void)
 {
 	if (inputFileStack == NULL) {
 		inputFileStack = typeAlloc(fileNameListType);
@@ -502,8 +490,7 @@ openFirstInputFile()
 }
 
   bool
-isDotMName(fileName)
-  stringType	*fileName;
+isDotMName(stringType *fileName)
 {
 	int	length;
 
@@ -513,10 +500,7 @@ isDotMName(fileName)
 }
 
   bool
-parseCommandLineDefine(arg, name, value)
-  char	 *arg;
-  char	**name;
-  int	 *value;
+parseCommandLineDefine(char *arg, char **name, int *value)
 {
 	char	*ptr;
 	char	 c;
@@ -559,14 +543,11 @@ parseCommandLineDefine(arg, name, value)
 }
 
   void
-noteCommandLineDefine(arg)
-  char	*arg;
+noteCommandLineDefine(char *arg)
 {
 	char			*name;
 	int			 value;
 	commandLineDefineType	*newCommandLineDefine;
-
-	bool	 parseCommandLineDefine();
 
 	if (parseCommandLineDefine(arg, &name, &value)) {
 		newCommandLineDefine = typeAlloc(commandLineDefineType);

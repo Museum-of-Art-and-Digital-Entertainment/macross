@@ -29,6 +29,13 @@
 
 #include "macrossTypes.h"
 #include "macrossGlobals.h"
+#include "emitStuff.h"
+#include "lexer.h"
+#include "listing.h"
+#include "semanticMisc.h"
+
+#include <stdarg.h>
+#include <string.h>
 
 static char	 lineBuffer1[LINE_BUFFER_SIZE];
 static char	 lineBuffer2[LINE_BUFFER_SIZE];
@@ -41,10 +48,8 @@ static int	 macroDepth;
 static int	 nextMacroDepth;
 
   void
-outputListing()
+outputListing(void)
 {
-	void	generateListing();
-
 	rewind(saveFileForPass2);
 	rewind(indexFileForPass2);
 	rewind(macroFileForPass2);
@@ -52,7 +57,7 @@ outputListing()
 }
 
   void
-terminateListingFiles()
+terminateListingFiles(void)
 {
 	saveLineForListing("\n");
 	saveIndexForListing(NULL_STATEMENT, cumulativeLineNumber);
@@ -94,7 +99,7 @@ terminateListingFiles()
 /* This is the most horrible piece of code I have ever written in my entire
 	life -- cbm */
   void
-generateListing()
+generateListing(void)
 {
 	int			 sourceAddress;
 	int			 sourceDepth;
@@ -121,9 +126,6 @@ generateListing()
 	int			 numberOfBytesToList;
 	int			 numberOfBytesListed;
 	char			*tempText;
-
-	void			 readIndexFileLine();
-	void			 readSourceFileLine();
 
 	sourceLineNumber = 1;
 	alreadyListingMacroExpansion = FALSE;
@@ -298,10 +300,7 @@ generateListing()
 bool	longLineFlag; /* defined in lexer.c */
 
   int
-printMacroLine(numberOfBytes, byteAddress, kind)
-  int			 numberOfBytes;
-  int			 byteAddress;
-  statementKindType	 kind;
+printMacroLine(int numberOfBytes, int byteAddress, statementKindType kind)
 {
 	macroAddress = nextMacroAddress;
 	macroDepth = nextMacroDepth;
@@ -313,11 +312,7 @@ printMacroLine(numberOfBytes, byteAddress, kind)
 }
 
   void
-readSourceFileLine(sourceAddressPtr, sourceDepthPtr, lineBuffer, file)
-  int	*sourceAddressPtr;
-  int	*sourceDepthPtr;
-  char	 lineBuffer[];
-  FILE	*file;
+readSourceFileLine(int *sourceAddressPtr, int *sourceDepthPtr, char *lineBuffer, FILE *file)
 {
 	char	c;
 
@@ -332,10 +327,7 @@ readSourceFileLine(sourceAddressPtr, sourceDepthPtr, lineBuffer, file)
 }
 
   void
-readIndexFileLine(statementKindPtr, indexAddressPtr, indexLineNumberPtr)
-  statementKindType	*statementKindPtr;
-  int			*indexAddressPtr;
-  int			*indexLineNumberPtr;
+readIndexFileLine(statementKindType *statementKindPtr, int *indexAddressPtr, int *indexLineNumberPtr)
 {
 	statementKindType	 statementKindRead;
 	int			 indexAddressRead;
@@ -354,15 +346,9 @@ readIndexFileLine(statementKindPtr, indexAddressPtr, indexLineNumberPtr)
 }
 
   int
-printListingLine(numberOfBytes, byteAddress, text, kind)
-  int			 numberOfBytes;
-  int			 byteAddress;
-  char			*text;
-  statementKindType	 kind;
+printListingLine(int numberOfBytes, int byteAddress, char *text, statementKindType kind)
 {
 	int	i;
-
-	void	tabPrint();
 
 	if (kind != BLOCK_STATEMENT)
 		numberOfBytes = (numberOfBytes < 4) ? numberOfBytes : 4;
@@ -411,8 +397,7 @@ printListingLine(numberOfBytes, byteAddress, text, kind)
 
 	
   bool
-isBlockOpener(statementKind)
-  statementKindType	statementKind;
+isBlockOpener(statementKindType statementKind)
 {
 	return (statementKind==IF_STATEMENT ||
 		statementKind==WHILE_STATEMENT ||
@@ -431,8 +416,7 @@ isBlockOpener(statementKind)
 }
 
   bool
-isBlankStatement(statementKind)
-  statementKindType	statementKind;
+isBlankStatement(statementKindType statementKind)
 {
 	return(	statementKind == DEFINE_STATEMENT ||
 		statementKind == NULL_STATEMENT ||
@@ -458,8 +442,7 @@ isBlankStatement(statementKind)
 }
 
   void
-tabPrint(text)
-  stringType	*text;
+tabPrint(stringType *text)
 {
 	int	column;
 	int	spaces;
@@ -480,18 +463,14 @@ tabPrint(text)
 }
 
   void
-printNTimes(aChar, times)
-  char	aChar;
-  int	times;
+printNTimes(char aChar, int times)
 {
-	void	moreText();
-
 	while (times-- > 0)
-		moreText("%c", aChar);
+            moreText("%c", aChar, 0, 0);
 }
 
   void
-tabIndent()
+tabIndent(void)
 {
 	printNTimes('\t', tabCount);
 }
@@ -504,58 +483,52 @@ static char	 labelString[LINE_BUFFER_SIZE] = { '\0' };
 static char	*labelStringPtr = labelString;
 
   bool
-labeledLine()
+labeledLine(void)
 {
 	return(labelStringPtr != labelString);
 }
 
   void
-addText(buffer, bufferPtr, format, arg1, arg2, arg3)
-  char  *buffer;
-  char **bufferPtr;
-  char	*format;
-  int	 arg1;
-  int	 arg2;
-  int	 arg3;
+vaddText(char *buffer, char **bufferPtr, char *format, va_list ap)
 {
-	sprintf(*bufferPtr, format, arg1, arg2, arg3);
-	*bufferPtr = buffer + strlen(buffer);
+	vsprintf(*bufferPtr, format, ap);
+	*bufferPtr = buffer = strlen(buffer);
 }
 
   void
-moreTextOptional(buffer, bufferPtr, format, arg1, arg2, arg3)
-  char  *buffer;
-  char **bufferPtr;
-  char	*format;
-  int	 arg1;
-  int	 arg2;
-  int	 arg3;
+addText(char *buffer, char **bufferPtr, char *format, ...)
 {
+	va_list ap;
+	va_start(ap, format);
+	vaddText(buffer, bufferPtr, format, ap);
+	va_end(ap);
+}
+
+  void
+moreTextOptional(char *buffer, char **bufferPtr, char *format, ...)
+{
+	va_list ap;
+	va_start(ap, format);
 	if (buffer == NULL)
-		addText(expansionString, &expansionStringPtr, format, arg1,
-			arg2, arg3);
+		vaddText(expansionString, &expansionStringPtr, format, ap);
 	else
-		addText(buffer, bufferPtr, format, arg1, arg2, arg3);
+		vaddText(buffer, bufferPtr, format, ap);
+	va_end(ap);
 }
 
   void
-moreText(format, arg1, arg2, arg3)
-  char	*format;
-  int	 arg1;
-  int	 arg2;
-  int	 arg3;
+moreText(char *format, ...)
 {
-	addText(expansionString, &expansionStringPtr, format, arg1,arg2,arg3);
+	va_list ap;
+	va_start(ap, format);
+	addText(expansionString, &expansionStringPtr, format, ap);
+	va_end(ap);
 }
 
   void
-moreLabel(format, arg1, arg2, arg3)
-  char	*format;
-  int	 arg1;
-  int	 arg2;
-  int	 arg3;
+moreLabel(char *format, int arg1)
 {
-	sprintf(labelStringPtr, format, arg1, arg2, arg3);
+	sprintf(labelStringPtr, format, arg1);
 	labelStringPtr = labelString + strlen(labelString);
 }
 
@@ -563,7 +536,7 @@ static addressType	savedCurrentLocationCounterValue;
 static int		savedIncludeNestingDepth;
 
   void
-startLine()
+startLine(void)
 {
 	printNTimes('+', macroCallDepth);
 	savedCurrentLocationCounterValue = currentLocationCounter.value;
@@ -571,7 +544,7 @@ startLine()
 }
 
   void
-endLine()
+endLine(void)
 {
 	if (amListing()) {
 		putw(savedCurrentLocationCounterValue, macroFileForPass2);
@@ -583,77 +556,69 @@ endLine()
 }
 
   void
-flushExpressionString()
+flushExpressionString(void)
 {
 	expressionStringPtr = expressionString;
 	*expressionStringPtr = '\0';
 }
 
   void
-expandExpression(toBuffer, toBufferPtr)
-  char	 *toBuffer;
-  char	**toBufferPtr;
+expandExpression(char *toBuffer, char **toBufferPtr)
 {
 	if (toBuffer == NULL)
-		moreText("%s", expressionString);
+		moreText("%s", expressionString, 0, 0);
 	else
-		addText(toBuffer, toBufferPtr, "%s", expressionString);
+		addText(toBuffer, toBufferPtr, "%s", expressionString, 0, 0);
 	flushExpressionString();
 }
 
   void
-expandNum(buffer, bufferPtr, n)
-  char	 *buffer;
-  char	**bufferPtr;
-  int	  n;
+expandNum(char *buffer, char **bufferPtr, int n)
 {
-	moreTextOptional(buffer, bufferPtr, "%d", n);
+	moreTextOptional(buffer, bufferPtr, "%d", n, 0, 0);
 }
 
   void
-flushOperand(n)
-  int	n;
+flushOperand(int n)
 {
-	moreText("%s", operandBuffer[n]);
+	moreText("%s", operandBuffer[n], 0, 0);
 	operandBuffer[n][0] = '\0';
 }
 
   void
-expandOperands(op)
-  int	op;
+expandOperands(int op)
 {
 	int	i;
 
 	if (op > 0) {
 		flushOperand(0);
 		for (i=1; i<op; i++) {
-			moreText(", ");
+			moreText(", ", 0, 0, 0);
 			flushOperand(i);
 		}
 	}
 }
 
   void
-expandLabel()
+expandLabel(void)
 {
-	moreText("%s", labelString);
+	moreText("%s", labelString, 0, 0);
 	labelStringPtr = labelString;
 	*labelStringPtr = '\0';
 }
 
   void
-moreExpression(format, arg1, arg2, arg3)
-  char	*format;
-  int	 arg1;
-  int	 arg2;
-  int	 arg3;
+moreExpression(char *format, ...)
 {
-	sprintf(expressionStringPtr, format, arg1, arg2, arg3);
+        va_list ap;
+        va_start(ap, format);
+	vsprintf(expressionStringPtr, format, ap);
+        va_end(ap);
 	expressionStringPtr = expressionString + strlen(expressionString);
 }
 
   void
-startLineMarked()
+startLineMarked(void)
 {
 	startLine();
 	if (amListing())
@@ -661,8 +626,7 @@ startLineMarked()
 }
 
   bool
-notListable(statementKind)
-  statementKindType	statementKind;
+notListable(statementKindType statementKind)
 {
 	return(!listableStatement(statementKind) &&
 		statementKind != INSTRUCTION_STATEMENT &&
