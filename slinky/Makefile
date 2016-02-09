@@ -16,7 +16,9 @@ LDFLAGS=-m32
 YACC=bison -y
 #YACC=yacc
 
-CC=gcc
+# Pick a compiler if you have one in particular you want.
+CC=cc
+#CC=gcc
 #CC=clang
 
 slinky: $(SLINKY_OBJECTS)
