@@ -299,6 +299,7 @@ evaluateOperand(operandType *operand)
 	case Y_INDEXED_OPND:
 		result = evaluateExpression(operand->theOperand.expressionUnion,
 			performingFixups ? NO_FIXUP : OPERAND_FIXUP);
+		nullEvaluate(result);
 		if (operand->kindOfOperand != EXPRESSION_OPND) {
 			if (result->addressMode != EXPRESSION_OPND) {
 				error(BAD_ADDRESS_MODE_ERROR);

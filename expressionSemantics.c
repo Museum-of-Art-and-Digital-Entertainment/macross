@@ -1109,7 +1109,8 @@ evaluateExpressionInternally(expressionType *expression, bool isTopLevel, fixupK
 evaluateExpression(expressionType *expression, fixupKindType kindOfFixup)
 {
 	valueType	*result;
-
+	nullEvaluate(expression);
+	
 	expressionFailed = FALSE;
 	referencesToNote[currentOperandNumber] = NULL;
 	result = evaluateExpressionInternally(expression, TRUE, kindOfFixup,
