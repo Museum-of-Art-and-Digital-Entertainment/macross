@@ -492,7 +492,7 @@ labeledLine(void)
 vaddText(char *buffer, char **bufferPtr, char *format, va_list ap)
 {
 	vsprintf(*bufferPtr, format, ap);
-	*bufferPtr = buffer = strlen(buffer);
+	*bufferPtr = buffer + strlen(buffer);
 }
 
   void
@@ -521,7 +521,7 @@ moreText(char *format, ...)
 {
 	va_list ap;
 	va_start(ap, format);
-	addText(expansionString, &expansionStringPtr, format, ap);
+	vaddText(expansionString, &expansionStringPtr, format, ap);
 	va_end(ap);
 }
 
