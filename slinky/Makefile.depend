@@ -1,0 +1,23 @@
+# DO NOT DELETE
+
+builtins.o: slinkyTypes.h slinkyGlobals.h slinkyExpressions.h builtins.h
+builtins.o: errorStuff.h expr.h link.h relocate.h
+debugPrint.o: slinkyTypes.h slinkyGlobals.h debugPrint.h
+errorStuff.o: slinkyTypes.h slinkyGlobals.h errorStuff.h
+expr.o: slinkyTypes.h slinkyGlobals.h slinkyExpressions.h expr.h errorStuff.h
+expr.o: initialize.h ../y.tab.h
+globals.o: slinkyTypes.h slinkyGlobals.h
+initialize.o: slinkyTypes.h slinkyGlobals.h initialize.h errorStuff.h main.h
+instantiate.o: slinkyTypes.h slinkyGlobals.h slinkyExpressions.h errorStuff.h
+instantiate.o: expr.h instantiate.h ../y.tab.h
+link.o: slinkyTypes.h slinkyGlobals.h link.h debugPrint.h errorStuff.h
+link.o: instantiate.h poke.h read.h relocate.h write.h
+main.o: slinkyTypes.h slinkyGlobals.h main.h initialize.h link.h
+map.o: slinkyTypes.h slinkyGlobals.h map.h debugPrint.h link.h
+poke.o: slinkyTypes.h slinkyGlobals.h poke.h debugPrint.h errorStuff.h expr.h
+read.o: slinkyTypes.h slinkyGlobals.h read.h debugPrint.h errorStuff.h
+read.o: initialize.h instantiate.h link.h
+relocate.o: slinkyTypes.h slinkyGlobals.h relocate.h debugPrint.h
+relocate.o: errorStuff.h link.h map.h
+slinkyTables.o: slinkyTypes.h builtins.h
+write.o: slinkyTypes.h slinkyGlobals.h write.h

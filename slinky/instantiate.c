@@ -34,7 +34,7 @@
 #include "errorStuff.h"
 #include "expr.h"
 #include "instantiate.h"
-#include "y.tab.h"
+#include "../y.tab.h"
 
 #define overFunction() (pc+=sizeof(functionType *))
 #define overNumber() (pc+=sizeof(addressType))

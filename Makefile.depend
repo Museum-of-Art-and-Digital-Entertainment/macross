@@ -1,0 +1,78 @@
+# DO NOT DELETE
+
+actions_6502.o: macrossTypes.h operandDefs_6502.h conditionDefs_6502.h
+actions_6502.o: macrossGlobals.h actions.h macrossTypes.h emitStuff.h
+actions_6502.o: errorStuff.h semanticMisc.h
+actions_68000.o: macrossTypes.h macrossGlobals.h
+buildStuff1.o: macrossTypes.h macrossGlobals.h errorStuff.h lookups.h
+buildStuff1.o: parserMisc.h
+buildStuff2.o: macrossTypes.h macrossGlobals.h lookups.h parserMisc.h
+buildStuff3.o: macrossTypes.h macrossGlobals.h lookups.h
+builtInFunctions.o: macrossTypes.h macrossGlobals.h buildStuff.h errorStuff.h
+builtInFunctions.o: expressionSemantics.h garbage.h lexer.h lookups.h
+builtInFunctions.o: operandStuff.h semanticMisc.h statementSemantics.h
+builtInFunsSD_6502.o: macrossTypes.h macrossGlobals.h builtInFunctions.h
+builtInFunsSD_6502.o: operandStuff.h
+builtInFunsSD_68000.o: macrossTypes.h macrossGlobals.h
+debugPrint.o: macrossTypes.h macrossGlobals.h debugPrint.h y.tab.h
+debugPrintSD_6502.o: macrossTypes.h macrossGlobals.h debugPrint.h y.tab.h
+debugPrintSD_68000.o: macrossTypes.h macrossGlobals.h y.tab.h
+emitBranch_6502.o: macrossTypes.h macrossGlobals.h buildStuff.h emitStuff.h
+emitBranch_6502.o: parserMisc.h semanticMisc.h
+emitBranch_68000.o: macrossTypes.h macrossGlobals.h
+emitStuff.o: macrossTypes.h macrossGlobals.h actions.h debugPrint.h
+emitStuff.o: errorStuff.h semanticMisc.h
+encode.o: macrossTypes.h macrossGlobals.h y.tab.h encode.h debugPrint.h
+encode.o: errorStuff.h parserMisc.h semanticMisc.h slinkyExpressions.h
+errorStuff.o: macrossTypes.h macrossGlobals.h errorStuff.h initialize.h
+expressionSemantics.o: macrossTypes.h macrossGlobals.h y.tab.h
+expressionSemantics.o: builtInFunctions.h errorStuff.h expressionSemantics.h
+expressionSemantics.o: fixups.h listing.h lookups.h operandStuff.h
+expressionSemantics.o: parserMisc.h semanticMisc.h statementSemantics.h
+expressionSemantics.o: tokenStrings.h
+fixups.o: macrossTypes.h macrossGlobals.h errorStuff.h expressionSemantics.h
+fixups.o: fixups.h listing.h operandStuff.h parserMisc.h semanticMisc.h
+fixups.o: tokenStrings.h
+garbage.o: macrossTypes.h macrossGlobals.h garbage.h operandStuff.h
+garbage.o: parserMisc.h y.tab.h
+globals.o: macrossTypes.h macrossGlobals.h
+initialize.o: macrossTypes.h macrossGlobals.h initialize.h errorStuff.h
+initialize.o: lexer.h lookups.h semanticMisc.h
+lexer.o: macrossTypes.h macrossGlobals.h y.tab.h debugPrint.h errorStuff.h
+lexer.o: lexer.h lexerTables.h listing.h lookups.h parserMisc.h
+listing.o: macrossTypes.h macrossGlobals.h emitStuff.h lexer.h listing.h
+listing.o: semanticMisc.h
+lookups.o: macrossTypes.h macrossGlobals.h buildStuff.h errorStuff.h
+lookups.o: garbage.h listing.h lookups.h operandStuff.h parserMisc.h
+lookups.o: semanticMisc.h
+macrossTables_6502.o: macrossTypes.h actions.h builtInFunctions.h y.tab.h
+macrossTables_68000.o: macrossTypes.h y.tab.h
+main.o: macrossTypes.h macrossGlobals.h initialize.h semanticMisc.h y.tab.h
+object.o: macrossTypes.h macrossGlobals.h debugPrint.h encode.h
+object.o: expressionSemantics.h fixups.h garbage.h lookups.h object.h
+object.o: semanticMisc.h
+operandStuffSD_6502.o: macrossTypes.h macrossGlobals.h errorStuff.h
+operandStuffSD_6502.o: expressionSemantics.h fixups.h garbage.h listing.h
+operandStuffSD_6502.o: operandStuff.h parserMisc.h semanticMisc.h
+operandStuffSD_6502.o: statementSemantics.h
+operandStuffSD_68000.o: macrossTypes.h macrossGlobals.h
+parserMisc.o: macrossTypes.h macrossGlobals.h y.tab.h buildStuff.h fixups.h
+parserMisc.o: initialize.h errorStuff.h parserMisc.h
+semanticMisc.o: macrossTypes.h macrossGlobals.h y.tab.h semanticMisc.h
+semanticMisc.o: buildStuff.h debugPrint.h emitStuff.h errorStuff.h
+semanticMisc.o: expressionSemantics.h fixups.h listing.h lookups.h object.h
+semanticMisc.o: operandStuff.h parserMisc.h
+statementSemantics.o: macrossTypes.h macrossGlobals.h actions.h debugPrint.h
+statementSemantics.o: emitBranch.h emitStuff.h errorStuff.h
+statementSemantics.o: expressionSemantics.h fixups.h garbage.h lexer.h
+statementSemantics.o: listing.h lookups.h operandStuff.h parserMisc.h
+statementSemantics.o: semanticMisc.h statementSemantics.h structSemantics.h
+statementSemantics.o: tokenStrings.h
+structSemantics.o: macrossTypes.h macrossGlobals.h emitStuff.h errorStuff.h
+structSemantics.o: listing.h parserMisc.h semanticMisc.h statementSemantics.h
+structSemantics.o: structSemantics.h
+tokenStrings_6502.o: macrossTypes.h macrossGlobals.h
+tokenStrings_68000.o: macrossTypes.h macrossGlobals.h
+y.tab.o: macrossTypes.h macrossGlobals.h buildStuff.h errorStuff.h lexer.h
+y.tab.o: lookups.h operandStuff.h parserMisc.h semanticMisc.h
+y.tab.o: statementSemantics.h
