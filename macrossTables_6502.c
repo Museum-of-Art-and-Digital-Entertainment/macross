@@ -129,14 +129,11 @@ conditionTableEntryType	*conditionTable[HASH_TABLE_SIZE];
 
 /* All those NULLs are used to string together lists after this all gets
    hashed. */
-opcodeTableEntryType	 theOpcodes[] = {
-	"adc", NULL, 0x61, IMM_INDEX, IMM_INDEX_CLASS_BITS, 1,	1, 0,
-	"and", NULL, 0x21, IMM_INDEX, IMM_INDEX_CLASS_BITS, 1,	1, 0,
+opcodeTableEntryType	 theOpcodes[] = {	
 	"asl", NULL, 0x02, DIR_X_1,   DIR_X_1_CLASS_BITS,   1,	1, 0,
 	"bcc", NULL, 0x90, RELATIVE,  REL_CLASS_BITS,	    1,	1, 0,
 	"bcs", NULL, 0xB0, RELATIVE,  REL_CLASS_BITS,	    1,	1, 0,
 	"beq", NULL, 0xF0, RELATIVE,  REL_CLASS_BITS,	    1,	1, 0,
-	"bit", NULL, 0x24, DIR_1,     DIR_1_CLASS_BITS,	    1,	1, 0,
 	"bmi", NULL, 0x30, RELATIVE,  REL_CLASS_BITS,	    1,	1, 0,
 	"bne", NULL, 0xD0, RELATIVE,  REL_CLASS_BITS,	    1,	1, 0,
 	"bpl", NULL, 0x10, RELATIVE,  REL_CLASS_BITS,	    1,	1, 0,
@@ -147,24 +144,17 @@ opcodeTableEntryType	 theOpcodes[] = {
 	"cld", NULL, 0xD8, NONE,      NONE_CLASS_BITS,	    0,	0, 0,
 	"cli", NULL, 0x58, NONE,      NONE_CLASS_BITS,	    0,	0, 0,
 	"clv", NULL, 0xB8, NONE,      NONE_CLASS_BITS,	    0,	0, 0,
-	"cmp", NULL, 0xC1, IMM_INDEX, IMM_INDEX_CLASS_BITS, 1,	1, 0,
 	"cpx", NULL, 0xE0, IMM_DIR,   IMM_DIR_CLASS_BITS,   1,	1, 0,
 	"cpy", NULL, 0xC0, IMM_DIR,   IMM_DIR_CLASS_BITS,   1,	1, 0,
-	"dec", NULL, 0xC6, DIR_X_2,   DIR_X_2_CLASS_BITS,   1,	1, 0,
 	"dex", NULL, 0xCA, NONE,      NONE_CLASS_BITS,	    0,	0, 0,
 	"dey", NULL, 0x88, NONE,      NONE_CLASS_BITS,	    0,	0, 0,
-	"eor", NULL, 0x41, IMM_INDEX, IMM_INDEX_CLASS_BITS, 1,	1, 0,
-	"inc", NULL, 0xE6, DIR_X_2,   DIR_X_2_CLASS_BITS,   1,	1, 0,
 	"inx", NULL, 0xE8, NONE,      NONE_CLASS_BITS,	    0,	0, 0,
 	"iny", NULL, 0xC8, NONE,      NONE_CLASS_BITS,	    0,	0, 0,
-	"jmp", NULL, 0x4C, DIR_INDIR, DIR_INDIR_CLASS_BITS, 1,	1, 0,
 	"jsr", NULL, 0x20, DIR_2,     DIR_2_CLASS_BITS,	    1,	1, 0,
-	"lda", NULL, 0xA1, IMM_INDEX, IMM_INDEX_CLASS_BITS, 1,	1, 0,
 	"ldx", NULL, 0xA2, IMM_DIR_Y, IMM_DIR_Y_CLASS_BITS, 1,	1, 0,
 	"ldy", NULL, 0xA0, IMM_DIR_X, IMM_DIR_X_CLASS_BITS, 1,	1, 0,
 	"lsr", NULL, 0x42, DIR_X_1,   DIR_X_1_CLASS_BITS,   1,	1, 0,
 	"nop", NULL, 0xEA, NONE,      NONE_CLASS_BITS,	    0,	0, 0,
-	"ora", NULL, 0x01, IMM_INDEX, IMM_INDEX_CLASS_BITS, 1,	1, 0,
 	"pha", NULL, 0x48, NONE,      NONE_CLASS_BITS,	    0,	0, 0,
 	"php", NULL, 0x08, NONE,      NONE_CLASS_BITS,	    0,	0, 0,
 	"pla", NULL, 0x68, NONE,      NONE_CLASS_BITS,	    0,	0, 0,
@@ -173,11 +163,9 @@ opcodeTableEntryType	 theOpcodes[] = {
 	"ror", NULL, 0x62, DIR_X_1,   DIR_X_1_CLASS_BITS,   1,	1, 0,
 	"rti", NULL, 0x40, NONE,      NONE_CLASS_BITS,	    0,	0, 0,
 	"rts", NULL, 0x60, NONE,      NONE_CLASS_BITS,	    0,	0, 0,
-	"sbc", NULL, 0xE1, IMM_INDEX, IMM_INDEX_CLASS_BITS, 1,	1, 0,
 	"sec", NULL, 0x38, NONE,      NONE_CLASS_BITS,	    0,	0, 0,
 	"sed", NULL, 0xF8, NONE,      NONE_CLASS_BITS,	    0,	0, 0,
 	"sei", NULL, 0x78, NONE,      NONE_CLASS_BITS,	    0,	0, 0,
-	"sta", NULL, 0x81, INDEX,     INDEX_CLASS_BITS,	    1,	1, 0,
 	"stx", NULL, 0x86, DIR_Y,     DIR_Y_CLASS_BITS,	    1,	1, 0,
 	"sty", NULL, 0x84, DIR_X_3,   DIR_X_3_CLASS_BITS,   1,	1, 0,
 	"tax", NULL, 0xAA, NONE,      NONE_CLASS_BITS,	    0,	0, 0,
@@ -188,6 +176,114 @@ opcodeTableEntryType	 theOpcodes[] = {
 	"tya", NULL, 0x98, NONE,      NONE_CLASS_BITS,	    0,	0, 0,
 	NULL,  NULL, 0x00, NONE,      NONE_CLASS_BITS,	    0,	0, 0,
 };
+
+opcodeTableEntryType	 theOpcodes_02[] = {
+
+	"bit", NULL, 0x24, DIR_1,     DIR_1_CLASS_BITS,	    1,	1, 0,
+
+	"jmp", NULL, 0x4C, DIR_INDIR, DIR_INDIR_CLASS_BITS, 1,	1, 0,
+
+	"dec", NULL, 0xC6, DIR_X_2,   DIR_X_2_CLASS_BITS,   1,	1, 0,
+	"inc", NULL, 0xE6, DIR_X_2,   DIR_X_2_CLASS_BITS,   1,	1, 0,
+
+	"sta", NULL, 0x81, INDEX,     INDEX_CLASS_BITS,	    1,	1, 0,
+
+	"adc", NULL, 0x61, IMM_INDEX, IMM_INDEX_CLASS_BITS, 1,	1, 0,
+	"and", NULL, 0x21, IMM_INDEX, IMM_INDEX_CLASS_BITS, 1,	1, 0,
+	"cmp", NULL, 0xC1, IMM_INDEX, IMM_INDEX_CLASS_BITS, 1,	1, 0,
+	"eor", NULL, 0x41, IMM_INDEX, IMM_INDEX_CLASS_BITS, 1,	1, 0,
+	"lda", NULL, 0xA1, IMM_INDEX, IMM_INDEX_CLASS_BITS, 1,	1, 0,
+	"ora", NULL, 0x01, IMM_INDEX, IMM_INDEX_CLASS_BITS, 1,	1, 0,
+	"sbc", NULL, 0xE1, IMM_INDEX, IMM_INDEX_CLASS_BITS, 1,	1, 0,
+
+	NULL,  NULL, 0x00, NONE,      NONE_CLASS_BITS,	    0,	0, 0,
+};
+
+
+/*
+ 65c02 modifications:
+ adc (zp)
+ and (zp)
+ bit abs,x
+ bit #immediate
+ bit zp,x
+ cmp (zp)
+ dec a
+ eor (zp)
+ inc a
+ jmp (abs,x)
+ lda (zp)
+ ora (zp)
+ sbc (zp)
+ sta (zp)
+
+ additions:
+ bra relative
+ phx
+ phy
+ plx
+ ply
+ stp
+ stz abs
+ stz abs,x
+ stz zp
+ stz zp,x
+ trb abs
+ trb zp
+ tsb abs
+ tsb zp
+ wai
+*/
+
+/*
+ 65c02s additions:
+ bbr
+ bbs
+ rmb
+ smb
+*/	
+opcodeTableEntryType	 theOpcodes_c02[] = {
+	/* updated address modes */
+	"inc", NULL, 0xE6, DIR_X_2,   DIR_X_2_CLASS_BITS|A_REGISTER_OPND_BIT,   1,	1, 0,
+	"dec", NULL, 0xC6, DIR_X_2,   DIR_X_2_CLASS_BITS|A_REGISTER_OPND_BIT,   1,	1, 0,
+
+	"bit", NULL, 0x24, DIR_X_2,   DIR_X_2_CLASS_BITS|IMMEDIATE_OPND_BIT,	1,	1, 0,
+
+	"jmp", NULL, 0x4C, DIR_INDIR, DIR_INDIR_CLASS_BITS|PRE_INDEXED_X_OPND_BIT|PRE_SELECTED_X_OPND_BIT, 1,	1, 0,
+
+
+	"sta", NULL, 0x81, INDEX,     INDEX_CLASS_BITS|INDIRECT_OPND_BIT,	    1,	1, 0,
+
+	"adc", NULL, 0x61, IMM_INDEX, IMM_INDEX_CLASS_BITS|INDIRECT_OPND_BIT, 1,	1, 0,
+	"and", NULL, 0x21, IMM_INDEX, IMM_INDEX_CLASS_BITS|INDIRECT_OPND_BIT, 1,	1, 0,
+	"cmp", NULL, 0xC1, IMM_INDEX, IMM_INDEX_CLASS_BITS|INDIRECT_OPND_BIT, 1,	1, 0,
+	"eor", NULL, 0x41, IMM_INDEX, IMM_INDEX_CLASS_BITS|INDIRECT_OPND_BIT, 1,	1, 0,
+	"lda", NULL, 0xA1, IMM_INDEX, IMM_INDEX_CLASS_BITS|INDIRECT_OPND_BIT, 1,	1, 0,
+	"ora", NULL, 0x01, IMM_INDEX, IMM_INDEX_CLASS_BITS|INDIRECT_OPND_BIT, 1,	1, 0,
+	"sbc", NULL, 0xE1, IMM_INDEX, IMM_INDEX_CLASS_BITS|INDIRECT_OPND_BIT, 1,	1, 0,
+
+	/* new instructions */
+	"bra", NULL, 0x80, RELATIVE,  REL_CLASS_BITS,	    1,	1, 0, // 65c02
+	"phx", NULL, 0xDA, NONE,      NONE_CLASS_BITS,	    0,	0, 0, // 65c02
+	"phy", NULL, 0x5A, NONE,      NONE_CLASS_BITS,	    0,	0, 0, // 65c02
+	"plx", NULL, 0xFA, NONE,      NONE_CLASS_BITS,	    0,	0, 0, // 65c02
+	"ply", NULL, 0x7A, NONE,      NONE_CLASS_BITS,	    0,	0, 0, // 65c02
+	"stp", NULL, 0xDB, NONE,      NONE_CLASS_BITS,	    0,	0, 0, // 65c02
+	"stz", NULL, 0x64, DIR_STZ,   DIR_X_2_CLASS_BITS,   1,	1, 0, // 65c02
+	"trb", NULL, 0x14, DIR_1,     DIR_1_CLASS_BITS,	    1,	1, 0, // 65c02
+	"tsb", NULL, 0x04, DIR_1,     DIR_1_CLASS_BITS,	    1,	1, 0, // 65c02
+	"wai", NULL, 0xCB, NONE,      NONE_CLASS_BITS,	    0,	0, 0, // 65c02
+	NULL,  NULL, 0x00, NONE,      NONE_CLASS_BITS,	    0,	0, 0,
+};
+
+opcodeTableEntryType	 theOpcodes_c02s[] = {
+	"bbr", NULL, 0x0F, BIT_ZP_REL,ANY_OPND_BITS,	    3,	3, 0, // r65c02
+	"bbs", NULL, 0x8F, BIT_ZP_REL,ANY_OPND_BITS,	    3,	3, 0, // r65c02
+	"rmb", NULL, 0x07, BIT_ZP,    ANY_OPND_BITS,	    2,	2, 0, // r65c02
+	"smb", NULL, 0x87, BIT_ZP,    ANY_OPND_BITS,	    2,	2, 0, // r65c02
+	NULL,  NULL, 0x00, NONE,      NONE_CLASS_BITS,	    0,	0, 0,
+};
+
 
 int operandClassTable[] = {	/* indexed by operandKindType */
 	EXPRESSION_OPND_BIT,
@@ -223,6 +319,9 @@ int		       (*instructionActionTable[])() = {
 	actionsNone,
 	actionsIndex,
 	actionsImmIndex,
+	actionsSTZ,
+	actionsBitZPRelative,
+	actionsBitZP,
 };
 
 /* indexed by symbolUsageKindType */

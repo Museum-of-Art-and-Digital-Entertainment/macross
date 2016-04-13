@@ -128,6 +128,9 @@ extern macroTableEntryType	*macroTable[HASH_TABLE_SIZE];
 extern opcodeTableEntryType	*opcodeTable[HASH_TABLE_SIZE];
 
 extern opcodeTableEntryType	 theOpcodes[];
+extern opcodeTableEntryType	 theOpcodes_02[];
+extern opcodeTableEntryType	 theOpcodes_c02[];
+extern opcodeTableEntryType	 theOpcodes_c02s[];
 
 extern keywordTableEntryType	*keywordTable[HASH_TABLE_SIZE];
 

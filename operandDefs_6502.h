@@ -48,7 +48,8 @@ typedef enum {
    others right too. */
 typedef enum {
 		RELATIVE, DIR_1, DIR_2, DIR_INDIR, DIR_X_1, DIR_X_2, DIR_X_3,
-		DIR_Y, IMM_DIR, IMM_DIR_X, IMM_DIR_Y, NONE, INDEX, IMM_INDEX
+		DIR_Y, IMM_DIR, IMM_DIR_X, IMM_DIR_Y, NONE, INDEX, IMM_INDEX,
+		DIR_STZ, BIT_ZP_REL, BIT_ZP,
 			       } addressClassType;
 
 #define NO_OPND_BIT		0x0000
@@ -98,4 +99,4 @@ typedef enum {
 				POST_INDEXED_Y_OPND_BIT | \
 				EXPRESSION_OPND_BIT | PRE_SELECTED_X_OPND_BIT
 
-#define MAX_NUMBER_OF_OPERANDS	1
+#define MAX_NUMBER_OF_OPERANDS	3
