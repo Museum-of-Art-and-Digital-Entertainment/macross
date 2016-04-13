@@ -11,9 +11,9 @@ by
 Chip Morningstar
 .AI
 Lucasfilm Ltd. Games Division
-\\*(Da
+\*(Da
 .ds LH Macross
-.ds CH \\*(Da
+.ds CH \*(Da
 .ds RH 6502 Version
 .ds LF Lucasfilm Ltd. Proprietary Information
 .ds CF - % -
@@ -1923,37 +1923,43 @@ the end of the string is returned, if \fIstartPos\fR is positive, or to the
 beginning of the string, if \fIstartPos\fR is negative.  If any of the indices
 cause the substring bounds to go off the end of \fIstring\fR an error results.
 For example,
+.LP
 .nf
-	\fCsubstr("hello there", 6, 3)\fR	yields \fC"the"\fR
-	\fCsubstr("hello there", -8, 2)\fR	yields \fC"lo"\fR
-	\fCsubstr("hello there", 6, -3)\fR	yields \fC"o t"\fR
-	\fCsubstr("hello there", -8, -4)\fR	yields \fC"hell"\fR
-	\fCsubstr("hello there", 6)\fR		yields \fC"there"\fR
-	\fCsubstr("hello there", -7)\fR		yields \fC"hello"\fR
+		\fCsubstr("hello there", 6, 3)\fR		yields \fC"the"\fR
+		\fCsubstr("hello there", -8, 2)\fR		yields \fC"lo"\fR
+		\fCsubstr("hello there", 6, -3)\fR		yields \fC"o t"\fR
+		\fCsubstr("hello there", -8, -4)\fR		yields \fC"hell"\fR
+		\fCsubstr("hello there", 6)\fR			yields \fC"there"\fR
+		\fCsubstr("hello there", -7)\fR		yields \fC"hello"\fR
+
 .fi
 .LP
 \fCsymbolDefine(\fIstring\fR \*[ \fC, \fIvalue\fR \*] \fC)\fR
 .IP
 Defines the symbol named by \fIstring\fP (with optional value \fIvalue\fP) as
 if it had been defined with a \fCdefine\fR statement.  For example:
+.LP
 .nf
-	\fCsymbolDefine(strcat("foon", "farm"), 47)\fR
-.fi
-is equivalent to
-.nf
-	\fCdefine foonfarm = 47\fR
+		\fCsymbolDefine(strcat("foon", "farm"), 47)\fR
+
+	is equivalent to
+
+		\fCdefine foonfarm = 47\fR
+
 .fi
 .LP
 \fCsymbolLookup(\fIstring\fC)\fR
 .IP
 A call to this function with a string operand is equivalent to a reference to
 the symbol that the string represents.  For example, 
+.LP
 .nf
-	\fCand		symbolLookup("foo")\fR
-.fi
-is equivalent to
-.nf
-	\fCand		foo\fR
+		\fCand		symbolLookup("foo")\fR
+
+	is equivalent to
+
+		\fCand		foo\fR
+
 .fi
 .LP
 \fCsymbolName(\fIsymbol\fC)\fR
@@ -1961,12 +1967,14 @@ is equivalent to
 Returns a string which is the name of the symbol \fIsymbol\fR.  For example,
 \fCsymbolName(foo)\fR would return \fC"foo"\fR.  This can be used in
 conjunction with the \fCsymbolLookup\fR function so that the following:
+.LP
 .nf
-	\fCand		symbolLookup(strcat(symbolName(foo), "bar"))\fR
-.fi
-is equivalent to
-.nf
-	\fCand		foobar\fR
+		\fCand		symbolLookup(strcat(symbolName(foo), "bar"))\fR
+
+	is equivalent to
+
+		\fCand		foobar\fR
+
 .fi
 .LP
 \fCsymbolUsage(\fIsymbol\fC)\fR
