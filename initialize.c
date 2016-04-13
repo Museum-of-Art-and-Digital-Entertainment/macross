@@ -45,6 +45,8 @@ extern int yydebug;
 static fileNameListType		*bottomOfInputFileStack;
 static char			 *outputFileName;
 
+static int machine = 0;
+
   void
 chokePukeAndDie(void)
 {
@@ -257,6 +259,11 @@ initializeStuff(int argc, char **argv)
 			printVersion();
 			continue;
 
+		case 'x':
+			/* -x6502 -x65c02 -x65c02s */
+			machine++;
+			continue;
+
 		case 'Y':
 			yydebug = TRUE;
 			continue;
@@ -435,6 +442,25 @@ createHashTables(void)
 	newOpcodeEntry = theOpcodes;
 	while (newOpcodeEntry->mnemonic != NULL)
 		hashStringEnter(newOpcodeEntry++, opcodeTable);
+
+	if (machine == 0) {
+		newOpcodeEntry = theOpcodes_02;
+		while (newOpcodeEntry->mnemonic != NULL)
+			hashStringEnter(newOpcodeEntry++, opcodeTable);
+	}
+	else if (machine == 1) {
+		newOpcodeEntry = theOpcodes_c02;
+		while (newOpcodeEntry->mnemonic != NULL)
+			hashStringEnter(newOpcodeEntry++, opcodeTable);	
+	}
+	else if (machine >= 2) {
+		newOpcodeEntry = theOpcodes_c02;
+		while (newOpcodeEntry->mnemonic != NULL)
+			hashStringEnter(newOpcodeEntry++, opcodeTable);	
+		newOpcodeEntry = theOpcodes_c02s;
+		while (newOpcodeEntry->mnemonic != NULL)
+			hashStringEnter(newOpcodeEntry++, opcodeTable);	
+	}
 
 	newKeywordEntry = theKeywords;
 	while (newKeywordEntry->string != NULL)

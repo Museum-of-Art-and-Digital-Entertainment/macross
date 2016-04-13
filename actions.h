@@ -17,6 +17,9 @@ void actionsImmIndex(opcodeTableEntryType *opcode, int numberOfOperands, valueTy
 void actionsIndex(opcodeTableEntryType *opcode, int numberOfOperands, valueType **evaluatedOperands);
 void actionsNone(opcodeTableEntryType *opcode, int numberOfOperands, valueType **evaluatedOperands);
 void actionsRelative(opcodeTableEntryType *opcode, int numberOfOperands, valueType **evaluatedOperands);
+void actionsSTZ(opcodeTableEntryType *opcode, int numberOfOperands, valueType **evaluatedOperands);
+void actionsBitZPRelative(opcodeTableEntryType *opcode, int numberOfOperands, valueType **evaluatedOperands);
+void actionsBitZP(opcodeTableEntryType *opcode, int numberOfOperands, valueType **evaluatedOperands);
 bool isByte(int value);
 bool isByteOffset(int value);
 bool isWordOffset(int value);
