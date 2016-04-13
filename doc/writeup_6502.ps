@@ -1,0 +1,10058 @@
+%!PS-Adobe-3.0
+%%Creator: Heirloom Documentation Tools - dpost 8.77 (gritter) 6/19/11
+%%CreationDate: Wed Feb 24 08:59:14 2016
+%%DocumentFonts: Times-Bold Times-Italic Times-Roman Courier
+%%Pages: 32
+%%DocumentNeededResources: font Times-Bold
+%%+ font Times-Italic
+%%+ font Times-Roman
+%%+ font Courier
+%%EndComments
+%%BeginProlog
+%%BeginResource: procset dpost 4.19 0
+%
+% Copyright 2005 Sun Microsystems, Inc.  All rights reserved.
+% Use is subject to license terms.
+%
+% CDDL HEADER START
+%
+% The contents of this file are subject to the terms of the
+% Common Development and Distribution License, Version 1.0 only
+% (the "License").  You may not use this file except in compliance
+% with the License.
+%
+% You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+% or http://www.opensolaris.org/os/licensing.
+% See the License for the specific language governing permissions
+% and limitations under the License.
+%
+% When distributing Covered Code, include this CDDL HEADER in each
+% file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+% If applicable, add the following below this CDDL HEADER, with the
+% fields enclosed by brackets "[]" replaced with your own identifying
+% information: Portions Copyright [yyyy] [name of copyright owner]
+%
+% CDDL HEADER END
+%
+% from OpenSolaris "dpost.ps	1.7	05/06/08 SMI"
+%
+% Portions Copyright 2005 Gunnar Ritter, Freiburg i. Br, Germany
+%
+% Sccsid @(#)dpost.ps	4.19 (gritter) 2/7/10
+%
+
+/#copies 1 store
+/aspectratio 1 def
+/formsperpage 1 def
+/landscape false def
+/linewidth .3 def
+/magnification 1 def
+/margin 0 def
+/orientation 0 def
+/resolution 720 def
+/xoffset 0 def
+/yoffset 0 def
+
+/roundpage true def
+/useclippath true def
+/pagebbox [0 0 612 792] def
+
+/R  /Times-Roman def
+/I  /Times-Italic def
+/B  /Times-Bold def
+/BI /Times-BoldItalic def
+/H  /Helvetica def
+/HI /Helvetica-Oblique def
+/HB /Helvetica-Bold def
+/HX /Helvetica-BoldOblique def
+/CW /Courier def
+/CO /Courier def
+/CI /Courier-Oblique def
+/CB /Courier-Bold def
+/CX /Courier-BoldOblique def
+/PA /Palatino-Roman def
+/PI /Palatino-Italic def
+/PB /Palatino-Bold def
+/PX /Palatino-BoldItalic def
+/Hr /Helvetica-Narrow def
+/Hi /Helvetica-Narrow-Oblique def
+/Hb /Helvetica-Narrow-Bold def
+/Hx /Helvetica-Narrow-BoldOblique def
+/KR /Bookman-Light def
+/KI /Bookman-LightItalic def
+/KB /Bookman-Demi def
+/KX /Bookman-DemiItalic def
+/AR /AvantGarde-Book def
+/AI /AvantGarde-BookOblique def
+/AB /AvantGarde-Demi def
+/AX /AvantGarde-DemiOblique def
+/NR /NewCenturySchlbk-Roman def
+/NI /NewCenturySchlbk-Italic def
+/NB /NewCenturySchlbk-Bold def
+/NX /NewCenturySchlbk-BoldItalic def
+/ZD /ZapfDingbats def
+/ZI /ZapfChancery-MediumItalic def
+/VR /Varitimes#Roman def
+/VI /Varitimes#Italic def
+/VB /Varitimes#Bold def
+/VX /Varitimes#BoldItalic def
+/S  /S def
+/S1 /S1 def
+/GR /Symbol def
+
+/inch {72 mul} bind def
+/min {2 copy gt {exch} if pop} bind def
+
+/track 0 def
+/horscale 1.0 def
+
+/setup {
+	counttomark 2 idiv {def} repeat pop
+
+	landscape {/orientation 90 orientation add def} if
+	/scaling 72 resolution div def
+	linewidth setlinewidth
+	1 setlinecap
+
+	pagedimensions
+	xcenter ycenter translate
+	orientation neg rotate
+	width 2 div neg height 2 div translate
+	xoffset inch yoffset inch translate
+	margin 2 div dup neg translate
+	magnification dup aspectratio mul scale
+	scaling scaling scale
+
+	/Symbol /S Sdefs cf
+	/Times-Roman /S1 S1defs cf
+	0 0 moveto
+} def
+
+/pagedimensions {
+	useclippath userdict /gotpagebbox known not and {
+		/pagebbox [clippath pathbbox newpath] def
+		roundpage currentdict /roundpagebbox known and {roundpagebbox} if
+	} if
+	pagebbox aload pop
+	4 -1 roll exch 4 1 roll 4 copy
+	landscape {4 2 roll} if
+	sub /width exch def
+	sub /height exch def
+	add 2 div /xcenter exch def
+	add 2 div /ycenter exch def
+	userdict /gotpagebbox true put
+} def
+
+/pagesetup {
+	/page exch def
+	currentdict /pagedict known currentdict page known and {
+		page load pagedict exch get cvx exec
+	} if
+	/Dsetup where {pop Dsetup} if
+	_custompagesetup
+} def
+
+/decodingdefs [
+	{counttomark 2 idiv {y moveto track 0 3 -1 roll ashow} repeat}
+	{neg /y exch def counttomark 2 idiv {y moveto track 0 3 -1 roll ashow} repeat}
+	{neg dup /y exch def moveto {2 index dup length track mul exch stringwidth pop add sub exch div 0 32 track 0 6 -1 roll awidthshow} repeat}
+	{neg dup /y exch def moveto {spacewidth sub track sub 0.0 32 track 0 6 -1 roll awidthshow} repeat}
+	{/x exch def counttomark 2 idiv 1 add {x y moveto counttomark 1 gt {x exch sub /x exch def} if track 0 3 -1 roll ashow} repeat}
+	{/x exch def counttomark 2 idiv 1 add {x y moveto counttomark 1 gt {x exch sub /x exch def} if track 0 3 -1 roll ashow} repeat}
+	{counttomark 2 idiv {y moveto track 0 3 -1 roll ashow} repeat}
+	{neg setfunnytext}
+] def
+
+/setdecoding {/t decodingdefs 3 -1 roll get def} bind def
+
+/T {/track exch def} bind def
+
+/w {neg dup /y exch def moveto track 0 3 -1 roll ashow} bind def
+/v {y moveto track 0 3 -1 roll ashow} bind def
+/u {y neg t} bind def
+/m {neg dup /y exch def moveto} bind def
+/done {/lastpage where {pop lastpage} if} def
+
+/f {
+	dup /font exch def exch
+	dup /ptsize exch def scaling div dup /size exch def
+	horscale 1.0 ne {horscale mul [exch 0 0 size 0 0]} if SF
+	linewidth ptsize mul scaling 10 mul div setlinewidth
+	/spacewidth ( ) stringwidth pop def
+	/horscale 1.0 def
+} bind def
+/F {ptsize exch f} bind def
+/s {font f} bind def
+/h {/horscale exch def f} bind def
+
+/changefont {
+	/fontheight exch def
+	/fontslant exch def
+	currentfont [
+		1 0
+		fontheight ptsize div fontslant sin mul fontslant cos div
+		fontheight ptsize div
+		0 0
+	] makefont setfont
+} bind def
+
+/sf {f} bind def
+
+/cf {
+	dup length 2 idiv
+	/entries exch def
+	/chtab exch def
+	/newfont exch def
+
+	findfont dup length 1 add dict
+	/newdict exch def
+	{1 index /FID ne {newdict 3 1 roll put} {pop pop} ifelse} forall
+
+	newdict /Metrics entries dict put
+	newdict /Metrics get
+	begin
+		chtab aload pop
+		1 1 entries {pop def} for
+		newfont newdict definefont pop
+	end
+} bind def
+
+%
+% A few arrays used to adjust reference points and character widths in some
+% of the printer resident fonts. If square roots are too high try changing
+% the lines describing /radical and /radicalex to,
+%
+%	/radical	[0 -75 550 0]
+%	/radicalex	[-50 -75 500 0]
+%
+
+/Sdefs [
+	/underscore		[0 0 500 0]
+	/bracketlefttp		[208 500]
+	/bracketleftbt		[208 500]
+	/bracketrighttp		[-60 380]
+	/bracketrightbt		[-60 380]
+	/braceleftbt		[209 490]
+	/bracketrightex		[220 -125 500 0]
+	/radical		[0 0 550 0]
+	% NeWSprint's \(br is too low, compensate
+	statusdict /product get (NeWS Server) eq {
+		/radicalex		[-50 100 500 0]
+		/parenleftex		[-20 100 0 0]
+
+	} {
+		/radicalex		[-50 0 500.001 0]
+		/parenleftex		[-20 -170 0 0]
+	} ifelse
+	/integral		[100 -50 500 0]
+	/infinity		[10 -75 730 0]
+] def
+
+%
+% This adjusts the y left bearing of the underscore character in the
+% Symbol font to the position expected by troff, depending on the
+% font variant actually in use with the current document.
+%
+/_Sdefsadj {
+	gsave
+	/Symbol findfont 1000 scalefont setfont
+	0 0 moveto
+	(\137) false charpath flattenpath pathbbox pop pop exch pop
+	grestore
+	252 add neg
+	Sdefs 1 [0 5 -1 roll 500 0] put
+} def
+
+/S1defs [
+	/underscore		[0 80 500.001 0]
+	/endash			[7 90 650 0]
+] def
+
+% from Adobe's PostScript Language Reference Manual, 2nd ed. 1990, pp. 588-589
+/*SF {					% Complete selectfont emulation
+	exch findfont exch
+	dup type /arraytype eq {makefont}{scalefont} ifelse setfont
+} bind def
+/languagelevel where			% Determine language level
+	{pop languagelevel} {1} ifelse	% of implementation
+	2 lt {				% ifelse
+		/SF /*SF load def	% Level 1 interpreter present, so
+	} {				% else
+		/SF /selectfont load def% Level 2 interpreter present, so
+	}
+ifelse
+
+% from Adobe's pdfmark Reference Manual for Acrobat 7.0, 11/30/04, p. 10
+/pdfmark where				% Is pdfmark already available?
+	{pop}				% Yes: do nothing (use that definition)
+	{				% No: define pdfmark as follows:
+	/globaldict where		% globaldict is preferred because
+		{pop globaldict}	% globaldict is always visible; else,
+		{userdict}		% use userdict otherwise.
+	ifelse
+	/pdfmark /cleartomark load put
+	}				% Define pdfmark to remove all objects
+ifelse					% up to and including the mark object.
+%%EndResource
+%%EndProlog
+%%BeginSetup
+[ /CreationDate (D:20160224085914-05'00')
+  /Creator (Heirloom Documentation Tools - dpost 8.77 (gritter) 6/19/11)
+/DOCINFO pdfmark
+/_custompagesetup {
+} def
+/_marks {
+} def
+/Encoding-@13@0 [
+/.notdef /hyphen /cent /fi /fl /dagger /emdash /onequarter /threequarters
+/onehalf /endash /acute /grave /section /daggerdbl /backslash
+/quotedbl /ring /bullet /bar /quotedblleft /quotedblright /quotesingle
+/quoteleft /quoteright /space /asciicircum /asciitilde /exclamdown
+/sterling /fraction /yen /space /exclam /quotedbl /numbersign
+/dollar /percent /ampersand /quoteright /parenleft /parenright
+/asterisk /plus /comma /hyphen /period /slash /zero /one /two
+/three /four /five /six /seven /eight /nine /colon /semicolon
+/less /equal /greater /question /at /A /B /C /D /E /F /G /H /I
+/J /K /L /M /N /O /P /Q /R /S /T /U /V /W /X /Y /Z /bracketleft
+/backslash /bracketright /circumflex /underscore /quoteleft /a
+/b /c /d /e /f /g /h /i /j /k /l /m /n /o /p /q /r /s /t /u /v
+/w /x /y /z /braceleft /bar /braceright /tilde /florin /currency
+/guillemotleft /guilsinglleft /guilsinglright /periodcentered
+/paragraph /quotesinglbase /quotedblbase /guillemotright /ellipsis
+/perthousand /questiondown /macron /breve /dotaccent /dieresis
+/cedilla /hungarumlaut /ogonek /caron /AE /ordfeminine /Lslash
+/Oslash /OE /ordmasculine /ae /dotlessi /lslash /oslash /oe /germandbls
+/Idieresis /eacute /Ydieresis /divide /Yacute /Acircumflex /aacute
+/Ucircumflex /yacute /ecircumflex /Udieresis /Uacute /Edieresis
+/copyright /aring /agrave /atilde /scaron /iacute /ucircumflex
+/acircumflex /ccedilla /Thorn /threesuperior /Ograve /Agrave
+/multiply /uacute /ydieresis /icircumflex /Ecircumflex /adieresis
+/edieresis /Iacute /plusminus /brokenbar /registered /Egrave
+/Zcaron /Eth /Ccedilla /Aacute /Adieresis /egrave /Oacute /oacute
+/idieresis /Ocircumflex /Ugrave /thorn /twosuperior /Odieresis
+/mu /igrave /trademark /Igrave /ocircumflex /ntilde /Eacute /Scaron
+/degree /ograve /ugrave /Ntilde /otilde /Atilde /Aring /Otilde
+/minus /Icircumflex /logicalnot /odieresis /udieresis /eth /zcaron
+/onesuperior /Euro /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+] def
+/Times-Bold findfont
+dup length dict begin
+  {1 index /FID ne {def} {pop pop} ifelse} forall
+  /Encoding Encoding-@13@0 def
+  currentdict
+end
+/Times-Bold-@13 exch definefont pop
+/@13 /Times-Bold-@13 def
+/&13 {@13 F} bind def
+/Encoding-@12@0 [
+/.notdef /hyphen /cent /fi /fl /dagger /emdash /onequarter /threequarters
+/onehalf /endash /acute /grave /section /daggerdbl /backslash
+/quotedbl /ring /bullet /bar /quotedblleft /quotedblright /quotesingle
+/quoteleft /quoteright /space /asciicircum /asciitilde /exclamdown
+/sterling /fraction /yen /space /exclam /quotedbl /numbersign
+/dollar /percent /ampersand /quoteright /parenleft /parenright
+/asterisk /plus /comma /hyphen /period /slash /zero /one /two
+/three /four /five /six /seven /eight /nine /colon /semicolon
+/less /equal /greater /question /at /A /B /C /D /E /F /G /H /I
+/J /K /L /M /N /O /P /Q /R /S /T /U /V /W /X /Y /Z /bracketleft
+/backslash /bracketright /circumflex /underscore /quoteleft /a
+/b /c /d /e /f /g /h /i /j /k /l /m /n /o /p /q /r /s /t /u /v
+/w /x /y /z /braceleft /bar /braceright /tilde /florin /currency
+/guillemotleft /guilsinglleft /guilsinglright /periodcentered
+/paragraph /quotesinglbase /quotedblbase /guillemotright /ellipsis
+/perthousand /questiondown /macron /breve /dotaccent /dieresis
+/cedilla /hungarumlaut /ogonek /caron /AE /ordfeminine /Lslash
+/Oslash /OE /ordmasculine /ae /dotlessi /lslash /oslash /oe /germandbls
+/Idieresis /eacute /Ydieresis /divide /Yacute /Acircumflex /aacute
+/Ucircumflex /yacute /ecircumflex /Udieresis /Uacute /Edieresis
+/copyright /aring /agrave /atilde /scaron /iacute /ucircumflex
+/acircumflex /ccedilla /Thorn /threesuperior /Ograve /Agrave
+/multiply /uacute /ydieresis /icircumflex /Ecircumflex /adieresis
+/edieresis /Iacute /plusminus /brokenbar /registered /Egrave
+/Zcaron /Eth /Ccedilla /Aacute /Adieresis /egrave /Oacute /oacute
+/idieresis /Ocircumflex /Ugrave /thorn /twosuperior /Odieresis
+/mu /igrave /trademark /Igrave /ocircumflex /ntilde /Eacute /Scaron
+/degree /ograve /ugrave /Ntilde /otilde /Atilde /Aring /Otilde
+/minus /Icircumflex /logicalnot /odieresis /udieresis /eth /zcaron
+/onesuperior /Euro /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+] def
+/Times-Italic findfont
+dup length dict begin
+  {1 index /FID ne {def} {pop pop} ifelse} forall
+  /Encoding Encoding-@12@0 def
+  currentdict
+end
+/Times-Italic-@12 exch definefont pop
+/@12 /Times-Italic-@12 def
+/&12 {@12 F} bind def
+/Encoding-@11@0 [
+/.notdef /hyphen /cent /fi /fl /dagger /emdash /onequarter /threequarters
+/onehalf /endash /acute /grave /section /daggerdbl /backslash
+/quotedbl /ring /bullet /bar /quotedblleft /quotedblright /quotesingle
+/quoteleft /quoteright /space /asciicircum /asciitilde /exclamdown
+/sterling /fraction /yen /space /exclam /quotedbl /numbersign
+/dollar /percent /ampersand /quoteright /parenleft /parenright
+/asterisk /plus /comma /hyphen /period /slash /zero /one /two
+/three /four /five /six /seven /eight /nine /colon /semicolon
+/less /equal /greater /question /at /A /B /C /D /E /F /G /H /I
+/J /K /L /M /N /O /P /Q /R /S /T /U /V /W /X /Y /Z /bracketleft
+/backslash /bracketright /circumflex /underscore /quoteleft /a
+/b /c /d /e /f /g /h /i /j /k /l /m /n /o /p /q /r /s /t /u /v
+/w /x /y /z /braceleft /bar /braceright /tilde /florin /currency
+/guillemotleft /guilsinglleft /guilsinglright /periodcentered
+/paragraph /quotesinglbase /quotedblbase /guillemotright /ellipsis
+/perthousand /questiondown /macron /breve /dotaccent /dieresis
+/cedilla /hungarumlaut /ogonek /caron /AE /ordfeminine /Lslash
+/Oslash /OE /ordmasculine /ae /dotlessi /lslash /oslash /oe /germandbls
+/Idieresis /eacute /Ydieresis /divide /Yacute /Acircumflex /aacute
+/Ucircumflex /yacute /ecircumflex /Udieresis /Uacute /Edieresis
+/copyright /aring /agrave /atilde /scaron /iacute /ucircumflex
+/acircumflex /ccedilla /Thorn /threesuperior /Ograve /Agrave
+/multiply /uacute /ydieresis /icircumflex /Ecircumflex /adieresis
+/edieresis /Iacute /plusminus /brokenbar /registered /Egrave
+/Zcaron /Eth /Ccedilla /Aacute /Adieresis /egrave /Oacute /oacute
+/idieresis /Ocircumflex /Ugrave /thorn /twosuperior /Odieresis
+/mu /igrave /trademark /Igrave /ocircumflex /ntilde /Eacute /Scaron
+/degree /ograve /ugrave /Ntilde /otilde /Atilde /Aring /Otilde
+/minus /Icircumflex /logicalnot /odieresis /udieresis /eth /zcaron
+/onesuperior /Euro /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+] def
+/Times-Roman findfont
+dup length dict begin
+  {1 index /FID ne {def} {pop pop} ifelse} forall
+  /Encoding Encoding-@11@0 def
+  currentdict
+end
+/Times-Roman-@11 exch definefont pop
+/@11 /Times-Roman-@11 def
+/&11 {@11 F} bind def
+/Encoding-@15@0 [
+/.notdef /hyphen /cent /fi /fl /dagger /emdash /onequarter /threequarters
+/onehalf /endash /acute /grave /section /daggerdbl /backslash
+/quotedbl /ring /bullet /bar /quotedblleft /quotedblright /quotesingle
+/quoteleft /quoteright /space /asciicircum /asciitilde /exclamdown
+/sterling /fraction /yen /space /exclam /quotedbl /numbersign
+/dollar /percent /ampersand /quoteright /parenleft /parenright
+/asterisk /plus /comma /hyphen /period /slash /zero /one /two
+/three /four /five /six /seven /eight /nine /colon /semicolon
+/less /equal /greater /question /at /A /B /C /D /E /F /G /H /I
+/J /K /L /M /N /O /P /Q /R /S /T /U /V /W /X /Y /Z /bracketleft
+/backslash /bracketright /circumflex /underscore /quoteleft /a
+/b /c /d /e /f /g /h /i /j /k /l /m /n /o /p /q /r /s /t /u /v
+/w /x /y /z /braceleft /bar /braceright /tilde /florin /currency
+/guillemotleft /guilsinglleft /guilsinglright /periodcentered
+/paragraph /quotesinglbase /quotedblbase /guillemotright /ellipsis
+/perthousand /questiondown /macron /breve /dotaccent /dieresis
+/cedilla /hungarumlaut /ogonek /caron /AE /ordfeminine /Lslash
+/Oslash /OE /ordmasculine /ae /dotlessi /lslash /oslash /oe /germandbls
+/Idieresis /eacute /Ydieresis /divide /Yacute /Acircumflex /aacute
+/Ucircumflex /yacute /ecircumflex /Udieresis /Uacute /Edieresis
+/copyright /aring /agrave /atilde /scaron /iacute /ucircumflex
+/acircumflex /ccedilla /Thorn /threesuperior /Ograve /Agrave
+/multiply /uacute /ydieresis /icircumflex /Ecircumflex /adieresis
+/edieresis /Iacute /plusminus /brokenbar /registered /Egrave
+/Zcaron /Eth /Ccedilla /Aacute /Adieresis /egrave /Oacute /oacute
+/idieresis /Ocircumflex /Ugrave /thorn /twosuperior /Odieresis
+/mu /igrave /trademark /Igrave /ocircumflex /ntilde /Eacute /Scaron
+/degree /ograve /ugrave /Ntilde /otilde /Atilde /Aring /Otilde
+/minus /Icircumflex /logicalnot /odieresis /udieresis /eth /zcaron
+/onesuperior /Euro /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+] def
+/Courier findfont
+dup length dict begin
+  {1 index /FID ne {def} {pop pop} ifelse} forall
+  /Encoding Encoding-@15@0 def
+  currentdict
+end
+/Courier-@15 exch definefont pop
+/@15 /Courier-@15 def
+/&15 {@15 F} bind def
+/Encoding-@19@0 [
+/.notdef /cent /dagger /onequarter /threequarters /onehalf /endash
+/acute /grave /underscore /section /daggerdbl /backslash /quotedbl
+/bar /quotedblleft /quotedblright /space /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /space /.notdef /quotedbl
+/numbersign /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /less /.notdef /greater /.notdef
+/at /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /backslash
+/.notdef /circumflex /underscore /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /bar /.notdef /tilde /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef ] def
+/Times-Roman findfont
+dup length dict begin
+  {1 index /FID ne {def} {pop pop} ifelse} forall
+  /Encoding Encoding-@19@0 def
+  currentdict
+end
+/Times-Roman-tmp-@19 exch definefont pop
+/Times-Roman-tmp-@19 /Times-Roman-@19 S1defs cf
+/Times-Roman-tmp-@19 undefinefont
+/@19 /Times-Roman-@19 def
+/&19 {@19 F} bind def
+mark
+/resolution 72000 def
+setup
+3 setdecoding
+%%EndSetup
+%%Page: 1 1
+save
+mark
+1 pagesetup
+18 @13 f
+(Macr)234675 122000 w
+(oss 6502)5994 1 276327 u
+10 @12 f
+(an assembler for people who hate assembly langua)3330 1 178120 160000 t
+(g)388540 v
+(e)393440 v
+(by)283280 172000 w
+(Chip Morningstar)3330 1 251330 184000 t
+&11
+(Lucas\003lm Ltd. Games Di)3330 1 223825 202000 t
+(vision)327725 v
+(July 7, 1986)3330 1 262585 214000 t
+&12
+(ABSTRA)264535 250000 w
+(CT)299235 v
+&11
+(This document describes the 6502 v)5836 1 133000 274000 t
+(ersion of)5836 1 293680 u
+&12
+(Macr)338122 v
+(oss)359332 v
+&11
+(, a super)5836 1 372112 u
+(\001duper cross\001)5836 1 412184 u
+(assembler that has actually been used!)3330 1 108000 286000 t
+13 @13 f
+(Intr)72000 322000 w
+(oduction)94152 v
+10 @12 f
+(Macr)97000 349600 w
+(oss)118210 v
+&11
+( for a v)4415(is a generic cross assembler)4414 2 135404 u
+(ariety of dif)4415 1 288235 u
+( document)4415( This)7565(ferent microprocessors.)4415 3 339025 u
+(describes the 6502 v)3486 1 72000 361600 t
+(ersion of)3486 1 156738 u
+&12
+(Macr)196480 v
+(oss)217690 v
+&11
+(.)230470 v
+&12
+(Macr)239785 v
+(oss)260995 v
+&11
+(dif)277260 v
+(fers from man)3485 1 288120 u
+(y macro assemblers in that it pro)3485 1 346590 u
+(vides)482890 v
+(a number of)5182 1 72000 373600 t
+(\027)130866 v
+(\027higher le)5182 1 133456 u
+(v)174488 v
+(el\030)179338 v
+( include)5183( These)8333( assembly language.)5183
+( not traditionally found in)5182(\030 constructs)4442 5 189148 u
+(block\001structured)72000 385600 w
+(\004o)142040 v
+(w\001of\001control statements \()4499 1 152350 u
+&15
+(if)257438 v
+&11
+(,)269438 v
+&15
+(while)276437 v
+&11
+(, etc.\) and the ability to de\003ne record\001oriented)4499 1 306437 u
+(data structures \()3384 1 72000 397600 t
+&15
+(struct)137638 v
+&11
+( addition, it contains a po)3384(\). In)6714 2 173638 u
+(werful macro capability that is based on syntactic)3384 1 299792 u
+(structural manipulations rather than simple te)5232 1 72000 409600 t
+(xt substitution.)5232 1 266880 u
+&12
+(Macr)337634 v
+(oss)358844 v
+&11
+(is, in f)5231 1 376855 u
+(act, a complete block\001)5231 1 407497 u
+(structured programming language in its o)3330 1 72000 421600 t
+(wn right which is interpreted at assembly time.)3330 1 241160 u
+13 @13 f
+(General F)4329 1 72000 445600 t
+(orm of)4329 1 128719 u
+&12
+(Macr)171307 v
+(oss)198880 v
+&13
+(Statements)219823 v
+10 @11 f
+(Stylistically)97000 473200 w
+(, much of)3586 1 144140 u
+&12
+(Macr)187948 v
+(oss)209158 v
+&11
+(is patterned after)3586 1 225524 u
+&13
+(C)298482 v
+&11
+( particular)3586(. In)6916 2 305702 u
+(, the form of man)3586 1 364954 u
+(y k)3586 1 438858 u
+(e)452344 v
+(yw)456634 v
+(ords and)3586 1 468754 u
+(of block structured entities is deri)4362 1 72000 485200 t
+(v)215210 v
+(ed from)4361 1 220060 u
+&13
+(C)257662 v
+&11
+(. Unlik)7691 1 264882 u
+(e)297753 v
+&13
+(C)306554 v
+&11
+(ho)318135 v
+(we)327885 v
+(v)339295 v
+(er)344145 v
+(,)351515 v
+&12
+(Macr)358376 v
+(oss)379586 v
+&11
+(follo)396727 v
+(ws the con)4361 1 415367 u
+(v)461459 v
+(ention of)4361 1 466309 u
+(more traditional assemblers that statements are delimited by line boundar\
+ies \(i.e., one statement per line,)3520 1 72000 497200 t
+(with the end of a line ending a statement\).)3330 1 72000 509200 t
+( such)3878( Therefore,)7028
+(In general, spaces and tabs are treated as whitespace characters and are i\
+gnored.)3877 3 97000 524800 t
+( format his or her program)4954
+(characters may be used as the assembly language programmer desires to)4955 2 72000 536800 t
+( F)7847(according to personal taste.)4517 2 72000 548800 t
+(or the con)4517 1 200728 u
+(v)244352 v
+(enience of the programmer)4517 1 249202 u
+(,)362873 v
+&12
+(Macr)369890 v
+(oss)391100 v
+&11
+(relax)408397 v
+( syntax rule)4518(es the)4517 2 428237 u
+(that ne)3765 1 72000 560800 t
+(wlines al)3765 1 99955 u
+(w)136950 v
+(ays end a statement: ne)3765 1 144070 u
+( as whitespace characters \(ag)3764(wlines may also be treated)3765 2 241640 u
+(ain, for)3764 1 473856 u
+(purposes of formatting\) in places where it w)4215 1 72000 572800 t
+(ould be syntactically unambiguous to do so \(i.e., where a)4215 1 260815 u
+(statement ob)3330 1 72000 584800 t
+( F)6660(viously cannot terminate, such as after a comma\).)3330 2 123510 u
+(or e)3330 1 339960 u
+(xample:)355910 v
+&15
+(byte)97000 608800 w
+(1, 2, 3, 4,)6000 1 147000 u
+(5, 6, 7, 8)6000 1 147000 620800 t
+&11
+(is allo)3330 1 72000 644800 t
+(wed and is equi)3330 1 96750 u
+(v)161480 v
+(alent to)3330 1 166230 u
+&15
+(byte)97000 668800 w
+(1, 2, 3, 4, 5, 6, 7, 8)6000 1 147000 u
+&11
+(Comments be)4388 1 97000 696400 t
+( semicolon \(\027)4389(gin with a)4388 2 154018 u
+(\027)253602 v
+&15
+(;)256932 v
+&11
+(\030)262932 v
+(\030\) and continue to the end of the line, as is common in)4389 1 265522 u
+(man)72000 708400 w
+( addition,)3330( In)6660(y assemblers.)3330 3 89070 u
+&12
+(Macr)200710 v
+(oss)221920 v
+&11
+(supports)238030 v
+&13
+(C)275250 v
+&11
+(style comments brack)3330 1 285800 u
+(eted by)3330 1 374570 u
+(\027)407890 v
+(\027)410480 v
+&15
+(/*)413810 v
+&11
+(\030)425810 v
+(\030 and)2590 1 428400 u
+(\027)452090 v
+(\027)454680 v
+&15
+(*/)458010 v
+&11
+(\030)470010 v
+(\030.)472600 v
+(Lucas\003lm)72000 768000 w
+(Ltd.)115330 v
+(Proprietary)135050 v
+(Information)183370 v
+(\001)278840 v
+(1)285500 v
+(\001)293830 v
+(CONFIDENTIAL)430680 v
+_marks
+cleartomark
+showpage
+restore
+%%EndPage: 1 1
+%%Page: 2 2
+save
+mark
+2 pagesetup
+10 @11 f
+(Macross)72000 48000 w
+(July)262585 v
+(7,)282585 v
+(1986)293415 v
+(6502)450620 v
+(V)473450 v
+(ersion)479560 v
+(As with most assemblers,)3702 1 97000 84000 t
+&12
+(Macr)206528 v
+(oss)227738 v
+&11
+(statements are allo)3702 1 244220 u
+(wed to be)3702 1 320804 u
+(gin with a label \(or se)3702 1 361938 u
+(v)454628 v
+(eral labels,)3702 1 459478 u
+(if you lik)4246 1 72000 96000 t
+( label is denoted by an identi\003er follo)4246(e\). A)7026 2 112062 u
+(wed by a colon \(\027)4245 1 298260 u
+(\027)374480 v
+&15
+(:)377810 v
+&11
+(\030)383810 v
+( is no requirement)4245(\030\). There)7395 2 386400 u
+( column 1, or an)3772(that the label start in)3771 2 72000 108000 t
+(ything lik)3772 1 228952 u
+( if present, merely must precede an)3772( Labels,)7102(e that.)3772 3 268744 u
+(ything)478440 v
+(else in a statement.)3330 1 72000 120000 t
+(An identi\003er is just what you\030)3512 1 97000 135600 t
+(d e)3512 1 221280 u
+( your years of programming e)3513(xpect from all)3512 2 234082 u
+(xperience: a string of)3513 1 416261 u
+(letters and digits that must be)3691 1 72000 147600 t
+(gin with a letter)3691 1 195305 u
+( the underscore character)3692( is traditional in Unix* land,)3691(. As)6471 3 261378 u
+(\(\027)72000 159600 w
+(\027)77920 v
+&15
+(_)81250 v
+&11
+(\030)87250 v
+(\030\) is considered to be a letter \(smacks of hubris that, b)4755 1 89840 u
+( from)4755( Departing)8085(ut tradition is tradition\).)4755 3 329405 u
+(Unix tradition, upper)3868 1 72000 171600 t
+(\001 and lo)3868 1 158696 u
+(wer)191732 v
+( are not distinct from each other for purposes of distin\001)3869
+(\001case characters)3868 2 206522 u
+( you use mix)3708( If)7039(guishing identi\003ers.)3709 3 72000 183600 t
+(ed case for stylistic reasons,)3708 1 221222 u
+&12
+(Macr)341682 v
+(oss)362892 v
+&11
+(will remember the case of the)3708 1 379380 u
+(letters in an identi\003er when it w)3762 1 72000 195600 t
+(as)206682 v
+( so that symbol table dumps and cross\001reference listings)3763
+(\003rst de\003ned,)3762 2 218774 u
+(will retain whate)3424 1 72000 207600 t
+(v)140808 v
+(er case usage style you\030)3424 1 145658 u
+(v)243824 v
+( is, in principle, no restriction imposed upon)3424( There)6574
+(e adopted.)3424 3 248674 u
+(the length of identi\003ers.)3330 1 72000 219600 t
+13 @13 f
+(The Language)4329 1 72000 243600 t
+10 @11 f
+(In what follo)3752 1 97000 259200 t
+(ws, things in)3752 1 150914 u
+&15
+( like typeface)6423(this typewriter)6422 2 208010 u
+&11
+(are k)3753 1 387031 u
+(e)407894 v
+(yw)412184 v
+(ords and characters)3753 1 424304 u
+(that are used literally)3799 1 72000 271200 t
+( in)3799(. Things)6949 2 159397 u
+&12
+(italics)212004 v
+&11
+( brack)3798( Double)7128(are other kinds of syntactic entities.)3799 3 240253 u
+(ets \(\027)3798 1 451424 u
+(\027)472252 v
+11 s
+([)475582 v
+([)476582 v
+10 s
+(\030)480582 v
+(\030 and)3058 1 483172 u
+(\027)72000 283200 w
+(\027)74590 v
+11 s
+(])77920 v
+(])76920 v
+10 s
+(\030)81920 v
+( while brack)4149(\030\) enclose things that are optional,)4148 2 84510 u
+(ets follo)4149 1 281468 u
+(wed by an asterisk \(\027)4149 1 315367 u
+(\027*\030)404533 v
+(\030\) enclose things that)4149 1 415453 u
+(may be optionally repeated zero or more times.)3330 1 72000 295200 t
+&13
+( Instruction Statement)3330(1. The)6360 2 72000 319200 t
+&11
+(The most elementary)5353 1 97000 334800 t
+&12
+(Macr)192489 v
+(oss)213699 v
+&11
+(statement is the instruction statement, wherein the programmer)5354 1 231832 u
+( instruction statement is)3330( The)6480
+(speci\003es a machine instruction to be assembled.)3330 3 72000 346800 t
+11 s
+([)72000 370800 w
+([)73000 v
+10 @12 f
+(label)80330 v
+11 @11 f
+(])103660 v
+(])102660 v
+(*)105660 v
+10 @12 f
+(opcode)122000 v
+11 @11 f
+([)154210 v
+([)155210 v
+10 @12 f
+(oper)162540 v
+(and)180720 v
+11 @11 f
+([)199050 v
+([)200050 v
+10 @15 f
+(,)207380 v
+&12
+(oper)216710 v
+(and)234890 v
+11 @11 f
+(])253220 v
+(])252220 v
+(* ])2830 1 255220 u
+(])262550 v
+10 s
+(just lik)4139 1 72000 394800 t
+(e e)4139 1 101049 u
+(v)113818 v
+(ery assembler e)4139 1 118668 u
+(v)183896 v
+(er made \(e)4139 1 188746 u
+(xcept)234074 v
+&13
+(a65)259873 v
+&11
+(, of course\).)4139 1 274873 u
+&12
+(Opcode)333380 v
+&11
+(is an identi\003er which is either a)4140 1 368620 u
+( which mnemonics are accepted by)3691
+(machine instruction mnemonic \(a list of)3692 2 72000 406800 t
+&12
+(Macr)387556 v
+(oss)408766 v
+&11
+(is gi)3691 1 425237 u
+(v)443128 v
+(en in)3691 1 447978 u
+&13
+(A)472580 v
+(ppen\001)479550 v
+(dix F)3330 1 72000 418800 t
+&11
+( F)6660(at the end of this document\) or a macro name.)3330 2 98110 u
+(or e)3330 1 301500 u
+(xample:)317450 v
+&15
+(and)97000 442800 w
+(foobar)172000 v
+(someMacro)97000 454800 w
+(foo, bar, baz, bletch)6000 1 172000 u
+&11
+(The operands of an instruction may be an)3900 1 97000 482400 t
+(y of the v)3901 1 272450 u
+(arious types of operands allo)3901 1 314453 u
+(wed by the v)3901 1 434787 u
+(ari\001)490120 v
+(ous addressing modes of the tar)3330 1 72000 494400 t
+(get processor)3330 1 202340 u
+( the case of the 6502, these are:)3330(. In)6660 2 255660 u
+&13
+(1.1.)72000 518400 w
+&11
+(Direct addressing)3330 1 93660 u
+(Direct addresses tak)3330 1 97000 534000 t
+(e the form)3330 1 179090 u
+&12
+(e)122000 558000 w
+(xpr)126240 v
+(ession)139200 v
+&11
+( both for instructions that use direct addressing and ones that use relat\
+i)4252
+(and are used)4251 2 72000 582000 t
+(v)427886 v
+(e addressing \(the)4252 1 432736 u
+(of)72000 594000 w
+(fset is computed automatically by)3330 1 80080 u
+&12
+(Macr)221720 v
+(oss)242930 v
+&11
+(\).)255710 v
+&13
+(1.2.)72000 618000 w
+&11
+(Indirect addressing)3330 1 93660 u
+(Indirect addresses tak)3330 1 97000 633600 t
+(e the form)3330 1 185200 u
+&15
+(@)122000 657600 w
+&12
+(e)131330 v
+(xpr)135570 v
+(ession)148530 v
+&11
+(Of course, the only 6502 instruction which accepts an indirectly addresse\
+d operand is)3330 1 72000 681600 t
+&15
+(jmp)427170 v
+&11
+(.)445170 v
+8 @19 f
+(\011\011\011\011\011\011\011\011\011\011\011\011\011\011\011\011\011\011\
+)72000 696200 w
+&11
+(*)82000 708000 w
+(Unix is a footnote of Bell Laboratories.)2664 1 90000 u
+10 s
+(Lucas\003lm)72000 768000 w
+(Ltd.)115330 v
+(Proprietary)135050 v
+(Information)183370 v
+(\001)278840 v
+(2)285500 v
+(\001)293830 v
+(CONFIDENTIAL)430680 v
+_marks
+cleartomark
+showpage
+restore
+%%EndPage: 2 2
+%%Page: 3 3
+save
+mark
+3 pagesetup
+10 @11 f
+(Macross)72000 48000 w
+(July)262585 v
+(7,)282585 v
+(1986)293415 v
+(6502)450620 v
+(V)473450 v
+(ersion)479560 v
+&13
+(1.3.)72000 84000 w
+&11
+(Immediate operands)3330 1 93660 u
+(Immediate operands tak)3330 1 97000 99600 t
+(e the form)3330 1 194650 u
+&15
+(#)122000 123600 w
+&12
+(e)131330 v
+(xpr)135570 v
+(ession)148530 v
+&11
+(In the 6502, immediate mode operands are restricted to eight bit quantiti\
+es.)3793 1 72000 147600 t
+&12
+(Macr)393586 v
+(oss)414796 v
+&11
+(will gi)3793 1 431369 u
+(v)458252 v
+(e an error)3794 1 463102 u
+(message if the operand v)3330 1 72000 159600 t
+(alue is lar)3330 1 174490 u
+(ger than this.)3330 1 214850 u
+&13
+(1.4.)72000 183600 w
+&11
+(Inde)93660 v
+(x)111280 v
+(ed addressing)3330 1 116130 u
+(Inde)97000 199200 w
+(x)114620 v
+(ed addressing operands tak)3330 1 119470 u
+(e the forms)3330 1 229890 u
+&15
+(x)122000 223200 w
+9 s
+([)131330 v
+10 @12 f
+(e)140060 v
+(xpr)144300 v
+(ession)157260 v
+9 @15 f
+(])185590 v
+10 s
+(y)122000 235200 w
+9 s
+([)131330 v
+10 @12 f
+(e)140060 v
+(xpr)144300 v
+(ession)157260 v
+9 @15 f
+(])185590 v
+10 @11 f
+(An alternate form of inde)3352 1 72000 259200 t
+(x)176898 v
+(ed addressing which is supported by)3352 1 181748 u
+&12
+(Macr)334620 v
+(oss)355830 v
+&11
+(allo)371962 v
+(ws the symbolic selection of)3352 1 386712 u
+(a)72000 271200 w
+(\003eld of a)3330 1 79770 u
+&15
+(struct)120310 v
+&11
+(pointed to by an inde)3330 1 159640 u
+(x re)3330 1 247250 u
+(gister)263200 v
+&15
+(x .)3330 1 122000 295200 t
+&12
+(identi\003er)140660 v
+11 @11 f
+([)180100 v
+([)181100 v
+10 @15 f
+(.)188430 v
+&12
+(identi\003er)197760 v
+11 @11 f
+(])237200 v
+(])236200 v
+(*)239200 v
+10 @15 f
+(y .)3330 1 122000 307200 t
+&12
+(identi\003er)140660 v
+11 @11 f
+([)180100 v
+([)181100 v
+10 @15 f
+(.)188430 v
+&12
+(identi\003er)197760 v
+11 @11 f
+(])237200 v
+(])236200 v
+(*)239200 v
+10 s
+(This is e)3330 1 72000 331200 t
+(xplained in greater detail in the sections on)3330 1 107400 u
+&15
+(struct)288460 v
+&11
+(s and e)3330 1 324460 u
+(xpressions belo)3330 1 353740 u
+(w)416260 v
+(.)422830 v
+&13
+(1.5.)72000 355200 w
+&11
+(Pre\001inde)93660 v
+(x)127390 v
+(ed indirect addressing)3330 1 132240 u
+(Pre\001inde)97000 370800 w
+(x)130730 v
+(ed indirect addressing is speci\003ed by operands of the form)3330 1 135580 u
+&15
+(@ x)6660 1 122000 394800 t
+9 s
+([)143990 v
+10 @12 f
+(e)152720 v
+(xpr)156960 v
+(ession)169920 v
+9 @15 f
+(])198250 v
+10 @11 f
+(As with ordinary inde)5092 1 72000 418800 t
+(x)167116 v
+(ed addressing, there is a form of pre\001inde)5092 1 171966 u
+(x)354360 v
+( which uses)5093(ed indirect addressing)5092 2 359210 u
+&15
+(struct)72000 430800 w
+&11
+(\003elds)111330 v
+&15
+( .)3330(@ x)6660 2 122000 454800 t
+&12
+(identi\003er)153320 v
+11 @11 f
+([)192760 v
+([)193760 v
+10 @15 f
+(.)201090 v
+&12
+(identi\003er)210420 v
+11 @11 f
+(])249860 v
+(])248860 v
+(*)251860 v
+10 @13 f
+(1.6.)72000 478800 w
+&11
+(Post\001inde)93660 v
+(x)131290 v
+(ed indirect addressing)3330 1 136140 u
+(Post\001inde)97000 494400 w
+(x)134630 v
+(ed indirect addressing is speci\003ed by operands of the form)3330 1 139480 u
+&15
+(y)122000 518400 w
+9 s
+([)131330 v
+10 s
+(@)140060 v
+&12
+(e)149390 v
+(xpr)153630 v
+(ession)166590 v
+9 @15 f
+(])194920 v
+10 @11 f
+(There is no)4277 1 72000 542400 t
+&15
+(struct)124822 v
+&11
+(\001oriented form of post\001inde)4278 1 160822 u
+(x)274596 v
+(ed indirect addressing since there doesn\030)4278 1 279446 u
+(t seem to be)4278 1 450616 u
+(an)72000 554400 w
+(y consistent interpretation of such a thing that mak)3330 1 81290 u
+(es sense.)3330 1 290590 u
+&13
+(1.7.)72000 578400 w
+&11
+(Re)93660 v
+(gister addressing)3330 1 104620 u
+(The only re)3330 1 97000 594000 t
+(gister in the 6502 which is used as an operand in its o)3330 1 144610 u
+(wn right is the accumulator)3330 1 368190 u
+&15
+(a)122000 618000 w
+&11
+(F)72000 642000 w
+(or the sak)3597 1 77410 u
+(e of completeness, so that macros may ha)3597 1 118384 u
+(v)291943 v
+(e them as operands,)3597 1 296793 u
+&12
+(Macr)382551 v
+(oss)403761 v
+&11
+(also allo)3597 1 420138 u
+( of)3598(ws either)3597 2 454595 u
+(the inde)3330 1 72000 654000 t
+(x re)3330 1 104620 u
+(gisters to be used as operands)3330 1 120570 u
+&15
+(x)122000 678000 w
+(y)122000 690000 w
+&11
+(These are equi)3330 1 72000 714000 t
+(v)131720 v
+(alent to)3330 1 136470 u
+(Lucas\003lm)72000 768000 w
+(Ltd.)115330 v
+(Proprietary)135050 v
+(Information)183370 v
+(\001)278840 v
+(3)285500 v
+(\001)293830 v
+(CONFIDENTIAL)430680 v
+_marks
+cleartomark
+showpage
+restore
+%%EndPage: 3 3
+%%Page: 4 4
+save
+mark
+4 pagesetup
+10 @11 f
+(Macross)72000 48000 w
+(July)262585 v
+(7,)282585 v
+(1986)293415 v
+(6502)450620 v
+(V)473450 v
+(ersion)479560 v
+&15
+(x[0])122000 84000 w
+(y[0])122000 96000 w
+&11
+(Note that)3585 1 72000 120000 t
+&15
+(a)113610 v
+&11
+(,)119610 v
+&15
+(x)125695 v
+&11
+(and)135280 v
+&15
+(y)153305 v
+&11
+(are reserv)3585 1 162890 u
+(ed w)3585 1 202965 u
+(ords in the)3585 1 223110 u
+&12
+(Macr)271086 v
+(oss)292296 v
+&11
+(language and so cannot be used as labels, v)3586 1 308662 u
+(ari\001)490120 v
+( might seem natural to call a v)3330( It)6660(able names, etc.)3330 3 72000 132000 t
+(ariable)276680 v
+&15
+(x)307220 v
+&11
+(b)316550 v
+(ut you can\030)3330 1 321350 u
+(t. Sorry)6660 1 367820 u
+(.)401330 v
+&13
+(1.8.)72000 156000 w
+&11
+(T)93660 v
+(e)99070 v
+(xt operands)3330 1 103360 u
+(F)97000 171600 w
+(or the sak)3330 1 102410 u
+(e of macros, te)3330 1 142850 u
+(xt strings may also be used as operands)3330 1 204060 u
+&15
+(\020)122000 195600 w
+&12
+(any string you lik)3330 1 128000 u
+(e)200110 v
+&15
+(\020)204550 v
+&11
+(The same con)3627 1 72000 219600 t
+(v)129394 v
+(entions re)3627 1 134244 u
+(g)174381 v
+(arding escaped characters \(using)3627 1 179331 u
+(\027)316569 v
+(\027)319159 v
+&15
+(\017)322489 v
+&11
+(\030)328489 v
+(\030\) that are follo)3627 1 331079 u
+(wed by)3628 1 394470 u
+&13
+(C)428386 v
+&11
+(are follo)3628 1 439234 u
+(wed by)3628 1 473712 u
+&12
+(Macr)72000 231600 w
+(oss)93210 v
+&11
+( are documented in)4588(. These)7738 2 105990 u
+&13
+(A)227330 v
+(ppendix E)4588 1 234300 u
+&11
+( that on man)4588(. Note)7918 2 280018 u
+(y tar)4588 1 365710 u
+(get machines the codes that)4588 1 385668 u
+( The)7800(these escape sequences stand for are meaningless.)4650 2 72000 243600 t
+(y are pro)4650 1 307760 u
+(vided primarily as a con)4650 1 347450 u
+(v)452300 v
+(enience for)4650 1 457150 u
+(writing calls to)3330 1 72000 255600 t
+&15
+(printf\(\))136990 v
+&11
+(.)184990 v
+&13
+( Flo)3330(2. The)6360 2 72000 279600 t
+(w of Contr)3330 1 119650 u
+(ol Statements)3330 1 167230 u
+&12
+(Macr)97000 295200 w
+(oss)118210 v
+&11
+(pro)134346 v
+( number of statements which allo)3357(vides a)3356 2 147526 u
+(w program)3357 1 313507 u
+(\004o)361321 v
+(w of control to be speci\003ed in a)3357 1 371631 u
+&13
+(C)72000 307200 w
+&11
+(\001lik)79220 v
+(e block structured f)4396 1 93010 u
+( a conditional e)4395( include)4396(ashion. This)7546 3 176078 u
+(x)330765 v
+(ecution statement \()4395 1 335615 u
+&15
+(if)415505 v
+&11
+(\) and three condi\001)4395 1 427505 u
+(tional loop statements \()5766 1 72000 319200 t
+&15
+(while)175408 v
+&11
+(,)205408 v
+&15
+(do\001while)213674 v
+&11
+(and)267440 v
+&15
+(do\001until)287646 v
+&11
+( statements assemble into the)5767(\). These)8916 2 335646 u
+(appropriate conditional branches and jumps to realize the desired constru\
+ct.)3330 1 72000 331200 t
+&13
+(2.1. If)6660 1 72000 355200 t
+&11
+(statement)104210 v
+(The)97000 370800 w
+&15
+(if)115880 v
+&11
+(statement has the follo)3330 1 131210 u
+(wing form)3330 1 223720 u
+11 s
+([)72000 394800 w
+([)73000 v
+10 @12 f
+(label)80330 v
+11 @11 f
+(])103660 v
+(])102660 v
+(*)105660 v
+10 @15 f
+(if \()3330 1 122000 u
+&12
+(condition)146660 v
+&15
+(\) {)3330 1 187770 u
+11 @11 f
+([)147000 406800 w
+([)148000 v
+10 @12 f
+(statement)155330 v
+11 @11 f
+(])196990 v
+(])195990 v
+(*)198990 v
+10 @15 f
+(})122000 418800 w
+11 @11 f
+([)131330 v
+([)132330 v
+10 @15 f
+(elseif \()3330 1 139660 u
+&12
+(condition)188320 v
+&15
+(\) {)3330 1 229430 u
+11 @11 f
+([)147000 430800 w
+([)148000 v
+10 @12 f
+(statement)155330 v
+11 @11 f
+(])196990 v
+(])195990 v
+(*)198990 v
+10 @15 f
+(})122000 442800 w
+11 @11 f
+(])131330 v
+(])130330 v
+(* [)2830 1 133330 u
+([)142660 v
+10 @15 f
+(else {)3330 1 149990 u
+11 @11 f
+([)147000 454800 w
+([)148000 v
+10 @12 f
+(statement)155330 v
+11 @11 f
+(])196990 v
+(])195990 v
+(*)198990 v
+10 @15 f
+(})122000 466800 w
+11 @11 f
+(])131330 v
+(])130330 v
+10 @12 f
+(condition)72000 490800 w
+&11
+(is either the name of one of the tar)4257 1 114037 u
+(get processor\030)4257 1 265103 u
+(s hardw)4257 1 322680 u
+( be)4258(are condition codes such as can)4257 2 355717 u
+(tested for in a conditional branch instruction \(e.g.,)4454 1 72000 502800 t
+&15
+(carry)290102 v
+&11
+(,)320102 v
+&15
+(overflow)327056 v
+&11
+(, etc.\006 the complete list is in)4454 1 375056 u
+&13
+(A)72000 514800 w
+(ppendix B)3747 1 78970 u
+&11
+( of these ne)3748(\) or one either)3747 2 123847 u
+(g)233372 v
+(ated using the)3748 1 238322 u
+(\027)300116 v
+(\027logical not\030)3748 1 302706 u
+( \(\027)3748(\030 operator)3008 2 352374 u
+(\027)401700 v
+&15
+(!)405030 v
+&11
+(\030)411030 v
+(\030\) or the name of one)3748 1 413620 u
+(of the more comple)4855 1 72000 526800 t
+(x conditions which)4855 1 156955 u
+&12
+(Macr)242630 v
+(oss)263840 v
+&11
+(understands \()4855 1 281475 u
+&15
+(geq)337430 v
+&11
+(,)355430 v
+&15
+(lt)362784 v
+&11
+( The)8004(, etc., discussed shortly\).)4854 2 374784 u
+( F)6660
+(condition is used to determine the appropriate type of branch instruction\
+\(s\) to use.)3330 2 72000 538800 t
+(or e)3330 1 422040 u
+(xample,)437990 v
+&15
+(if \(plus\) {)6000 1 122000 562800 t
+&12
+(statements\0011)147000 574800 w
+&15
+(} elseif \(carry\) {)6000 1 122000 586800 t
+&12
+(statements\0012)147000 598800 w
+&15
+(} else {)6000 1 122000 610800 t
+&12
+(statements\0013)147000 622800 w
+&15
+(})122000 634800 w
+&11
+(e)72000 658800 w
+(xpands into this \(the labels are made up for illustrati)3330 1 76290 u
+(v)292100 v
+(e purposes only\):)3330 1 296950 u
+&15
+(bmi)122000 682800 w
+(temp1)147000 v
+&12
+(statements\0011)122000 694800 w
+&15
+(jmp)122000 706800 w
+(temp3)147000 v
+(temp1:)72000 718800 w
+(bcc)122000 v
+(temp2)147000 v
+&12
+(statements\0013)122000 730800 w
+&11
+(Lucas\003lm)72000 768000 w
+(Ltd.)115330 v
+(Proprietary)135050 v
+(Information)183370 v
+(\001)278840 v
+(4)285500 v
+(\001)293830 v
+(CONFIDENTIAL)430680 v
+_marks
+cleartomark
+showpage
+restore
+%%EndPage: 4 4
+%%Page: 5 5
+save
+mark
+5 pagesetup
+10 @11 f
+(Macross)72000 48000 w
+(July)262585 v
+(7,)282585 v
+(1986)293415 v
+(6502)450620 v
+(V)473450 v
+(ersion)479560 v
+&15
+(jmp)122000 84000 w
+(temp3)147000 v
+(temp2:)72000 96000 w
+&12
+(statements\0013)122000 v
+&15
+(temp3:)72000 108000 w
+&12
+(whate)122000 v
+(ver follows)3330 1 145740 u
+&11
+(The k)5470 1 72000 132000 t
+(e)97920 v
+(yw)102210 v
+(ord)114330 v
+&15
+(elseif)133130 v
+&11
+( as sho)5471(may be used)5470 2 174600 u
+(wn, or speci\003ed as tw)5471 1 263442 u
+(o separate k)5471 1 362156 u
+(e)415758 v
+(yw)420048 v
+(ords,)432168 v
+&15
+(else if)8141 1 457359 u
+&11
+(,)501500 v
+(depending on the programmer\030)3330 1 72000 144000 t
+(s whim.)3330 1 198080 u
+&12
+(Macr)97000 159600 w
+(oss)118210 v
+&11
+(kno)134850 v
+(ws about certain conditions which are more comple)3860 1 149600 u
+(x than those than can be realized)3860 1 365320 u
+( conditions correspond to the results of comparison)4560( These)7710
+(with single conditional branch instructions.)4560 3 72000 171600 t
+(operations \(such as)4076 1 72000 183600 t
+&15
+(geq)155878 v
+&11
+(\006)177954 v
+(\027)192030 v
+(\027greater than or equal to\030)4077 1 194620 u
+(\030\) that may require rather complicated sequences)4077 1 299598 u
+( may be used in an)3882( These)7032(of conditional branches to implement.)3882 3 72000 195600 t
+(y location where an ordinary condition)3882 1 341840 u
+( should k)4663( simply)4662( One)7992(may be used.)4662 4 72000 207600 t
+(eep in mind that the)4663 1 226254 u
+(y can result in a non\001tri)4663 1 314196 u
+(vial amount of code)4663 1 417801 u
+( one is concerned about speed of e)3573(being generated, if)3574 2 72000 219600 t
+(x)293669 v
+( complete list of these comple)3573(ecution. The)6723 2 298519 u
+(x con\001)3573 1 477657 u
+(ditions along with the object code that the)3330 1 72000 231600 t
+(y produce is gi)3330 1 245150 u
+(v)306550 v
+(en in)3330 1 311400 u
+&13
+(A)335280 v
+(ppendix B)3330 1 342250 u
+&11
+(.)386710 v
+&13
+(2.2. While)6360 1 72000 255600 t
+&11
+(statement)122250 v
+(The)97000 271200 w
+&15
+(while)115880 v
+&11
+(statement has the follo)3330 1 149210 u
+(wing form)3330 1 241720 u
+11 s
+([)72000 295200 w
+([)73000 v
+10 @12 f
+(label)80330 v
+11 @11 f
+(])103660 v
+(])102660 v
+(*)105660 v
+10 @15 f
+(while \()3330 1 122000 u
+&12
+(condition)164660 v
+&15
+(\) {)3330 1 205770 u
+11 @11 f
+([)147000 307200 w
+([)148000 v
+10 @12 f
+(statement)155330 v
+11 @11 f
+(])196990 v
+(])195990 v
+(*)198990 v
+10 @15 f
+(})122000 319200 w
+&12
+(condition)72000 343200 w
+&11
+(is as described abo)3330 1 113110 u
+(v)190710 v
+(e for the)3330 1 195560 u
+&15
+(if)233870 v
+&11
+( e)3330(statement. An)6110 2 249200 u
+(xample of the)3330 1 315980 u
+&15
+(while)375960 v
+&11
+(statement w)3330 1 409290 u
+(ould be)3330 1 458070 u
+&15
+(while \(!carry\) {)6000 1 122000 367200 t
+&12
+(statements)147000 379200 w
+&15
+(})122000 391200 w
+&11
+(which w)3330 1 72000 415200 t
+(ould turn into)3330 1 106890 u
+(bcs)122000 439200 w
+(temp1)147000 v
+&15
+(temp2:)72000 451200 w
+&12
+(statements)122000 v
+&15
+(bcc)122000 463200 w
+(temp2)147000 v
+(temp1:)72000 475200 w
+&12
+(whate)122000 v
+(ver follows)3330 1 145740 u
+&13
+(2.3. Do\001while)6660 1 72000 511200 t
+&11
+(statement)135320 v
+(The)97000 526800 w
+&15
+(do\001while)116161 v
+&11
+(statement is similar to the)3611 1 167772 u
+&15
+(while)278607 v
+&11
+(statement e)3611 1 312218 u
+( the condition is tested at)3612(xcept that)3611 2 358449 u
+( has the form)3330( It)6660(the bottom of the loop.)3330 3 72000 538800 t
+11 s
+([)72000 562800 w
+([)73000 v
+10 @12 f
+(label)80330 v
+11 @11 f
+(])103660 v
+(])102660 v
+(*)105660 v
+10 @15 f
+(do {)3330 1 122000 u
+11 @11 f
+([)147000 574800 w
+([)148000 v
+10 @12 f
+(statement)155330 v
+11 @11 f
+(])196990 v
+(])195990 v
+(*)198990 v
+10 @15 f
+(} while \()3330 1 122000 586800 t
+&12
+(condition)173990 v
+&15
+(\))215100 v
+&11
+(F)72000 610800 w
+(or e)3330 1 77410 u
+(xample)93360 v
+&15
+(do {)6000 1 122000 634800 t
+&12
+(statements)147000 646800 w
+&15
+(} while \(equal\))6000 1 122000 658800 t
+&11
+(which is equi)3330 1 72000 682800 t
+(v)126740 v
+(alent to)3330 1 131490 u
+&15
+(temp:)72000 706800 w
+&12
+(statements)122000 v
+&15
+(beq temp)6000 1 122000 718800 t
+&11
+(Lucas\003lm)72000 768000 w
+(Ltd.)115330 v
+(Proprietary)135050 v
+(Information)183370 v
+(\001)278840 v
+(5)285500 v
+(\001)293830 v
+(CONFIDENTIAL)430680 v
+_marks
+cleartomark
+showpage
+restore
+%%EndPage: 5 5
+%%Page: 6 6
+save
+mark
+6 pagesetup
+10 @11 f
+(Macross)72000 48000 w
+(July)262585 v
+(7,)282585 v
+(1986)293415 v
+(6502)450620 v
+(V)473450 v
+(ersion)479560 v
+&13
+(2.4. Do\001until)6660 1 72000 84000 t
+&11
+(statement)132550 v
+(The)97000 99600 w
+&15
+(do\001until)116778 v
+&11
+(statement is the same as the)4228 1 169006 u
+&15
+(do\001while)292694 v
+&11
+(statement e)4228 1 344922 u
+(xcept that the sense of the)4228 1 391770 u
+(condition is ne)3330 1 72000 111600 t
+(g)132400 v
+( has the form)3330(ated. It)6660 2 137350 u
+11 s
+([)72000 135600 w
+([)73000 v
+10 @12 f
+(label)80330 v
+11 @11 f
+(])103660 v
+(])102660 v
+(*)105660 v
+10 @15 f
+(do {)3330 1 122000 u
+11 @11 f
+([)147000 147600 w
+([)148000 v
+10 @12 f
+(statement)155330 v
+11 @11 f
+(])196990 v
+(])195990 v
+(*)198990 v
+10 @15 f
+(} until \()3330 1 122000 159600 t
+&12
+(condition)173990 v
+&15
+(\))215100 v
+&11
+(F)72000 183600 w
+(or e)3330 1 77410 u
+(xample)93360 v
+&15
+(do {)6000 1 122000 207600 t
+&12
+(statements)147000 219600 w
+&15
+(} until \(equal\))6000 1 122000 231600 t
+&11
+(which is equi)3330 1 72000 255600 t
+(v)126740 v
+(alent to)3330 1 131490 u
+&15
+(temp:)72000 279600 w
+&12
+(statements)122000 v
+&15
+(bne temp)6000 1 122000 291600 t
+&13
+( Data Statements)3330(3. The)6360 2 72000 327600 t
+&11
+(The data statements allo)3445 1 97000 343200 t
+( These)6596( storage of constant data.)3446
+(w the allocation of memory space and the)3445 3 196515 u
+(statements are lik)3513 1 72000 355200 t
+( are se)3512( There)6662( most assemblers.)3512(e the ones found in)3513 4 143916 u
+(v)354218 v
+(eral dif)3512 1 359068 u
+(ferent forms, each for a dif\001)3512 1 388430 u
+(ferent type of data.)3330 1 72000 367200 t
+&13
+(3.1. Block)6660 1 72000 391200 t
+&11
+(statement)121440 v
+(The)97000 406800 w
+&15
+(block)116606 v
+&11
+(statement allocates blocks of memory without initializing the bytes to an\
+)4057 1 150663 u
+(y particular)4057 1 456623 u
+(v)72000 418800 w
+(alue \(actually)3679 1 76750 u
+(, the loader will in all lik)3679 1 131429 u
+( these to 0, b)3678(elihood initialize)3679 2 237013 u
+(ut it is probably not really wise to)3678 1 361034 u
+( has the form)3330( It)6660(rely on this\).)3330 3 72000 430800 t
+11 s
+([)72000 454800 w
+([)73000 v
+10 @12 f
+(label)80330 v
+11 @11 f
+(])103660 v
+(])102660 v
+(*)105660 v
+10 @15 f
+(block)122000 v
+&12
+(e)158660 v
+(xpr)162900 v
+(ession)175860 v
+11 @11 f
+([)204190 v
+([)205190 v
+10 @15 f
+(,)212520 v
+&12
+(e)221850 v
+(xpr)226090 v
+(ession)239050 v
+11 @11 f
+(])267380 v
+(])266380 v
+(*)269380 v
+10 s
+(The)72000 478800 w
+&12
+(e)90880 v
+(xpr)95120 v
+(ession)108080 v
+&11
+(s are the sizes of the blocks to reserv)3330 1 133080 u
+(e, e)3330 1 286200 u
+(xpressed in bytes.)3330 1 300760 u
+&13
+(3.2. Align)6110 1 72000 502800 t
+&11
+(statement)119780 v
+(The)97000 518400 w
+&15
+(align)117367 v
+&11
+(statement aligns the current location counter to an inte)4818 1 152184 u
+(ger multiple of some v)4818 1 387768 u
+(alue)487340 v
+(\(e.g., to align with a w)3330 1 72000 530400 t
+( has the form)3330( It)6660(ord boundary\).)3330 3 166040 u
+11 s
+([)72000 554400 w
+([)73000 v
+10 @12 f
+(label)80330 v
+11 @11 f
+(])103660 v
+(])102660 v
+(*)105660 v
+10 @15 f
+(align)122000 v
+&12
+(e)158660 v
+(xpr)162900 v
+(ession)175860 v
+&11
+(The)72000 578400 w
+&12
+(e)90880 v
+(xpr)95120 v
+(ession)108080 v
+&11
+( F)6660
+(is the multiple to which the current location counter is to be aligned.)3330 2 136410 u
+(or e)3330 1 431470 u
+(xample,)447420 v
+&15
+(align)122000 602400 w
+(2)197000 v
+&11
+(w)72000 626400 w
+(ould align the current location to a w)3330 1 79120 u
+(ord boundary)3330 1 232310 u
+(, while)3330 1 286090 u
+&15
+(align)122000 650400 w
+(0x100)197000 v
+&11
+(w)72000 674400 w
+(ould align to a page boundary)3330 1 79120 u
+(.)201770 v
+(Lucas\003lm)72000 768000 w
+(Ltd.)115330 v
+(Proprietary)135050 v
+(Information)183370 v
+(\001)278840 v
+(6)285500 v
+(\001)293830 v
+(CONFIDENTIAL)430680 v
+_marks
+cleartomark
+showpage
+restore
+%%EndPage: 6 6
+%%Page: 7 7
+save
+mark
+7 pagesetup
+10 @11 f
+(Macross)72000 48000 w
+(July)262585 v
+(7,)282585 v
+(1986)293415 v
+(6502)450620 v
+(V)473450 v
+(ersion)479560 v
+&13
+(3.3. Constrain)6660 1 72000 84000 t
+&11
+(statement)139770 v
+(The)97000 99600 w
+&15
+(constrain)117504 v
+&11
+(statement pro)4954 1 176458 u
+( of constraining a portion of code or data to be)4955(vides a means)4954 2 232922 u
+(located within a re)3340 1 72000 111600 t
+(gion of memory bounded by addresses of inte)3340 1 148520 u
+(ger multiples of some v)3340 1 337280 u
+(alue \(e.g., within)3340 1 434830 u
+( form is)3330( Its)6660(a page\).)3330 3 72000 123600 t
+&15
+(constrain \()3330 1 122000 147600 t
+&12
+(boundary)188660 v
+&15
+(\) {)3330 1 230320 u
+11 @11 f
+([)147000 159600 w
+([)148000 v
+10 @12 f
+(statement)155330 v
+11 @11 f
+(])196990 v
+(])195990 v
+(*)198990 v
+10 @15 f
+(})122000 171600 w
+&12
+(Boundary)72000 195600 w
+&11
+( an)3598(may be)3597 2 115037 u
+(y e)3598 1 158182 u
+(xpression which e)3598 1 171070 u
+(v)245226 v
+(aluates to a number)3598 1 249976 u
+(. The)6748 1 330760 u
+&12
+(statement)359156 v
+&11
+(s are assembled normally)3598 1 397486 u
+(.)501500 v
+( crosses an)4556
+(If assembling in absolute mode, an error message is issued if the current\
+ location counter)4557 2 72000 207600 t
+(inte)72000 219600 w
+(ger multiple of)4143 1 86850 u
+&12
+(boundary)153719 v
+&11
+( will)4144
+( assembling in relocatable mode, information about the constraint)4143
+(. If)7473 3 192049 u
+(be output in the object)4714 1 72000 231600 t
+( the contents of the constrained block will be relocated as needed to)4713
+(\003le and)4714 2 175010 u
+( things in the assembly)4403
+(satisfy the constraint \(note that this means that it is unsafe to assume\
+ that the)4402 2 72000 243600 t
+( the)3512(source immediately before)3513 2 72000 255600 t
+&15
+(constrain)199910 v
+&11
+(statement, the contents of the constrain block itself, and the)3512 1 257422 u
+(things in the assembly source immediately after the)4026 1 72000 267600 t
+&15
+(constrain)292518 v
+&11
+(statement will be located in contigu\001)4027 1 350545 u
+(ous locations in the e)3330 1 72000 279600 t
+(v)159510 v
+(entual tar)3330 1 164360 u
+( F)6660(get machine address space\).)3330 2 202500 u
+(or e)3330 1 328690 u
+(xample,)344640 v
+&15
+(constrain \(0x100\) {)6000 1 122000 303600 t
+&12
+(statements)147000 315600 w
+&15
+(})122000 327600 w
+&11
+(constrains the gi)3330 1 72000 351600 t
+(v)138960 v
+(en statements to all)3330 1 143810 u
+(\003t within a page.)3330 1 226570 u
+&13
+(3.4. W)6360 1 72000 375600 t
+(ord)102610 v
+&11
+(statement)120940 v
+(The)97000 391200 w
+&15
+(word)115880 v
+&11
+(statement allocates w)3330 1 143210 u
+(ords, i.e., tw)3330 1 230310 u
+(o byte chunks, of memory)3330 1 281310 u
+( tak)3330(. It)6660 2 388690 u
+(es the form)3330 1 419410 u
+11 s
+([)72000 415200 w
+([)73000 v
+10 @12 f
+(label)80330 v
+11 @11 f
+(])103660 v
+(])102660 v
+(*)105660 v
+10 @15 f
+(word)122000 v
+&12
+(e)152660 v
+(xpr)156900 v
+(ession)169860 v
+11 @11 f
+([)198190 v
+([)199190 v
+10 @15 f
+(,)206520 v
+&12
+(e)215850 v
+(xpr)220090 v
+(ession)233050 v
+11 @11 f
+(])261380 v
+(])260380 v
+(*)263380 v
+10 s
+(The)72000 439200 w
+&12
+(e)90880 v
+(xpr)95120 v
+(ession)108080 v
+&11
+(s must e)3330 1 133080 u
+(v)167270 v
+( F)6660(aluate to quantities that can be contained in 16 bits, of course.)3330 2 172020 u
+(or e)3330 1 440130 u
+(xample,)456080 v
+&15
+(word)122000 463200 w
+(0x1234, foobar)6000 1 172000 u
+&11
+(w)72000 487200 w
+(ould allocate tw)3570 1 79120 u
+(o w)3570 1 145040 u
+(ords, the)3570 1 160730 u
+( which w)3571(\003rst of)3570 2 199810 u
+(ould be initialized to the he)3571 1 265972 u
+(xadecimal v)3571 1 380337 u
+(alue)429758 v
+&15
+(0x1234)449989 v
+&11
+(and)489560 v
+(the second to whate)3330 1 72000 499200 t
+(v)153390 v
+(er the v)3330 1 158240 u
+(alue of)3330 1 189640 u
+&15
+(foobar)221290 v
+&11
+(is.)260620 v
+&13
+(3.5. Dbyte)6660 1 72000 523200 t
+&11
+(statement)122540 v
+(The)97000 538800 w
+&15
+(dbyte)116986 v
+&11
+(statement is just lik)4436 1 151422 u
+(e the)4436 1 234640 u
+&15
+(word)260172 v
+&11
+(statement, e)4436 1 288608 u
+(xcept that the w)4436 1 338164 u
+(ord is byte\001sw)4436 1 407472 u
+(apped in)4436 1 467904 u
+(memory)72000 550800 w
+( form is)3330(. Its)6660 2 104680 u
+11 s
+([)72000 574800 w
+([)73000 v
+10 @12 f
+(label)80330 v
+11 @11 f
+(])103660 v
+(])102660 v
+(*)105660 v
+10 @15 f
+(dbyte)122000 v
+&12
+(e)158660 v
+(xpr)162900 v
+(ession)175860 v
+11 @11 f
+([)204190 v
+([)205190 v
+10 @15 f
+(,)212520 v
+&12
+(e)221850 v
+(xpr)226090 v
+(ession)239050 v
+11 @11 f
+(])267380 v
+(])266380 v
+(*)269380 v
+10 @13 f
+(3.6. Long)6660 1 72000 598800 t
+&11
+(statement)119220 v
+(The)97000 614400 w
+&15
+(long)115880 v
+&11
+(statement allocates longw)3330 1 143210 u
+(ords, i.e., four byte chunks, of memory)3330 1 248090 u
+( tak)3330(. It)6660 2 408230 u
+(es the form)3330 1 438950 u
+11 s
+([)72000 638400 w
+([)73000 v
+10 @12 f
+(label)80330 v
+11 @11 f
+(])103660 v
+(])102660 v
+(*)105660 v
+10 @15 f
+(long)122000 v
+&12
+(e)152660 v
+(xpr)156900 v
+(ession)169860 v
+11 @11 f
+([)198190 v
+([)199190 v
+10 @15 f
+(,)206520 v
+&12
+(e)215850 v
+(xpr)220090 v
+(ession)233050 v
+11 @11 f
+(])261380 v
+(])260380 v
+(*)263380 v
+10 s
+(The)72000 662400 w
+&12
+(e)90880 v
+(xpr)95120 v
+(ession)108080 v
+&11
+(s must e)3330 1 133080 u
+(v)167270 v
+( F)6660(aluate to quantities that can be contained in 32 bits, of course.)3330 2 172020 u
+(or e)3330 1 440130 u
+(xample,)456080 v
+&15
+(long)122000 686400 w
+(0x12345678, foobar)6000 1 172000 u
+&11
+(w)72000 710400 w
+(ould allocate tw)6413 1 79120 u
+(o longw)6413 1 150726 u
+(ords, the)6413 1 187039 u
+( which w)6414(\003rst of)6413 2 231805 u
+(ould be initialized to the he)6414 1 306496 u
+(xadecimal v)6414 1 435076 u
+(alue)487340 v
+&15
+(0x12345678)72000 722400 w
+&11
+(and the second to whate)3330 1 135330 u
+(v)234490 v
+(er the v)3330 1 239340 u
+(alue of)3330 1 270740 u
+&15
+(foobar)302390 v
+&11
+(is.)341720 v
+(Lucas\003lm)72000 768000 w
+(Ltd.)115330 v
+(Proprietary)135050 v
+(Information)183370 v
+(\001)278840 v
+(7)285500 v
+(\001)293830 v
+(CONFIDENTIAL)430680 v
+_marks
+cleartomark
+showpage
+restore
+%%EndPage: 7 7
+%%Page: 8 8
+save
+mark
+8 pagesetup
+10 @11 f
+(Macross)72000 48000 w
+(July)262585 v
+(7,)282585 v
+(1986)293415 v
+(6502)450620 v
+(V)473450 v
+(ersion)479560 v
+&13
+(3.7. Byte)6660 1 72000 84000 t
+&11
+(statement)116430 v
+(The)97000 99600 w
+&15
+(byte)116291 v
+&11
+(statement is similar to the)3741 1 144032 u
+&15
+(word)255517 v
+&11
+(and)283258 v
+&15
+(dbyte)301439 v
+&11
+(statements, e)3742 1 335180 u
+(xcept that it allocates single)3742 1 387932 u
+( form is)3330( Its)6660(byte chunks.)3330 3 72000 111600 t
+11 s
+([)72000 135600 w
+([)73000 v
+10 @12 f
+(label)80330 v
+11 @11 f
+(])103660 v
+(])102660 v
+(*)105660 v
+10 @15 f
+(byte)122000 v
+&12
+(e)152660 v
+(xpr)156900 v
+(ession)169860 v
+11 @11 f
+([)198190 v
+([)199190 v
+10 @15 f
+(,)206520 v
+&12
+(e)215850 v
+(xpr)220090 v
+(ession)233050 v
+11 @11 f
+(])261380 v
+(])260380 v
+(*)263380 v
+10 s
+(An)72000 159600 w
+&12
+(e)87708 v
+(xpr)91948 v
+(ession)104908 v
+&11
+(, in this case, is either an ordinary e)3488 1 129908 u
+(xpression \(see)3488 1 279302 u
+&13
+(Expr)340708 v
+(essions)362198 v
+&11
+(, belo)3488 1 391648 u
+(w\) which must e)3488 1 414606 u
+(v)483700 v
+(alu\001)488450 v
+(ate to an 8\001bit quantity)4610 1 72000 171600 t
+(, indicating the v)4610 1 170340 u
+(alue for a single byte to be reserv)4610 1 243640 u
+(ed, or a string \(see abo)4610 1 391280 u
+(v)492210 v
+(e,)497060 v
+( of te)4357(under the discussion)4356 2 72000 183600 t
+(xt operands\), indicating that the characters in the string should be pla\
+ced in)4357 1 181486 u
+(memory at the current location.)3330 1 72000 195600 t
+&13
+(3.8. String)6660 1 72000 219600 t
+&11
+(statement)123660 v
+(The)97000 235200 w
+&15
+(string)116183 v
+&11
+(statement is much lik)3633 1 155816 u
+(e the)3633 1 244395 u
+&15
+(byte)268321 v
+&11
+(statement, e)3633 1 295954 u
+( the v)3634(xcept that)3633 2 344707 u
+(alues indicated are fol\001)3634 1 409238 u
+(lo)72000 247200 w
+( the con)3867( enables)3868( This)7018(wed in memory by a zero byte.)3868 4 79530 u
+(v)304528 v
+(enient declaration and allocation of NULL ter)3867 1 309378 u
+(\001)500670 v
+( little use in the 6502 v)3372( feature is of)3371( This)6521
+(minated character strings.)3371 4 72000 259200 t
+(ersion of)3372 1 350698 u
+&12
+(Macr)390212 v
+(oss)411422 v
+&11
+(b)427574 v
+(ut is pro)3372 1 432374 u
+(vided for)3372 1 466748 u
+( future v)3903(compatability with)3904 2 72000 271200 t
+(ersions tar)3903 1 185220 u
+( form of the)3903( The)7053(geted at more sophisticated processors.)3903 3 227823 u
+&15
+(string)468000 v
+&11
+(statement is)3330 1 72000 283200 t
+11 s
+([)72000 307200 w
+([)73000 v
+10 @12 f
+(label)80330 v
+11 @11 f
+(])103660 v
+(])102660 v
+(*)105660 v
+10 @15 f
+(string)122000 v
+&12
+(e)164660 v
+(xpr)168900 v
+(ession)181860 v
+11 @11 f
+([)210190 v
+([)211190 v
+10 @15 f
+(,)218520 v
+&12
+(e)227850 v
+(xpr)232090 v
+(ession)245050 v
+11 @11 f
+(])273380 v
+(])272380 v
+(*)275380 v
+10 @13 f
+(3.9. Struct)6660 1 72000 331200 t
+&11
+(statement)123650 v
+(The)97000 346800 w
+&15
+(struct)116967 v
+&11
+( record\001oriented data structures.)4418
+(statement enables the declaration and allocation of)4417 2 157384 u
+(There are tw)3966 1 72000 358800 t
+(o forms of the)3966 1 125362 u
+&15
+(struct)190105 v
+&11
+(statement, the)3965 1 230070 u
+(\003rst of which declares a)3965 1 291050 u
+&15
+(struct)396405 v
+&11
+(record type, and)3965 1 436370 u
+(the second of which causes space to be set aside in memory for a)5122 1 72000 370800 t
+&15
+(struct)370868 v
+&11
+(that has already been)5123 1 411991 u
+( form of the)3330(declared. The)6480 2 72000 382800 t
+(\003rst type of)3330 1 183710 u
+&15
+(struct)234810 v
+&11
+(statement is)3330 1 274140 u
+11 s
+([)72000 406800 w
+([)73000 v
+10 @12 f
+(label)80330 v
+11 @11 f
+(])103660 v
+(])102660 v
+(*)105660 v
+10 @15 f
+(struct {)3330 1 122000 u
+11 @11 f
+([)147000 418800 w
+([)148000 v
+10 @12 f
+(dataStatement)155330 v
+11 @11 f
+(])215880 v
+(])214880 v
+(*)217880 v
+10 @15 f
+(})122000 430800 w
+&12
+(name)131330 v
+(dataStatement)72000 454800 w
+&11
+(s are an)3981 1 129220 u
+( \(section 3\).)3982(y of the data statements described in this section)3981 2 162572 u
+&12
+(Name)425496 v
+&11
+(becomes the)3982 1 452808 u
+(name of the)3559 1 72000 466800 t
+&15
+(struct)124887 v
+&11
+(. An)6339 1 160887 u
+(y labels inside the)3558 1 181796 u
+&15
+(struct)260468 v
+&11
+(become)300026 v
+&12
+(\003elds)334684 v
+&11
+(of the data structure which may be)3558 1 359352 u
+(referred to later in e)4475 1 72000 478800 t
+(xpressions using the)4475 1 159160 u
+(\027)248695 v
+(\027)251285 v
+&15
+(.)254615 v
+&11
+(\030)260615 v
+(\030 operator)3735 1 263205 u
+(, as in)4475 1 303190 u
+&13
+(C)335225 v
+&11
+( more complete description of the)4476(. A)7255 2 342445 u
+(semantics of)3330 1 72000 490800 t
+&15
+(struct)126430 v
+&11
+(s is gi)3330 1 162430 u
+(v)187180 v
+(en in the section belo)3330 1 192030 u
+(w on e)3330 1 280090 u
+(xpressions.)308260 v
+(The)97000 506400 w
+(\003rst form of the)4076 1 116626 u
+&15
+(struct)188480 v
+&11
+(statement, called a)4076 1 228556 u
+(\027)309935 v
+(\027)312525 v
+&15
+(struct)315855 v
+&11
+(de\003nition\030)355932 v
+(\030, lays out the constituent)4077 1 396862 u
+(parts of a data structure and gi)4151 1 72000 518400 t
+(v)202736 v
+( second form of the)4150( The)3970( parts.)4150(es those names to those)4151 4 207586 u
+&15
+(struct)442190 v
+&11
+(state\001)482340 v
+(ment, called a)3330 1 72000 530400 t
+(\027)132810 v
+(\027)135400 v
+&15
+(struct)138730 v
+&11
+(instantiation\030)178060 v
+(\030,)230100 v
+11 s
+([)72000 554400 w
+([)73000 v
+10 @12 f
+(label)80330 v
+11 @11 f
+(])103660 v
+(])102660 v
+(*)105660 v
+10 @15 f
+(struct)122000 v
+&12
+(name)161330 v
+&11
+(causes storage for the)3736 1 72000 578400 t
+&15
+(struct)165804 v
+&11
+(named by)3736 1 205540 u
+&12
+(name)249672 v
+&11
+( A)6516(to be allocated.)3736 2 275068 u
+&15
+(struct)355832 v
+&11
+(de\003nition)395569 v
+&12
+(may not)3737 1 437646 u
+&11
+(contain)474560 v
+(another)72000 590400 w
+&15
+(struct)107990 v
+&11
+(de\003nition, b)3330 1 147320 u
+(ut it)3330 1 196290 u
+&12
+(may)216290 v
+&11
+(contain a)3330 1 236280 u
+&15
+(struct)276820 v
+&11
+(instantiation. F)6660 1 316150 u
+(or e)3330 1 380170 u
+(xample,)396120 v
+&15
+(struct {)6000 1 122000 614400 t
+(pointer:)147000 626400 w
+(block 2)6000 1 197000 u
+(class:)147000 638400 w
+(block 1)6000 1 197000 u
+(} fooThing)6000 1 122000 650400 t
+&11
+(w)72000 674400 w
+(ould create a)3330 1 79120 u
+&15
+(struct)135200 v
+&11
+(called)174530 v
+&15
+(fooThing)201740 v
+&11
+(. Then,)6480 1 249740 u
+&15
+(fooLabel:)72000 698400 w
+(struct)147000 v
+(fooThing)197000 v
+&11
+(w)72000 722400 w
+(ould allocate one at the current location at the address labeled)4039 1 79120 u
+&15
+(fooLabel)345160 v
+&11
+( could then be used)4040(. This)7190 2 393160 u
+(Lucas\003lm)72000 768000 w
+(Ltd.)115330 v
+(Proprietary)135050 v
+(Information)183370 v
+(\001)278840 v
+(8)285500 v
+(\001)293830 v
+(CONFIDENTIAL)430680 v
+_marks
+cleartomark
+showpage
+restore
+%%EndPage: 8 8
+%%Page: 9 9
+save
+mark
+9 pagesetup
+10 @11 f
+(Macross)72000 48000 w
+(July)262585 v
+(7,)282585 v
+(1986)293415 v
+(6502)450620 v
+(V)473450 v
+(ersion)479560 v
+(as follo)3330 1 72000 84000 t
+(ws:)102300 v
+&15
+(and)122000 108000 w
+(fooLabel.class)172000 v
+(jmp)122000 120000 w
+(@fooLabel.pointer)172000 v
+&11
+(which w)4298 1 72000 144000 t
+( the accumulator with the)4298(ould AND)3748 2 107858 u
+&15
+(class)264186 v
+&11
+(\003eld of the)4298 1 298484 u
+&15
+(struct)349708 v
+&11
+( to where)4299(and then jump)4298 2 390006 u
+(v)491380 v
+(er)496230 v
+(the)72000 156000 w
+&15
+(pointer)90961 v
+&11
+( the)4071( If)7401(\003eld pointed to.)4071 3 137032 u
+&15
+(x)237657 v
+&11
+(inde)247728 v
+(x re)4071 1 264798 u
+( contained the address of this)4070(gister already)4071 2 281489 u
+&15
+(struct)465500 v
+&11
+(,)501500 v
+(then one could say)3330 1 72000 168000 t
+&15
+(and)122000 192000 w
+(x.class)172000 v
+&13
+( Symbol De\003nition Statements)3330(4. The)6360 2 72000 228000 t
+&11
+(The v)4420 1 97000 243600 t
+(arious symbol de\003nition statements allo)4420 1 121720 u
+(w the declaration of symbolic v)4420 1 288600 u
+(ariables and v)4420 1 424320 u
+(alues)483450 v
+(and the de\003nition of macros and functions.)3330 1 72000 255600 t
+&13
+(4.1. De\003ne)6660 1 72000 279600 t
+&11
+(statement)124210 v
+(The)97000 295200 w
+&15
+(define)116441 v
+&11
+( names for v)3892(statement enables the programmer to create symbolic)3891 2 156332 u
+( has tw)3892(alues. It)7222 2 431604 u
+(o)499000 v
+(forms. The)6480 1 72000 307200 t
+(\003rst)123190 v
+&15
+(define)122000 331200 w
+&12
+(symbolname)161330 v
+&11
+(creates a ne)4448 1 72000 355200 t
+(w symbol,)4448 1 122286 u
+&12
+(symbolname)170352 v
+&11
+( and gi)4449(\(an identi\003er\),)4448 2 224790 u
+(v)314816 v
+(es it the special v)4449 1 319666 u
+(alue)396092 v
+&15
+(unassigned)417201 v
+&11
+(. An)7229 1 477201 u
+(y)499000 v
+(attempt to tak)3503 1 72000 367200 t
+(e the v)3503 1 128906 u
+(alue of an unassigned symbol will cause an error message from the assembl\
+er)3503 1 157322 u
+(. The)6652 1 479298 u
+(symbol will, ho)4740 1 72000 379200 t
+(we)138740 v
+(v)150150 v
+(er)155000 v
+(, cause the)4740 1 162370 u
+&15
+(isDefined\(\))213520 v
+&11
+(b)284260 v
+(uilt\001in function \(see)4740 1 289060 u
+&13
+(Expr)377160 v
+(essions)398650 v
+&11
+(, belo)4740 1 428100 u
+(w\) to return)4740 1 452310 u
+&15
+(TRUE)72000 391200 w
+&11
+(if passed as an ar)5665 1 101665 u
+( is also an error to)5665(gument. It)8995 2 182455 u
+&15
+(define)323480 v
+&11
+(a symbol that has already been)5665 1 365145 u
+&15
+(define)72000 403200 w
+&11
+(d.)108000 v
+(The second form of the)3330 1 97000 418800 t
+&15
+(define)196960 v
+&11
+(statement)236290 v
+&15
+(define)122000 442800 w
+&12
+(symbolname)161330 v
+&15
+(=)214650 v
+&12
+(e)223980 v
+(xpr)228220 v
+(ession)241180 v
+&11
+( and gi)4348(creates the symbol)4347 2 72000 466800 t
+(v)180790 v
+(es it the v)4348 1 185640 u
+(alue obtained by e)4348 1 229544 u
+(v)307878 v
+(aluating)312628 v
+&12
+(e)349196 v
+(xpr)353436 v
+(ession)366396 v
+&11
+(\(see)395744 v
+&13
+(Expr)416192 v
+(essions)437682 v
+&11
+(, belo)4348 1 467132 u
+(w\).)490950 v
+(Actually)72000 478800 w
+(, what)4908 1 105790 u
+&15
+(define)137546 v
+&11
+(does is create a symbolic name for)4908 1 178454 u
+&12
+(e)336110 v
+(xpr)340350 v
+(ession)353310 v
+&11
+(and the sa)4908 1 383218 u
+(v)427824 v
+(e this e)4908 1 432674 u
+(xpression)465670 v
+(a)72000 490800 w
+(w)76290 v
+( means that symbols in)4072( This)7222( secret place.)4072(ay in a)4071 4 83410 u
+&12
+(e)295308 v
+(xpr)299548 v
+(ession)312508 v
+&11
+(may be forw)4072 1 341580 u
+(ard references, e.g., labels)4072 1 395164 u
+(that ha)4112 1 72000 502800 t
+(v)100352 v
+(en\030)105202 v
+( is also possible to forw)4111( It)7441(t been encountered yet.)4112 3 117792 u
+(ard reference to symbols that are de\003ned)4111 1 331604 u
+(by future)3330 1 72000 514800 t
+&15
+(define)112540 v
+&11
+(statements, for e)3330 1 151870 u
+(xample:)219200 v
+&15
+(define foo = bar + 2)6000 1 122000 538800 t
+(define bar = 47)6000 1 122000 550800 t
+&11
+(ef)72000 574800 w
+(fecti)79520 v
+(v)97040 v
+(ely de\003nes)4874 1 101890 u
+&15
+(foo)152188 v
+&11
+(to be)4874 1 175062 u
+&15
+(49)202030 v
+&11
+(. Be)8204 1 214030 u
+(w)235594 v
+(are, ho)4874 1 242714 u
+(we)272048 v
+(v)283458 v
+(er)288308 v
+(, as there is no w)4874 1 295678 u
+( to detect)4875(ay for the assembler)4874 2 374658 u
+(mutually recursi)3330 1 72000 586800 t
+(v)137850 v
+(e references of this sort, so that)3330 1 142700 u
+&15
+(define foo = bar + 2)6000 1 122000 610800 t
+(define bar = foo + 2)6000 1 122000 622800 t
+&11
+(will be happily sw)3380 1 72000 646800 t
+(allo)148150 v
+( actually try to use)3381(wed without complaint, until you)3380 2 162900 u
+&15
+(foo)380265 v
+&11
+(or)401646 v
+&15
+(bar)413357 v
+&11
+(in an instruction,)3381 1 434738 u
+(whereupon)72000 658800 w
+&12
+(Macr)120158 v
+(oss)141368 v
+&11
+(\030)154148 v
+(s e)3728 1 156928 u
+(xpression e)3728 1 168836 u
+(v)215084 v
+(aluator will go into in\003nite recursion until it runs out of stack spac\
+e)3728 1 219834 u
+(and crashes the assembler \(it looks to see what)3993 1 72000 670800 t
+&15
+(foo)274568 v
+&11
+(is and sees that it\030)3994 1 296562 u
+(s)373648 v
+&15
+(bar + 2)6664 1 381532 u
+&11
+(, so it looks to see)3994 1 424860 u
+(what)72000 682800 w
+&15
+(bar)98075 v
+&11
+(and see that it\030)3965 1 120040 u
+(s)182485 v
+&15
+(foo + 2)6634 1 190340 u
+&11
+(, so it looks to see what)3964 1 233608 u
+&15
+(foo)339966 v
+&11
+(is... T)7114 1 361930 u
+(o ha)3964 1 388524 u
+(v)406728 v
+(e the assembler detect)3964 1 411578 u
+(and signal this error w)4532 1 72000 694800 t
+( the general case, add much complication and inef\003cienc)4533(ould, in)4532 2 169458 u
+(y \(read: mak)4533 1 445054 u
+(e)499560 v
+(your programs assemble a lot more slo)3330 1 72000 706800 t
+(wly\) for little return\).)3330 1 231710 u
+(Lucas\003lm)72000 768000 w
+(Ltd.)115330 v
+(Proprietary)135050 v
+(Information)183370 v
+(\001)278840 v
+(9)285500 v
+(\001)293830 v
+(CONFIDENTIAL)430680 v
+_marks
+cleartomark
+showpage
+restore
+%%EndPage: 9 9
+%%Page: 10 10
+save
+mark
+10 pagesetup
+10 @11 f
+(Macross)72000 48000 w
+(July)262585 v
+(7,)282585 v
+(1986)293415 v
+(6502)450620 v
+(V)473450 v
+(ersion)479560 v
+( of symbols de\003ned in either of these tw)3343(The scope)3342 2 97000 84000 t
+(o w)3343 1 305846 u
+(ays e)3343 1 321309 u
+(xtends in time from the de\003nition itself)3343 1 342272 u
+(to the end of the assembly)3330 1 72000 96000 t
+(.)180210 v
+&13
+(4.2. V)6210 1 72000 120000 t
+(ariable)99510 v
+&11
+(statement)132840 v
+(The)97000 135600 w
+&15
+(variable)116961 v
+&11
+( programmer to declare symbolic v)4412(statement enables the)4411 2 169372 u
+(ariables for future use.)4412 1 408294 u
+(Similar to the)3330 1 72000 147600 t
+&15
+(define)131440 v
+&11
+(statement, it has tw)3330 1 170770 u
+( The)6480(o forms.)3330 2 250380 u
+(\003rst)309900 v
+&15
+(variable)122000 171600 w
+&12
+(symbolname)173330 v
+&11
+(creates a v)4001 1 72000 195600 t
+(ariable named)4001 1 116952 u
+&12
+(symbolname)178824 v
+&11
+(and gi)4001 1 232815 u
+(v)258786 v
+(es it the special v)4001 1 263636 u
+(alue)338270 v
+&15
+(unassigned)358932 v
+&11
+(, just lik)4002 1 418932 u
+(e the analo\001)4002 1 454346 u
+(gous)72000 207600 w
+&15
+(define)96890 v
+&11
+(statement.)136220 v
+(The second form of the)3330 1 97000 223200 t
+&15
+(variable)196960 v
+&11
+(statement)248290 v
+&15
+(variable)122000 247200 w
+&12
+(symbolname)176000 v
+&15
+(=)229320 v
+&12
+(e)238650 v
+(xpr)242890 v
+(ession)255850 v
+&11
+(creates the v)4651 1 72000 271200 t
+(ariable and gi)4651 1 126032 u
+(v)184514 v
+(es it the v)4651 1 189364 u
+(alue obtained by e)4651 1 234177 u
+(v)313420 v
+(aluating)318170 v
+&12
+(e)355042 v
+(xpr)359282 v
+(ession)372242 v
+&11
+( scope of v)4652(. The)7802 2 397242 u
+(ariables)472900 v
+(de\003ned in either of these tw)4965 1 72000 283200 t
+(o w)4965 1 195595 u
+(ays e)4965 1 212680 u
+(xtends from the)4965 1 235265 u
+&15
+(variable)307930 v
+&11
+( to the end of the)4964(statement itself)4965 2 360895 u
+(assembly \(i.e., the v)3330 1 72000 295200 t
+(ariable is global\).)3330 1 154230 u
+(The dif)3724 1 97000 310800 t
+(ference between the)3724 1 127134 u
+&15
+(define)213266 v
+&11
+(statement and the)3725 1 252990 u
+&15
+(variable)329155 v
+&11
+(statement is that the)3725 1 380880 u
+&15
+(define)468000 v
+&11
+(statement creates what is in essence a constant whereas the)3346 1 72000 322800 t
+&15
+(variable)318730 v
+&11
+(statement creates a true v)3346 1 370076 u
+(ariable.)474290 v
+(The v)4624 1 72000 334800 t
+(alue of a v)4624 1 96924 u
+( assigned to\) during the course of assembly)4625
+(ariable may change \(e.g., it may be)4624 2 144976 u
+(. In)7955 1 485215 u
+(addition, the e)3385 1 72000 346800 t
+( a symbol\030)3384(xpression which establishes)3385 2 130560 u
+(s v)3384 1 286868 u
+(alue in a)3384 1 298892 u
+&15
+(define)337924 v
+&11
+(statement may contain forw)3384 1 377308 u
+(ard)491230 v
+(references \(i.e., labels whose v)4251 1 72000 358800 t
+(alues are unkno)4251 1 201764 u
+(wn because the)4252 1 267776 u
+(y ha)4252 1 332220 u
+(v)350712 v
+(en\030)355562 v
+(t been encountered yet\) whereas)4252 1 368152 u
+(the e)3607 1 72000 370800 t
+(xpression assigning an initial v)3607 1 92117 u
+( a v)3606(alue to)3607 2 220185 u
+(ariable must be made up of terms all of whose v)3606 1 264634 u
+(alues are)3606 1 467634 u
+(kno)72000 382800 w
+(wn at the time the)3330 1 86750 u
+&15
+(variable)165060 v
+&11
+(statement is encountered in the assembly)3330 1 216390 u
+(.)383480 v
+(A v)3330 1 97000 398400 t
+(ariable may also be declared as an array)3330 1 112300 u
+(, using the form)3330 1 277120 u
+&15
+(variable)122000 422400 w
+&12
+(symbolname)176000 v
+&15
+([)229320 v
+&12
+(length)241320 v
+&15
+(])269650 v
+&11
+(where)72000 446400 w
+&12
+(length)99762 v
+&11
+(is an e)3332 1 128094 u
+( array is to ha)3333(xpression that indicates the number of elements the)3332 2 155158 u
+(v)423794 v
+(e.)428644 v
+&12
+(Macr)442247 v
+(oss)463457 v
+&11
+(arrays)479570 v
+(are zero\001based, so the elements are inde)3377 1 72000 458400 t
+(x)236222 v
+(ed from 0 to)3377 1 241072 u
+&12
+(length)296240 v
+&11
+( with ordinary v)3377(\0011. As)6157 2 321240 u
+(ariables, the elements)3376 1 415878 u
+(of the array may be initialized in the)3330 1 72000 470400 t
+&15
+(variable)226390 v
+&11
+(statement using a statement of the form)3330 1 277720 u
+&15
+(variable)122000 494400 w
+&12
+(symbolname)176000 v
+&15
+([)229320 v
+&12
+(length)241320 v
+&15
+(] =)6000 1 269650 u
+&12
+(e)293650 v
+(xpr)297890 v
+(ession)310850 v
+11 @11 f
+([)72000 506400 w
+([)73000 v
+10 @15 f
+(,)80330 v
+&12
+(e)92330 v
+(xpr)96570 v
+(ession)109530 v
+11 @11 f
+(])137860 v
+(])136860 v
+(*)139860 v
+10 s
+(The)72000 530400 w
+&12
+(e)91733 v
+(xpr)95973 v
+(ession)108933 v
+&11
+(s are assigned sequentially into the elements of the array)4183 1 133933 u
+( is greater)4184( the array length)4183(. If)7513 3 374220 u
+(than the number of)4592 1 72000 542400 t
+&12
+(e)158688 v
+(xpr)162928 v
+(ession)175888 v
+&11
+(s gi)4592 1 200888 u
+(v)216900 v
+(en, the remaining elements are)4592 1 221750 u
+( course, you)4592( Of)7922(\003lled with zeroes.)4592 3 357180 u
+(should not specify more than)3330 1 72000 554400 t
+&12
+(length)194750 v
+&11
+(e)223080 v
+(xpressions or the assembler will complain at you.)3330 1 227370 u
+&13
+(4.3. Macr)6660 1 72000 578400 t
+(o)116800 v
+&11
+(statement)125130 v
+(The)97000 594000 w
+&15
+(macro)115880 v
+&11
+( syntax is)3330( Its)6660
+(statement is used to de\003ne macros \(surprise!\).)3330 3 149210 u
+&15
+(macro)122000 618000 w
+&12
+(macr)155330 v
+(oname)175430 v
+11 @11 f
+([)205420 v
+([)206420 v
+10 @12 f
+(ar)213750 v
+(gumentname)222270 v
+11 @11 f
+([)276700 v
+([)277700 v
+10 @15 f
+(,)285030 v
+&12
+(ar)294360 v
+(gumentname)302880 v
+11 @11 f
+(])357310 v
+(])356310 v
+(* ])2830 1 359310 u
+(])366640 v
+10 @15 f
+({)374970 v
+11 @11 f
+([)147000 630000 w
+([)148000 v
+10 @12 f
+(statement)155330 v
+11 @11 f
+(])196990 v
+(])195990 v
+(*)198990 v
+10 @15 f
+(})122000 642000 w
+&11
+(where)72000 666000 w
+&12
+(macr)100010 v
+(oname)120110 v
+&11
+(is just that and the)3580 1 150350 u
+&12
+(ar)231030 v
+(gumentname)239550 v
+&11
+(s are identi\003ers corresponding to the formal param\001)3580 1 290650 u
+(eters of the macro \(in the classical f)3606 1 72000 678000 t
+( is called, the call ar)3605( the macro)3606(ashion\). When)6636 3 222102 u
+(guments are bound to)3605 1 414305 u
+(these symbols and then)4315 1 72000 690000 t
+&12
+(Macr)174810 v
+(oss)196020 v
+&11
+(assembles the)4315 1 213115 u
+&12
+(statement)274515 v
+&11
+( macro body)4316(s which form the)4315 2 312845 u
+( scope of)4316(. The)7466 2 438752 u
+( limited to the inside of the macro body and their v)4771
+(these symbols is)4772 2 72000 702000 t
+(alues go a)4771 1 369875 u
+(w)414257 v
+(ay when the macro)4771 1 421377 u
+(e)72000 714000 w
+( The)6983(xpansion is completed.)3833 2 76290 u
+&12
+(statement)197262 v
+&11
+( an)3834(s may be)3833 2 235592 u
+(y v)3834 1 286932 u
+(alid)300516 v
+&12
+(Macr)319350 v
+(oss)340560 v
+&11
+(statements e)3834 1 357174 u
+(xcept for)3834 1 407518 u
+&15
+(macro)448506 v
+&11
+(state\001)482340 v
+(ments and)3330 1 72000 726000 t
+&15
+(function)116990 v
+&11
+(statements \(i.e., macro and function de\003nitions may not be nested\).)3330 1 168320 u
+(Lucas\003lm)72000 768000 w
+(Ltd.)115330 v
+(Proprietary)135050 v
+(Information)183370 v
+(\001)276340 v
+(10)283000 v
+(\001)296330 v
+(CONFIDENTIAL)430680 v
+_marks
+cleartomark
+showpage
+restore
+%%EndPage: 10 10
+%%Page: 11 11
+save
+mark
+11 pagesetup
+10 @11 f
+(Macross)72000 48000 w
+(July)262585 v
+(7,)282585 v
+(1986)293415 v
+(6502)450620 v
+(V)473450 v
+(ersion)479560 v
+( macro by preceding the label)5472
+(Statement labels used inside macros can be made local to the)5471 2 97000 84000 t
+(identi\003er with a dollar sign \(\027)3330 1 72000 96000 t
+(\027)192900 v
+&15
+($)196230 v
+&11
+(\030)202230 v
+(\030\). F)6660 1 204820 u
+(or e)3330 1 226050 u
+(xample,)242000 v
+&15
+(macro)122000 120000 w
+(fooMac)172000 v
+(arg {)6000 1 222000 u
+(jmp)172000 132000 w
+($foo)222000 v
+(word)172000 144000 w
+(arg)197000 v
+($foo:)122000 156000 w
+(nop)172000 v
+(})122000 168000 w
+&11
+(de\003nes a macro named)4205 1 72000 192000 t
+&15
+(fooMac)173240 v
+&11
+(that emits a w)4205 1 213445 u
+(ord of data that gets jumped o)4205 1 274290 u
+(v)403800 v
+(er)408650 v
+( label)4205(. The)7355 2 415870 u
+&15
+($foo)469125 v
+&11
+(is)497330 v
+( the macro: both the reference to it in the)4039(local to)4040 2 72000 204000 t
+(\003rst line of the macro and its de\003nition on the third)4039 1 284170 u
+( macro is called, the)4191( time the)4190( Each)7520
+(will only be seen inside the macro.)4190 4 72000 216000 t
+&15
+(jmp)378395 v
+&11
+(will refer to the location)4191 1 400586 u
+(tw)72000 228000 w
+(o instructions ahead, and an)3730 1 81900 u
+(y other macros that might contain)3730 1 198040 u
+&15
+($foo)342630 v
+&11
+(will not af)3730 1 370360 u
+(fect this nor will the)3730 1 413680 u
+(y)499000 v
+(be af)3330 1 72000 240000 t
+(fected by this.)3330 1 92290 u
+( which tak)3833(It is possible to de\003ne macros)3832 2 97000 255600 t
+(e a v)3833 1 267046 u
+(ariable number of ar)3833 1 288342 u
+( is accomplished)3833(guments. This)6983 2 373521 u
+(by follo)4112 1 72000 267600 t
+( last ar)4111(wing the)4112 2 104752 u
+(gument in the)4111 1 170786 u
+&15
+(macro)233119 v
+&11
+(statement by)4111 1 267230 u
+&15
+([ ])6781 1 323782 u
+&11
+( declares the ar)4111(. This)7261 2 342563 u
+(gument to be an)4111 1 435007 u
+(array)72000 279600 w
+( all of the parameters not accounted for by the other declared ar)4037
+(, which gets assigned a list of)4036 2 91890 u
+(gu\001)490670 v
+( array may be interrog)4444(ments. This)7594 2 72000 291600 t
+(ated with the)4444 1 220350 u
+&15
+(arrayLength\(\))280342 v
+&11
+(b)362785 v
+(uilt\001in function \(to)4443 1 367585 u
+(\003nd out ho)4443 1 449804 u
+(w)496780 v
+(man)72000 303600 w
+(y e)3330 1 89070 u
+(xtra parameters there were\) and accessed just lik)3330 1 101690 u
+(e a re)3330 1 301500 u
+(gular array)3330 1 324660 u
+(. F)6660 1 368430 u
+(or e)3330 1 383000 u
+(xample,)398950 v
+&15
+(macro)122000 327600 w
+(enfoon)172000 v
+(precision, args[] {)6000 1 222000 u
+(mvariable len = arrayLength\(args\))6000 1 147000 339600 t
+(mvariable i)6000 1 147000 351600 t
+(word)147000 363600 w
+(precision)172000 v
+(mfor \(i=0, i<len, ++i\) {)6000 1 147000 375600 t
+(byte)172000 387600 w
+(args[i])197000 v
+(})147000 399600 w
+(})122000 411600 w
+&11
+(declares the macro)3200 1 72000 435600 t
+&15
+(enfoon)151570 v
+&11
+(that tak)3200 1 190770 u
+( The)6350(es one or more parameters.)3200 2 221090 u
+(\003rst parameter is bound to)3200 1 357010 u
+&15
+(preci\001)468000 v
+(sion)72000 447600 w
+&11
+( bound to)3590(, while the remainder are collected in an array that is)3591 2 96000 u
+&15
+(args)360680 v
+&11
+( emits the)3590(. It)6920 2 384680 u
+(\003rst parameter)3590 1 444870 u
+(as a w)3330 1 72000 459600 t
+(ord v)3330 1 98550 u
+(alue and the remaining parameters as bytes.)3330 1 119960 u
+&13
+(4.4. Function)6660 1 72000 483600 t
+&11
+(statement)135330 v
+(The)97000 499200 w
+&15
+(function)115880 v
+&11
+( syntax is)3330( Its)6660(statement is used to de\003ne functions.)3330 3 167210 u
+&15
+(function)122000 523200 w
+&12
+(funcname)173330 v
+&15
+(\()215540 v
+11 @11 f
+([)224870 v
+([)225870 v
+10 @12 f
+(ar)233200 v
+(gumentname)241720 v
+11 @11 f
+([)296150 v
+([)297150 v
+10 @15 f
+(,)304480 v
+&12
+(ar)313810 v
+(gumentname)322330 v
+11 @11 f
+(])376760 v
+(])375760 v
+(* ])2830 1 378760 u
+(])386090 v
+10 @15 f
+(\) {)3330 1 394420 u
+11 @11 f
+([)147000 535200 w
+([)148000 v
+10 @12 f
+(statement)155330 v
+11 @11 f
+(])196990 v
+(])195990 v
+(*)198990 v
+10 @15 f
+(})122000 547200 w
+&11
+(where)72000 571200 w
+&12
+(funcname)100074 v
+&11
+( the function and the)3645(is the name of)3644 2 142598 u
+&12
+(ar)292845 v
+(gumentname)301365 v
+&11
+(s are identi\003ers corresponding to the)3645 1 352465 u
+( call ar)4464( the function is called, the)4465( When)7495
+(formal parameters of the function.)4465 4 72000 583200 t
+(guments are e)4464 1 392248 u
+(v)451466 v
+(aluated and)4464 1 456216 u
+(then bound to these symbols and then)3746 1 72000 595200 t
+&12
+(Macr)233772 v
+(oss)254982 v
+&11
+(assembles the)3746 1 271508 u
+&12
+(statement)331770 v
+&11
+(s which form the function body)3746 1 370100 u
+(.)501500 v
+( is limited to the inside of the function body and their v)3584
+(The scope of these symbols)3585 2 72000 607200 t
+(alues go a)3584 1 420188 u
+(w)462196 v
+(ay when)3584 1 469316 u
+(the function e)5566 1 72000 619200 t
+(v)132872 v
+( the)5567( with macro de\003nitions,)5566( As)8346(aluation is completed.)5566 4 137622 u
+&12
+(statement)378812 v
+&11
+(s may be an)5567 1 417142 u
+(y v)5567 1 473683 u
+(alid)489000 v
+&12
+(Macr)72000 631200 w
+(oss)93210 v
+&11
+(statements e)4180 1 110170 u
+(xcept for the)4180 1 160860 u
+&15
+(macro)218940 v
+&11
+(and)253120 v
+&15
+(function)271740 v
+&11
+( function may return a v)4180(statements. A)6960 2 323920 u
+(alue)487340 v
+(using the)3330 1 72000 643200 t
+&15
+(freturn)112550 v
+&11
+(statement, which is described belo)3330 1 157880 u
+(w)298430 v
+(.)305000 v
+(Just as you can de\003ne macros that tak)4728 1 97000 658800 t
+(e v)4728 1 263306 u
+(ariable numbers of ar)4728 1 277224 u
+( you de\003ne)4729(guments, so too can)4728 2 368978 u
+( F)6660( mechanism is the same.)3330(functions. The)6480 3 72000 670800 t
+(or e)3330 1 246630 u
+(xample)262580 v
+&15
+(function sum\(args[]\) {)6000 1 122000 694800 t
+(mvariable len = arrayLength\(args\))6000 1 147000 706800 t
+(mvariable i)6000 1 147000 718800 t
+(mvariable result = 0)6000 1 147000 730800 t
+&11
+(Lucas\003lm)72000 768000 w
+(Ltd.)115330 v
+(Proprietary)135050 v
+(Information)183370 v
+(\001)276340 v
+(11)283000 v
+(\001)296330 v
+(CONFIDENTIAL)430680 v
+_marks
+cleartomark
+showpage
+restore
+%%EndPage: 11 11
+%%Page: 12 12
+save
+mark
+12 pagesetup
+10 @11 f
+(Macross)72000 48000 w
+(July)262585 v
+(7,)282585 v
+(1986)293415 v
+(6502)450620 v
+(V)473450 v
+(ersion)479560 v
+&15
+(mfor \(i=0, i<len, ++i\) {)6000 1 147000 84000 t
+(result += args[i])6000 1 172000 96000 t
+(})147000 108000 w
+(freturn\(result\);)147000 120000 w
+(})122000 132000 w
+&11
+(which simply returns the sum of its ar)3330 1 72000 156000 t
+(guments.)229010 v
+&13
+(4.5. Unde\003ne)6660 1 72000 180000 t
+&11
+(statement)135330 v
+(The)97000 195600 w
+&15
+(undefine)117506 v
+&11
+(statement allo)4956 1 170462 u
+( and macro de\003nitions to be remo)4957(ws symbol)4956 2 228498 u
+(v)423036 v
+(ed from)4957 1 427886 u
+&12
+(Macr)466680 v
+(oss)487890 v
+&11
+(\030)500670 v
+( tak)3330( It)6660(symbol table.)3330 3 72000 207600 t
+(es the form)3330 1 154940 u
+&15
+(undefine)122000 231600 w
+&12
+(symbolname)173330 v
+11 @11 f
+([)226650 v
+([)227650 v
+10 @15 f
+(,)234980 v
+&12
+(symbolname)244310 v
+11 @11 f
+(])297630 v
+(])296630 v
+(*)299630 v
+10 s
+(The named symbols go a)3655 1 72000 255600 t
+(w)176460 v
+(ay as if the)3655 1 183580 u
+(y ne)3655 1 230495 u
+(v)248340 v
+(er were)3655 1 253190 u
+(\006 the)3655 1 287700 u
+(y are free to be de\003ned ag)3655 1 313425 u
+(ain and the)3655 1 424155 u
+&15
+(isDe\001)474000 v
+(fined\(\))72000 267600 w
+&11
+(b)117330 v
+(uilt\001in function will return)3330 1 122130 u
+&15
+(FALSE)232670 v
+&11
+(if passed one of them as an ar)3330 1 266000 u
+(gument.)390210 v
+&13
+(5. Macr)6660 1 72000 291600 t
+(o Body Statements)3330 1 109300 u
+&12
+(Macr)97000 307200 w
+(oss)118210 v
+&11
+(pro)135219 v
+(vides se)4229 1 148399 u
+(v)181818 v
+(eral statements which are primarily intended to manage the)4229 1 186668 u
+(\004o)441350 v
+(w of control)4230 1 451660 u
+(\(or)72000 319200 w
+(, rather)3465 1 83260 u
+(, the)3465 1 112145 u
+(\027)133795 v
+(\027\004o)136385 v
+(w of assembly\030)3465 1 150025 u
+( of these statements are)3465( Some)6795
+(\030\) within a macro or function de\003nition.)3465 3 212315 u
+(analogs to the)4401 1 72000 331200 t
+(\004o)135754 v
+(w of control statements described abo)4402 1 146064 u
+(v)306784 v
+( Ho)7732(e in section 2.)4402 2 311634 u
+(we)392592 v
+(v)404002 v
+(er)408852 v
+(, one should k)4402 1 416222 u
+(eep in)4402 1 477938 u
+(mind that these statements are e)6756 1 72000 343200 t
+(x)220610 v
+(ecuted interpreti)6756 1 225460 u
+(v)294726 v
+( the pre)6755(ely at assembly time, whereas)6756 2 299576 u
+(viously)474550 v
+(described statements result in machine code in the tar)4628 1 72000 355200 t
+(get\001processor)302694 v
+(\001e)356364 v
+(x)363984 v
+(ecutable output of the assembly)4629 1 368834 u
+(process.)72000 367200 w
+( use within macros and functions, their use is)3619
+(Although these statements are intended primarily for)3618 2 97000 382800 t
+(not restricted and the)3877 1 72000 394800 t
+(y may be used at an)3877 1 160131 u
+( particular)3877( In)7207(y point in a program.)3877 3 246016 u
+(, the)3877 1 393018 u
+&15
+(mif)415492 v
+&11
+(statement \(to be)3876 1 437368 u
+(described shortly\) is the means by which conditional assembly may be rea\
+lized.)3330 1 72000 406800 t
+&13
+(5.1.)72000 430800 w
+&11
+(Blocks)93660 v
+(The construct)3330 1 97000 446400 t
+&15
+({)122000 470400 w
+11 @11 f
+([)147000 482400 w
+([)148000 v
+10 @12 f
+(statement)155330 v
+11 @11 f
+(])196990 v
+(])195990 v
+(*)198990 v
+10 @15 f
+(})122000 494400 w
+&11
+(is called a)3798 1 72000 518400 t
+&12
+(bloc)118384 v
+(k)135404 v
+&11
+(and is in f)3798 1 143642 u
+(act a v)3798 1 187156 u
+(alid)215602 v
+&12
+(Macr)234400 v
+(oss)255610 v
+&11
+(statement type in its o)3798 1 272188 u
+( are used e)3798( Blocks)7128(wn right.)3798 3 364910 u
+(xten\001)483450 v
+(si)72000 530400 w
+(v)78420 v
+(ely in)5075 1 83270 u
+&12
+(Macr)113420 v
+(oss)134630 v
+&11
+(to form the bodies of)5074 1 152484 u
+(\004o)251734 v
+(w\001of\001control statements,)5074 1 262044 u
+(\004o)367452 v
+(w\001of\001assembly statements and)5074 1 377762 u
+(macros.)72000 542400 w
+&13
+(5.2. Mde\003ne)6660 1 72000 566400 t
+&11
+(statement)131990 v
+(The)97000 582000 w
+&15
+(mdefine)115880 v
+&11
+(statement)161210 v
+&15
+(mdefine)122000 606000 w
+&12
+(symbolname)167330 v
+&11
+(or)72000 618000 w
+&15
+(mdefine)122000 630000 w
+&12
+(symbolname)167330 v
+&15
+(=)220650 v
+&12
+(e)229980 v
+(xpr)234220 v
+(ession)247180 v
+&11
+(operates lik)4143 1 72000 654000 t
+(e \(and is syntactically congruent with\) the)4143 1 119923 u
+&15
+(define)301674 v
+&11
+(statement, e)4143 1 341817 u
+(xcept that the scope of the)4144 1 391080 u
+( block of the macro or function in which the)5279
+(symbol de\003nition is restricted to the body)5280 2 72000 666000 t
+&15
+(mdefine)462000 v
+&11
+( symbol de\003nition is in)3573(appears. The)6723 2 72000 678000 t
+(visible outside that block, though it)3573 1 223445 u
+&12
+(is)373503 v
+&11
+(visible inside an)3573 1 383746 u
+(y blocks that)3574 1 450742 u
+(may themselv)3330 1 72000 690000 t
+(es be contained within the macro or function.)3330 1 128510 u
+(Lucas\003lm)72000 768000 w
+(Ltd.)115330 v
+(Proprietary)135050 v
+(Information)183370 v
+(\001)276340 v
+(12)283000 v
+(\001)296330 v
+(CONFIDENTIAL)430680 v
+_marks
+cleartomark
+showpage
+restore
+%%EndPage: 12 12
+%%Page: 13 13
+save
+mark
+13 pagesetup
+10 @11 f
+(Macross)72000 48000 w
+(July)262585 v
+(7,)282585 v
+(1986)293415 v
+(6502)450620 v
+(V)473450 v
+(ersion)479560 v
+&13
+(5.3. Mv)6660 1 72000 84000 t
+(ariable)108000 v
+&11
+(statement)141330 v
+(The)97000 99600 w
+&15
+(mvariable)115880 v
+&11
+(statement)173210 v
+&15
+(mvariable)122000 123600 w
+&12
+(symbolname)179330 v
+&11
+(or)72000 135600 w
+&15
+(mvariable)122000 147600 w
+&12
+(symbolname)179330 v
+&15
+(=)232650 v
+&12
+(e)241980 v
+(xpr)246220 v
+(ession)259180 v
+&11
+(bears e)3331 1 72000 171600 t
+(xactly the same relationship to the)3331 1 100721 u
+&15
+(variable)245137 v
+&11
+(statement that the)3331 1 296468 u
+&15
+(mdefine)372012 v
+&11
+(statement does to the)3332 1 417344 u
+&15
+(define)72000 183600 w
+&11
+( declares a v)4579(statement. It)7909 2 112579 u
+( or macro in whose)4578(ariable whose scope is limited to the function)4579 2 223115 u
+(de\003nition it appears.)3330 1 72000 195600 t
+&13
+(5.4. Mif)6660 1 72000 219600 t
+&11
+(statement)112540 v
+(The)97000 235200 w
+&15
+(mif)115880 v
+&11
+(statement conditionally assembles the statements contained in the block f\
+ollo)3330 1 137210 u
+(wing it:)3330 1 453020 u
+&15
+(mif \()3330 1 122000 259200 t
+&12
+(condition)152660 v
+&15
+(\) {)3330 1 193770 u
+11 @11 f
+([)147000 271200 w
+([)148000 v
+10 @12 f
+(statement)155330 v
+11 @11 f
+(])196990 v
+(])195990 v
+(*)198990 v
+10 @15 f
+(})122000 283200 w
+11 @11 f
+([)131330 v
+([)132330 v
+10 @15 f
+(melseif \()3330 1 139660 u
+&12
+(condition)194320 v
+&15
+(\) {)3330 1 235430 u
+11 @11 f
+([)147000 295200 w
+([)148000 v
+10 @12 f
+(statement)155330 v
+11 @11 f
+(])196990 v
+(])195990 v
+(*)198990 v
+10 @15 f
+(})122000 307200 w
+11 @11 f
+(])131330 v
+(])130330 v
+(* [)2830 1 133330 u
+([)142660 v
+10 @15 f
+(melse {)3330 1 149990 u
+11 @11 f
+([)147000 319200 w
+([)148000 v
+10 @12 f
+(statement)155330 v
+11 @11 f
+(])196990 v
+(])195990 v
+(*)198990 v
+10 @15 f
+(})122000 331200 w
+11 @11 f
+(])131330 v
+(])130330 v
+10 s
+(unlik)72000 355200 w
+(e the)3807 1 92460 u
+&15
+(if)116734 v
+&11
+(statement, the)3807 1 132541 u
+&12
+(condition)193205 v
+&11
+(may be an)3807 1 234792 u
+(y e)3807 1 278356 u
+(xpression whatsoe)3807 1 291453 u
+(v)366110 v
+(er)370960 v
+(.)378180 v
+&12
+(Macr)387818 v
+(oss)409028 v
+&11
+(follo)425616 v
+(ws the)3808 1 444256 u
+&13
+(C)475202 v
+&11
+(con\001)486230 v
+(v)72000 367200 w
+( v)4293(ention that the)4294 2 76850 u
+(alue 0 represents)4293 1 146701 u
+&15
+(FALSE)221780 v
+&11
+(and an)4293 1 256073 u
+(y other v)4293 1 284096 u
+(alue represents)4293 1 322982 u
+&15
+(TRUE)388768 v
+&11
+(\(in f)4293 1 417061 u
+(act, the symbols)4293 1 435694 u
+&15
+(TRUE)72000 379200 w
+&11
+(and)100694 v
+&15
+(FALSE)119828 v
+&11
+(are)154522 v
+(\027)171426 v
+(\027prede\003ned\030)174016 v
+( the assembler to ha)4694(\030 by)3954 2 222146 u
+(v)327436 v
+( v)4695(e the)4694 2 332286 u
+(alues 1 and 0 respecti)4695 1 363085 u
+(v)457705 v
+(ely\). The)7845 1 462555 u
+(meaning of the)4462 1 72000 391200 t
+&15
+(mif)140376 v
+&11
+(construct is the ob)4462 1 162838 u
+(vious one, b)4462 1 241624 u
+(ut k)4462 1 293958 u
+( that it is interpreted at assembly)4461(eep in mind)4462 2 311100 u
+(time and has no direct bearing on the e)3330 1 72000 403200 t
+(x)233460 v
+(ecution of the resulting assembled program.)3330 1 238310 u
+&13
+(5.5. Mwhile)6660 1 72000 427200 t
+&11
+(statement)129210 v
+(The)97000 442800 w
+&15
+(mwhile)116490 v
+&11
+(statement repetiti)3940 1 156430 u
+(v)226780 v
+( a block of statements so long as a gi)3941(ely assembles)3940 2 231630 u
+(v)447989 v
+(en condition)3941 1 452839 u
+( form is)3330( Its)6660(remains true.)3330 3 72000 454800 t
+&15
+(mwhile \()3330 1 122000 478800 t
+&12
+(condition)170660 v
+&15
+(\) {)3330 1 211770 u
+11 @11 f
+([)147000 490800 w
+([)148000 v
+10 @12 f
+(statement)155330 v
+11 @11 f
+(])196990 v
+(])195990 v
+(*)198990 v
+10 @15 f
+(})122000 502800 w
+&11
+(As with)5193 1 72000 526800 t
+&15
+(mif)111276 v
+&11
+(, the)5193 1 129276 u
+&12
+(condition)154382 v
+&11
+(may be an)5193 1 197355 u
+(y v)5193 1 243691 u
+(alid)258634 v
+&12
+(Macr)278827 v
+(oss)300037 v
+&11
+(e)318010 v
+( what it)5194(xpression and the interpretation is)5193 2 322300 u
+(seems.)72000 538800 w
+&13
+(5.6. Mdo\001while)6660 1 72000 562800 t
+&11
+(statement)143100 v
+(The)97000 578400 w
+&15
+(mdo\001while)115909 v
+&11
+(statement pro)3359 1 173268 u
+(vides an alternati)3359 1 228137 u
+(v)297925 v
+(e to the)3359 1 302775 u
+&15
+(mwhile)337292 v
+&11
+( testing at the bot\001)3360(statement by)3359 2 376651 u
+( form is)3330( Its)6660(tom of the loop instead of at the top.)3330 3 72000 590400 t
+&15
+(mdo {)3330 1 122000 614400 t
+11 @11 f
+([)147000 626400 w
+([)148000 v
+10 @12 f
+(statement)155330 v
+11 @11 f
+(])196990 v
+(])195990 v
+(*)198990 v
+10 @15 f
+(} while \()3330 1 122000 638400 t
+&12
+(condition)173990 v
+&15
+(\))215100 v
+&13
+(5.7. Mdo\001until)6660 1 72000 662400 t
+&11
+(statement)140330 v
+(The)97000 678000 w
+&15
+(mdo\001until)115978 v
+&11
+(statement is the same as the)3428 1 173406 u
+&15
+(mdo\001while)292294 v
+&11
+(statement e)3428 1 349722 u
+(xcept that the sense of the)3428 1 395770 u
+(condition is ne)3330 1 72000 690000 t
+(g)132400 v
+( has the form)3330(ated. It)6660 2 137350 u
+&15
+(mdo {)3330 1 122000 714000 t
+11 @11 f
+([)147000 726000 w
+([)148000 v
+10 @12 f
+(statement)155330 v
+11 @11 f
+(])196990 v
+(])195990 v
+(*)198990 v
+10 s
+(Lucas\003lm)72000 768000 w
+(Ltd.)115330 v
+(Proprietary)135050 v
+(Information)183370 v
+(\001)276340 v
+(13)283000 v
+(\001)296330 v
+(CONFIDENTIAL)430680 v
+_marks
+cleartomark
+showpage
+restore
+%%EndPage: 13 13
+%%Page: 14 14
+save
+mark
+14 pagesetup
+10 @11 f
+(Macross)72000 48000 w
+(July)262585 v
+(7,)282585 v
+(1986)293415 v
+(6502)450620 v
+(V)473450 v
+(ersion)479560 v
+&15
+(} until \()3330 1 122000 84000 t
+&12
+(condition)173990 v
+&15
+(\))215100 v
+&13
+(5.8. Mf)6660 1 72000 108000 t
+(or)106180 v
+&11
+(statement)118950 v
+(The)97000 123600 w
+&15
+(mfor)116137 v
+&11
+(statement pro)3587 1 143724 u
+( the)3588(vides a more general looping construct analogous to)3587 2 198821 u
+&13
+(C)434406 v
+&15
+(for)445214 v
+&11
+(loop. Its)6918 1 466802 u
+(form is)3330 1 72000 135600 t
+&15
+(mfor \()3330 1 122000 159600 t
+&12
+(e)158660 v
+(xpr)162900 v
+(ession\0011)175860 v
+&15
+(,)212520 v
+&12
+(e)221850 v
+(xpr)226090 v
+(ession\0012)239050 v
+&15
+(,)275710 v
+&12
+(e)285040 v
+(xpr)289280 v
+(ession\0013)302240 v
+&15
+(\) {)3330 1 338900 u
+11 @11 f
+([)147000 171600 w
+([)148000 v
+10 @12 f
+(statement)155330 v
+11 @11 f
+(])196990 v
+(])195990 v
+(*)198990 v
+10 @15 f
+(})122000 183600 w
+&11
+(where)72000 207600 w
+&12
+(e)100967 v
+(xpr)105207 v
+(ession\0011)118167 v
+&11
+(is an initialization e)4537 1 156034 u
+(xpression,)240605 v
+&12
+(e)285972 v
+(xpr)290212 v
+(ession\0012)303172 v
+&11
+( see if looping should con\001)4538(is a test to)4537 2 341039 u
+(tinue, and)3792 1 72000 219600 t
+&12
+(e)116524 v
+(xpr)120764 v
+(ession\0013)133724 v
+&11
+(is e)3792 1 170846 u
+(x)185598 v
+(ecuted at the bottom of the loop to set up for the ne)3792 1 190448 u
+(xt time around, just as)3792 1 410222 u
+(in)72000 231600 w
+&13
+(C)83903 v
+&11
+( that, unlik)4123(. Note)7453 2 91123 u
+(e)166722 v
+&13
+(C)175285 v
+&11
+(, the)4123 1 182505 u
+&12
+(e)205471 v
+(xpr)209711 v
+(ession)222671 v
+&11
+( is because)4124( This)7273(s are separated by commas, not semicolons.)4123 3 247671 u
+(semicolons are used to delimit line comments.)3330 1 72000 243600 t
+(The)97000 259200 w
+&15
+(mfor)115880 v
+&11
+(statement is equi)3330 1 143210 u
+(v)211840 v
+(alent to)3330 1 216590 u
+&12
+(e)122000 283200 w
+(xpr)126240 v
+(ession\0011)139200 v
+&15
+(mwhile \()6000 1 122000 295200 t
+&12
+(e)170000 v
+(xpr)174240 v
+(ession\0012)187200 v
+&15
+(\) {)6000 1 226530 u
+&12
+(statements)147000 307200 w
+(e)147000 319200 w
+(xpr)151240 v
+(ession\0013)164200 v
+&15
+(})122000 331200 w
+&13
+(5.9. Mswitch)6660 1 72000 355200 t
+&11
+(statement)133650 v
+(The)97000 370800 w
+&15
+(mswitch)117043 v
+&11
+(statement pro)4493 1 163536 u
+( code for)4494(vides a means of selecting one of a number of blocks of)4493 2 219539 u
+(assembly depending upon the v)3330 1 72000 382800 t
+(alue of some e)3330 1 201170 u
+( form is:)3330(xpression. Its)6660 2 261550 u
+&15
+(mswitch \()6000 1 122000 406800 t
+&12
+(selectionExpr)182000 v
+(ession)236620 v
+&15
+(\) {)6000 1 264950 u
+11 @11 f
+([)147000 418800 w
+([)148000 v
+10 @15 f
+(mcase \()6000 1 155330 u
+&12
+(e)203330 v
+(xpr)207570 v
+(ession)220530 v
+11 @11 f
+([)248860 v
+([)249860 v
+10 @15 f
+(,)257190 v
+&12
+(e)266520 v
+(xpr)270760 v
+(ession)283720 v
+11 @11 f
+(])312050 v
+(])311050 v
+(*)314050 v
+10 @15 f
+(\) {)6000 1 322380 u
+11 @11 f
+([)172000 430800 w
+([)173000 v
+10 @12 f
+(statement)180330 v
+11 @11 f
+(])221990 v
+(])220990 v
+(*)223990 v
+10 @15 f
+(})147000 442800 w
+11 @11 f
+(])156330 v
+(])155330 v
+(*)158330 v
+([)147000 454800 w
+([)148000 v
+10 @15 f
+(mdefault {)6000 1 155330 u
+11 @11 f
+([)172000 466800 w
+([)173000 v
+10 @12 f
+(statement)180330 v
+11 @11 f
+(])221990 v
+(])220990 v
+(*)223990 v
+10 @15 f
+(})147000 478800 w
+11 @11 f
+(])156330 v
+(])155330 v
+10 @15 f
+(})122000 490800 w
+&11
+(The w)4875 1 72000 514800 t
+(ay this w)4875 1 99545 u
+(orks is as follo)4875 1 140305 u
+(ws \(it\030)4876 1 205790 u
+(s actually easier to use than to e)4876 1 233446 u
+(xplain\):)376848 v
+&12
+(selectionExpr)412834 v
+(ession)467454 v
+&11
+(is)497330 v
+(e)72000 526800 w
+(v)76190 v
+( of the)3586(aluated. Each)6916 2 80940 u
+&12
+(e)170534 v
+(xpr)174774 v
+(ession)187734 v
+&11
+( with the v)3585(s associated)3586 2 212734 u
+(arious)306815 v
+&15
+(mcase)334840 v
+&11
+(clauses \(if an)3585 1 368425 u
+(y\) is then e)3585 1 423205 u
+(v)470370 v
+(aluated)475120 v
+(in turn and the resulting v)5100 1 72000 538800 t
+(alue compared to that of)5100 1 187800 u
+&12
+(selectionExpr)300500 v
+(ession)355120 v
+&11
+( and if one of these)5100(. When)8130 2 380120 u
+(v)72000 550800 w
+(alues)76750 v
+(\027)104397 v
+(\027matches\030)106987 v
+( v)7097(\030 the)6357 2 145677 u
+(alue of)7097 1 179431 u
+&12
+(selectionExpr)218615 v
+(ession)273235 v
+&11
+(the block of)7097 1 305332 u
+&12
+(statement)369392 v
+&11
+(s associated with the)7096 1 407722 u
+(corresponding)72000 562800 w
+&15
+(mcase)136732 v
+&11
+( e)4853(clause is immediately assembled and)4852 2 171584 u
+(x)337895 v
+(ecution of the)4853 1 342745 u
+&15
+(mswitch)407294 v
+&11
+(statement is)4853 1 454147 u
+( no such v)3847(complete. If)7177 2 72000 574800 t
+(alue matches and there is an)3847 1 169618 u
+&15
+(mdefault)292670 v
+&11
+(clause, the block of)3847 1 344517 u
+&12
+(statement)430164 v
+&11
+(s associ\001)3846 1 468494 u
+(ated with the)3953 1 72000 586800 t
+&15
+(mdefault)130519 v
+&11
+( no v)3954( If)7284(clause is assembled.)3954 3 182472 u
+(alue matches and there is no)3954 1 302802 u
+&15
+(mdefault)427056 v
+&11
+(clause)479010 v
+( of the)4372(then nothing is assembled as a result)4373 2 72000 598800 t
+&15
+(mswitch)263004 v
+&11
+( we say the v)4372(. When)7402 2 305004 u
+(alues)398234 v
+(\027)423156 v
+(\027match\030)425746 v
+(\030, we mean)4372 1 456106 u
+( the e)3993(that either)3992 2 72000 610800 t
+(xpressions e)3993 1 138258 u
+(v)188661 v
+(aluate to the same number or to strings which are identical e)3993 1 193411 u
+(xcept for the)3993 1 450474 u
+( F)6660(case of alphabetic characters.)3330 2 72000 622800 t
+(or e)3330 1 203730 u
+(xample:)219680 v
+&15
+(mswitch \(foo\) {)6000 1 122000 646800 t
+(mcase \(\020hello\020,)6000 1 147000 658800 t
+(\020fnord\020\) {)6000 1 243000 u
+&12
+(statements\0011)172000 670800 w
+&15
+(})147000 682800 w
+(mcase \(\020ZAP!\020\) {)6000 1 147000 694800 t
+&12
+(statements\0012)172000 706800 w
+&15
+(})147000 718800 w
+(mdefault {)6000 1 147000 730800 t
+&11
+(Lucas\003lm)72000 768000 w
+(Ltd.)115330 v
+(Proprietary)135050 v
+(Information)183370 v
+(\001)276340 v
+(14)283000 v
+(\001)296330 v
+(CONFIDENTIAL)430680 v
+_marks
+cleartomark
+showpage
+restore
+%%EndPage: 14 14
+%%Page: 15 15
+save
+mark
+15 pagesetup
+10 @11 f
+(Macross)72000 48000 w
+(July)262585 v
+(7,)282585 v
+(1986)293415 v
+(6502)450620 v
+(V)473450 v
+(ersion)479560 v
+&12
+(statements\0013)172000 84000 w
+&11
+(})147000 96000 w
+(})122000 108000 w
+(w)72000 132000 w
+(ould switch on the v)3618 1 79120 u
+(alue of the symbol)3618 1 164452 u
+&15
+(foo)245584 v
+&11
+( the v)3618(. If)6948 2 263584 u
+(alue of)3618 1 303898 u
+&15
+(foo)336124 v
+&11
+(w)357743 v
+(as)364863 v
+&15
+(\020hello\020)376812 v
+&11
+(,)418812 v
+&12
+(statements\0011)424931 v
+&11
+(w)479100 v
+(ould)486220 v
+( the v)4605( If)7935(be assembled.)4605 3 72000 144000 t
+(alue of)4605 1 170980 u
+&15
+(foo)205180 v
+&11
+(w)227785 v
+(as)234905 v
+&15
+(\020zap!\020)247840 v
+&11
+(,)283840 v
+&12
+(statements\0012)290945 v
+&11
+(w)346100 v
+(ould be assembled \(since the string)4604 1 353220 u
+( the v)5435( If)8765(comparison is done independent of case\).)5435 3 72000 156000 t
+(alue of)5435 1 295460 u
+&15
+(foo)331320 v
+&11
+(w)354756 v
+(as)361876 v
+&15
+(\020cromfelter\020)375642 v
+&11
+(or)453078 v
+&15
+(47)466844 v
+&11
+(, then)5436 1 478844 u
+&12
+(statements\0013)72000 168000 w
+&11
+(w)125880 v
+(ould be assembled by def)3330 1 133000 u
+(ault.)237870 v
+&13
+(5.10. Fr)6660 1 72000 192000 t
+(etur)109030 v
+(n)126650 v
+&11
+(statement)135540 v
+(A)97000 207600 w
+&12
+(Macr)109727 v
+(oss)130937 v
+&11
+(function may \(and probably will\) be called from an e)5507 1 149224 u
+( the traditional)5508(xpression in)5507 2 388037 u
+( the programmer)4552( such a situation,)4553( In)7883
+(manner of functions throughout the annals of computer science.)4553 4 72000 219600 t
+(may wish to ha)3330 1 72000 231600 t
+(v)135120 v
+(e a function return a v)3330 1 139970 u
+(alue. The)6480 1 231900 u
+&15
+(freturn)276420 v
+&11
+( form is)3330( Its)6660(statement enables this.)3330 3 321750 u
+&15
+(freturn)122000 255600 w
+11 @11 f
+([)167330 v
+([)168330 v
+10 @12 f
+(e)175660 v
+(xpr)179900 v
+(ession)192860 v
+11 @11 f
+(])221190 v
+(])220190 v
+10 s
+(where)72000 279600 w
+&12
+(e)100633 v
+(xpr)104873 v
+(ession)117833 v
+&11
+(is an)4204 1 147036 u
+(y permissible)4204 1 167200 u
+&12
+(Macr)226718 v
+(oss)247928 v
+&11
+(e)264912 v
+(xpression as described belo)4204 1 269202 u
+(w under)4204 1 383764 u
+&13
+(Expr)422162 v
+(essions)443652 v
+&11
+( no)4204(. If)7534 2 473102 u
+&12
+(e)72000 291600 w
+(xpr)76240 v
+(ession)89200 v
+&11
+(is gi)4101 1 118301 u
+(v)136602 v
+(en, the macro simply returns without ha)4101 1 141452 u
+(ving a v)4101 1 310008 u
+( An)6880(alue as its result.)4100 2 345180 u
+(y attempt to use)4100 1 435590 u
+(the \(non\001e)3402 1 72000 303600 t
+(xistent\) v)3402 1 113572 u
+( a call to function which doesn\030)3403(alue returned by)3402 2 151724 u
+(t return a v)3403 1 349836 u
+(alue will result in an error)3403 1 395895 u
+( assembler)3597(message from the)3598 2 72000 315600 t
+( calls will automatically return without a v)3597(. Function)6927 2 187773 u
+(alue upon reaching the)3597 1 409899 u
+(end of the block that forms the body of the function.)3330 1 72000 327600 t
+&13
+( Statements)3330(6. Miscellaneous)6660 2 72000 351600 t
+&11
+(V)97000 367200 w
+(arious useful statements don\030)3330 1 103110 u
+(t f)3330 1 222350 u
+(all into an)3330 1 231690 u
+(y of the abo)3330 1 273200 u
+(v)323030 v
+(e cate)3330 1 327880 u
+(gories.)351600 v
+&13
+(6.1. Include)6660 1 72000 391200 t
+&11
+(statement)129220 v
+(The)97000 406800 w
+&15
+(include)116258 v
+&11
+(statement allo)3708 1 161966 u
+(ws the te)3708 1 218754 u
+(xt in other)3708 1 256570 u
+( program being)3709(\003les to be included in the source)3708 2 303804 u
+(assembled, in the time\001honored f)3330 1 72000 418800 t
+( form is)3330(ashion. Its)6660 2 206590 u
+&15
+(include)122000 442800 w
+&12
+(\003lename)167330 v
+&11
+(where)72000 466800 w
+&12
+(\003lename)99994 v
+&11
+(is a string v)3564 1 137438 u
+(alue gi)3564 1 186770 u
+(ving the name of the)3564 1 214524 u
+(\003le to be included.)3565 1 304555 u
+&15
+(Include)389085 v
+&11
+(d)431085 v
+(\003les may them\001)3565 1 439650 u
+(selv)72000 478800 w
+(es contain)3330 1 87960 u
+&15
+(include)132390 v
+&11
+(statements to an)3330 1 177720 u
+(y number of le)3330 1 243670 u
+(v)304510 v
+(els of recursion \(within reason\).)3330 1 309360 u
+&13
+(6.2. Exter)6660 1 72000 502800 t
+(n)117390 v
+&11
+(statement)126280 v
+(The)97000 518400 w
+&15
+(extern)115898 v
+&11
+(statement allo)3348 1 155246 u
+(ws you to declare symbols to be visible to the link)3349 1 211674 u
+(er outside of the)3349 1 420614 u
+(\003le)491220 v
+(in which the)3330 1 72000 530400 t
+( use:)3330( Its)6660(y are found.)3330 3 122950 u
+&15
+(extern)122000 554400 w
+&12
+(symbol)161330 v
+11 @11 f
+([)192990 v
+([)193990 v
+10 @15 f
+(,)201320 v
+&12
+(symbol)210650 v
+11 @11 f
+(])242310 v
+(])241310 v
+(*)244310 v
+10 @13 f
+(6.3. Start)6660 1 72000 578400 t
+&11
+(statement)118650 v
+(The)97000 594000 w
+&15
+(start)115880 v
+&11
+(statement declares the starting address of a program.)3330 1 149210 u
+&15
+(start)122000 618000 w
+&12
+(e)155330 v
+(xpr)159570 v
+(ession)172530 v
+&11
+(where the)3423 1 72000 642000 t
+&12
+(e)115496 v
+(xpr)119736 v
+(ession)132696 v
+&11
+( should be no more than one)3423( There)6573(indicates the start address.)3423 3 161119 u
+&15
+(start)421042 v
+&11
+(statement in)3424 1 454466 u
+( no start address is speci\003ed, the object)3330( If)6660(a program.)3330 3 72000 654000 t
+(\003le will be produced without a start address entry)3330 1 294700 u
+(.)498440 v
+&13
+(6.4. Assert)6110 1 72000 678000 t
+&11
+(statement)123650 v
+(The)97000 693600 w
+&15
+(assert)116231 v
+&11
+(statement pro)3681 1 155912 u
+( testing assembly time conditions and generating pro\001)3682
+(vides a means of)3681 2 211103 u
+( syntax is:)3330( Its)6660
+(grammer speci\003ed error messages if those conditions are not satis\003\
+ed.)3330 3 72000 705600 t
+&15
+(assert \()6000 1 122000 729600 t
+&12
+(condition)170000 v
+&15
+(\))207780 v
+11 @11 f
+([)217110 v
+([)218110 v
+10 @12 f
+(te)225440 v
+(xtString)232460 v
+11 @11 f
+(])267460 v
+(])266460 v
+10 s
+(Lucas\003lm)72000 768000 w
+(Ltd.)115330 v
+(Proprietary)135050 v
+(Information)183370 v
+(\001)276340 v
+(15)283000 v
+(\001)296330 v
+(CONFIDENTIAL)430680 v
+_marks
+cleartomark
+showpage
+restore
+%%EndPage: 15 15
+%%Page: 16 16
+save
+mark
+16 pagesetup
+10 @11 f
+(Macross)72000 48000 w
+(July)262585 v
+(7,)282585 v
+(1986)293415 v
+(6502)450620 v
+(V)473450 v
+(ersion)479560 v
+(where)72000 84000 w
+&12
+(condition)100363 v
+&11
+(is an e)3933 1 142076 u
+(xpression such as those used in the)3933 1 170342 u
+&15
+(mif)322303 v
+&11
+( is e)3934( condition)3933(statement. This)7083 3 344236 u
+(v)470370 v
+(aluated)475120 v
+(and if)4137 1 72000 96000 t
+&15
+(FALSE)100824 v
+&11
+(then the message)4137 1 134961 u
+&12
+(te)210692 v
+(xtString)217712 v
+&11
+(, if gi)4137 1 249382 u
+(v)273796 v
+( message is)4136( The)7286(en, is written to the standard output.)4136 3 278646 u
+(written in the form of a con)3871 1 72000 108000 t
+(v)189806 v
+(entional)194656 v
+&12
+(Macr)230747 v
+(oss)251957 v
+&11
+(error message, gi)3871 1 268608 u
+(ving the)3871 1 339690 u
+( number on which)3872(\003le and line)3871 2 377432 u
+(the f)4126 1 72000 120000 t
+( If)7456(ailed assertion occured.)4126 2 91576 u
+&12
+(te)207210 v
+(xtString)214230 v
+&11
+(is omitted then a simple error message to the ef)4125 1 250025 u
+(fect that the)4125 1 453540 u
+(assert f)3330 1 72000 132000 t
+( F)6660(ailed will be output.)3330 2 101330 u
+(or e)3330 1 195890 u
+(xample,)211840 v
+&15
+(assert \(foo == 1\))6000 1 122000 156000 t
+( blew it.\020)6000(\020Hey! You)12000 2 230000 u
+&11
+(w)72000 180000 w
+( that the v)3813(ould check to see)3812 2 79120 u
+(alue of the symbol)3813 1 195615 u
+&15
+(foo)277527 v
+&11
+(is)299340 v
+&15
+(1)309823 v
+&11
+(, and if it isn\030)3813 1 315823 u
+(t w)3813 1 374505 u
+(ould issue an error message)3813 1 388218 u
+(containing the string)3330 1 72000 192000 t
+&15
+( blew it.\020)6000(\020Hey! You)9330 2 159210 u
+&11
+(.)276540 v
+&13
+(6.5. Or)6660 1 72000 216000 t
+(g)105780 v
+&11
+(statement)114110 v
+(The)97000 231600 w
+&15
+(org)117125 v
+&11
+(statement adjusts the current location counter and tells the assembler to\
+ start locating)4575 1 139700 u
+(instructions and data in absolute memory locations.)3330 1 72000 243600 t
+&15
+(org)122000 267600 w
+&12
+(e)143330 v
+(xpr)147570 v
+(ession)160530 v
+&11
+(The)72000 291600 w
+&12
+(e)91402 v
+(xpr)95642 v
+(ession)108602 v
+&11
+(indicates the ne)3852 1 137454 u
+( this is an absolute address,)3853( If)7183( location.)3853(w current)3852 4 202118 u
+&12
+(Macr)413424 v
+(oss)434634 v
+&11
+(starts assem\001)3853 1 451267 u
+( other hand, it is relati)4703( on the)4704( If,)8034
+(bling at the speci\003ed absolute memory location.)4704 4 72000 303600 t
+(v)424511 v
+(e to a relocatable)4703 1 429361 u
+(address or to the current location counter)3330 1 72000 315600 t
+(, the current location counter is simply adjusting accordingly)3330 1 240430 u
+(.)489450 v
+&13
+(6.6. Rel)6660 1 72000 339600 t
+&11
+(statement)111430 v
+(The)97000 355200 w
+&15
+(rel)117252 v
+&11
+(statement restores)4702 1 139954 u
+&12
+(Macr)218788 v
+(oss)239998 v
+&11
+(to assembling code in a relocatable f)4703 1 257480 u
+(ashion, if it w)4703 1 416678 u
+(as not)4703 1 478187 u
+( relocatable location resumes from where)3975( The)7125(already doing so.)3975 3 72000 367200 t
+(v)338580 v
+(er it w)3975 1 343430 u
+(as left the last time an absolute)3975 1 371830 u
+&15
+(org)72000 379200 w
+&11
+(stopped relocatable code assembly)3330 1 93330 u
+(.)233750 v
+&12
+(\(\(e)242910 v
+(xplain this better\)\))3330 1 253810 u
+&13
+(6.7. T)6360 1 72000 403200 t
+(ar)99110 v
+(get)108450 v
+&11
+(statement)124550 v
+(The)97000 418800 w
+&15
+(target)115880 v
+&11
+(statement)155210 v
+&15
+(target)122000 442800 w
+&12
+(e)161330 v
+(xpr)165570 v
+(ession)178530 v
+&11
+( it had been)3508(tells the assembler to assemble as if)3507 2 72000 466800 t
+&15
+(org)273714 v
+&11
+(ed to a particular address without actually perform\001)3508 1 291714 u
+(ing the)3818 1 72000 478800 t
+&15
+(org)104636 v
+&11
+(. The)6968 1 122636 u
+&12
+(e)151472 v
+(xpr)155712 v
+(ession)168672 v
+&11
+( must be an absolute)3817( This)6967( start assembling from.)3817
+(indicates the location to)3818 4 197490 u
+(address \(and the)3330 1 72000 490800 t
+&15
+(target)141970 v
+&11
+(statement may only be used when assembling in absolute mode\).)3330 1 181300 u
+(The result of the)3454 1 97000 506400 t
+&15
+(target)169136 v
+&11
+(statement is that assembly proceeds from the current location b)3454 1 208590 u
+(ut labels)3454 1 469436 u
+(will be de\003ned as if it w)4149 1 72000 518400 t
+(as proceeding from the location speci\003ed by)4149 1 178454 u
+&12
+(e)369687 v
+(xpr)373927 v
+(ession)386887 v
+&11
+(and references to the)4148 1 416036 u
+(current location counter will be of)3339 1 72000 530400 t
+(fset by the dif)3339 1 212305 u
+( actual current location counter v)3340(ference between the)3339 2 269842 u
+(alue)487340 v
+(and the v)4871 1 72000 542400 t
+(alue of)4871 1 113152 u
+&12
+(e)147884 v
+(xpr)152124 v
+(ession)165084 v
+&11
+( ef)4871(. This)8021 2 190084 u
+( ne)4870(fect will persist until the)4871 2 230776 u
+(xt)351640 v
+&15
+(org)364290 v
+&11
+(or)387160 v
+&15
+(target)400360 v
+&11
+(statement. F)8200 1 441230 u
+(or)495670 v
+(e)72000 554400 w
+(xample)76290 v
+&15
+(org)122000 578400 w
+(0x1000)172000 v
+(target)122000 590400 w
+(0x0800)172000 v
+(foo:)72000 602400 w
+(rts)122000 v
+(bar:)72000 614400 w
+(word)122000 v
+(0x1234)172000 v
+(word)122000 626400 w
+(here)172000 v
+(org)122000 638400 w
+(someplaceElse)172000 v
+&11
+(w)72000 662400 w
+(ould)79120 v
+(\003rst set the current location counter to)3490 1 100390 u
+&15
+(0x1000)262020 v
+&11
+( location)3490(. At)6270 2 298020 u
+&15
+(0x1000)355990 v
+&11
+(it w)3490 1 395480 u
+(ould assemble an)3490 1 411650 u
+&15
+(rts)486000 v
+&11
+(instruction while gi)4328 1 72000 674400 t
+(ving the label)4328 1 153186 u
+&15
+(foo)215610 v
+&11
+(the v)4327 1 237937 u
+(alue)259234 v
+&15
+(0x800)280221 v
+&11
+( at location)4327(. Then,)7477 2 310221 u
+&15
+(0x1001)395669 v
+&11
+(it w)4327 1 435996 u
+(ould deposit)4327 1 453003 u
+(the w)4196 1 72000 686400 t
+(ord v)4196 1 95536 u
+(alue)117812 v
+&15
+(0x1234)138668 v
+&11
+(while gi)4196 1 178864 u
+(ving the label)4196 1 212810 u
+&15
+(bar)274838 v
+&11
+(the v)4196 1 297034 u
+(alue)318200 v
+&15
+(0x801)339056 v
+&11
+( location)4197(. At)6976 2 369056 u
+&15
+(0x1003)429146 v
+&11
+(it w)4197 1 469343 u
+(ould)486220 v
+(deposit the w)5232 1 72000 698400 t
+(ord v)5232 1 130694 u
+(alue)154006 v
+&15
+(0x803)175898 v
+&11
+(. Finally)8562 1 205898 u
+(, the second)5232 1 244650 u
+&15
+(org)302836 v
+&11
+(w)326068 v
+(ould set the current location counter to)5232 1 333188 u
+&15
+(someplaceElse)72000 710400 w
+&11
+(and the ef)3330 1 153330 u
+(fects of the)3330 1 194170 u
+&15
+(target)243590 v
+&11
+(statement w)3330 1 282920 u
+(ould cease.)3330 1 331700 u
+(Lucas\003lm)72000 768000 w
+(Ltd.)115330 v
+(Proprietary)135050 v
+(Information)183370 v
+(\001)276340 v
+(16)283000 v
+(\001)296330 v
+(CONFIDENTIAL)430680 v
+_marks
+cleartomark
+showpage
+restore
+%%EndPage: 16 16
+%%Page: 17 17
+save
+mark
+17 pagesetup
+10 @11 f
+(Macross)72000 48000 w
+(July)262585 v
+(7,)282585 v
+(1986)293415 v
+(6502)450620 v
+(V)473450 v
+(ersion)479560 v
+13 @13 f
+(Expr)72000 84000 w
+(essions)99937 v
+10 @11 f
+(The e)4224 1 97000 99600 t
+(xpression syntax of)4224 1 121064 u
+&12
+(Macr)206506 v
+(oss)227716 v
+&11
+(w)244720 v
+(as chosen to be as close to that of)4225 1 251840 u
+&13
+(C)403175 v
+&11
+(as possible.)4225 1 414620 u
+&12
+(Macr)470010 v
+(oss)491220 v
+&11
+(recognizes the same set of operators as)4433 1 72000 111600 t
+&13
+(C)243541 v
+&11
+(with fe)4433 1 255194 u
+(w e)4433 1 284927 u
+(xceptions, and the operators ha)4433 1 300870 u
+(v)432542 v
+( pre\001)4432(e the same)4433 2 437392 u
+(cedence with respect to each other that e)3330 1 72000 123600 t
+(v)239450 v
+(eryone is used to.)3330 1 244300 u
+(Another important feature of e)4218 1 97000 139200 t
+(xpressions in)4218 1 225912 u
+&12
+(Macr)284348 v
+(oss)305558 v
+&11
+(is that e)4219 1 322557 u
+(xpressions by themselv)4219 1 356955 u
+(es on a line)4219 1 453573 u
+(are v)3525 1 72000 151200 t
+( e)3525( Assignment)6305(alid statements.)3525 3 92485 u
+( and pre\001increment and decrement opera\001)3524
+(xpressions, uses of the post\001)3525 2 217630 u
+(tors \(\027)4163 1 72000 163200 t
+(\027)97083 v
+&15
+(++)100413 v
+&11
+(\030)112413 v
+(\030 and)3423 1 115003 u
+(\027)140359 v
+(\027)142949 v
+&15
+(\001\001)146279 v
+&11
+(\030)158279 v
+(\030\), and calls to functions used lik)4163 1 160869 u
+( applications of)4164(e procedures are the most useful)4163 2 301567 u
+(this. F)6660 1 72000 175200 t
+(or e)3330 1 101020 u
+(xample)116970 v
+&15
+(foo = 5)6000 1 122000 199200 t
+(bar++)122000 211200 w
+(printf\(\020Hello world\017n\020\))6000 1 122000 223200 t
+&11
+(are all v)3330 1 72000 247200 t
+(alid statements.)3330 1 105620 u
+&13
+(1.)72000 271200 w
+&11
+(Primiti)86160 v
+(v)113700 v
+(e e)3330 1 118550 u
+(xpressions)130610 v
+(The most primiti)4199 1 97000 286800 t
+(v)167378 v
+(e e)4199 1 172228 u
+( refer)4200
+(xpressions are identi\003ers, numbers, characters, character strings, arr\
+ay)4199 2 185157 u
+(\001)500670 v
+(ences, and function calls.)3330 1 72000 298800 t
+(Identi\003ers ha)5238 1 97000 314400 t
+(v)152028 v
+(e already been described, in the section)5238 1 156878 u
+&13
+(General F)5239 1 335444 u
+(orm of)5239 1 380983 u
+&12
+(Macr)417561 v
+(oss)438771 v
+&13
+(Statements)456790 v
+&11
+(abo)72000 326400 w
+(v)86290 v
+( thing to add here is that the special identi\003er)4146( only)4147
+(e. The)7297 3 91140 u
+&15
+(here)342074 v
+&11
+(denotes the v)4146 1 370220 u
+(alue of the current)4146 1 426032 u
+(location counter)3330 1 72000 338400 t
+(.)136990 v
+(Numbers may be decimal, octal, he)4235 1 97000 354000 t
+( of the)4236( form)4235( The)7385(xadecimal, binary or quarters.)4235 4 246885 u
+(\003rst three of)4236 1 451648 u
+(these is as in)3655 1 72000 366000 t
+&13
+(C)129950 v
+&11
+(: decimal numbers are denoted by a sequence of decimal digits that does n\
+ot be)3654 1 137170 u
+(gin with)3654 1 469786 u
+(a)72000 378000 w
+(\027)81669 v
+(\027)84259 v
+&15
+(0)87589 v
+&11
+(\030)93589 v
+(\030; octal numbers by a sequence of octal digits that)5229 1 96179 u
+&12
+(does)324550 v
+&11
+(be)348110 v
+(gin with a)5230 1 357400 u
+(\027)408090 v
+(\027)410680 v
+&15
+(0)414010 v
+&11
+(\030)420010 v
+(\030; and he)5230 1 422600 u
+(xadecimal)462900 v
+( he)4151(numbers by a sequence of)4152 2 72000 390000 t
+(xadecimal digits \(the decimal digits plus the letters)4151 1 195909 u
+(\027)415217 v
+(\027)417807 v
+&15
+(a)421137 v
+&11
+(\030)427137 v
+(\030 through)3411 1 429727 u
+(\027)471729 v
+(\027)474319 v
+&15
+(f)477649 v
+&11
+(\030)483649 v
+(\030, in)4151 1 486239 u
+(either upper or lo)3918 1 72000 402000 t
+(wer case\), preceded by)3918 1 145154 u
+(\027)244946 v
+(\027)247536 v
+&15
+(0x)250866 v
+&11
+(\030)262866 v
+(\030 or)3178 1 265456 u
+(\027)284212 v
+(\027)286802 v
+&15
+(0X)290132 v
+&11
+(\030)302132 v
+( numbers and quarters are represented)3918(\030. Binary)7248 2 304722 u
+(analogously)72000 414000 w
+( a sequence of)4319( numbers are represented by)4320(. Binary)7650 3 119680 u
+(\027)343766 v
+(\027)346356 v
+&15
+(0)349686 v
+&11
+(\030)355686 v
+(\030)358276 v
+(s and)4319 1 361056 u
+(\027)388024 v
+(\027)390614 v
+&15
+(1)393944 v
+&11
+(\030)399944 v
+(\030)402534 v
+(s preceded by)4319 1 405314 u
+(\027)468251 v
+(\027)470841 v
+&15
+(0b)474171 v
+&11
+(\030)486171 v
+(\030 or)3579 1 488761 u
+(\027)72000 426000 w
+(\027)74590 v
+&15
+(0B)77920 v
+&11
+(\030)89920 v
+( tw)3593( are base\001four numbers \(for)3592(\030. Quarters)6922 3 92510 u
+(o\001bit entities lik)3593 1 266953 u
+( pix)3593(e Atari)3043 2 332379 u
+(els\) and are represented by the)3593 1 376635 u
+(sequences of the digits)3596 1 72000 438000 t
+&15
+(0)169704 v
+&11
+(through)179300 v
+&15
+(3)214005 v
+&11
+(preceded by)3595 1 223600 u
+(\027)276880 v
+(\027)279470 v
+&15
+(0q)282800 v
+&11
+(\030)294800 v
+(\030 or)2855 1 297390 u
+(\027)315500 v
+(\027)318090 v
+&15
+(0Q)321420 v
+&11
+(\030)333420 v
+( credit for this idea goes to Charlie)3595(\030 \(the)2855 2 336010 u
+(K)72000 450000 w
+(ellner\).)78970 v
+( as in)4177(Character constants are denoted the same)4176 2 97000 465600 t
+&13
+(C)299251 v
+&11
+(: by a single character enclosed in apostrophes)4177 1 306471 u
+(\(\027)72000 477600 w
+(\027)77920 v
+&15
+(\030)81250 v
+&11
+(\030)87250 v
+( same con)3493(\030\). The)6643 2 89840 u
+(v)162769 v
+(entions about characters escaped with a backslash \(\027)3493 1 167619 u
+(\027)382380 v
+&15
+(\017)385710 v
+&11
+(\030)391710 v
+(\030\) also apply)3493 1 394300 u
+( may)3492(. Strings)6822 2 445626 u
+(be of v)3728 1 72000 489600 t
+(arying lengths and are enclosed in quotation marks \(\027)3728 1 101976 u
+(\027)323800 v
+&15
+(\020)327130 v
+&11
+(\030)333130 v
+(\030\), as discussed abo)3728 1 335720 u
+(v)417014 v
+( the e)3729(e in)3728 2 421864 u
+(xplanation)461780 v
+(of instruction operands.)3330 1 72000 501600 t
+(An array reference in)3330 1 97000 517200 t
+&12
+(Macr)188050 v
+(oss)209260 v
+&11
+(ha)225370 v
+(v)234610 v
+(e the same syntactic form that the)3330 1 239460 u
+(y ha)3330 1 378710 u
+(v)396280 v
+(e in)3330 1 401130 u
+&13
+(C)420010 v
+&11
+(:)427230 v
+&12
+(arr)122000 529200 w
+(ay)134630 v
+&15
+([)147400 v
+&12
+(inde)159400 v
+(x)176420 v
+&15
+(])184190 v
+&11
+(where)72000 541200 w
+&12
+(arr)100024 v
+(ay)112654 v
+&11
+(is an array \(which is usually an identi\003er b)3594 1 125688 u
+(ut can be an)3594 1 304770 u
+(y e)3594 1 355942 u
+( results in an array)3595(xpression that)3594 2 368826 u
+(v)72000 553200 w
+( string)4393(alue or a character)4394 2 76750 u
+(\006 note that for con)4393 1 187568 u
+(v)273060 v
+(enience a string can be treated as simply an array of)4393 1 277910 u
+(characters\) and)5134 1 72000 565200 t
+&12
+(inde)140568 v
+(x)157588 v
+&11
+(is an inte)5134 1 167162 u
+(ger with a v)5134 1 208390 u
+( and the length of the array minus one,)5135(alue between 0)5134 2 263532 u
+(inclusi)72000 577200 w
+(v)98420 v
+(e \(all)3330 1 103270 u
+&12
+(Macr)127700 v
+(oss)148910 v
+&11
+(arrays are zero\001based\).)3330 1 165020 u
+(A function call, in)4460 1 97000 592800 t
+&12
+(Macr)180110 v
+(oss)201320 v
+&11
+( same as in)4461(, is syntactically the)4460 2 214100 u
+&13
+(C)353924 v
+&11
+( name of the function being)4461(: the)7791 2 361144 u
+(called follo)3704 1 72000 604800 t
+( a comma\001separated ar)3703(wed by)3704 2 118224 u
+( ar)3703( The)6853(gument list in parenthesis.)3703 3 242257 u
+(gument list, as in)3703 1 384562 u
+&13
+(C)460214 v
+&11
+(, may be)3703 1 467434 u
+(empty)72000 616800 w
+( ar)3733(. The)6883 2 96350 u
+(guments themselv)3734 1 132606 u
+(es may be arbitrary instruction operands \(described abo)3734 1 206190 u
+(v)436568 v
+(e in section 1\).)3734 1 441418 u
+(A number of b)5264 1 72000 628800 t
+( pro)5263(uilt\001in functions are)5264 2 138692 u
+(vided by)5263 1 241543 u
+&12
+(Macr)284289 v
+(oss)305499 v
+&11
+(to perform a v)5263 1 323542 u
+(ariety of useful operations.)5263 1 388511 u
+(These are discussed in)3330 1 72000 640800 t
+&13
+(A)167520 v
+(ppendix C)3330 1 174490 u
+&11
+(.)219500 v
+&13
+(2.)72000 664800 w
+&11
+(Operators)86160 v
+(Expressions may be constructed from the primiti)5508 1 97000 680400 t
+(v)309778 v
+( abo)5509(e elements described)5508 2 314628 u
+(v)423753 v
+(e and from other)5509 1 428603 u
+(e)72000 692400 w
+(xpressions using a v)3790 1 76290 u
+( operator set is patterned after)3790( The)6940
+(ariety of unary and binary operators.)3790 3 160740 u
+&13
+(C)465120 v
+&11
+(\030)472340 v
+(s. The)6940 1 475120 u
+(only)72000 704400 w
+&13
+(C)93110 v
+&11
+(operators not supported are:)3330 1 103660 u
+(Lucas\003lm)72000 768000 w
+(Ltd.)115330 v
+(Proprietary)135050 v
+(Information)183370 v
+(\001)276340 v
+(17)283000 v
+(\001)296330 v
+(CONFIDENTIAL)430680 v
+_marks
+cleartomark
+showpage
+restore
+%%EndPage: 17 17
+%%Page: 18 18
+save
+mark
+18 pagesetup
+10 @11 f
+(Macross)72000 48000 w
+(July)262585 v
+(7,)282585 v
+(1986)293415 v
+(6502)450620 v
+(V)473450 v
+(ersion)479560 v
+([1])97000 84000 w
+(\027)112900 v
+(\027)115490 v
+&15
+(?:)118820 v
+&11
+(\030)130820 v
+( if\))4240(\030 \(arithmetic)3500 2 133410 u
+( for reasons of syntactic confusion on both the part of)4241
+(\006 not supported)4240 2 202040 u
+(the parser attempting to parse it and the programmer attempting to use it\
+.)3330 1 97000 96000 t
+([2])97000 111600 w
+(\027)111990 v
+(\027)114580 v
+&15
+(,)117910 v
+&11
+(\030)123910 v
+(\030 \(comma\))2590 1 126500 u
+(\006 used in)3330 1 171850 u
+&12
+(Macr)217950 v
+(oss)239160 v
+&11
+(as an important separator and thus not a)3330 1 255270 u
+(v)420020 v
+(ailable.)424770 v
+([3] unary)3330 1 97000 127200 t
+(\027)138090 v
+(\027)140680 v
+&15
+(*)144010 v
+&11
+(\030)150010 v
+(\030 and)2590 1 152600 u
+(\027)176290 v
+(\027)178880 v
+&15
+(&)182210 v
+&11
+(\030)188210 v
+(\030,)190800 v
+&15
+(sizeof)199960 v
+&11
+(, casts and)3330 1 235960 u
+(\027)282330 v
+(\027)284920 v
+&15
+(\001>)288250 v
+&11
+(\030)300250 v
+(\030)302840 v
+(\006 not rele)3330 1 308760 u
+(v)352940 v
+(ant here.)3330 1 357690 u
+(All of the assignment operators \(\027)3330 1 72000 142800 t
+(\027)210110 v
+&15
+(+=)213440 v
+&11
+(\030)225440 v
+(\030,)228030 v
+(\027)237190 v
+(\027)239780 v
+&15
+(\001=)243110 v
+&11
+(\030)255110 v
+(\030, etc.\))3330 1 257700 u
+&12
+(ar)291010 v
+(e)299530 v
+&11
+(supported by)3330 1 307300 u
+&12
+(Macr)363400 v
+(oss)384610 v
+&11
+(.)397390 v
+&12
+(Macr)72000 158400 w
+(oss)93210 v
+&11
+(reinterprets the)3625 1 109615 u
+&15
+(.)174625 v
+&11
+(operator in that)3626 1 184250 u
+(\027)251228 v
+(\027)253818 v
+&12
+(e)257148 v
+(xpr)261388 v
+(ession)274348 v
+&15
+(.)305644 v
+&12
+(struct\003eldname)321270 v
+&11
+(\030)382930 v
+( interpreted as adding the)3626(\030 is)2886 2 385520 u
+(of)72000 170400 w
+(fset v)4351 1 80080 u
+(alue implied by)4351 1 103621 u
+&12
+(struct\003eldname)173894 v
+&11
+( a)4350(\(i.e., the distance in bytes into)4351 2 239905 u
+&15
+(struct)382290 v
+&11
+(to reach the named)4350 1 422640 u
+(\003eld\) to the address that is the v)3330 1 72000 182400 t
+(alue of)3330 1 205050 u
+&12
+(e)236700 v
+(xpr)240940 v
+(ession)253900 v
+&11
+(.)278900 v
+&12
+(Macr)72000 198000 w
+(oss)93210 v
+&11
+(adds to the operator set the follo)3330 1 109320 u
+(wing:)242920 v
+([1])97000 213600 w
+(\027)111990 v
+(\027)114580 v
+&15
+(?)117910 v
+&11
+(\030)123910 v
+(\030)126500 v
+(\006 as a unary operator)3330 1 132420 u
+(, tak)3330 1 224200 u
+(es the high order byte of the w)3330 1 242150 u
+(ord v)3330 1 369780 u
+(alue that is its ar)3330 1 391190 u
+(gument.)459880 v
+([2])97000 229200 w
+(\027)111990 v
+(\027)114580 v
+&15
+(/)117910 v
+&11
+(\030)123910 v
+(\030)126500 v
+(\006 as a unary operator)3330 1 132420 u
+(, tak)3330 1 224200 u
+(es the lo)3330 1 242150 u
+(w order byte of the w)3330 1 276890 u
+(ord v)3330 1 366750 u
+(alue that is its ar)3330 1 388160 u
+(gument.)456850 v
+([3])97000 244800 w
+(\027)112208 v
+(\027)114798 v
+&15
+(^^)118128 v
+&11
+(\030)130128 v
+(\030)132718 v
+(\006 a binary operator)3548 1 138856 u
+( logical e)3549(, denotes)3548 2 222410 u
+(xclusi)297616 v
+(v)321256 v
+( is simply an orthogonal e)3549(e\001OR. This)6699 2 326106 u
+(xten\001)483450 v
+(sion for the sak)3330 1 97000 256800 t
+(e of completeness.)3330 1 160770 u
+( be used at an)3679(Of course, parenthesis can)3678 2 72000 272400 t
+(y point to o)3679 1 240050 u
+(v)289277 v
+(erride the normal precedence of the v)3679 1 294127 u
+(arious opera\001)3679 1 450341 u
+( full list of all the operators that)3330(tors. A)6110 2 72000 284400 t
+&12
+(Macr)238350 v
+(oss)259560 v
+&11
+(understands is gi)3330 1 275670 u
+(v)344300 v
+(en in)3330 1 349150 u
+&13
+(A)373030 v
+(ppendix D)3330 1 380000 u
+&11
+(.)425010 v
+&13
+(3.)72000 308400 w
+&11
+(Expression e)3330 1 86160 u
+(v)138120 v
+(aluation)142870 v
+(In order to mak)4178 1 97000 324000 t
+( most ef)4179(e the)4178 2 163864 u
+(fecti)220030 v
+(v)237550 v
+(e use of e)4179 1 242400 u
+(xpressions in the)4179 1 285327 u
+&12
+(Macr)360084 v
+(oss)381294 v
+&11
+(en)398253 v
+(vironment, it is helpful)4179 1 407293 u
+(\(and at times necessary\) to understand ho)3330 1 72000 336000 t
+(w and when)3330 1 242250 u
+&12
+(Macr)295560 v
+(oss)316770 v
+&11
+(e)332880 v
+(v)337070 v
+(aluates them.)3330 1 341820 u
+(When)97000 351600 w
+&12
+(Macr)124758 v
+(oss)145968 v
+&11
+(e)162626 v
+(v)166816 v
+(aluates an e)3878 1 171566 u
+(xpression, it may ha)3879 1 220822 u
+(v)305309 v
+( are)3879( These)7029(e one of three sorts of results.)3879 3 310159 u
+&12
+(suc\001)487340 v
+(cess)72000 363600 w
+&11
+(,)88660 v
+&12
+(unde\003ned)95331 v
+&11
+(, and)4171 1 134211 u
+&12
+(failur)159493 v
+(e)181353 v
+&11
+(. A)6951 1 185793 u
+&12
+(success)206635 v
+&11
+(result means that)4171 1 240796 u
+&12
+(Macr)316079 v
+(oss)337289 v
+&11
+(encountered no problems e)4170 1 354240 u
+(v)467030 v
+(aluating)471780 v
+(the e)3748 1 72000 375600 t
+(xpression, and whate)3748 1 92258 u
+(v)178654 v
+(er v)3749 1 183504 u
+(alue it e)3749 1 199773 u
+(v)233681 v
+( A)6529(aluated to is just used as needed.)3749 2 238431 u
+&12
+(failur)393683 v
+(e)415543 v
+&11
+(result indicates that)3749 1 423732 u
+(there w)3492 1 72000 387600 t
+( this is a result of some user error)3492( Usually)6822
+(as a problem of some sort.)3492 3 102602 u
+( an)3492(. In)6822 2 391730 u
+(y case, an appropri\001)3492 1 422164 u
+( and the statement in which the e)4103
+(ate diagnostic message will be issued by the assembler)4102 2 72000 399600 t
+(xpression w)4103 1 446117 u
+(as)495670 v
+(found will not be assembled.)3330 1 72000 411600 t
+(An)97000 427200 w
+&12
+(unde\003ned)113546 v
+&11
+( complications, if an)4327(result is where the)4326 2 156752 u
+(y)322261 v
+( e)4327( An)7107(, arise.)4327 3 326611 u
+(xpression will e)4327 1 382762 u
+(v)449496 v
+(aluate to an)4327 1 454246 u
+&12
+(unde\003ned)72000 439200 w
+&11
+(result if one or more of the terms of the e)3579 1 114459 u
+( these are)3578( Usually)6908(xpression are unde\003ned symbols.)3579 3 289509 u
+(labels which simply ha)3373 1 72000 451200 t
+(v)166359 v
+(en\030)171209 v
+( \(i.e., the)3374(t been encountered yet)3373 2 183799 u
+(y are forw)3374 1 313536 u
+( certain conte)3374( In)6704(ard references\).)3374 3 356274 u
+(xts,)489830 v
+( le)3580(such as the operand of a machine instruction, this is a)3581 2 72000 463200 t
+(gitimate thing to do, and in certain others, such)3580 1 307040 u
+(as the condition of a)3784 1 72000 475200 t
+&15
+(mif)162020 v
+&11
+(statement, this is not allo)3784 1 183804 u
+( the latter case, an)3785( In)7115(wed at all.)3785 3 288420 u
+&12
+(unde\003ned)428660 v
+&11
+(result is)3785 1 471325 u
+(just lik)3630 1 72000 487200 t
+(e a)3630 1 100540 u
+&12
+(failur)116680 v
+(e)138540 v
+&11
+( the former case, the assembler is forced to get f)3630(result. In)6960 2 146610 u
+(anc)389710 v
+(y in order to mak)3630 1 403440 u
+(e it all)3630 1 476740 u
+(w)72000 499200 w
+(ork right.)3330 1 79120 u
+(What)97000 514800 w
+&12
+(Macr)122377 v
+(oss)143587 v
+&11
+(does is squirrel a)3717 1 160084 u
+(w)231075 v
+(ay a cop)3717 1 238195 u
+(y of the e)3717 1 273849 u
+( as to where in)3718(xpression along with a pointer)3717 2 314840 u
+(the object code the v)4278 1 72000 526800 t
+(alue of the e)4277 1 161622 u
+( the end of assembly)4277( At)7057(xpression is supposed to go.)4277 3 215953 u
+(, the unde\003ned)4277 1 441286 u
+(label will presumably no)3832 1 72000 538800 t
+(w be de\003ned, and)3832 1 174906 u
+&12
+(Macr)253274 v
+(oss)274484 v
+&11
+(e)291096 v
+(v)295286 v
+(aluates the sa)3832 1 300036 u
+(v)355820 v
+(ed e)3832 1 360670 u
+(xpression and pok)3832 1 378232 u
+(es the result)3832 1 453566 u
+( at this point, the unde\003ned label is still unde\003ned, an error mess\
+age to)3421
+( \(If,)6751(into the appropriate location.)3422 3 72000 550800 t
+(that ef)3473 1 72000 562800 t
+( Clearly)6804( issued\).)3474(fect is)3473 3 97993 u
+(, if an e)3474 1 193024 u
+(xpression has side ef)3474 1 225786 u
+(fects \(such as changing the v)3474 1 311498 u
+(alue of some glo\001)3474 1 431368 u
+(bal v)3425 1 72000 574800 t
+(ariable\), this can result in some confusing beha)3425 1 92395 u
+(vior)286970 v
+(. The)6575 1 302530 u
+&12
+(Macr)330580 v
+(oss)351790 v
+&11
+(assembler is smart enough to not)3425 1 367995 u
+(let you do an)4917 1 72000 586800 t
+( has o)4918(ything that)4917 2 131041 u
+(v)204534 v
+(ert side ef)4918 1 209384 u
+(fects in an e)4918 1 253400 u
+(xpression that is being sa)4918 1 308544 u
+(v)418566 v
+(ed a)4918 1 423416 u
+(w)442064 v
+(ay for future)4918 1 449184 u
+(e)72000 598800 w
+(v)76190 v
+( things which are disallo)4115(aluation. The)7265 2 80940 u
+( uses of the post\001 and)4114(wed in such a case are assignments and)4115 2 242455 u
+(pre\001increment and decrement operators \(\027)4387 1 72000 610800 t
+(\027)244858 v
+&15
+(++)248188 v
+&11
+(\030)260188 v
+(\030 and)3647 1 262778 u
+(\027)288582 v
+(\027)291172 v
+&15
+(\001\001)294502 v
+&11
+(\030)306502 v
+( ho)4388(\030\). Functions,)7718 2 309092 u
+(we)382058 v
+(v)393468 v
+(er)398318 v
+(, may ha)4388 1 405688 u
+(v)443424 v
+(e side ef)4388 1 448274 u
+(fects)485120 v
+(and)72000 622800 w
+&12
+(Macr)89932 v
+(oss)111142 v
+&11
+(does not try to pre)3492 1 127414 u
+(v)203902 v
+( e)3491(ent you from using function calls in)3492 2 208752 u
+(xpressions that get sa)3491 1 365255 u
+(v)453298 v
+(ed for later)3491 1 458148 u
+(e)72000 634800 w
+(v)76190 v
+(aluation. It can, and will, detect some, b)4029 1 80940 u
+( ef)4030(ut not all, side)4029 2 251143 u
+(fects during the later e)4030 1 323950 u
+(v)419240 v
+(aluation and gi)4030 1 423990 u
+(v)486240 v
+(e a)4030 1 491090 u
+( le)3574( is because it is perfectly)3575( This)6725
+(suitable error message.)3575 4 72000 646800 t
+(gitimate to use a function call to a function that)3574 1 305184 u
+(doesn\030)72000 658800 w
+(t ha)3330 1 98480 u
+(v)113830 v
+(e side ef)3330 1 118680 u
+(fects in an e)3330 1 153410 u
+(xpression containing forw)3330 1 203790 u
+(ard references.)3330 1 309780 u
+(If you are no)3570 1 97000 674400 t
+( need remember is:)3571(w totally confused, the only thing you)3570 2 151330 u
+&13
+(Don\030t e)3571 1 392844 u
+(v)425145 v
+(er use a call to a)3571 1 430045 u
+(function that has side effects in an expr)3330 1 72000 686400 t
+(ession containing a f)3330 1 244570 u
+(orward r)3330 1 333210 u
+(efer)372460 v
+(ence.)388930 v
+&11
+(Lucas\003lm)72000 768000 w
+(Ltd.)115330 v
+(Proprietary)135050 v
+(Information)183370 v
+(\001)276340 v
+(18)283000 v
+(\001)296330 v
+(CONFIDENTIAL)430680 v
+_marks
+cleartomark
+showpage
+restore
+%%EndPage: 18 18
+%%Page: 19 19
+save
+mark
+19 pagesetup
+10 @11 f
+(Macross)72000 48000 w
+(July)262585 v
+(7,)282585 v
+(1986)293415 v
+(6502)450620 v
+(V)473450 v
+(ersion)479560 v
+15 @13 f
+(A)157507 84000 w
+(ppendix A)4170 1 167962 u
+(\006 Macr)4995 1 239647 u
+(oss 6502 Grammar)4995 1 294352 u
+10 @12 f
+(pr)72000 111600 w
+(o)80440 v
+(gr)85340 v
+(am)94080 v
+&11
+(:)106300 v
+11 s
+([)122000 123600 w
+([)123000 v
+10 @12 f
+(statement)130330 v
+&11
+(Ne)171990 v
+(wline)183400 v
+11 s
+(])208950 v
+(])207950 v
+(*)210950 v
+10 s
+(End\003le)219280 v
+&12
+(statement)72000 147600 w
+&11
+(:)110330 v
+11 s
+([)72000 159600 w
+([)73000 v
+10 @12 f
+(label)80330 v
+11 @11 f
+(])103660 v
+(])102660 v
+(*)105660 v
+10 @12 f
+(opcode)122000 v
+11 @11 f
+([)154210 v
+([)155210 v
+10 @12 f
+(oper)162540 v
+(and)180720 v
+11 @11 f
+([)199050 v
+([)200050 v
+10 @15 f
+(,)207380 v
+&12
+(oper)216710 v
+(and)234890 v
+11 @11 f
+(])253220 v
+(])252220 v
+(* ])2830 1 255220 u
+(])262550 v
+([)72000 171600 w
+([)73000 v
+10 @12 f
+(label)80330 v
+11 @11 f
+(])103660 v
+(])102660 v
+(*)105660 v
+10 @15 f
+(if \()3330 1 122000 u
+&12
+(condition)146660 v
+&15
+(\))187770 v
+&12
+(bloc)197100 v
+(k)214120 v
+11 @11 f
+([)147000 183600 w
+([)148000 v
+10 @15 f
+(elseif \()3330 1 155330 u
+&12
+(condition)203990 v
+&15
+(\))245100 v
+&12
+(bloc)254430 v
+(k)271450 v
+11 @11 f
+(])279220 v
+(])278220 v
+(*)281220 v
+([)147000 195600 w
+([)148000 v
+10 @15 f
+(else)155330 v
+&12
+(bloc)182660 v
+(k)199680 v
+11 @11 f
+(])207450 v
+(])206450 v
+([)72000 207600 w
+([)73000 v
+10 @12 f
+(label)80330 v
+11 @11 f
+(])103660 v
+(])102660 v
+(*)105660 v
+10 @15 f
+(while \()3330 1 122000 u
+&12
+(condition)164660 v
+&15
+(\))205770 v
+&12
+(bloc)215100 v
+(k)232120 v
+11 @11 f
+([)72000 219600 w
+([)73000 v
+10 @12 f
+(label)80330 v
+11 @11 f
+(])103660 v
+(])102660 v
+(*)105660 v
+10 @15 f
+(do)122000 v
+&12
+(bloc)137330 v
+(k)154350 v
+&15
+(while \()3330 1 162120 u
+&12
+(condition)204780 v
+&15
+(\))245890 v
+11 @11 f
+([)72000 231600 w
+([)73000 v
+10 @12 f
+(label)80330 v
+11 @11 f
+(])103660 v
+(])102660 v
+(*)105660 v
+10 @15 f
+(do)122000 v
+&12
+(bloc)137330 v
+(k)154350 v
+&15
+(until \()3330 1 162120 u
+&12
+(condition)204780 v
+&15
+(\))245890 v
+&12
+(dataStatement)122000 243600 w
+&15
+(define)122000 255600 w
+&12
+(identi\003er)161330 v
+11 @11 f
+([)200770 v
+([)201770 v
+10 @15 f
+(=)209100 v
+&12
+(e)218430 v
+(xpr)222670 v
+(ession)235630 v
+11 @11 f
+(])263960 v
+(])262960 v
+10 @15 f
+(variable)122000 267600 w
+&12
+(identi\003er)173330 v
+11 @11 f
+([)212770 v
+([)213770 v
+10 @15 f
+(=)221100 v
+&12
+(e)230430 v
+(xpr)234670 v
+(ession)247630 v
+11 @11 f
+(])275960 v
+(])274960 v
+10 @15 f
+(macro)122000 279600 w
+&12
+(identi\003er)155330 v
+11 @11 f
+([)194770 v
+([)195770 v
+10 @12 f
+(identi\003er)203100 v
+11 @11 f
+([)242540 v
+([)243540 v
+10 @15 f
+(,)250870 v
+&12
+(identi\003er)260200 v
+11 @11 f
+(])299640 v
+(])298640 v
+(* ])2830 1 301640 u
+(])308970 v
+10 @12 f
+(bloc)317300 v
+(k)334320 v
+&15
+(function)122000 291600 w
+&12
+(identi\003er)173330 v
+&15
+(\()212770 v
+11 @11 f
+([)222100 v
+([)223100 v
+10 @12 f
+(identi\003er)230430 v
+11 @11 f
+([)269870 v
+([)270870 v
+10 @15 f
+(,)278200 v
+&12
+(identi\003er)287530 v
+11 @11 f
+(])326970 v
+(])325970 v
+(* ])2830 1 328970 u
+(])336300 v
+10 @15 f
+(\))347960 v
+&12
+(bloc)357290 v
+(k)374310 v
+&15
+(undefine)122000 303600 w
+&12
+(identi\003er)173330 v
+11 @11 f
+([)212770 v
+([)213770 v
+10 @15 f
+(,)221100 v
+&12
+(identi\003er)230430 v
+11 @11 f
+(])269870 v
+(])268870 v
+(*)271870 v
+([)72000 315600 w
+([)73000 v
+10 @12 f
+(label)80330 v
+11 @11 f
+(])103660 v
+(])102660 v
+(*)105660 v
+10 @12 f
+(bloc)122000 v
+(k)139020 v
+&15
+(mdefine)122000 327600 w
+&12
+(identi\003er)167330 v
+11 @11 f
+([)206770 v
+([)207770 v
+10 @15 f
+(=)215100 v
+&12
+(e)224430 v
+(xpr)228670 v
+(ession)241630 v
+11 @11 f
+(])269960 v
+(])268960 v
+10 @15 f
+(mif \()3330 1 122000 339600 t
+&12
+(e)152660 v
+(xpr)156900 v
+(ession)169860 v
+&15
+(\))198190 v
+&12
+(bloc)207520 v
+(k)224540 v
+11 @11 f
+([)147000 351600 w
+([)148000 v
+10 @15 f
+(melseif \()3330 1 155330 u
+&12
+(e)209990 v
+(xpr)214230 v
+(ession)227190 v
+&15
+(\))255520 v
+&12
+(bloc)264850 v
+(k)281870 v
+11 @11 f
+(])289640 v
+(])288640 v
+(*)291640 v
+([)147000 363600 w
+([)148000 v
+10 @15 f
+(melse)155330 v
+&12
+(bloc)188660 v
+(k)205680 v
+11 @11 f
+(])213450 v
+(])212450 v
+10 @15 f
+(mwhile \()3330 1 122000 375600 t
+&12
+(e)170660 v
+(xpr)174900 v
+(ession)187860 v
+&15
+(\))216190 v
+&12
+(bloc)225520 v
+(k)242540 v
+&15
+(mdo)122000 387600 w
+&12
+(bloc)143330 v
+(k)160350 v
+&15
+(while \()3330 1 168120 u
+&12
+(e)210780 v
+(xpr)215020 v
+(ession)227980 v
+&15
+(\))256310 v
+(mdo)122000 399600 w
+&12
+(bloc)143330 v
+(k)160350 v
+&15
+(until \()3330 1 168120 u
+&12
+(e)210780 v
+(xpr)215020 v
+(ession)227980 v
+&15
+(\))256310 v
+(freturn)122000 411600 w
+11 @11 f
+([)167330 v
+([)168330 v
+10 @12 f
+(e)175660 v
+(xpr)179900 v
+(ession)192860 v
+11 @11 f
+(])221190 v
+(])220190 v
+10 @15 f
+(mfor \()3330 1 122000 423600 t
+&12
+(e)158660 v
+(xpr)162900 v
+(ession)175860 v
+&15
+(,)204190 v
+&12
+(e)213520 v
+(xpr)217760 v
+(ession)230720 v
+&15
+(,)259050 v
+&12
+(e)268380 v
+(xpr)272620 v
+(ession)285580 v
+&15
+(\))313910 v
+&12
+(bloc)323240 v
+(k)340260 v
+&15
+(mswitch \()6000 1 122000 435600 t
+&12
+(selectionExpr)182000 v
+(ession)236620 v
+&15
+(\) {)6000 1 264950 u
+11 @11 f
+([)147000 447600 w
+([)148000 v
+10 @15 f
+(mcase \()6000 1 155330 u
+&12
+(e)203330 v
+(xpr)207570 v
+(ession)220530 v
+11 @11 f
+([)248860 v
+([)249860 v
+10 @15 f
+(,)257190 v
+&12
+(e)266520 v
+(xpr)270760 v
+(ession)283720 v
+11 @11 f
+(])312050 v
+(])311050 v
+(*)314050 v
+10 @15 f
+(\))322380 v
+&12
+(bloc)331710 v
+(k)348730 v
+11 @11 f
+(])356500 v
+(])355500 v
+(*)358500 v
+([)147000 459600 w
+([)148000 v
+10 @15 f
+(mdefault)155330 v
+&12
+(bloc)206660 v
+(k)223680 v
+11 @11 f
+(])231450 v
+(])230450 v
+10 @15 f
+(})122000 471600 w
+(constrain \()3330 1 122000 483600 t
+&12
+(e)188660 v
+(xpr)192900 v
+(ession)205860 v
+&15
+(\))234190 v
+&12
+(bloc)243520 v
+(k)260540 v
+&15
+(assert \()3330 1 122000 495600 t
+&12
+(e)170660 v
+(xpr)174900 v
+(ession)187860 v
+&15
+(\))216190 v
+11 @11 f
+([)225520 v
+([)226520 v
+10 @12 f
+(e)233850 v
+(xpr)238090 v
+(ession)251050 v
+11 @11 f
+(])279380 v
+(])278380 v
+10 @15 f
+(include)122000 507600 w
+&12
+(te)167330 v
+(xtString)174350 v
+&15
+(extern)122000 519600 w
+&12
+(identi\003er)161330 v
+11 @11 f
+([)200770 v
+([)201770 v
+10 @15 f
+(,)209100 v
+&12
+(identi\003er)218430 v
+11 @11 f
+(])257870 v
+(])256870 v
+(*)259870 v
+10 @15 f
+(start)122000 531600 w
+&12
+(e)155330 v
+(xpr)159570 v
+(ession)172530 v
+&15
+(org)122000 543600 w
+&12
+(e)143330 v
+(xpr)147570 v
+(ession)160530 v
+&15
+(target)122000 555600 w
+&12
+(e)161330 v
+(xpr)165570 v
+(ession)178530 v
+(e)122000 567600 w
+(xpr)126240 v
+(ession)139200 v
+(dataStatement)72000 591600 w
+&11
+(:)129220 v
+11 s
+([)72000 603600 w
+([)73000 v
+10 @12 f
+(label)80330 v
+11 @11 f
+(])103660 v
+(])102660 v
+(*)105660 v
+10 @15 f
+(block)122000 v
+&12
+(e)155330 v
+(xpr)159570 v
+(ession)172530 v
+11 @11 f
+([)200860 v
+([)201860 v
+10 @15 f
+(,)209190 v
+&12
+(e)218520 v
+(xpr)222760 v
+(ession)235720 v
+11 @11 f
+(])264050 v
+(])263050 v
+(*)266050 v
+([)72000 615600 w
+([)73000 v
+10 @12 f
+(label)80330 v
+11 @11 f
+(])103660 v
+(])102660 v
+(*)105660 v
+10 @15 f
+(align)122000 v
+&12
+(e)155330 v
+(xpr)159570 v
+(ession)172530 v
+11 @11 f
+([)72000 627600 w
+([)73000 v
+10 @12 f
+(label)80330 v
+11 @11 f
+(])103660 v
+(])102660 v
+(*)105660 v
+10 @15 f
+(word)122000 v
+&12
+(e)149330 v
+(xpr)153570 v
+(ession)166530 v
+11 @11 f
+([)194860 v
+([)195860 v
+10 @15 f
+(,)203190 v
+&12
+(e)212520 v
+(xpr)216760 v
+(ession)229720 v
+11 @11 f
+(])258050 v
+(])257050 v
+(*)260050 v
+([)72000 639600 w
+([)73000 v
+10 @12 f
+(label)80330 v
+11 @11 f
+(])103660 v
+(])102660 v
+(*)105660 v
+10 @15 f
+(long)122000 v
+&12
+(e)149330 v
+(xpr)153570 v
+(ession)166530 v
+11 @11 f
+([)194860 v
+([)195860 v
+10 @15 f
+(,)203190 v
+&12
+(e)212520 v
+(xpr)216760 v
+(ession)229720 v
+11 @11 f
+(])258050 v
+(])257050 v
+(*)260050 v
+([)72000 651600 w
+([)73000 v
+10 @12 f
+(label)80330 v
+11 @11 f
+(])103660 v
+(])102660 v
+(*)105660 v
+10 @15 f
+(dbyte)122000 v
+&12
+(e)155330 v
+(xpr)159570 v
+(ession)172530 v
+11 @11 f
+([)200860 v
+([)201860 v
+10 @15 f
+(,)209190 v
+&12
+(e)218520 v
+(xpr)222760 v
+(ession)235720 v
+11 @11 f
+(])264050 v
+(])263050 v
+(*)266050 v
+([)72000 663600 w
+([)73000 v
+10 @12 f
+(label)80330 v
+11 @11 f
+(])103660 v
+(])102660 v
+(*)105660 v
+10 @15 f
+(byte)122000 v
+&12
+(e)149330 v
+(xpr)153570 v
+(ession)166530 v
+11 @11 f
+([)194860 v
+([)195860 v
+10 @15 f
+(,)203190 v
+&12
+(e)212520 v
+(xpr)216760 v
+(ession)229720 v
+11 @11 f
+(])258050 v
+(])257050 v
+(*)260050 v
+([)72000 675600 w
+([)73000 v
+10 @12 f
+(label)80330 v
+11 @11 f
+(])103660 v
+(])102660 v
+(*)105660 v
+10 @15 f
+(string)122000 v
+&12
+(e)161330 v
+(xpr)165570 v
+(ession)178530 v
+11 @11 f
+([)206860 v
+([)207860 v
+10 @15 f
+(,)215190 v
+&12
+(e)224520 v
+(xpr)228760 v
+(ession)241720 v
+11 @11 f
+(])270050 v
+(])269050 v
+(*)272050 v
+([)72000 687600 w
+([)73000 v
+10 @12 f
+(label)80330 v
+11 @11 f
+(])103660 v
+(])102660 v
+(*)105660 v
+10 @15 f
+(struct {)3330 1 122000 u
+11 @11 f
+([)170660 v
+([)171660 v
+10 @12 f
+(dataStatement)178990 v
+11 @11 f
+(])239540 v
+(])238540 v
+(*)241540 v
+10 @15 f
+(})249870 v
+&12
+(identi\003er)259200 v
+11 @11 f
+([)72000 699600 w
+([)73000 v
+10 @12 f
+(label)80330 v
+11 @11 f
+(])103660 v
+(])102660 v
+(*)105660 v
+10 @15 f
+(struct)122000 v
+&12
+(identi\003er)161330 v
+(label)72000 723600 w
+&11
+(:)92000 v
+&12
+(identi\003er)122000 v
+&15
+(:)161440 v
+&11
+(Lucas\003lm)72000 768000 w
+(Ltd.)115330 v
+(Proprietary)135050 v
+(Information)183370 v
+(\001)276340 v
+(19)283000 v
+(\001)296330 v
+(CONFIDENTIAL)430680 v
+_marks
+cleartomark
+showpage
+restore
+%%EndPage: 19 19
+%%Page: 20 20
+save
+mark
+20 pagesetup
+10 @11 f
+(Macross)72000 48000 w
+(July)262585 v
+(7,)282585 v
+(1986)293415 v
+(6502)450620 v
+(V)473450 v
+(ersion)479560 v
+&12
+(oper)72000 84000 w
+(and)90180 v
+&11
+(:)105180 v
+&12
+(e)122000 96000 w
+(xpr)126240 v
+(ession)139200 v
+&15
+(@)122000 108000 w
+&12
+(e)131330 v
+(xpr)135570 v
+(ession)148530 v
+&15
+(#)122000 120000 w
+&12
+(e)131330 v
+(xpr)135570 v
+(ession)148530 v
+&15
+(a)122000 132000 w
+(x)122000 144000 w
+(y)122000 156000 w
+(x)122000 168000 w
+9 s
+([)131330 v
+10 @12 f
+(e)140060 v
+(xpr)144300 v
+(ession)157260 v
+9 @15 f
+(])185590 v
+10 s
+(x .)3330 1 122000 180000 t
+&12
+(identi\003er)140660 v
+11 @11 f
+([)180100 v
+([)181100 v
+10 @15 f
+(.)188430 v
+&12
+(identi\003er)197760 v
+11 @11 f
+(])237200 v
+(])236200 v
+(*)239200 v
+10 @15 f
+(y)122000 192000 w
+9 s
+([)131330 v
+10 @12 f
+(e)140060 v
+(xpr)144300 v
+(ession)157260 v
+9 @15 f
+(])185590 v
+10 s
+(y .)3330 1 122000 204000 t
+&12
+(identi\003er)140660 v
+11 @11 f
+([)180100 v
+([)181100 v
+10 @15 f
+(.)188430 v
+&12
+(identi\003er)197760 v
+11 @11 f
+(])237200 v
+(])236200 v
+(*)239200 v
+10 @15 f
+(@ x)6660 1 122000 216000 t
+9 s
+([)143990 v
+10 @12 f
+(e)152720 v
+(xpr)156960 v
+(ession)169920 v
+9 @15 f
+(])198250 v
+10 s
+( .)3330(@ x)6660 2 122000 228000 t
+&12
+(identi\003er)153320 v
+11 @11 f
+([)192760 v
+([)193760 v
+10 @15 f
+(.)201090 v
+&12
+(identi\003er)210420 v
+11 @11 f
+(])249860 v
+(])248860 v
+(*)251860 v
+10 @15 f
+(y)122000 240000 w
+9 s
+([)131330 v
+10 s
+(@)140060 v
+&12
+(e)149390 v
+(xpr)153630 v
+(ession)166590 v
+9 @15 f
+(])194920 v
+10 @12 f
+(te)122000 252000 w
+(xtString)129020 v
+(bloc)72000 276000 w
+(k)89020 v
+&11
+(:)93460 v
+&15
+({)122000 v
+11 @11 f
+([)131330 v
+([)132330 v
+10 @12 f
+(statement)139660 v
+&11
+(Ne)181320 v
+(wline)192730 v
+11 s
+(])218280 v
+(])217280 v
+(*)220280 v
+10 @15 f
+(})228610 v
+&12
+(te)72000 300000 w
+(xtString)79020 v
+&11
+(:)110690 v
+&15
+(\020)122000 312000 w
+&12
+(any string you lik)3330 1 134000 u
+(e)206110 v
+&15
+(\020)213880 v
+&12
+(condition)72000 336000 w
+&11
+(:)109780 v
+&12
+(conditionCode)122000 348000 w
+&15
+(!)122000 360000 w
+&12
+(conditionCode)131330 v
+(e)72000 384000 w
+(xpr)76240 v
+(ession)89200 v
+&11
+(:)114200 v
+&12
+(identi\003er)122000 396000 w
+(identi\003er)122000 408000 w
+&15
+(\()161440 v
+11 @11 f
+([)170770 v
+([)171770 v
+10 @12 f
+(oper)179100 v
+(and)197280 v
+11 @11 f
+([)215610 v
+([)216610 v
+10 @15 f
+(,)223940 v
+&12
+(oper)233270 v
+(and)251450 v
+11 @11 f
+(])269780 v
+(])268780 v
+(* ])2830 1 271780 u
+(])279110 v
+10 @15 f
+(\))287440 v
+&12
+(number)122000 420000 w
+&15
+(here)122000 432000 w
+&12
+(te)122000 444000 w
+(xtString)129020 v
+&15
+(\()122000 456000 w
+&12
+(e)131330 v
+(xpr)135570 v
+(ession)148530 v
+&15
+(\))176860 v
+(\001)122000 468000 w
+&12
+(e)131330 v
+(xpr)135570 v
+(ession)148530 v
+&15
+(!)122000 480000 w
+&12
+(e)131330 v
+(xpr)135570 v
+(ession)148530 v
+&15
+(~)122000 492000 w
+&12
+(e)131330 v
+(xpr)135570 v
+(ession)148530 v
+&15
+(?)122000 504000 w
+&12
+(e)131330 v
+(xpr)135570 v
+(ession)148530 v
+&15
+(/)122000 516000 w
+&12
+(e)131330 v
+(xpr)135570 v
+(ession)148530 v
+(e)122000 528000 w
+(xpr)126240 v
+(ession)139200 v
+&15
+(*)167530 v
+&12
+(e)176860 v
+(xpr)181100 v
+(ession)194060 v
+(e)122000 540000 w
+(xpr)126240 v
+(ession)139200 v
+&15
+(/)167530 v
+&12
+(e)176860 v
+(xpr)181100 v
+(ession)194060 v
+(e)122000 552000 w
+(xpr)126240 v
+(ession)139200 v
+&15
+(%)167530 v
+&12
+(e)176860 v
+(xpr)181100 v
+(ession)194060 v
+(e)122000 564000 w
+(xpr)126240 v
+(ession)139200 v
+&15
+(\001)167530 v
+&12
+(e)176860 v
+(xpr)181100 v
+(ession)194060 v
+(e)122000 576000 w
+(xpr)126240 v
+(ession)139200 v
+&15
+(+)167530 v
+&12
+(e)176860 v
+(xpr)181100 v
+(ession)194060 v
+(e)122000 588000 w
+(xpr)126240 v
+(ession)139200 v
+&15
+(<<)167530 v
+&12
+(e)182860 v
+(xpr)187100 v
+(ession)200060 v
+(e)122000 600000 w
+(xpr)126240 v
+(ession)139200 v
+&15
+(>>)167530 v
+&12
+(e)182860 v
+(xpr)187100 v
+(ession)200060 v
+(e)122000 612000 w
+(xpr)126240 v
+(ession)139200 v
+&15
+(<)167530 v
+&12
+(e)176860 v
+(xpr)181100 v
+(ession)194060 v
+(e)122000 624000 w
+(xpr)126240 v
+(ession)139200 v
+&15
+(>)167530 v
+&12
+(e)176860 v
+(xpr)181100 v
+(ession)194060 v
+(e)122000 636000 w
+(xpr)126240 v
+(ession)139200 v
+&15
+(<=)167530 v
+&12
+(e)182860 v
+(xpr)187100 v
+(ession)200060 v
+(e)122000 648000 w
+(xpr)126240 v
+(ession)139200 v
+&15
+(>=)167530 v
+&12
+(e)182860 v
+(xpr)187100 v
+(ession)200060 v
+(e)122000 660000 w
+(xpr)126240 v
+(ession)139200 v
+&15
+(==)167530 v
+&12
+(e)182860 v
+(xpr)187100 v
+(ession)200060 v
+(e)122000 672000 w
+(xpr)126240 v
+(ession)139200 v
+&15
+(!=)167530 v
+&12
+(e)182860 v
+(xpr)187100 v
+(ession)200060 v
+(e)122000 684000 w
+(xpr)126240 v
+(ession)139200 v
+&15
+(&)167530 v
+&12
+(e)176860 v
+(xpr)181100 v
+(ession)194060 v
+(e)122000 696000 w
+(xpr)126240 v
+(ession)139200 v
+&15
+(\023)167530 v
+&12
+(e)176860 v
+(xpr)181100 v
+(ession)194060 v
+(e)122000 708000 w
+(xpr)126240 v
+(ession)139200 v
+&15
+(^)167530 v
+&12
+(e)176860 v
+(xpr)181100 v
+(ession)194060 v
+(e)122000 720000 w
+(xpr)126240 v
+(ession)139200 v
+&15
+(&&)167530 v
+&12
+(e)182860 v
+(xpr)187100 v
+(ession)200060 v
+&11
+(Lucas\003lm)72000 768000 w
+(Ltd.)115330 v
+(Proprietary)135050 v
+(Information)183370 v
+(\001)276340 v
+(20)283000 v
+(\001)296330 v
+(CONFIDENTIAL)430680 v
+_marks
+cleartomark
+showpage
+restore
+%%EndPage: 20 20
+%%Page: 21 21
+save
+mark
+21 pagesetup
+10 @11 f
+(Macross)72000 48000 w
+(July)262585 v
+(7,)282585 v
+(1986)293415 v
+(6502)450620 v
+(V)473450 v
+(ersion)479560 v
+&12
+(e)122000 84000 w
+(xpr)126240 v
+(ession)139200 v
+&15
+(\023\023)167530 v
+&12
+(e)182860 v
+(xpr)187100 v
+(ession)200060 v
+(e)122000 96000 w
+(xpr)126240 v
+(ession)139200 v
+&15
+(^^)167530 v
+&12
+(e)182860 v
+(xpr)187100 v
+(ession)200060 v
+(e)122000 108000 w
+(xpr)126240 v
+(ession)139200 v
+&15
+(.)167530 v
+&12
+(identi\003er)176860 v
+(identi\003er)122000 120000 w
+&15
+(=)161440 v
+&12
+(e)170770 v
+(xpr)175010 v
+(ession)187970 v
+(identi\003er)122000 132000 w
+&15
+(+=)161440 v
+&12
+(e)176770 v
+(xpr)181010 v
+(ession)193970 v
+(identi\003er)122000 144000 w
+&15
+(\001=)161440 v
+&12
+(e)176770 v
+(xpr)181010 v
+(ession)193970 v
+(identi\003er)122000 156000 w
+&15
+(*=)161440 v
+&12
+(e)176770 v
+(xpr)181010 v
+(ession)193970 v
+(identi\003er)122000 168000 w
+&15
+(/=)161440 v
+&12
+(e)176770 v
+(xpr)181010 v
+(ession)193970 v
+(identi\003er)122000 180000 w
+&15
+(%=)161440 v
+&12
+(e)176770 v
+(xpr)181010 v
+(ession)193970 v
+(identi\003er)122000 192000 w
+&15
+(&=)161440 v
+&12
+(e)176770 v
+(xpr)181010 v
+(ession)193970 v
+(identi\003er)122000 204000 w
+&15
+(\023=)161440 v
+&12
+(e)176770 v
+(xpr)181010 v
+(ession)193970 v
+(identi\003er)122000 216000 w
+&15
+(^=)161440 v
+&12
+(e)176770 v
+(xpr)181010 v
+(ession)193970 v
+(identi\003er)122000 228000 w
+&15
+(<<=)161440 v
+&12
+(e)182770 v
+(xpr)187010 v
+(ession)199970 v
+(identi\003er)122000 240000 w
+&15
+(>>=)161440 v
+&12
+(e)182770 v
+(xpr)187010 v
+(ession)199970 v
+(identi\003er)122000 252000 w
+&15
+(++)161440 v
+&12
+(identi\003er)122000 264000 w
+&15
+(\001\001)161440 v
+(++)122000 276000 w
+&12
+(identi\003er)137330 v
+&15
+(\001\001)122000 288000 w
+&12
+(identi\003er)137330 v
+(identi\003er)72000 312000 w
+&11
+(:)108110 v
+11 s
+([)122000 324000 w
+([)123000 v
+10 @15 f
+(a)127000 v
+&11
+(\001)133000 v
+&15
+(zA)136330 v
+&11
+(\001)148330 v
+&15
+(Z_)151660 v
+11 @11 f
+(])163660 v
+(])162660 v
+([)167660 v
+([)168660 v
+10 @15 f
+(a)172660 v
+&11
+(\001)178660 v
+&15
+(zA)181990 v
+&11
+(\001)193990 v
+&15
+(Z_0)197320 v
+&11
+(\001)215320 v
+&15
+(9)218650 v
+11 @11 f
+(])224650 v
+(])223650 v
+(*)226650 v
+10 @12 f
+(number)72000 348000 w
+&11
+(:)102550 v
+&12
+(decimalNumber)122000 360000 w
+(octalNumber)122000 372000 w
+(binaryNumber)122000 384000 w
+(he)122000 396000 w
+(xadecimalNumber)131240 v
+(quarter)122000 408000 w
+(decimalNumber)72000 432000 w
+&11
+(:)135880 v
+11 s
+([)122000 444000 w
+([)123000 v
+10 @15 f
+(1)127000 v
+&11
+(\001)133000 v
+&15
+(9)136330 v
+11 @11 f
+(])142330 v
+(])141330 v
+([)146330 v
+([)147330 v
+10 @15 f
+(0)151330 v
+&11
+(\001)157330 v
+&15
+(9)160660 v
+11 @11 f
+(])166660 v
+(])165660 v
+(*)168660 v
+10 @12 f
+(octalNumber)72000 468000 w
+&11
+(:)124220 v
+&15
+(0)122000 480000 w
+11 @11 f
+([)128000 v
+([)129000 v
+10 @15 f
+(0)133000 v
+&11
+(\001)139000 v
+&15
+(7)142330 v
+11 @11 f
+(])148330 v
+(])147330 v
+(*)150330 v
+10 @12 f
+(binaryNumber)72000 504000 w
+&11
+(:)130330 v
+&15
+(0b)122000 516000 w
+11 @11 f
+([)134000 v
+([)135000 v
+10 @15 f
+(01)139000 v
+11 @11 f
+(])151000 v
+(])150000 v
+([)155000 v
+([)156000 v
+10 @15 f
+(01)160000 v
+11 @11 f
+(])172000 v
+(])171000 v
+(*)174000 v
+10 @12 f
+(he)72000 540000 w
+(xadecimalNumber)81240 v
+&11
+(:)154560 v
+&15
+(0x)122000 552000 w
+11 @11 f
+([)134000 v
+([)135000 v
+10 @15 f
+(0)139000 v
+&11
+(\001)145000 v
+&15
+(9a)148330 v
+&11
+(\001)160330 v
+&15
+(f)163660 v
+11 @11 f
+(])169660 v
+(])168660 v
+([)173660 v
+([)174660 v
+10 @15 f
+(0)178660 v
+&11
+(\001)184660 v
+&15
+(9a)187990 v
+&11
+(\001)199990 v
+&15
+(f)203320 v
+11 @11 f
+(])209320 v
+(])208320 v
+(*)211320 v
+10 @12 f
+(quarter)72000 576000 w
+&11
+(:)102000 v
+&15
+(0q)122000 588000 w
+11 @11 f
+([)134000 v
+([)135000 v
+10 @15 f
+(0)139000 v
+&11
+(\001)145000 v
+&15
+(3)148330 v
+11 @11 f
+(])154330 v
+(])153330 v
+([)158330 v
+([)159330 v
+10 @15 f
+(0)163330 v
+&11
+(\001)169330 v
+&15
+(3)172660 v
+11 @11 f
+(])178660 v
+(])177660 v
+(*)180660 v
+10 s
+(Lucas\003lm)72000 768000 w
+(Ltd.)115330 v
+(Proprietary)135050 v
+(Information)183370 v
+(\001)276340 v
+(21)283000 v
+(\001)296330 v
+(CONFIDENTIAL)430680 v
+_marks
+cleartomark
+showpage
+restore
+%%EndPage: 21 21
+%%Page: 22 22
+save
+mark
+22 pagesetup
+10 @11 f
+(Macross)72000 48000 w
+(July)262585 v
+(7,)282585 v
+(1986)293415 v
+(6502)450620 v
+(V)473450 v
+(ersion)479560 v
+15 @13 f
+(A)182760 84000 w
+(ppendix B)4995 1 193215 u
+(\006 Condition Codes)4995 1 264900 u
+13 s
+(\(6502 v)4329 1 248350 120000 t
+(ersion\))289378 v
+10 @11 f
+(The)97000 135600 w
+&12
+(Macr)116403 v
+(oss)137613 v
+&15
+(if)154246 v
+&11
+(,)166246 v
+&15
+(while)172599 v
+&11
+(,)202599 v
+&15
+(do\001while)208952 v
+&11
+(and)260805 v
+&15
+(do\001until)279098 v
+&11
+(statements mak)3853 1 330951 u
+(e use of symbols denoting)3854 1 394144 u
+(the hardw)4037 1 72000 147600 t
+( the tar)4036(are condition codes of)4037 2 113147 u
+(get processor which may be used as the conditions upon which)4036 1 237010 u
+( 6502 v)3699( the)3698( In)7028(conditional branches are base.)3698 4 72000 159600 t
+(ersion of)3699 1 259638 u
+&12
+(Macr)299806 v
+(oss)321016 v
+&11
+(, these are the recognized condition code)3699 1 333796 u
+(symbols:)72000 171600 w
+12 @13 f
+(Conditions which generate simple branches)3996 1 72000 195600 t
+10 @15 f
+(carry)97000 207600 w
+&11
+(tests carry bit)3330 1 172000 u
+&15
+(equal)97000 231600 w
+&11
+(tests zero bit)3330 1 172000 u
+&15
+(zero)97000 243600 w
+(neq)97000 267600 w
+&11
+(\(equi)172000 v
+(v)192300 v
+(alent to, e.g.,)3330 1 197050 u
+&15
+(!equal)253700 v
+&11
+(\))289700 v
+&15
+(minus)97000 291600 w
+&11
+(tests ne)3330 1 172000 u
+(g)202400 v
+(ati)207350 v
+(v)217100 v
+(e bit)3330 1 221950 u
+&15
+(negative)97000 303600 w
+(plus)97000 327600 w
+&11
+(\(equi)172000 v
+(v)192300 v
+(alent to, e.g.,)3330 1 197050 u
+&15
+(!minus)253700 v
+&11
+(\))289700 v
+&15
+(positive)97000 339600 w
+(overflow)97000 363600 w
+&11
+(tests o)3330 1 172000 u
+(v)197960 v
+(er\004o)202810 v
+(w bit)3330 1 220890 u
+12 @13 f
+(Conditions which generate complex branches)3996 1 72000 399600 t
+10 s
+(1. lt)6660 1 72000 423600 t
+&11
+(\006 less than \(v)3330 1 95600 u
+(alid after)3330 1 155890 u
+&15
+(cmp)195870 v
+&11
+(or)217200 v
+&15
+(sbc)228860 v
+&11
+(\))246860 v
+(F)97000 439200 w
+(or e)3330 1 102410 u
+(xample,)118360 v
+&15
+(if \(lt\) {)6000 1 147000 463200 t
+&12
+(...stuf)172000 475200 w
+(f)193770 v
+(...)196400 v
+&15
+(})147000 487200 w
+&11
+(generates)97000 511200 w
+&15
+(bcs)147000 535200 w
+(temp)172000 v
+&12
+(...stuf)147000 547200 w
+(f)168770 v
+(...)171400 v
+&15
+(temp:)97000 559200 w
+&13
+(2. leq)6660 1 72000 583200 t
+&11
+(\006 less than or equal to \(v)3330 1 102270 u
+(alid after)3330 1 210320 u
+&15
+(cmp)250300 v
+&11
+(or)271630 v
+&15
+(sbc)283290 v
+&11
+(\))301290 v
+(F)97000 598800 w
+(or e)3330 1 102410 u
+(xample,)118360 v
+&15
+(if \(leq\) {)6000 1 147000 622800 t
+&12
+(...stuf)172000 634800 w
+(f)193770 v
+(...)196400 v
+&15
+(})147000 646800 w
+&11
+(generates)97000 670800 w
+&15
+(beq)147000 694800 w
+(temp1)172000 v
+(bcs)147000 706800 w
+(temp2)172000 v
+(temp1:)97000 718800 w
+&12
+(...stuf)147000 730800 w
+(f)168770 v
+(...)171400 v
+&11
+(Lucas\003lm)72000 768000 w
+(Ltd.)115330 v
+(Proprietary)135050 v
+(Information)183370 v
+(\001)276340 v
+(22)283000 v
+(\001)296330 v
+(CONFIDENTIAL)430680 v
+_marks
+cleartomark
+showpage
+restore
+%%EndPage: 22 22
+%%Page: 23 23
+save
+mark
+23 pagesetup
+10 @11 f
+(Macross)72000 48000 w
+(July)262585 v
+(7,)282585 v
+(1986)293415 v
+(6502)450620 v
+(V)473450 v
+(ersion)479560 v
+&15
+(temp2:)97000 84000 w
+&13
+(3. geq)6660 1 72000 108000 t
+&11
+(\006 greater than or equal to \(v)3330 1 104490 u
+(alid after)3330 1 225300 u
+&15
+(cmp)265280 v
+&11
+(or)286610 v
+&15
+(sbc)298270 v
+&11
+(\))316270 v
+(F)97000 123600 w
+(or e)3330 1 102410 u
+(xample,)118360 v
+&15
+(if \(geq\) {)6000 1 147000 147600 t
+&12
+(...stuf)172000 159600 w
+(f)193770 v
+(...)196400 v
+&15
+(})147000 171600 w
+&11
+(generates)97000 195600 w
+&15
+(bcc)147000 219600 w
+(temp)172000 v
+&12
+(...stuf)147000 231600 w
+(f)168770 v
+(...)171400 v
+&15
+(temp:)97000 243600 w
+&13
+(4. gt)6660 1 72000 267600 t
+&11
+(\006 greater than \(v)3330 1 97820 u
+(alid after)3330 1 170870 u
+&15
+(cmp)210850 v
+&11
+(or)232180 v
+&15
+(sbc)243840 v
+&11
+(\))261840 v
+(F)97000 283200 w
+(or e)3330 1 102410 u
+(xample,)118360 v
+&15
+(if \(gt\) {)6000 1 147000 307200 t
+&12
+(...stuf)172000 319200 w
+(f)193770 v
+(...)196400 v
+&15
+(})147000 331200 w
+&11
+(generates)97000 355200 w
+&15
+(bcc)147000 379200 w
+(temp)172000 v
+(beq)147000 391200 w
+(temp)172000 v
+&12
+(...stuf)147000 403200 w
+(f)168770 v
+(...)171400 v
+&15
+(temp:)97000 415200 w
+&13
+(5. slt)6660 1 72000 439200 t
+&11
+(\006 signed less than \(v)3330 1 99490 u
+(alid after)3330 1 189220 u
+&15
+(sbc)229200 v
+&11
+(only\))250530 v
+(F)97000 454800 w
+(or e)3330 1 102410 u
+(xample,)118360 v
+&15
+(if \(slt\) {)6000 1 147000 478800 t
+&12
+(...stuf)172000 490800 w
+(f)193770 v
+(...)196400 v
+&15
+(})147000 502800 w
+&11
+(generates)97000 526800 w
+&15
+(bvs)147000 550800 w
+(temp1)172000 v
+(bpl)147000 562800 w
+(temp3)172000 v
+(bmi)147000 574800 w
+(temp2)172000 v
+(temp1:)97000 586800 w
+(bmi)147000 v
+(temp3)172000 v
+(temp2:)97000 598800 w
+&12
+(...stuf)147000 610800 w
+(f)168770 v
+(...)171400 v
+&15
+(temp3:)97000 622800 w
+&13
+(6. sleq)6660 1 72000 646800 t
+&11
+(\006 signed less than or equal to \(v)3330 1 106160 u
+(alid after)3330 1 243650 u
+&15
+(sbc)283630 v
+&11
+(only\))304960 v
+(F)97000 662400 w
+(or e)3330 1 102410 u
+(xample,)118360 v
+&15
+(if \(sleq\) {)6000 1 147000 686400 t
+&12
+(...stuf)172000 698400 w
+(f)193770 v
+(...)196400 v
+&15
+(})147000 710400 w
+&11
+(Lucas\003lm)72000 768000 w
+(Ltd.)115330 v
+(Proprietary)135050 v
+(Information)183370 v
+(\001)276340 v
+(23)283000 v
+(\001)296330 v
+(CONFIDENTIAL)430680 v
+_marks
+cleartomark
+showpage
+restore
+%%EndPage: 23 23
+%%Page: 24 24
+save
+mark
+24 pagesetup
+10 @11 f
+(Macross)72000 48000 w
+(July)262585 v
+(7,)282585 v
+(1986)293415 v
+(6502)450620 v
+(V)473450 v
+(ersion)479560 v
+(generates)97000 84000 w
+&15
+(beq)147000 108000 w
+(temp2)172000 v
+(bvs)147000 120000 w
+(temp1)172000 v
+(bpl)147000 132000 w
+(temp3)172000 v
+(bmi)147000 144000 w
+(temp2)172000 v
+(temp1:)97000 156000 w
+(bmi)147000 v
+(temp3)172000 v
+(temp2:)97000 168000 w
+&12
+(...stuf)147000 180000 w
+(f)168770 v
+(...)171400 v
+&15
+(temp3:)97000 192000 w
+&13
+(7. sgt)6660 1 72000 216000 t
+&11
+(\006 signed greater than \(v)3330 1 101710 u
+(alid after)3330 1 204200 u
+&15
+(sbc)244180 v
+&11
+(only\))265510 v
+(F)97000 231600 w
+(or e)3330 1 102410 u
+(xample,)118360 v
+&15
+(if \(sgt\) {)6000 1 147000 255600 t
+&12
+(...stuf)172000 267600 w
+(f)193770 v
+(...)196400 v
+&15
+(})147000 279600 w
+&11
+(generates)97000 303600 w
+&15
+(beq)147000 327600 w
+(temp3)172000 v
+(bvs)147000 339600 w
+(temp1)172000 v
+(bmi)147000 351600 w
+(temp3)172000 v
+(bpl)147000 363600 w
+(temp2)172000 v
+(temp1:)97000 375600 w
+(bpl)147000 v
+(temp3)172000 v
+(temp2:)97000 387600 w
+&12
+(...stuf)147000 399600 w
+(f)168770 v
+(...)171400 v
+&15
+(temp3:)97000 411600 w
+&13
+(8. sgeq)6660 1 72000 435600 t
+&11
+(\006 signed greater than or equal to \(v)3330 1 108380 u
+(alid after)3330 1 258630 u
+&15
+(sbc)298610 v
+&11
+(only\))319940 v
+(F)97000 451200 w
+(or e)3330 1 102410 u
+(xample,)118360 v
+&15
+(if \(sgeq\) {)6000 1 147000 475200 t
+&12
+(...stuf)172000 487200 w
+(f)193770 v
+(...)196400 v
+&15
+(})147000 499200 w
+&11
+(generates)97000 523200 w
+&15
+(bvs)147000 547200 w
+(temp1)172000 v
+(bmi)147000 559200 w
+(temp3)172000 v
+(bpl)147000 571200 w
+(temp2)172000 v
+(temp1:)97000 583200 w
+(bpl)147000 v
+(temp3)172000 v
+(temp2:)97000 595200 w
+&12
+(...stuf)147000 607200 w
+(f)168770 v
+(...)171400 v
+&15
+(temp3:)97000 619200 w
+&11
+(Lucas\003lm)72000 768000 w
+(Ltd.)115330 v
+(Proprietary)135050 v
+(Information)183370 v
+(\001)276340 v
+(24)283000 v
+(\001)296330 v
+(CONFIDENTIAL)430680 v
+_marks
+cleartomark
+showpage
+restore
+%%EndPage: 24 24
+%%Page: 25 25
+save
+mark
+25 pagesetup
+10 @11 f
+(Macross)72000 48000 w
+(July)262585 v
+(7,)282585 v
+(1986)293415 v
+(6502)450620 v
+(V)473450 v
+(ersion)479560 v
+15 @13 f
+(A)176925 84000 w
+(ppendix C)4995 1 187380 u
+(\006 Built\001In Functions)4995 1 259890 u
+10 @11 f
+(Certain prede\003ned b)3713 1 97000 111600 t
+(uilt\001in functions are supported by)3714 1 180876 u
+&12
+(Macr)322766 v
+(oss)343976 v
+&11
+(for reasons of con)3714 1 360470 u
+(v)435632 v
+(enience or syn\001)3714 1 440482 u
+(tactic or semantic irre)3330 1 72000 123600 t
+(gularity)161260 v
+(. The)6480 1 191720 u
+(y are:)3330 1 216100 u
+&15
+(addressMode\()72000 139200 w
+&12
+(oper)144000 v
+(and)162180 v
+&15
+(\))177180 v
+&11
+(Returns a number whose v)3679 1 97000 154800 t
+(alue indicates which addressing mode)3679 1 208116 u
+&12
+(oper)368151 v
+(and)386331 v
+&11
+(represents)405010 v
+&12
+(\(\(de\003ne these)3680 1 449230 u
+(values\)\))97000 166800 w
+&11
+(.)129210 v
+&15
+(apply\()72000 182400 w
+&12
+(macname)108000 v
+11 @11 f
+([)149650 v
+([)150650 v
+10 @15 f
+(,)157980 v
+&12
+(ar)169980 v
+(g)178500 v
+11 @11 f
+(])186830 v
+(])185830 v
+(*)188830 v
+10 @15 f
+(\))197160 v
+&11
+( whose name is speci\003ed by the)4613(Assembles the macro)4612 2 97000 198000 t
+&15
+(string)330705 v
+&12
+(macname)371318 v
+&11
+(with the macro ar)4613 1 414251 u
+(gu\001)490670 v
+(ments \(if an)3330 1 97000 210000 t
+(y\) gi)3330 1 146280 u
+(v)165470 v
+(en by the)3330 1 170320 u
+&12
+(ar)211970 v
+(g)220490 v
+&11
+(s.)225490 v
+&15
+(arrayLength\()72000 225600 w
+&12
+(arr)144000 v
+(ay)156630 v
+&15
+(\))166070 v
+&11
+(Returns the number of elements in the array)3330 1 97000 241200 t
+&12
+(arr)281940 v
+(ay)294570 v
+&11
+(.)304010 v
+&15
+(atascii\()72000 256800 w
+&12
+(string)120000 v
+&15
+(\))143340 v
+&11
+(Returns a string which is)5648 1 97000 272400 t
+&12
+(string)214680 v
+&11
+( A)5099( to)5649( ASCII)5099(with each character mapped through an)5649 4 243668 u
+(T)472710 v
+(ASCII)477890 v
+(\(Atari\030)97000 284400 w
+( de)3330(s ASCII)2780 2 123660 u
+(viant character code\) con)3330 1 168960 u
+(v)271840 v
+(ersion table.)3330 1 276690 u
+&15
+(atasciiColor\()72000 300000 w
+&12
+(string)150000 v
+&15
+(,)173340 v
+&12
+(color)185340 v
+&15
+(\))206450 v
+&11
+(Returns a string which is)5450 1 97000 315600 t
+&12
+(string)213690 v
+&11
+( A)4900( to)5450( ASCII)4900(with each character mapped through the)5450 4 242480 u
+(T)472710 v
+(ASCII)477890 v
+(con)97000 327600 w
+(v)111040 v
+(ersion table, and then the tw)3645 1 115890 u
+(o\001bit v)3645 1 234275 u
+(alue speci\003ed by)3645 1 261560 u
+&12
+(color)334705 v
+&11
+(OR\030ed into the high order tw)3645 1 359460 u
+(o bits)3645 1 480905 u
+(of each character)3330 1 97000 339600 t
+(.)166400 v
+&15
+(isAbsoluteValue\()72000 355200 w
+&12
+(oper)168000 v
+(and)186180 v
+&15
+(\))201180 v
+&11
+(Returns)97000 370800 w
+&15
+(TRUE)134145 v
+&11
+(if and only if)6035 1 164180 u
+&12
+(oper)232760 v
+(and)250940 v
+&11
+( absolute \(i.e., non\001relocatable\) v)6036(is an)6035 2 271975 u
+(alue, otherwise)6036 1 439924 u
+&15
+(FALSE)97000 382800 w
+&11
+(.)127000 v
+&15
+(isARegister\()72000 398400 w
+&12
+(oper)144000 v
+(and)162180 v
+&15
+(\))177180 v
+&11
+(Returns)97000 414000 w
+&15
+(TRUE)131440 v
+&11
+(if and only if)3330 1 158770 u
+&12
+(oper)216530 v
+(and)234710 v
+&11
+(is)253040 v
+&15
+(a)263040 v
+&11
+(\(i.e., the accumulator\), otherwise)3330 1 272370 u
+&15
+(FALSE)410100 v
+&11
+(.)440100 v
+&15
+(isBlock\()72000 429600 w
+&12
+(oper)120000 v
+(and)138180 v
+&15
+(\))153180 v
+&11
+(Returns)97000 445200 w
+&15
+(TRUE)131440 v
+&11
+(if and only if)3330 1 158770 u
+&12
+(oper)216530 v
+(and)234710 v
+&11
+(is a block, otherwise)3330 1 253040 u
+&15
+(FALSE)341070 v
+&11
+(.)371070 v
+&15
+(isBuiltInFunction\()72000 460800 w
+&12
+(symbol)180000 v
+&15
+(\))208330 v
+&11
+(Returns)97000 476400 w
+&15
+(TRUE)131440 v
+&11
+(if and only if)3330 1 158770 u
+&12
+(symbol)216530 v
+&11
+(is a b)3330 1 248190 u
+(uilt\001in function, otherwise)3330 1 270760 u
+&15
+(FALSE)379910 v
+&11
+(.)409910 v
+&15
+(isConditionCode\()72000 492000 w
+&12
+(oper)168000 v
+(and)186180 v
+&15
+(\))201180 v
+&11
+(Returns)97000 507600 w
+&15
+(TRUE)131440 v
+&11
+(if and only if)3330 1 158770 u
+&12
+(oper)216530 v
+(and)234710 v
+&11
+(is a condition code, otherwise)3330 1 253040 u
+&15
+(FALSE)378840 v
+&11
+(.)408840 v
+&15
+(isDefined\()72000 523200 w
+&12
+(symbol)132000 v
+&15
+(\))160330 v
+&11
+(Returns)97000 538800 w
+&15
+(TRUE)131440 v
+&11
+(if and only if)3330 1 158770 u
+&12
+(symbol)216530 v
+&11
+(has been de\003ned, otherwise)3330 1 248190 u
+&15
+(FALSE)364540 v
+&11
+(.)394540 v
+&15
+(isDirectMode\()72000 554400 w
+&12
+(oper)150000 v
+(and)168180 v
+&15
+(\))183180 v
+&11
+(Returns)97000 570000 w
+&15
+(TRUE)131440 v
+&11
+(if and only if the address mode of)3330 1 158770 u
+&12
+(oper)302610 v
+(and)320790 v
+&11
+(is)339120 v
+&12
+(dir)349120 v
+(ect)360420 v
+&11
+(, otherwise)3330 1 372080 u
+&15
+(FALSE)420120 v
+&11
+(.)450120 v
+&15
+(isExternal\()72000 585600 w
+&12
+(symbol)138000 v
+&15
+(\))166330 v
+&11
+(Returns)97000 601200 w
+&15
+(TRUE)131557 v
+&11
+( if)3448(if and only)3447 2 159004 u
+&12
+(symbol)217234 v
+&11
+(is e)3448 1 249012 u
+(xternal \(i.e., visible outside the)3448 1 263420 u
+(\003le in which it is de\003ned\),)3448 1 394260 u
+(otherwise)97000 613200 w
+&15
+(FALSE)141880 v
+&11
+(.)171880 v
+&15
+(isField\()72000 628800 w
+&12
+(symbol)120000 v
+&15
+(\))148330 v
+&11
+(Returns)97000 644400 w
+&15
+(TRUE)131440 v
+&11
+(if and only if)3330 1 158770 u
+&12
+(symbol)216530 v
+&11
+(is a)3330 1 248190 u
+(\003eld of a struct, otherwise)3330 1 265960 u
+&15
+(FALSE)376760 v
+&11
+(.)406760 v
+&15
+(isFunction\()72000 660000 w
+&12
+(symbol)138000 v
+&15
+(\))166330 v
+&11
+(Returns)97000 675600 w
+&15
+(TRUE)131440 v
+&11
+(if and only if)3330 1 158770 u
+&12
+(symbol)216530 v
+&11
+(is a user de\003ned function, otherwise)3330 1 248190 u
+&15
+(FALSE)400090 v
+&11
+(.)430090 v
+&15
+(isImmediateMode\()72000 691200 w
+&12
+(oper)168000 v
+(and)186180 v
+&15
+(\))201180 v
+&11
+(Returns)97000 706800 w
+&15
+(TRUE)131440 v
+&11
+(if and only if the address mode of)3330 1 158770 u
+&12
+(oper)302610 v
+(and)320790 v
+&11
+(is)339120 v
+&12
+(immediate)349120 v
+&11
+(, otherwise)3330 1 390780 u
+&15
+(FALSE)438820 v
+&11
+(.)468820 v
+(Lucas\003lm)72000 768000 w
+(Ltd.)115330 v
+(Proprietary)135050 v
+(Information)183370 v
+(\001)276340 v
+(25)283000 v
+(\001)296330 v
+(CONFIDENTIAL)430680 v
+_marks
+cleartomark
+showpage
+restore
+%%EndPage: 25 25
+%%Page: 26 26
+save
+mark
+26 pagesetup
+10 @11 f
+(Macross)72000 48000 w
+(July)262585 v
+(7,)282585 v
+(1986)293415 v
+(6502)450620 v
+(V)473450 v
+(ersion)479560 v
+&15
+(isIndexedMode\()72000 84000 w
+&12
+(oper)156000 v
+(and)174180 v
+&15
+(\))189180 v
+&11
+(Returns)97000 99600 w
+&15
+(TRUE)131440 v
+&11
+(if and only if the address mode of)3330 1 158770 u
+&12
+(oper)302610 v
+(and)320790 v
+&11
+(is an inde)3330 1 339120 u
+(x)378960 v
+(ed mode, otherwise)3330 1 383810 u
+&15
+(FALSE)466840 v
+&11
+(.)496840 v
+&15
+(isIndirectMode\()72000 115200 w
+&12
+(oper)162000 v
+(and)180180 v
+&15
+(\))195180 v
+&11
+(Returns)97000 130800 w
+&15
+(TRUE)131440 v
+&11
+(if and only if the address mode of)3330 1 158770 u
+&12
+(oper)302610 v
+(and)320790 v
+&11
+(is)339120 v
+&12
+(indir)349120 v
+(ect)368200 v
+&11
+(, otherwise)3330 1 379860 u
+&15
+(FALSE)427900 v
+&11
+(.)457900 v
+&15
+(isPostIndexedMode\()72000 146400 w
+&12
+(oper)180000 v
+(and)198180 v
+&15
+(\))213180 v
+&11
+(Returns)97000 162000 w
+&15
+(TRUE)131440 v
+&11
+(if and only if the address mode of)3330 1 158770 u
+&12
+(oper)302610 v
+(and)320790 v
+&11
+(is)339120 v
+&12
+(post\001inde)349120 v
+(xed)386140 v
+&11
+(, otherwise)3330 1 400020 u
+&15
+(FALSE)448060 v
+&11
+(.)478060 v
+&15
+(isPreIndexedMode\()72000 177600 w
+&12
+(oper)174000 v
+(and)192180 v
+&15
+(\))207180 v
+&11
+(Returns)97000 193200 w
+&15
+(TRUE)131440 v
+&11
+(if and only if the address mode of)3330 1 158770 u
+&12
+(oper)302610 v
+(and)320790 v
+&11
+(is)339120 v
+&12
+(pr)349120 v
+(e\001inde)357640 v
+(xed)382430 v
+&11
+(, otherwise)3330 1 396310 u
+&15
+(FALSE)444350 v
+&11
+(.)474350 v
+&15
+(isRelocatableValue\()72000 208800 w
+&12
+(oper)186000 v
+(and)204180 v
+&15
+(\))219180 v
+&11
+(Returns)97000 224400 w
+&15
+(TRUE)131440 v
+&11
+(if and only if)3330 1 158770 u
+&12
+(oper)216530 v
+(and)234710 v
+&11
+(is a relocatable v)3330 1 253040 u
+(alue, otherwise)3330 1 322760 u
+&15
+(FALSE)387460 v
+&11
+(.)417460 v
+&15
+(isString\()72000 240000 w
+&12
+(oper)126000 v
+(and)144180 v
+&15
+(\))159180 v
+&11
+(Returns)97000 255600 w
+&15
+(TRUE)131440 v
+&11
+(if and only if)3330 1 158770 u
+&12
+(oper)216530 v
+(and)234710 v
+&11
+(is a string, otherwise)3330 1 253040 u
+&15
+(FALSE)341630 v
+&11
+(.)371630 v
+&15
+(isStruct\()72000 271200 w
+&12
+(symbol)126000 v
+&15
+(\))154330 v
+&11
+(Returns)97000 286800 w
+&15
+(TRUE)131440 v
+&11
+(if and only if)3330 1 158770 u
+&12
+(symbol)216530 v
+&11
+(is the name of a struct, otherwise)3330 1 248190 u
+&15
+(FALSE)388420 v
+&11
+(.)418420 v
+&15
+(isSymbol\()72000 302400 w
+&12
+(oper)126000 v
+(and)144180 v
+&15
+(\))159180 v
+&11
+(Returns)97000 318000 w
+&15
+(TRUE)132098 v
+&11
+(if and only if)3989 1 160086 u
+&12
+(oper)220482 v
+(and)238662 v
+&11
+(is a symbol \(as opposed to an e)3989 1 257651 u
+(xpression or a number)3989 1 392634 u
+(, for)3989 1 485851 u
+(e)97000 330000 w
+(xample\), otherwise)3330 1 101290 u
+&15
+(FALSE)182100 v
+&11
+(.)212100 v
+&15
+(isXIndexedMode\()72000 345600 w
+&12
+(oper)162000 v
+(and)180180 v
+&15
+(\))195180 v
+&11
+(Returns)97000 361200 w
+&15
+(TRUE)131440 v
+&11
+(if and only if the address mode of)3330 1 158770 u
+&12
+(oper)302610 v
+(and)320790 v
+&11
+(is)339120 v
+&12
+(x\001inde)349120 v
+(xed)373910 v
+&11
+(, otherwise)3330 1 387790 u
+&15
+(FALSE)435830 v
+&11
+(.)465830 v
+&15
+(isXRegister\()72000 376800 w
+&12
+(oper)144000 v
+(and)162180 v
+&15
+(\))177180 v
+&11
+(Returns)97000 392400 w
+&15
+(TRUE)131440 v
+&11
+(if and only if)3330 1 158770 u
+&12
+(oper)216530 v
+(and)234710 v
+&11
+(is)253040 v
+&15
+(x)263040 v
+&11
+(, otherwise)3330 1 269040 u
+&15
+(FALSE)317080 v
+&11
+(.)347080 v
+&15
+(isYIndexedMode\()72000 408000 w
+&12
+(oper)162000 v
+(and)180180 v
+&15
+(\))195180 v
+&11
+(Returns)97000 423600 w
+&15
+(TRUE)131440 v
+&11
+(if and only if the address mode of)3330 1 158770 u
+&12
+(oper)302610 v
+(and)320790 v
+&11
+(is)339120 v
+&12
+(y\001inde)349120 v
+(xed)373910 v
+&11
+(, otherwise)3330 1 387790 u
+&15
+(FALSE)435830 v
+&11
+(.)465830 v
+&15
+(isYRegister\()72000 439200 w
+&12
+(oper)144000 v
+(and)162180 v
+&15
+(\))177180 v
+&11
+(Returns)97000 454800 w
+&15
+(TRUE)131440 v
+&11
+(if and only if)3330 1 158770 u
+&12
+(oper)216530 v
+(and)234710 v
+&11
+(is)253040 v
+&15
+(y)263040 v
+&11
+(, otherwise)3330 1 269040 u
+&15
+(FALSE)317080 v
+&11
+(.)347080 v
+&15
+(listingOff\(\))72000 470400 w
+&11
+( using the)3729(If assembly listing has been enabled)3728 2 97000 486000 t
+&15
+(\001l)292917 v
+&11
+(command line)3729 1 308646 u
+(\004ag, turn listing of)3729 1 370544 u
+(f temporarily)3729 1 448431 u
+(.)501500 v
+(Otherwise, no ef)3330 1 97000 498000 t
+(fect.)164780 v
+&15
+(listingOn\(\))72000 513600 w
+&11
+(If assembly listing w)3955 1 97000 529200 t
+(as turned of)3955 1 184875 u
+(f using the)3955 1 234745 u
+&15
+(listingOff\(\))283830 v
+&11
+( it back on ag)3956(function, turn)3955 2 359785 u
+(ain. If)7286 1 475334 u
+(listings ha)3525 1 97000 541200 t
+(v)138665 v
+(e been globally disabled by not specifying the)3525 1 143515 u
+&15
+(\001l)337805 v
+&11
+(command line)3524 1 353330 u
+(\004ag, this function has)3524 1 414818 u
+(no ef)6137 1 97000 553200 t
+(fect. The)9287 1 120657 u
+&15
+(listingOff\(\))169121 v
+&11
+(and)247258 v
+&15
+(listingOn\(\))267835 v
+&11
+(functions are intended to be used to)6138 1 339972 u
+(together to control assembly listings of lar)4189 1 97000 565200 t
+( The)7339(ge programs.)4189 2 275834 u
+( used to suppress listing of)4188(y can be)4189 2 352472 u
+(lar)97000 577200 w
+(ge and uninteresting sections such as header)4694 1 107370 u
+( of global v)4695(\003les full of de\003nitions)4694 2 301858 u
+(alues. These)7845 1 449225 u
+(functions may nest: in ef)4332 1 97000 589200 t
+(fect)202958 v
+&15
+(listingOff\(\))222280 v
+&11
+(increments a counter and)4332 1 298612 u
+&15
+(listingOn\(\))408689 v
+&11
+(decre\001)479020 v
+( when the counter is zero \(i.e., the number of)5710( Only)9040(ments it.)5710 3 97000 601200 t
+&15
+(listingOn\(\))377700 v
+&11
+(s matches the)5710 1 443700 u
+(number of)3330 1 97000 613200 t
+&15
+(listingOff\(\))142540 v
+&11
+(s\) does listing actually occur)3330 1 214540 u
+(.)331740 v
+&15
+(makeArray\()72000 628800 w
+&12
+(length)132000 v
+11 @11 f
+([)160330 v
+([)161330 v
+10 @15 f
+(,)168660 v
+&12
+(element)180660 v
+11 @11 f
+(])215090 v
+(])214090 v
+(*)217090 v
+10 @15 f
+(\))225420 v
+&11
+(Creates an array of length)3356 1 97000 644400 t
+&12
+(length)207080 v
+&11
+( Optionally)6686(and returns it.)3356 2 235436 u
+( with the v)3357(\003lls the array)3356 2 345240 u
+(alues speci\003ed)3357 1 444543 u
+(by the)5250 1 97000 656400 t
+&12
+(element)129720 v
+&11
+(e)166070 v
+( the number of)5250(xpressions. If)8580 2 170360 u
+&12
+(element)302420 v
+&11
+(s gi)5250 1 333520 u
+(v)350190 v
+(en is greater than)5250 1 355040 u
+&12
+(length)437130 v
+&11
+(, an error)5250 1 462130 u
+(results.)97000 668400 w
+&15
+(nthChar\()72000 684000 w
+&12
+(string)120000 v
+11 @11 f
+([)146670 v
+([)147670 v
+10 @15 f
+(,)155000 v
+&12
+(position)167000 v
+11 @11 f
+(])202560 v
+(])201560 v
+10 @15 f
+(\))209890 v
+&11
+(Returns the)4062 1 97000 699600 t
+&12
+(position)148454 v
+&11
+( string)4063(th character of the)4062 2 180684 u
+&12
+(string)288746 v
+&11
+(\(position zero being the)4063 1 316149 u
+(\003rst character in the)4063 1 419611 u
+(string\). If)7393 1 97000 711600 t
+&12
+(position)143726 v
+&11
+(is omitted it def)4063 1 180019 u
+( If)7393(aults to zero.)4063 2 247668 u
+&12
+(position)320290 v
+&11
+(is greater than the length of)4063 1 356583 u
+&12
+(string)478160 v
+&11
+(,)501500 v
+(an error results.)3330 1 97000 723600 t
+(Lucas\003lm)72000 768000 w
+(Ltd.)115330 v
+(Proprietary)135050 v
+(Information)183370 v
+(\001)276340 v
+(26)283000 v
+(\001)296330 v
+(CONFIDENTIAL)430680 v
+_marks
+cleartomark
+showpage
+restore
+%%EndPage: 26 26
+%%Page: 27 27
+save
+mark
+27 pagesetup
+10 @11 f
+(Macross)72000 48000 w
+(July)262585 v
+(7,)282585 v
+(1986)293415 v
+(6502)450620 v
+(V)473450 v
+(ersion)479560 v
+&15
+(printf\()72000 84000 w
+&12
+(format)114000 v
+11 @11 f
+([)144000 v
+([)145000 v
+10 @15 f
+(,)152330 v
+&12
+(ar)164330 v
+(g)172850 v
+11 @11 f
+(])181180 v
+(])180180 v
+(*)183180 v
+10 @15 f
+(\))191510 v
+&11
+(A formatted print routine just lik)3330 1 97000 99600 t
+(e the Unix system subroutine of the same name.)3330 1 231880 u
+&15
+(strcat\()72000 115200 w
+&12
+(string1)114000 v
+&15
+(,)142340 v
+&12
+(string2)154340 v
+&15
+(\))182680 v
+&11
+( the concatenation of the tw)5581(Returns a string which is)5580 2 97000 130800 t
+(o operands, which must themselv)5581 1 334875 u
+(es be)5581 1 480649 u
+(strings.)97000 142800 w
+&15
+(strcmp\()72000 158400 w
+&12
+(string1)114000 v
+&15
+(,)142340 v
+&12
+(string2)154340 v
+&15
+(\))182680 v
+&11
+( whether)3914
+(Returns a number which is less than, equal to, or greater than 0 dependin\
+g upon)3913 2 97000 174000 t
+&12
+(string1)475660 v
+&11
+(is le)3655 1 97000 186000 t
+( than, equal to, or greater than)3654(xically less)3655 2 114395 u
+&12
+(string2)290818 v
+&11
+( tw)3654( The)6804( character set is used.)3654( ASCII)3104(. The)6804 5 319158 u
+(o)499000 v
+(operands, of course, must be strings.)3330 1 97000 198000 t
+&15
+(strcmplc\()72000 213600 w
+&12
+(string1)126000 v
+&15
+(,)154340 v
+&12
+(string2)166340 v
+&15
+(\))194680 v
+&11
+( as)4064(Essentially the same)4063 2 97000 229200 t
+&15
+(strcmp\(\))198244 v
+&11
+(e)250308 v
+(xcept that alphabetic characters are con)4064 1 254598 u
+(v)419458 v
+(erted to lo)4064 1 424308 u
+(wer case)4064 1 467736 u
+( is useful for)4632( This)7782
+( is a case\001independent string comparison.)4632( result)4633( The)7783
+(before being compared.)4633 6 97000 241200 t
+(comparing tw)3330 1 97000 253200 t
+(o identi\003er name strings to see if the)3330 1 153000 u
+(y represent the same symbols.)3330 1 304480 u
+&15
+(strlen\()72000 268800 w
+&12
+(string)114000 v
+&15
+(\))137340 v
+&11
+(Returns a number which is the length, in characters, of)3330 1 97000 284400 t
+&12
+(string)326370 v
+&11
+(.)349710 v
+&15
+(substr\()72000 300000 w
+&12
+(string)114000 v
+&15
+(,)137340 v
+&12
+(startP)149340 v
+(os)172990 v
+11 @11 f
+([)185210 v
+([)186210 v
+10 @15 f
+(,)196210 v
+&12
+(length)208210 v
+11 @11 f
+(])236540 v
+(])235540 v
+10 @15 f
+(\))243870 v
+&11
+(Returns a substring of the string)3448 1 97000 315600 t
+&12
+(string)233238 v
+&11
+(starting from the character at start position)3448 1 260026 u
+&12
+(startP)439132 v
+(os)462782 v
+&11
+(\(count\001)475120 v
+(ing the)4528 1 97000 327600 t
+(\003rst character from 0\) and continuing for)4528 1 131056 u
+&12
+(length)311602 v
+&11
+(characters. If)7858 1 341130 u
+&12
+(startP)403206 v
+(os)426856 v
+&11
+(is ne)4528 1 440274 u
+(g)460762 v
+(ati)465712 v
+(v)475462 v
+(e, the)4528 1 480312 u
+( character position being indicated by)3358
+(start position is counted from right to left \(with the rightmost)3357 2 97000 339600 t
+( If)7520(\0011\) instead of the more usual left to right.)4190 2 97000 351600 t
+&12
+(length)293590 v
+&11
+(is ne)4190 1 322780 u
+(g)342930 v
+(ati)347880 v
+(v)357630 v
+(e,)362480 v
+&12
+(startP)373610 v
+(os)397260 v
+&11
+(in essence denotes the)4190 1 410340 u
+( desired substring and)4487(end of the)4486 2 97000 363600 t
+&12
+(length)238900 v
+&11
+( If)7817(characters up to that position are returned.)4487 2 268387 u
+&12
+(length)467843 v
+&11
+(is)497330 v
+(omitted, the substring from)3847 1 97000 375600 t
+&12
+(startP)213778 v
+(os)237428 v
+&11
+( the string is returned, if)3846(to the end of)3847 2 250165 u
+&12
+(startP)411152 v
+(os)434802 v
+&11
+(is positi)3846 1 447538 u
+(v)480034 v
+(e, or)3846 1 484884 u
+(to the be)4468 1 97000 387600 t
+(ginning of the string, if)4468 1 135226 u
+&12
+(startP)240066 v
+(os)263716 v
+&11
+(is ne)4468 1 277074 u
+(g)297502 v
+(ati)302452 v
+(v)312202 v
+( an)4468(e. If)7798 2 317052 u
+( indices cause the substring)4469(y of the)4468 2 352208 u
+(bounds to go of)3330 1 97000 399600 t
+(f the end of)3330 1 161740 u
+&12
+(string)213380 v
+&11
+( F)6660(an error results.)3330 2 240050 u
+(or e)3330 1 316260 u
+(xample,)332210 v
+&15
+(substr\(\020hello there\020, 6, 3\))6000 1 122000 415200 t
+&11
+(yields)322000 v
+&15
+(\020the\020)349220 v
+(substr\(\020hello there\020,)6000 1 122000 427200 t
+(\0018, 2\))6000 1 254000 u
+&11
+(yields)322000 v
+&15
+(\020lo\020)349220 v
+(substr\(\020hello there\020, 6,)6000 1 122000 439200 t
+(\0013\))272000 v
+&11
+(yields)322000 v
+&15
+(\020o t\020)6000 1 349220 u
+(substr\(\020hello there\020,)6000 1 122000 451200 t
+(\0018,)254000 v
+(\0014\))278000 v
+&11
+(yields)322000 v
+&15
+(\020hell\020)349220 v
+(substr\(\020hello there\020, 6\))6000 1 122000 463200 t
+&11
+(yields)322000 v
+&15
+(\020there\020)349220 v
+(substr\(\020hello there\020,)6000 1 122000 475200 t
+(\0017\))254000 v
+&11
+(yields)322000 v
+&15
+(\020hello\020)349220 v
+(symbolDefine\()72000 502800 w
+&12
+(string)150000 v
+11 @11 f
+([)176670 v
+([)177670 v
+10 @15 f
+(,)185000 v
+&12
+(value)197000 v
+11 @11 f
+(])221990 v
+(])220990 v
+10 @15 f
+(\))229320 v
+&11
+( by)4089(De\003nes the symbol named)4088 2 97000 518400 t
+&12
+(string)226322 v
+&11
+(\(with optional v)4089 1 253751 u
+(alue)320569 v
+&12
+(value)341318 v
+&11
+(\) as if it had been de\003ned with a)4089 1 362978 u
+&15
+(define)97000 530400 w
+&11
+(statement. F)6660 1 136330 u
+(or e)3330 1 189230 u
+(xample:)205180 v
+&15
+(symbolDefine\(strcat\(\020foon\020,)122000 546000 w
+(\020farm\020\), 47\))6000 1 290000 u
+&11
+(is equi)3330 1 97000 570000 t
+(v)123970 v
+(alent to)3330 1 128720 u
+&15
+(define foonfarm = 47)6000 1 122000 594000 t
+(symbolLookup\()72000 621600 w
+&12
+(string)150000 v
+&15
+(\))173340 v
+&11
+(A call to this function with a string operand is equi)4370 1 97000 637200 t
+(v)318770 v
+(alent to a reference to the symbol that the)4370 1 323520 u
+( F)6660(string represents.)3330 2 97000 649200 t
+(or e)3330 1 178220 u
+(xample,)194170 v
+&15
+(and)122000 664800 w
+(symbolLookup\(\020foo\020\))172000 v
+&11
+(is equi)3330 1 97000 688800 t
+(v)123970 v
+(alent to)3330 1 128720 u
+&15
+(and)122000 712800 w
+(foo)172000 v
+&11
+(Lucas\003lm)72000 768000 w
+(Ltd.)115330 v
+(Proprietary)135050 v
+(Information)183370 v
+(\001)276340 v
+(27)283000 v
+(\001)296330 v
+(CONFIDENTIAL)430680 v
+_marks
+cleartomark
+showpage
+restore
+%%EndPage: 27 27
+%%Page: 28 28
+save
+mark
+28 pagesetup
+10 @11 f
+(Macross)72000 48000 w
+(July)262585 v
+(7,)282585 v
+(1986)293415 v
+(6502)450620 v
+(V)473450 v
+(ersion)479560 v
+&15
+(symbolName\()72000 84000 w
+&12
+(symbol)138000 v
+&15
+(\))166330 v
+&11
+( is the name of the symbol)4581(Returns a string which)4580 2 97000 99600 t
+&12
+(symbol)316127 v
+&11
+(. F)7911 1 344457 u
+(or e)4581 1 360278 u
+(xample,)377479 v
+&15
+(symbolName\(foo\))414000 v
+&11
+(w)97000 111600 w
+(ould return)3495 1 104120 u
+&15
+(\020foo\020)152770 v
+&11
+( be used in conjunction with the)3494( can)3495(. This)6645 3 182770 u
+&15
+(symbolLookup)364298 v
+&11
+(function so that)3494 1 439792 u
+(the follo)3330 1 97000 123600 t
+(wing:)131190 v
+&15
+(and)122000 139200 w
+(symbolLookup\(strcat\(symbolName\(foo\),)172000 v
+(\020bar\020\)\))394000 v
+&11
+(is equi)3330 1 97000 163200 t
+(v)123970 v
+(alent to)3330 1 128720 u
+&15
+(and)122000 187200 w
+(foobar)172000 v
+(symbolUsage\()72000 214800 w
+&12
+(symbol)144000 v
+&15
+(\))172330 v
+&11
+(Returns a number whose v)3542 1 97000 230400 t
+(alue indicates what sort of symbol)3542 1 207568 u
+&12
+(symbol)353250 v
+&11
+(is \(i.e., label, function, struct)3542 1 385122 u
+(\003eld, etc.\).)3330 1 97000 242400 t
+&12
+(\(\(de\003ne these values\)\))3330 1 147260 u
+&15
+(valueType\()72000 258000 w
+&12
+(thing)132000 v
+&15
+(\))152560 v
+&11
+(Returns a number whose v)4160 1 97000 273600 t
+(alue indicates the type of)4161 1 210040 u
+&12
+(thing)320825 v
+&11
+(\(i.e., symbol, condition code, number)4161 1 345546 u
+(,)501500 v
+(block, etc.\).)3330 1 97000 285600 t
+&12
+(\(\(de\003ne these values\)\))3330 1 151700 u
+&11
+(Lucas\003lm)72000 768000 w
+(Ltd.)115330 v
+(Proprietary)135050 v
+(Information)183370 v
+(\001)276340 v
+(28)283000 v
+(\001)296330 v
+(CONFIDENTIAL)430680 v
+_marks
+cleartomark
+showpage
+restore
+%%EndPage: 28 28
+%%Page: 29 29
+save
+mark
+29 pagesetup
+10 @11 f
+(Macross)72000 48000 w
+(July)262585 v
+(7,)282585 v
+(1986)293415 v
+(6502)450620 v
+(V)473450 v
+(ersion)479560 v
+15 @13 f
+(A)206532 84000 w
+(ppendix D)4995 1 216987 u
+(\006 Operator Set)4995 1 289497 u
+10 @11 f
+(This appendix describes the \()3330 1 97000 111600 t
+&13
+(C)217520 v
+&11
+(deri)228070 v
+(v)243370 v
+(ed\) operators supported by)3330 1 248220 u
+&12
+(Macr)360960 v
+(oss)382170 v
+&11
+(.)394950 v
+&15
+(\001)97000 135600 w
+&12
+(e)106330 v
+(xpr)110570 v
+(ession)123530 v
+&11
+(inte)247000 v
+(ger ne)3330 1 261850 u
+(g)287240 v
+(ation)292190 v
+&15
+(!)97000 147600 w
+&12
+(e)106330 v
+(xpr)110570 v
+(ession)123530 v
+&11
+(logical ne)3330 1 247000 u
+(g)286840 v
+(ation \(0 goes to 1, all other v)3330 1 291790 u
+(alues go to 0\))3330 1 412340 u
+&15
+(~)97000 159600 w
+&12
+(e)106330 v
+(xpr)110570 v
+(ession)123530 v
+&11
+(bitwise ne)3330 1 247000 u
+(g)288510 v
+(ation \(ones complement\))3330 1 293460 u
+&15
+(?)97000 171600 w
+&12
+(e)106330 v
+(xpr)110570 v
+(ession)123530 v
+&11
+(high byte)3330 1 247000 u
+&15
+(/)97000 183600 w
+&12
+(e)106330 v
+(xpr)110570 v
+(ession)123530 v
+&11
+(lo)247000 v
+(w byte)3330 1 254530 u
+&12
+(e)97000 195600 w
+(xpr)101240 v
+(ession)114200 v
+&15
+(*)142530 v
+&12
+(e)151860 v
+(xpr)156100 v
+(ession)169060 v
+&11
+(inte)247000 v
+(ger multiplication)3330 1 261850 u
+&12
+(e)97000 207600 w
+(xpr)101240 v
+(ession)114200 v
+&15
+(/)142530 v
+&12
+(e)151860 v
+(xpr)156100 v
+(ession)169060 v
+&11
+(inte)247000 v
+(ger di)3330 1 261850 u
+(vision)285480 v
+&12
+(e)97000 219600 w
+(xpr)101240 v
+(ession)114200 v
+&15
+(%)142530 v
+&12
+(e)151860 v
+(xpr)156100 v
+(ession)169060 v
+&11
+(inte)247000 v
+(ger modulus \(remainder\))3330 1 261850 u
+&12
+(e)97000 231600 w
+(xpr)101240 v
+(ession)114200 v
+&15
+(\001)142530 v
+&12
+(e)151860 v
+(xpr)156100 v
+(ession)169060 v
+&11
+(inte)247000 v
+(ger subtraction)3330 1 261850 u
+&12
+(e)97000 243600 w
+(xpr)101240 v
+(ession)114200 v
+&15
+(+)142530 v
+&12
+(e)151860 v
+(xpr)156100 v
+(ession)169060 v
+&11
+(inte)247000 v
+(ger addition)3330 1 261850 u
+&12
+(e)97000 255600 w
+(xpr)101240 v
+(ession)114200 v
+&15
+(<<)142530 v
+&12
+(e)157860 v
+(xpr)162100 v
+(ession)175060 v
+&11
+(left shift)3330 1 247000 u
+&12
+(e)97000 267600 w
+(xpr)101240 v
+(ession)114200 v
+&15
+(>>)142530 v
+&12
+(e)157860 v
+(xpr)162100 v
+(ession)175060 v
+&11
+(right shift)3330 1 247000 u
+&12
+(e)97000 279600 w
+(xpr)101240 v
+(ession)114200 v
+&15
+(<)142530 v
+&12
+(e)151860 v
+(xpr)156100 v
+(ession)169060 v
+&11
+(less than)3330 1 247000 u
+&12
+(e)97000 291600 w
+(xpr)101240 v
+(ession)114200 v
+&15
+(>)142530 v
+&12
+(e)151860 v
+(xpr)156100 v
+(ession)169060 v
+&11
+(greater than)3330 1 247000 u
+&12
+(e)97000 303600 w
+(xpr)101240 v
+(ession)114200 v
+&15
+(<=)142530 v
+&12
+(e)157860 v
+(xpr)162100 v
+(ession)175060 v
+&11
+(less than or equal to)3330 1 247000 u
+&12
+(e)97000 315600 w
+(xpr)101240 v
+(ession)114200 v
+&15
+(>=)142530 v
+&12
+(e)157860 v
+(xpr)162100 v
+(ession)175060 v
+&11
+(greater than or equal to)3330 1 247000 u
+&12
+(e)97000 327600 w
+(xpr)101240 v
+(ession)114200 v
+&15
+(==)142530 v
+&12
+(e)157860 v
+(xpr)162100 v
+(ession)175060 v
+&11
+(equal to)3330 1 247000 u
+&12
+(e)97000 339600 w
+(xpr)101240 v
+(ession)114200 v
+&15
+(!=)142530 v
+&12
+(e)157860 v
+(xpr)162100 v
+(ession)175060 v
+&11
+(not equal to)3330 1 247000 u
+&12
+(e)97000 351600 w
+(xpr)101240 v
+(ession)114200 v
+&15
+(&)142530 v
+&12
+(e)151860 v
+(xpr)156100 v
+(ession)169060 v
+&11
+(bitwise AND)2780 1 247000 u
+&12
+(e)97000 363600 w
+(xpr)101240 v
+(ession)114200 v
+&15
+(\023)142530 v
+&12
+(e)151860 v
+(xpr)156100 v
+(ession)169060 v
+&11
+(bitwise OR)3330 1 247000 u
+&12
+(e)97000 375600 w
+(xpr)101240 v
+(ession)114200 v
+&15
+(^)142530 v
+&12
+(e)151860 v
+(xpr)156100 v
+(ession)169060 v
+&11
+(bitwise XOR)3330 1 247000 u
+&12
+(e)97000 387600 w
+(xpr)101240 v
+(ession)114200 v
+&15
+(&&)142530 v
+&12
+(e)157860 v
+(xpr)162100 v
+(ession)175060 v
+&11
+(logical AND)2780 1 247000 u
+&12
+(e)97000 399600 w
+(xpr)101240 v
+(ession)114200 v
+&15
+(\023\023)142530 v
+&12
+(e)157860 v
+(xpr)162100 v
+(ession)175060 v
+&11
+(logical OR)3330 1 247000 u
+&12
+(e)97000 411600 w
+(xpr)101240 v
+(ession)114200 v
+&15
+(^^)142530 v
+&12
+(e)157860 v
+(xpr)162100 v
+(ession)175060 v
+&11
+(logical XOR)3330 1 247000 u
+&12
+(e)97000 423600 w
+(xpr)101240 v
+(ession)114200 v
+&15
+(.)142530 v
+&12
+(identi\003er)151860 v
+&11
+(struct)247000 v
+(\003eld selection)3330 1 272550 u
+&12
+(identi\003er)97000 435600 w
+&15
+(=)136440 v
+&12
+(e)145770 v
+(xpr)150010 v
+(ession)162970 v
+&11
+(assignment)247000 v
+&12
+(identi\003er)97000 447600 w
+&15
+(+=)136440 v
+&12
+(e)151770 v
+(xpr)156010 v
+(ession)168970 v
+&11
+(assignment with addition)3330 1 247000 u
+&12
+(identi\003er)97000 459600 w
+&15
+(\001=)136440 v
+&12
+(e)151770 v
+(xpr)156010 v
+(ession)168970 v
+&11
+(assignment with subtraction)3330 1 247000 u
+&12
+(identi\003er)97000 471600 w
+&15
+(*=)136440 v
+&12
+(e)151770 v
+(xpr)156010 v
+(ession)168970 v
+&11
+(assignment with multiplication)3330 1 247000 u
+&12
+(identi\003er)97000 483600 w
+&15
+(/=)136440 v
+&12
+(e)151770 v
+(xpr)156010 v
+(ession)168970 v
+&11
+(assignment with di)3330 1 247000 u
+(vision)323970 v
+&12
+(identi\003er)97000 495600 w
+&15
+(%=)136440 v
+&12
+(e)151770 v
+(xpr)156010 v
+(ession)168970 v
+&11
+(assignment with modulus)3330 1 247000 u
+&12
+(identi\003er)97000 507600 w
+&15
+(&=)136440 v
+&12
+(e)151770 v
+(xpr)156010 v
+(ession)168970 v
+&11
+( AND)2780(assignment with)3330 2 247000 u
+&12
+(identi\003er)97000 519600 w
+&15
+(\023=)136440 v
+&12
+(e)151770 v
+(xpr)156010 v
+(ession)168970 v
+&11
+(assignment with OR)3330 1 247000 u
+&12
+(identi\003er)97000 531600 w
+&15
+(^=)136440 v
+&12
+(e)151770 v
+(xpr)156010 v
+(ession)168970 v
+&11
+(assignment with XOR)3330 1 247000 u
+&12
+(identi\003er)97000 543600 w
+&15
+(<<=)136440 v
+&12
+(e)157770 v
+(xpr)162010 v
+(ession)174970 v
+&11
+(assignment with left shift)3330 1 247000 u
+&12
+(identi\003er)97000 555600 w
+&15
+(>>=)136440 v
+&12
+(e)157770 v
+(xpr)162010 v
+(ession)174970 v
+&11
+(assignment with right shift)3330 1 247000 u
+&12
+(identi\003er)97000 567600 w
+&15
+(++)136440 v
+&11
+(post\001increment)247000 v
+&12
+(identi\003er)97000 579600 w
+&15
+(\001\001)136440 v
+&11
+(post\001decrement)247000 v
+&15
+(++)97000 591600 w
+&12
+(identi\003er)112330 v
+&11
+(pre\001increment)247000 v
+&15
+(\001\001)97000 603600 w
+&12
+(identi\003er)112330 v
+&11
+(pre\001decrement)247000 v
+(Lucas\003lm)72000 768000 w
+(Ltd.)115330 v
+(Proprietary)135050 v
+(Information)183370 v
+(\001)276340 v
+(29)283000 v
+(\001)296330 v
+(CONFIDENTIAL)430680 v
+_marks
+cleartomark
+showpage
+restore
+%%EndPage: 29 29
+%%Page: 30 30
+save
+mark
+30 pagesetup
+10 @11 f
+(Macross)72000 48000 w
+(July)262585 v
+(7,)282585 v
+(1986)293415 v
+(6502)450620 v
+(V)473450 v
+(ersion)479560 v
+15 @13 f
+(A)159037 84000 w
+(ppendix E)4995 1 169492 u
+(\006 Character Escape Codes)4995 1 241177 u
+10 @11 f
+(Lik)97000 111600 w
+(e)110790 v
+&13
+(C)119568 v
+&11
+(,)126788 v
+&12
+(Macr)133626 v
+(oss)154836 v
+&11
+( to use the)4339(enables you)4338 2 171954 u
+(\027)271968 v
+(\027)274558 v
+&15
+(\017)277888 v
+&11
+(\030)283888 v
+( as an escape to embed quotation marks,)4339(\030 character)3599 2 286478 u
+(formatting characters \(such as ne)3389 1 72000 123600 t
+( non\001printing characters in character strings and charac\001)3388
+(wline\) and other)3389 2 207486 u
+( recognized codes are:)3330( The)6480(ter constants.)3330 3 72000 135600 t
+&15
+(\017n)97000 159600 w
+&11
+(ne)147000 v
+(wline)156190 v
+&15
+(\017t)97000 171600 w
+&11
+(horizontal tab)3330 1 147000 u
+&15
+(\017b)97000 183600 w
+&11
+(backspace)147000 v
+&15
+(\017r)97000 195600 w
+&11
+(carriage return)3330 1 147000 u
+&15
+(\017f)97000 207600 w
+&11
+(form feed)3330 1 147000 u
+&15
+(\017e)97000 219600 w
+&11
+(escape)147000 v
+&15
+(\017\017)97000 231600 w
+&11
+(backslash)147000 v
+&15
+(\017\030)97000 243600 w
+&11
+(apostrophe)147000 v
+&15
+(\017\020)97000 255600 w
+&11
+(quote)147000 v
+&15
+(\017^)97000 267600 w
+&12
+(c)109000 v
+&11
+(CONTR)147000 v
+(OL\001)180490 v
+&12
+(c)197150 v
+&11
+(\(where)204920 v
+&12
+(c)236010 v
+&11
+(is an)3330 1 243780 u
+(y character\).)3330 1 263070 u
+&15
+(\017)97000 279600 w
+&12
+(ddd)103000 v
+&11
+(arbitrary byte \(where)3330 1 147000 u
+&12
+(ddd)236400 v
+&11
+(is one, tw)3330 1 254730 u
+(o or three octal digits\).)3330 1 294900 u
+(Lucas\003lm)72000 768000 w
+(Ltd.)115330 v
+(Proprietary)135050 v
+(Information)183370 v
+(\001)276340 v
+(30)283000 v
+(\001)296330 v
+(CONFIDENTIAL)430680 v
+_marks
+cleartomark
+showpage
+restore
+%%EndPage: 30 30
+%%Page: 31 31
+save
+mark
+31 pagesetup
+10 @11 f
+(Macross)72000 48000 w
+(July)262585 v
+(7,)282585 v
+(1986)293415 v
+(6502)450620 v
+(V)473450 v
+(ersion)479560 v
+15 @13 f
+(A)134032 84000 w
+(ppendix F)4995 1 144487 u
+(\006 Recognized Opcode Mnemonics)4995 1 215332 u
+13 s
+(\(6502 v)4329 1 248350 120000 t
+(ersion\))289378 v
+10 @11 f
+(These are the 6502 opcode mnemonics recognized by)3330 1 97000 135600 t
+&12
+(Macr)320810 v
+(oss)342020 v
+&11
+(:)354800 v
+&15
+(adc)72000 147600 w
+(and)72000 159600 w
+(asl)72000 171600 w
+(bcc)72000 183600 w
+(bcs)72000 195600 w
+(beq)72000 207600 w
+(bit)72000 219600 w
+(bmi)72000 231600 w
+(bne)72000 243600 w
+(bpl)72000 255600 w
+(brk)72000 267600 w
+(bvc)72000 279600 w
+(bvs)72000 291600 w
+(clc)72000 303600 w
+(cld)72000 315600 w
+(cli)72000 327600 w
+(clv)72000 339600 w
+(cmp)72000 351600 w
+(cpx)72000 363600 w
+(cpy)72000 375600 w
+(dec)72000 387600 w
+(dex)72000 399600 w
+(dey)72000 411600 w
+(eor)72000 423600 w
+(inc)72000 435600 w
+(inx)72000 447600 w
+(iny)72000 459600 w
+(jmp)72000 471600 w
+(jsr)72000 483600 w
+(lda)72000 495600 w
+(ldx)72000 507600 w
+(ldy)72000 519600 w
+(lsr)72000 531600 w
+(nop)72000 543600 w
+(ora)72000 555600 w
+(pha)72000 567600 w
+(php)72000 579600 w
+(pla)72000 591600 w
+(plp)72000 603600 w
+(rol)72000 615600 w
+(ror)72000 627600 w
+(rti)72000 639600 w
+(rts)72000 651600 w
+(sbc)72000 663600 w
+(sec)72000 675600 w
+(sei)72000 687600 w
+(sta)72000 699600 w
+(stx)72000 711600 w
+(sty)72000 723600 w
+(tax)302400 147600 w
+(tay)302400 159600 w
+(tsx)302400 171600 w
+(txa)302400 183600 w
+(txs)302400 195600 w
+(tya)302400 207600 w
+&11
+(Lucas\003lm)72000 768000 w
+(Ltd.)115330 v
+(Proprietary)135050 v
+(Information)183370 v
+(\001)276340 v
+(31)283000 v
+(\001)296330 v
+(CONFIDENTIAL)430680 v
+_marks
+cleartomark
+showpage
+restore
+%%EndPage: 31 31
+%%Page: 32 32
+save
+mark
+32 pagesetup
+10 @11 f
+(Macross)72000 48000 w
+(July)262585 v
+(7,)282585 v
+(1986)293415 v
+(6502)450620 v
+(V)473450 v
+(ersion)479560 v
+(Lucas\003lm)72000 768000 w
+(Ltd.)115330 v
+(Proprietary)135050 v
+(Information)183370 v
+(\001)276340 v
+(32)283000 v
+(\001)296330 v
+(CONFIDENTIAL)430680 v
+_marks
+cleartomark
+showpage
+restore
+%%EndPage: 32 32
+%%Trailer
+done
+%%EOF
