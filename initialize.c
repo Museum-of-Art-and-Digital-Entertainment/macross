@@ -409,7 +409,7 @@ installBuiltInFunctions(void)
 	for (i=0; builtInFunctionTable[i].functionName!=NULL; i++) {
 		newFunction = lookupOrEnterSymbol(builtInFunctionTable[i].
 			functionName, BUILT_IN_FUNCTION_SYMBOL);
-		newFunction->context->value =newValue(BUILT_IN_FUNCTION_VALUE,
+		newFunction->context->value = newValue(BUILT_IN_FUNCTION_VALUE,
 			i, EXPRESSION_OPND);
 		if (builtInFunctionTable[i].isSpecialFunction)
 			newFunction->context->attributes |=
@@ -484,26 +484,11 @@ createHashTables(void)
 	conditionTableEntryType	*newConditionEntry;
 
 	newOpcodeEntry = theOpcodes;
-	while (newOpcodeEntry->mnemonic != NULL)
-		hashStringEnter(newOpcodeEntry++, opcodeTable);
-
-	if (machine == 0) {
-		newOpcodeEntry = theOpcodes_02;
-		while (newOpcodeEntry->mnemonic != NULL)
-			hashStringEnter(newOpcodeEntry++, opcodeTable);
-	}
-	else if (machine == 1) {
-		newOpcodeEntry = theOpcodes_c02;
-		while (newOpcodeEntry->mnemonic != NULL)
-			hashStringEnter(newOpcodeEntry++, opcodeTable);	
-	}
-	else if (machine >= 2) {
-		newOpcodeEntry = theOpcodes_c02;
-		while (newOpcodeEntry->mnemonic != NULL)
-			hashStringEnter(newOpcodeEntry++, opcodeTable);	
-		newOpcodeEntry = theOpcodes_c02s;
-		while (newOpcodeEntry->mnemonic != NULL)
-			hashStringEnter(newOpcodeEntry++, opcodeTable);	
+	while (newOpcodeEntry->mnemonic != NULL) {
+		int subClass = newOpcodeEntry->subClass;
+		if ((subClass == 0) || (subClass & processor))
+			hashStringEnter(newOpcodeEntry, opcodeTable);
+		newOpcodeEntry++;
 	}
 
 	newKeywordEntry = theKeywords;
