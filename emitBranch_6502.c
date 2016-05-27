@@ -56,6 +56,7 @@ emitRelativeBranch(conditionType condition, valueType *target, valueType *fixupL
 #define BNE_OPCODE	0xD0
 #define NOP_OPCODE	0xEA
 #define BEQ_OPCODE	0xF0
+#define BRA_OPCODE	0x80
 
 	static byte	conditionalBranchOpcodes[] = {
 		/* CARRY_COND */		BCS_OPCODE,
@@ -66,7 +67,7 @@ emitRelativeBranch(conditionType condition, valueType *target, valueType *fixupL
 		/* LEQ_COND */			COMPOUND,
 		/* SLT_COND */			COMPOUND,
 		/* SLEQ_COND */			COMPOUND,
-		/* ALWAYS_COND */		NOP_OPCODE,
+		/* ALWAYS_COND */		COMPOUND,
 		/* NOT_CARRY_COND */		BCC_OPCODE,
 		/* NOT_ZERO_COND */		BNE_OPCODE,
 		/* NOT_NEGATIVE_COND */		BPL_OPCODE,
@@ -85,10 +86,20 @@ emitRelativeBranch(conditionType condition, valueType *target, valueType *fixupL
 	if (fixupLocation != NULL)
 		for (i=0; i<COMPOUND_BRANCH_MAX; i++)
 			fixupLocation[i].value = -1;
+
 	if (conditionalBranchOpcodes[(int)condition] != COMPOUND) {
 		emitByte(conditionalBranchOpcodes[(int)condition]);
 		conditionalFixup(0);
 	} else switch (condition) {
+
+	case ALWAYS_COND:
+		if (processor > P6502) {
+			emitByte(BRA_OPCODE);	conditionalFixup(0);
+		} else {
+			emitByte(BCS_OPCODE);	conditionalFixup(0);
+			emitByte(BCC_OPCODE);	conditionalFixup(1);
+		}
+		break;
 
 	case GT_COND:
 		emitByte(BEQ_OPCODE);	emitByte(2);
@@ -150,13 +161,17 @@ emitJump(valueType *target, simpleFixupListType *previousFixups)
 	result = previousFixups;
 	if (positionIndependentCodeMode) {
 		if (target == NULL) {
-			emitRelativeBranch(CARRY_COND, NULL, picFixup);
-			result = buildSimpleFixupList(picFixup[0], result);
-			emitRelativeBranch(NOT_CARRY_COND, NULL, picFixup);
-			result = buildSimpleFixupList(picFixup[0], result);
+			if (processor > P6502) {
+				emitRelativeBranch(ALWAYS_COND, NULL, picFixup);
+				result = buildSimpleFixupList(picFixup[0], result);
+			} else {
+				emitRelativeBranch(CARRY_COND, NULL, picFixup);
+				result = buildSimpleFixupList(picFixup[0], result);
+				emitRelativeBranch(NOT_CARRY_COND, NULL, picFixup);
+				result = buildSimpleFixupList(picFixup[0], result);
+			}
 		} else {
-			emitRelativeBranch(CARRY_COND, target, NULL);
-			emitRelativeBranch(NOT_CARRY_COND, target, NULL);
+			emitRelativeBranch(ALWAYS_COND, target, NULL);
 		}
 	} else {
 		emitByte(JUMP_OPCODE);
