@@ -36,6 +36,7 @@
 #include "semanticMisc.h"
 
 #include <string.h>
+#include <strings.h>
 #include <unistd.h>
 
 #define isAlphaNumeric(c)	(alphaNumericCharacterTable[c])
@@ -45,7 +46,6 @@ extern int yydebug;
 static fileNameListType		*bottomOfInputFileStack;
 static char			 *outputFileName;
 
-static int machine = 0;
 
   void
 chokePukeAndDie(void)
@@ -141,6 +141,7 @@ initializeStuff(int argc, char **argv)
 	symbolTableDumpOn = 0;
 	positionIndependentCodeMode = FALSE;
 	hackFlag = 0;
+	processor = P6502; /* 6502 */
 
 	args = argv + 1;
 	for (i=1; i<argc; i++) {
@@ -222,6 +223,26 @@ initializeStuff(int argc, char **argv)
 			positionIndependentCodeMode = TRUE;
 			continue;
 
+		case 'P':
+			/* -P 6502 65c02 w65c02 65c02 */
+
+			if (++i >= argc) {
+				fatalError(NO_DASH_P_PROCESSOR_ERROR);
+			} else {
+				char *cpu = *args++;
+				if (strcasecmp(cpu, "6502") == 0)
+					processor = P6502;
+				else if (strcasecmp(cpu, "65c02") == 0)
+					processor = P65C02;
+				else if (strcasecmp(cpu, "65c02r") == 0)
+					processor = P65C02R;
+				else if (strcasecmp(cpu, "65c02s") == 0)
+					processor = P65C02S;
+				else
+					fatalError(DASH_P_UNKNOWN_PROCESSOR, cpu);
+			}
+			continue;	
+
 		case 's':
 		case 'S':
 		case 'h':
@@ -257,11 +278,6 @@ initializeStuff(int argc, char **argv)
 
 		case 'v':
 			printVersion();
-			continue;
-
-		case 'x':
-			/* -x6502 -x65c02 -x65c02s */
-			machine++;
 			continue;
 
 		case 'Y':
@@ -342,6 +358,7 @@ initializeStuff(int argc, char **argv)
 	installBuiltInFunctions();
 	installPredefinedSymbols();
 	installCommandLineDefineSymbols();
+	installProcessorDefine();
 
 	if (listingOn) {
 		if ((saveFileForPass2 = fdopen(mkstemp(pass2SourceFileName),
@@ -431,6 +448,33 @@ installCommandLineDefineSymbols(void)
 		commandLineDefines = commandLineDefines->nextDefine;
 	}
 }
+
+  void
+installStringDefine(char *name, char *value)
+{
+	symbolTableEntryType		*newSymbol;
+
+	newSymbol = lookupOrEnterSymbol(name, DEFINE_SYMBOL);
+	newSymbol->context->value = makeStringValue(value);
+	newSymbol->context->attributes |= DEFINED_VARIABLE_ATT;
+}
+
+  void
+installProcessorDefine()
+{
+	static char *values[] = {
+		"",
+		"6502",
+		"65c02",
+		"",
+		"65c02r",
+		"",
+		"65c02s",
+	};
+
+	installStringDefine("__processor__", values[processor]);
+}
+
 
   void
 createHashTables(void)

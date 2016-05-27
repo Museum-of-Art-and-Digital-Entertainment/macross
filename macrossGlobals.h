@@ -102,6 +102,7 @@ extern addressType		 targetOffset;
 extern bool			 terseErrorMessages;
 extern valueType		*UndefinedValue;
 extern symbolUsageKindType	 unknownSymbolTag;
+extern int			 processor;
 
 #define DEFAULT_OBJECT_FILE_NAME	"m.out"
 

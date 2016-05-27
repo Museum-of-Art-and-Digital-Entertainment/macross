@@ -1076,9 +1076,19 @@ typedef enum {
 		BAD_COMMAND_LINE_DEFINE_ERROR,
 		PERFORM_WITHOUT_SIDE_EFFECT_ERROR,
 		BIT_VALUE_TOO_LARGE_ERROR,
+		NO_DASH_P_PROCESSOR_ERROR,
+		DASH_P_UNKNOWN_PROCESSOR,
 			       } errorType;
 
 #define ERROR_LIMIT 300
+
+/* 6502 processor type */
+enum {
+	P6502 = 1,
+	P65C02 = 2,
+	P65C02R = 4,
+	P65C02S = 6,
+};
 
 /* Misc. macros: */
 
