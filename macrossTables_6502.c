@@ -128,9 +128,9 @@ keywordTableEntryType	*keywordTable[HASH_TABLE_SIZE];
 conditionTableEntryType	*conditionTable[HASH_TABLE_SIZE];
 
 
-#define m 0x01 /* mos 6502 */
-#define c 0x02 /* wdc 65c02 */
-#define r 0x04 /* rockwell 65c02 */
+#define m P6502   /* mos 6502 */
+#define c P65C02  /* wdc 65c02 */
+#define r P65C02R /* rockwell 65c02 */
 /* wdc w65c02s is c | r */
 /* 0 means all machines */
 
