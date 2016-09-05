@@ -102,6 +102,7 @@ addressType		 targetOffset;
 bool			 terseErrorMessages;
 valueType		*UndefinedValue;
 symbolUsageKindType	 unknownSymbolTag;
+int			 processor;
 
 int			(*lexDispatchTable[128])();
 

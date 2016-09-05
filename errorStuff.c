@@ -220,6 +220,10 @@ printErrorMessage(errorType theError, va_list ap)
 		"fatal: no name definition given on command line after '-D'",
 		"bad name definition: '%s'",
 		"warning: perform statement has no side effects",
+		"value %d is too large to fit in a bit",
+		"fatal: no processor given on command line after '-P'",
+		"fatal: unknown processor: %s",
+
 	};
 
 	static int errorCount = 0;

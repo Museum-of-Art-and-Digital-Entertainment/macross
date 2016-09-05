@@ -55,7 +55,10 @@ actionsDir1(opcodeTableEntryType *opcode, int numberOfOperands, valueType **eval
 #define	ZERO_PAGE_ADDRESS_BIT		0x00
 #define NON_ZERO_PAGE_ADDRESS_BIT	0x08
 
-	if(class==EXPRESSION_OPND && isByteAddress(operand) &&
+	/* only used for BIT */
+	/* 65c02 bit uses actionsDirX2 */
+
+	if (class==EXPRESSION_OPND && isByteAddress(operand) &&
 			isDefined(operand)){
 		emitByte(binary | ZERO_PAGE_ADDRESS_BIT);
 		emitByte(address);
@@ -81,10 +84,13 @@ actionsDirIndir(opcodeTableEntryType *opcode, int numberOfOperands, valueType **
 {
 #define DIRECT_ADDRESS_BIT	0x00
 #define INDIRECT_ADDRESS_BIT	0x20
+#define INDIRECT_ADDRESS_BIT_X	0x30
 
 	if (wordCheck(address)) {
 		if (class == INDIRECT_OPND)
 			emitByte(binary | INDIRECT_ADDRESS_BIT);
+		else if (class == PRE_INDEXED_X_OPND || class == PRE_SELECTED_X_OPND) /* 65c02  jmp (abs,x) */
+			emitByte(binary | INDIRECT_ADDRESS_BIT_X);
 		else
 			emitByte(binary | DIRECT_ADDRESS_BIT);
 		putFixupsHere(WORD_FIXUP, 0);
@@ -132,7 +138,21 @@ actionsDirX2(opcodeTableEntryType *opcode, int numberOfOperands, valueType **eva
 #define X_INDEXED_ZERO_PAGE_BITS_X2		0x10
 #define X_INDEXED_NON_ZERO_PAGE_BITS_X2		0x18
 
-	if (class == EXPRESSION_OPND) {
+	/*
+	special case for 65c02 inc a / dec a which were shoe-horned in
+	*/
+	if (class == A_REGISTER_OPND) {
+		emitByte(binary == 0xC6 ? 0x3A : 0x1A);
+	}
+	else if (class == IMMEDIATE_OPND) {
+		/* special case for 65c02 bit #immediate */
+		if (byteCheck(address)) {
+			emitByte(0x89);
+			putFixupsHere(BYTE_FIXUP, 0);
+			emitByte(address);
+		}
+	}
+	else if (class == EXPRESSION_OPND) {
 		if (isByteAddress(operand) && isDefined(operand)) {
 			emitByte(binary | DIRECT_ADDRESS_ZERO_PAGE_BITS_X2);
 			emitByte(address);
@@ -170,6 +190,31 @@ actionsDirX3(opcodeTableEntryType *opcode, int numberOfOperands, valueType **eva
 			emitByte(binary | X_INDEXED_ZERO_PAGE_BITS_X2);
 			putFixupsHere(BYTE_FIXUP, 0);
 			emitByte(address);
+		}
+	}
+}
+
+  void
+actionsSTZ(opcodeTableEntryType *opcode, int numberOfOperands, valueType **evaluatedOperands)
+{
+	/* STZ was shoe-horned in for the 65c02 and the encoding doesn't match up nicely */
+	if (class == EXPRESSION_OPND) {
+		if (isByteAddress(operand) && isDefined(operand)) {
+			emitByte(0x64);
+			emitByte(address);
+		} else if (wordCheck(address)) {
+			emitByte(0x9C);
+			putFixupsHere(WORD_FIXUP, 0);
+			emitWord(address);
+		}
+	} else {
+		if (isByteAddress(operand) && isDefined(operand)) {
+			emitByte(0x74);
+			emitByte(address);
+		} else if (wordCheck(address)) {
+			emitByte(0x9E);
+			putFixupsHere(WORD_FIXUP, 0);
+			emitWord(address);
 		}
 	}
 }
@@ -307,6 +352,7 @@ actionsImmIndex(opcodeTableEntryType *opcode, int numberOfOperands, valueType **
 #define X_INDEXED_ZERO_PAGE_BITS_A		0x14
 #define Y_INDEXED_NON_ZERO_PAGE_BITS_A		0x18
 #define X_INDEXED_NON_ZERO_PAGE_BITS_A		0x1C
+#define INDIRECT_OPND_BITS_A 0x11
 
 	if (class == EXPRESSION_OPND) {
 		if (isByteAddress(operand) && isDefined(operand)) {
@@ -341,6 +387,13 @@ actionsImmIndex(opcodeTableEntryType *opcode, int numberOfOperands, valueType **
 	} else if (class == POST_INDEXED_Y_OPND) {
 		if (byteCheck(address)) {
 			emitByte(binary | POST_INDEXED_BITS_A);
+			putFixupsHere(BYTE_FIXUP, 0);
+			emitByte(address);
+		}
+	} else if (class == INDIRECT_OPND) {
+		/* 65c02 */
+		if (byteCheck(address)) {
+			emitByte(binary + INDIRECT_OPND_BITS_A);
 			putFixupsHere(BYTE_FIXUP, 0);
 			emitByte(address);
 		}
@@ -386,6 +439,13 @@ actionsIndex(opcodeTableEntryType *opcode, int numberOfOperands, valueType **eva
 			putFixupsHere(BYTE_FIXUP, 0);
 			emitByte(address);
 		}
+	} else if (class == INDIRECT_OPND) {
+		/* 65c02 */
+		if (byteCheck(address)) {
+			emitByte(binary + INDIRECT_OPND_BITS_A);
+			putFixupsHere(BYTE_FIXUP, 0);
+			emitByte(address);
+		}
 	} else {
 		if (byteCheck(address)) {
 			emitByte(binary | PRE_INDEXED_BITS_A);
@@ -421,6 +481,89 @@ actionsRelative(opcodeTableEntryType *opcode, int numberOfOperands, valueType **
 		error(RELATIVE_OFFSET_TOO_LARGE_ERROR);
 	}
 }
+
+  void
+actionsBitZPRelative(opcodeTableEntryType *opcode, int numberOfOperands, valueType **evaluatedOperands)
+{
+	/* rockwell 65c02 bbr bit,zp,branch and bbs bit,zp,branch. */
+
+#define operand_0 (evaluatedOperands[0])
+#define address_0	(evaluatedOperands[0])->value
+#define class_0	(evaluatedOperands[0])->addressMode
+
+#define operand_1 (evaluatedOperands[1])
+#define address_1	(evaluatedOperands[1])->value
+#define class_1	(evaluatedOperands[1])->addressMode
+
+#define operand_2 (evaluatedOperands[2])
+#define address_2	(evaluatedOperands[2])->value
+#define class_2	(evaluatedOperands[2])->addressMode
+
+
+	int bit;
+	int zp;
+	int	offset;
+
+
+	if (class_0 == EXPRESSION_OPND && isDefined(operand_0) && address_0 >= 0 && address_0 <= 7) {
+		bit = address_0;
+	} else {
+		error(BIT_VALUE_TOO_LARGE_ERROR, address_0);
+	}
+
+	if (class_1 == EXPRESSION_OPND && isDefined(operand_1) && isByteAddress(operand_1)) {
+		zp = address_1;
+	} else {
+		error(BYTE_VALUE_TOO_LARGE_ERROR, address_1);
+		zp = 0;
+	}
+
+	if (operand_2->kindOfValue == UNDEFINED_VALUE || (currentCodeMode ==
+			RELOCATABLE_BUFFER && targetOffset == 0))
+		offset = 0;
+	else
+		offset = address_2 - (currentLocationCounter.value - targetOffset) - 2;
+	if (offset < 0)
+		offset--;
+	if (isByteOffset(offset)) {
+		emitByte(binary + (bit << 4));
+		emitByte(zp);
+		putFixupsHere(BYTE_RELATIVE_FIXUP, 0);
+		emitByte(offset);
+	} else {
+		error(RELATIVE_OFFSET_TOO_LARGE_ERROR);
+	}
+}
+
+
+  void
+actionsBitZP(opcodeTableEntryType *opcode, int numberOfOperands, valueType **evaluatedOperands)
+{
+	/* rockwell 65c02 smb bit,zp and rmb bit,zp */
+
+
+	int bit;
+	int zp;
+
+	if (class_0 == EXPRESSION_OPND && isDefined(operand_0) && address_0 >= 0 && address_0 <= 7) {
+		bit = address_0;
+	} else {
+		error(BIT_VALUE_TOO_LARGE_ERROR, address_0);
+	}
+
+	if (class_1 == EXPRESSION_OPND && isDefined(operand_1) && isByteAddress(operand_1)) {
+		zp = address_1;
+	} else {
+		error(BYTE_VALUE_TOO_LARGE_ERROR, address_1);
+		zp = 0;
+	}
+
+	emitByte(binary + (bit << 4));
+	emitByte(zp);
+}
+
+
+
 
 /* 
    Miscellaneous helper predicates.
